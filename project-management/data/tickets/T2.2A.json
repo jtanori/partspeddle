@@ -1,0 +1,60 @@
+{
+  "id": "T2.2A",
+  "milestone_id": "M2",
+  "title": "Auth Provider Interface Abstraction",
+  "domain": "Identity",
+  "capability": "Port/Adapter",
+  "purpose": "Create an IdentityProvider port so Supabase Auth is replaceable. No domain code depends on Supabase SDK semantics.",
+  "dependencies": ["T2.2", "T2.1A"],
+  "architectural_constraints": [
+    "Interface in application/ports, implementation in infrastructure/auth",
+    "Supabase SDK isolated to infrastructure layer only",
+    "JWT verification via JWKS, not SDK-dependent",
+    "Domain errors for auth failures, not Supabase errors"
+  ],
+  "deliverables": [
+    {
+      "path": "src/identity/application/ports/identity-provider.ts",
+      "description": "IdentityProvider port interface",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/infrastructure/auth/supabase-auth-provider.ts",
+      "description": "Supabase Auth implementation of IdentityProvider",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/infrastructure/auth/__tests__/supabase-auth-provider.test.ts",
+      "description": "Unit tests with mocked JWKS",
+      "type": "test"
+    }
+  ],
+  "acceptance_criteria": [
+    "IdentityProvider interface has verifyToken, getUser, revokeSessions methods",
+    "SupabaseAuthProvider implements IdentityProvider using supabase-js",
+    "No import of @supabase/supabase-js outside infrastructure/auth/",
+    "JWT verification works with Supabase JWKS endpoint",
+    "Domain error thrown on invalid token (not SDK error leaked)"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": ["identity_auth_verify_latency_seconds"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "JWKS endpoint unreachable",
+      "mitigation": "Retry with backoff, fallback to cached key",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T12:30:00.000Z",
+    "updated_at": "2026-05-19T12:30:00.000Z",
+    "version": 1
+  }
+}

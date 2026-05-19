@@ -1,0 +1,69 @@
+{
+  "id": "T2.6B",
+  "milestone_id": "M2",
+  "title": "Webhook Reconciliation Governance",
+  "domain": "Identity",
+  "capability": "Sync Governance",
+  "purpose": "Define webhook idempotency, ordering, and reconciliation semantics for hosted auth provider synchronization. Webhooks are reconciliation; lazy provisioning is primary.",
+  "dependencies": ["T2.6A"],
+  "architectural_constraints": [
+    "Idempotency key: auth_provider + event_id (future-proofs multi-provider)",
+    "24h deduplication window minimum",
+    "Out-of-order webhooks: delayed retry with exponential backoff",
+    "Reconciliation job scans for orphaned auth identities daily",
+    "Webhook processing is async (202 response); sync is eventual"
+  ],
+  "deliverables": [
+    {
+      "path": "src/identity/infrastructure/webhooks/webhook-idempotency-store.ts",
+      "description": "Redis-backed idempotency key store with TTL",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/queue/reconciliation-job.ts",
+      "description": "Daily scan for orphaned identities + backfill",
+      "type": "file"
+    },
+    {
+      "path": "project-knowledge/identity-webhook-contract.md",
+      "description": "Documentation: webhook semantics, idempotency, ordering, failure modes",
+      "type": "doc"
+    }
+  ],
+  "acceptance_criteria": [
+    "Duplicate webhook (same auth_provider + event_id) ignored within 24h",
+    "Out-of-order webhook (update before create) retried with backoff",
+    "Reconciliation job detects identity.users rows missing for active auth users",
+    "Reconciliation backfill creates missing rows with correct auth_provider",
+    "Webhook contract doc covers all event types and failure scenarios"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "identity_webhook_dedup_total",
+      "identity_reconciliation_orphans_found"
+    ],
+    "logs": ["Webhook deduplication hits", "Reconciliation backfill actions"],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Redis idempotency store evicts key early",
+      "mitigation": "Minimum TTL 48h, monitor eviction rate",
+      "severity": "medium"
+    },
+    {
+      "scenario": "Reconciliation job creates stale data",
+      "mitigation": "Use auth provider API to verify user still exists before backfill",
+      "severity": "low"
+    }
+  ],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T13:00:00.000Z",
+    "updated_at": "2026-05-19T13:00:00.000Z",
+    "version": 1
+  }
+}

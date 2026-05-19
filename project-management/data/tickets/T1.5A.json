@@ -1,0 +1,60 @@
+{
+  "id": "T1.5A",
+  "milestone_id": "M1",
+  "title": "Infrastructure Simplification: Postgres + Redis Only",
+  "domain": "Shared",
+  "capability": "DevOps",
+  "purpose": "Update local infrastructure to run only PostgreSQL and Redis. Remove Supabase stack assumptions from docker-compose, env vars, and documentation.",
+  "dependencies": ["T1.5", "T1.8"],
+  "architectural_constraints": [
+    "Docker compose only runs postgres and redis services",
+    "No local Supabase Auth, Storage, Studio, or Kong",
+    "DATABASE_URL points to local Postgres (not Supabase connection pooler)",
+    "SUPABASE_URL points to hosted instance (cloud-only)"
+  ],
+  "deliverables": [
+    {
+      "path": "docker-compose.dev.yml",
+      "description": "Simplified to postgres + redis only",
+      "type": "config"
+    },
+    {
+      "path": ".env.example",
+      "description": "Updated env vars: DATABASE_URL, REDIS_URL, SUPABASE_URL (hosted)",
+      "type": "config"
+    },
+    {
+      "path": "project-knowledge/local-development.md",
+      "description": "Updated docs: hosted Supabase Auth, local Postgres/Redis",
+      "type": "doc"
+    }
+  ],
+  "acceptance_criteria": [
+    "docker-compose.dev.yml has only postgres and redis services",
+    "npm run infra:up starts in < 10 seconds",
+    "CI workflow uses the same postgres + redis services",
+    "All tests pass with local postgres (no auth.users stub needed after T2.1A)",
+    "Documentation reflects hosted-auth + local-infra model"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Developer confusion about where auth lives",
+      "mitigation": "Clear env var naming: SUPABASE_AUTH_URL vs DATABASE_URL",
+      "severity": "low"
+    }
+  ],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T12:30:00.000Z",
+    "updated_at": "2026-05-19T12:30:00.000Z",
+    "version": 1
+  }
+}

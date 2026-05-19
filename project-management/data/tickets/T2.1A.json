@@ -1,0 +1,60 @@
+{
+  "id": "T2.1A",
+  "milestone_id": "M2",
+  "title": "Auth Decoupling: Identity-Owned User Table",
+  "domain": "Identity",
+  "capability": "Persistence",
+  "purpose": "Replace auth.users FK dependency with an identity-owned users table that synchronizes with external auth providers (Supabase Auth hosted).",
+  "dependencies": ["T2.1"],
+  "architectural_constraints": [
+    "No local auth.users table or stub",
+    "identity.users is the system-of-record for user identity within VINTRACK",
+    "auth_provider_id stores the external Supabase Auth UUID",
+    "Forward-only migration: add identity.users, migrate FKs, deprecate auth references"
+  ],
+  "deliverables": [
+    {
+      "path": "supabase/migrations/20260519180001_identity_users_table.sql",
+      "description": "Create identity.users with auth_provider_id, email, status",
+      "type": "migration"
+    },
+    {
+      "path": "supabase/migrations/20260519180002_migrate_fks_to_identity_users.sql",
+      "description": "Update all FKs from auth.users to identity.users",
+      "type": "migration"
+    },
+    {
+      "path": "supabase/migrations/20260519180003_remove_auth_trigger.sql",
+      "description": "Remove handle_new_user trigger that depends on auth.users",
+      "type": "migration"
+    }
+  ],
+  "acceptance_criteria": [
+    "identity.users table exists with UUID PK and auth_provider_id TEXT UNIQUE",
+    "All identity tables FK to identity.users(id) not auth.users(id)",
+    "No references to auth.users in any migration",
+    "Integration tests insert into identity.users directly",
+    "auth.users stub removed from test setup"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": ["Migration execution success/failure"],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Existing test data references auth.users",
+      "mitigation": "Update setup-integration.ts TEST_RESET_TABLES and all test fixtures",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T12:30:00.000Z",
+    "updated_at": "2026-05-19T12:30:00.000Z",
+    "version": 1
+  }
+}

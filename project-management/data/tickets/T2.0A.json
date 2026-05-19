@@ -1,0 +1,47 @@
+{
+  "id": "T2.0A",
+  "milestone_id": "M2",
+  "title": "ADR: Auth Provider Decoupling Strategy",
+  "domain": "Identity",
+  "capability": "Architecture",
+  "purpose": "Document the decision to decouple VINTRACK from local Supabase stack, using hosted Supabase Auth + local PostgreSQL + local Redis. Establish the IdentityProvider port pattern.",
+  "dependencies": [],
+  "architectural_constraints": [
+    "Auth provider is a commodity service, not domain model",
+    "Identity domain owns user lifecycle, not auth provider",
+    "JWT verification is infrastructure concern, hidden behind port",
+    "All auth provider SDK imports isolated to infrastructure/auth/"
+  ],
+  "deliverables": [
+    {
+      "path": "project-knowledge/adr/002-auth-provider-decoupling.md",
+      "description": "Architecture Decision Record for auth decoupling",
+      "type": "doc"
+    },
+    {
+      "path": "src/identity/README.md",
+      "description": "Identity domain README with auth provider boundary",
+      "type": "doc"
+    }
+  ],
+  "acceptance_criteria": [
+    "ADR documents context, decision, consequences, and migration path",
+    "Identity domain README explains auth provider port",
+    "Code review checklist updated to flag Supabase SDK imports outside infrastructure"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 1,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T12:30:00.000Z",
+    "updated_at": "2026-05-19T12:30:00.000Z",
+    "version": 1
+  }
+}
