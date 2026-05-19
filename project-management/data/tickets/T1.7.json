@@ -30,7 +30,20 @@
     "Raw Error wrapped in DomainError",
     "API returns canonical error shape"
   ],
-  "traceability": [],
+  "traceability": [
+    {
+      "commit_hash": "90c7ca5",
+      "files_changed": [
+        "src/shared/errors/domain-error.ts",
+        "src/shared/errors/error-mapper.ts",
+        "src/shared/api/middleware/error-handler.ts",
+        "src/shared/errors/__tests__/error-mapper.test.ts",
+        "src/shared/api/middleware/__tests__/error-handler.test.ts"
+      ],
+      "description": "Implemented error system: DomainError toJSON serialization, error mapper with wrapError/mapToHttpResponse/isRetryable, Express error handler middleware with canonical API response shape",
+      "timestamp": "2026-05-19T07:28:25.000Z"
+    }
+  ],
   "observability": {
     "metrics": [
       "errors_total"
@@ -40,11 +53,11 @@
   },
   "failure_modes": [],
   "estimated_hours": 2,
-  "status": "planned",
-  "assignee": null,
+  "status": "review",
+  "assignee": "Agent 1",
   "metadata": {
     "created_at": "2026-05-19T02:31:57.300Z",
-    "updated_at": "2026-05-19T02:31:57.300Z",
-    "version": 1
+    "updated_at": "2026-05-19T07:28:25.000Z",
+    "version": 2
   }
 }
