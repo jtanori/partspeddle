@@ -18,6 +18,7 @@ export interface OutboxEntry {
   payload: Record<string, unknown>;
   aggregate_id: string;
   correlation_id: string;
+  traceparent: string | null;
   status: 'pending' | 'processing' | 'published' | 'failed';
   retry_count: number;
   created_at: string;
@@ -58,6 +59,7 @@ export class Outbox {
       payload: event.payload,
       aggregate_id: event.aggregateId,
       correlation_id: event.correlationId,
+      traceparent: (event.metadata as Record<string, unknown>)?.traceparent as string | undefined,
       status: 'pending',
       retry_count: 0,
       created_at: now,

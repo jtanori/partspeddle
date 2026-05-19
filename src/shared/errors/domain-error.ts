@@ -23,4 +23,23 @@ export class DomainError extends Error {
       Error.captureStackTrace(this, DomainError);
     }
   }
+
+  /**
+   * Serialize to a JSON-safe object.
+   *
+   * Stack traces are omitted by default. Safe for queues, logs, events, and DLQs.
+   */
+  toJSON(): Record<string, unknown> {
+    const envelope: Record<string, unknown> = {
+      code: this.code,
+      message: this.message,
+      correlationId: this.correlationId,
+      retryable: this.isRetryable,
+      name: this.name,
+    };
+    if (this.details !== undefined) {
+      envelope.details = this.details;
+    }
+    return envelope;
+  }
 }
