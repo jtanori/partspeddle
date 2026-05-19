@@ -9,12 +9,14 @@ const __dirname = dirname(__filename);
 
 // ─── CLI args ───────────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
-const ticketArg = args.find((_, i) => args[i - 1] === '--ticket') || args.find(a => a.startsWith('T') && a.includes('.'));
+const ticketArg = args.find((_, i) => args[i - 1] === '--ticket');
+const ticketIds = ticketArg ? ticketArg.split(',').map(s => s.trim()) : [];
 const milestoneArg = args.find((_, i) => args[i - 1] === '--milestone') || args.find(a => a.startsWith('M') && !a.includes('.'));
 const domainArg = args.find((_, i) => args[i - 1] === '--domain');
 const allFlag = args.includes('--all') || (!ticketArg && !milestoneArg && !domainArg);
 const fileFlag = args.includes('--file') || args.includes('-f');
 const jsonFlag = args.includes('--json') || args.includes('-j');
+const fullFlag = args.includes('--full');
 const helpFlag = args.includes('--help') || args.includes('-h');
 
 if (helpFlag) {
@@ -31,12 +33,14 @@ OPTIONS:
   --all              Summary for the entire project (default)
   --file, -f         Force output to temp file instead of stdout
   --json, -j         Output as JSON instead of plain text
+  --full             Print all ticket fields (deliverables, criteria, traceability, etc.)
   --help, -h         Show this help
 
 EXAMPLES:
   node scripts/pm-summary.js --ticket T1.2
   node scripts/pm-summary.js --milestone M1 --file
   node scripts/pm-summary.js --domain Shared --json
+  node scripts/pm-summary.js --ticket T1.2 --full
   node scripts/pm-summary.js --all
 `);
   process.exit(0);
@@ -54,11 +58,11 @@ const allTickets = readdirSync(ticketsDir)
 let ticketsToSummarize = [];
 let scopeLabel = '';
 
-if (ticketArg) {
-  const t = allTickets.find(x => x.id === ticketArg);
-  if (!t) { console.error(`❌ Ticket ${ticketArg} not found`); process.exit(1); }
-  ticketsToSummarize = [t];
-  scopeLabel = `Ticket ${t.id}`;
+if (ticketIds.length > 0) {
+  ticketsToSummarize = allTickets.filter(t => ticketIds.includes(t.id));
+  const missing = ticketIds.filter(id => !allTickets.some(t => t.id === id));
+  if (missing.length > 0) { console.error(`❌ Ticket(s) not found: ${missing.join(', ')}`); process.exit(1); }
+  scopeLabel = ticketIds.length === 1 ? `Ticket ${ticketIds[0]}` : `Tickets: ${ticketIds.join(', ')}`;
 } else if (milestoneArg) {
   ticketsToSummarize = allTickets.filter(t => t.milestone_id === milestoneArg);
   if (ticketsToSummarize.length === 0) { console.error(`❌ No tickets for milestone ${milestoneArg}`); process.exit(1); }
@@ -218,6 +222,7 @@ function formatText(ticketSummaries, projectSummary) {
   }
 
   for (const s of ticketSummaries) {
+    const ticket = ticketsToSummarize.find(t => t.id === s.id);
     lines.push(`\n${'─'.repeat(80)}`);
     lines.push(`${s.id} — ${s.title}`);
     lines.push(`  Status:      ${s.status}`);
@@ -241,6 +246,79 @@ function formatText(ticketSummaries, projectSummary) {
         lines.push(`    ${icon} ${d.id} — ${d.status}`);
       }
     }
+
+    if (fullFlag && ticket) {
+      if (ticket.purpose) {
+        lines.push(`\n  📌 PURPOSE`);
+        lines.push(`    ${ticket.purpose}`);
+      }
+
+      if (ticket.architectural_constraints && ticket.architectural_constraints.length > 0) {
+        lines.push(`\n  🏗️  ARCHITECTURAL CONSTRAINTS`);
+        for (const c of ticket.architectural_constraints) {
+          lines.push(`    • ${c}`);
+        }
+      }
+
+      if (ticket.deliverables && ticket.deliverables.length > 0) {
+        lines.push(`\n  📁 DELIVERABLES`);
+        for (const d of ticket.deliverables) {
+          const exists = d.path && !d.path.includes('<') ? (existsSync(d.path) ? '✅' : '❌') : '⏸️';
+          lines.push(`    ${exists} [${d.type}] ${d.path}`);
+          lines.push(`       ${d.description}`);
+        }
+      }
+
+      if (ticket.acceptance_criteria && ticket.acceptance_criteria.length > 0) {
+        lines.push(`\n  ✅ ACCEPTANCE CRITERIA`);
+        for (let i = 0; i < ticket.acceptance_criteria.length; i++) {
+          lines.push(`    ${i + 1}. ${ticket.acceptance_criteria[i]}`);
+        }
+      }
+
+      if (ticket.traceability && ticket.traceability.length > 0) {
+        lines.push(`\n  🔗 TRACEABILITY`);
+        for (const tr of ticket.traceability) {
+          lines.push(`    Commit: ${tr.commit_hash}`);
+          lines.push(`    Time:   ${tr.timestamp}`);
+          lines.push(`    Desc:   ${tr.description}`);
+          if (tr.files_changed && tr.files_changed.length > 0) {
+            for (const f of tr.files_changed) {
+              lines.push(`      • ${f}`);
+            }
+          }
+          lines.push('');
+        }
+      }
+
+      if (ticket.failure_modes && ticket.failure_modes.length > 0) {
+        lines.push(`\n  ⚠️  FAILURE MODES`);
+        for (const fm of ticket.failure_modes) {
+          lines.push(`    [${fm.severity.toUpperCase()}] ${fm.scenario}`);
+          lines.push(`      Mitigation: ${fm.mitigation}`);
+        }
+      }
+
+      if (ticket.observability) {
+        const obs = ticket.observability;
+        const hasObs = (obs.metrics && obs.metrics.length) || (obs.logs && obs.logs.length) || (obs.traces && obs.traces.length);
+        if (hasObs) {
+          lines.push(`\n  📡 OBSERVABILITY`);
+          if (obs.metrics && obs.metrics.length > 0) {
+            lines.push(`    Metrics:`);
+            for (const m of obs.metrics) lines.push(`      • ${m}`);
+          }
+          if (obs.logs && obs.logs.length > 0) {
+            lines.push(`    Logs:`);
+            for (const l of obs.logs) lines.push(`      • ${l}`);
+          }
+          if (obs.traces && obs.traces.length > 0) {
+            lines.push(`    Traces:`);
+            for (const t of obs.traces) lines.push(`      • ${t}`);
+          }
+        }
+      }
+    }
   }
 
   lines.push(`\n${'='.repeat(80)}`);
@@ -249,13 +327,14 @@ function formatText(ticketSummaries, projectSummary) {
 
 function formatJSON(ticketSummaries, projectSummary) {
   const now = new Date().toISOString();
-  return JSON.stringify({
+  const payload = {
     generated_at: now,
     scope: scopeLabel,
     project_summary: projectSummary || undefined,
-    tickets: ticketSummaries,
+    tickets: fullFlag ? ticketsToSummarize : ticketSummaries,
     count: ticketSummaries.length,
-  }, null, 2);
+  };
+  return JSON.stringify(payload, null, 2);
 }
 
 // ─── Generate output ────────────────────────────────────────────────────────
