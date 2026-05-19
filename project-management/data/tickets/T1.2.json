@@ -76,6 +76,25 @@
       ],
       "description": "Added pm-summary script with structured summaries, auto temp-file output for large content, and updated documentation",
       "timestamp": "2026-05-19T03:59:48.110Z"
+    },
+    {
+      "commit_hash": "4cbce2e",
+      "files_changed": [
+        "scripts/lib/json-utils.js",
+        "tests/scripts/json-utils.test.ts",
+        "scripts/validate-pm.js",
+        "project-knowledge/pm-scripts-reference.md"
+      ],
+      "description": "Added centralized JSON utility module with atomic writes, backups, batch operations, and refactored validate-pm.js to use it",
+      "timestamp": "2026-05-19T04:06:03.610Z"
+    },
+    {
+      "commit_hash": "0eea43a",
+      "files_changed": [
+        "scripts/pm-summary.js"
+      ],
+      "description": "Added --full flag to pm-summary for complete ticket data dump including deliverables, criteria, traceability, failure modes",
+      "timestamp": "2026-05-19T04:16:34.477Z"
     }
   ],
   "observability": {
@@ -89,8 +108,8 @@
   "assignee": null,
   "metadata": {
     "created_at": "2026-05-19T02:31:57.300Z",
-    "updated_at": "2026-05-19T03:59:48.110Z",
-    "version": 4
+    "updated_at": "2026-05-19T04:16:34.477Z",
+    "version": 6
   },
   "git_commit": "aca1c15"
 }
