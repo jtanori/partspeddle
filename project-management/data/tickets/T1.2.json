@@ -95,6 +95,18 @@
       ],
       "description": "Added --full flag to pm-summary for complete ticket data dump including deliverables, criteria, traceability, failure modes",
       "timestamp": "2026-05-19T04:16:34.477Z"
+    },
+    {
+      "commit_hash": "22eb63b",
+      "files_changed": [
+        "src/shared/event-bus/domain-event.ts",
+        "src/shared/event-bus/event-schema.ts",
+        "src/shared/event-bus/event-catalog.ts",
+        "src/shared/event-bus/__tests__/domain-event.test.ts",
+        "src/shared/event-bus/__tests__/event-schema.test.ts"
+      ],
+      "description": "T1.2 amendments: added schemaVersion, aggregateType, tightened eventType regex to post-tense, server-authoritative occurredAt with trustedTimestamp flag",
+      "timestamp": "2026-05-19T04:55:23.000Z"
     }
   ],
   "observability": {
@@ -108,8 +120,8 @@
   "assignee": null,
   "metadata": {
     "created_at": "2026-05-19T02:31:57.300Z",
-    "updated_at": "2026-05-19T04:16:34.477Z",
-    "version": 6
+    "updated_at": "2026-05-19T04:55:23.000Z",
+    "version": 7
   },
   "git_commit": "aca1c15"
 }
