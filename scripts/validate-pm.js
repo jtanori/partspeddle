@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
-import { readFileSync, readdirSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { readJson, readJsonDir, createValidator } from './lib/json-utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -11,18 +11,21 @@ const __dirname = dirname(__filename);
 const ajv = new Ajv({ strict: false, allErrors: true });
 addFormats(ajv);
 
-const milestoneSchema = JSON.parse(readFileSync(join(__dirname, '../project-management/schemas/milestone.schema.json'), 'utf8'));
-const ticketSchema = JSON.parse(readFileSync(join(__dirname, '../project-management/schemas/ticket.schema.json'), 'utf8'));
-const dependencyGraphSchema = JSON.parse(readFileSync(join(__dirname, '../project-management/schemas/dependency-graph.schema.json'), 'utf8'));
-const sequenceSchema = JSON.parse(readFileSync(join(__dirname, '../project-management/schemas/sequence.schema.json'), 'utf8'));
-const riskRegisterSchema = JSON.parse(readFileSync(join(__dirname, '../project-management/schemas/risk-register.schema.json'), 'utf8'));
-const milestones = JSON.parse(readFileSync(join(__dirname, '../project-management/data/milestones.json'), 'utf8'));
+const dataDir = join(__dirname, '../project-management/data');
+const schemaDir = join(__dirname, '../project-management/schemas');
 
-// Load tickets from individual files
-const ticketsDir = join(__dirname, '../project-management/data/tickets');
-const ticketFiles = readdirSync(ticketsDir).filter(f => f.endsWith('.json'));
-const tickets = ticketFiles.map(f => JSON.parse(readFileSync(join(ticketsDir, f), 'utf8')));
+// Load schemas via json-utils
+const milestoneSchema = readJson(join(schemaDir, 'milestone.schema.json'));
+const ticketSchema = readJson(join(schemaDir, 'ticket.schema.json'));
+const dependencyGraphSchema = readJson(join(schemaDir, 'dependency-graph.schema.json'));
+const sequenceSchema = readJson(join(schemaDir, 'sequence.schema.json'));
+const riskRegisterSchema = readJson(join(schemaDir, 'risk-register.schema.json'));
 
+// Load data via json-utils
+const milestones = readJson(join(dataDir, 'milestones.json'));
+const tickets = readJsonDir(join(dataDir, 'tickets'));
+
+// Compile validators
 const milestoneValidate = ajv.compile(milestoneSchema);
 const ticketValidate = ajv.compile(ticketSchema);
 const dependencyGraphValidate = ajv.compile(dependencyGraphSchema);
@@ -53,7 +56,7 @@ for (const t of tickets) {
 
 // Dependency graph validation
 console.log('\nValidating dependency graph...');
-const dependencyGraph = JSON.parse(readFileSync(join(__dirname, '../project-management/data/dependency-graph.json'), 'utf8'));
+const dependencyGraph = readJson(join(dataDir, 'dependency-graph.json'));
 if (!dependencyGraphValidate(dependencyGraph)) {
   console.error(`  ❌ dependency-graph.json: ${ajv.errorsText(dependencyGraphValidate.errors)}`);
   errors++;
@@ -63,7 +66,7 @@ if (!dependencyGraphValidate(dependencyGraph)) {
 
 // Sequence validation
 console.log('\nValidating sequence...');
-const sequence = JSON.parse(readFileSync(join(__dirname, '../project-management/data/sequence.json'), 'utf8'));
+const sequence = readJson(join(dataDir, 'sequence.json'));
 if (!sequenceValidate(sequence)) {
   console.error(`  ❌ sequence.json: ${ajv.errorsText(sequenceValidate.errors)}`);
   errors++;
@@ -73,7 +76,7 @@ if (!sequenceValidate(sequence)) {
 
 // Risk register validation
 console.log('\nValidating risk register...');
-const riskRegister = JSON.parse(readFileSync(join(__dirname, '../project-management/data/risk-register.json'), 'utf8'));
+const riskRegister = readJson(join(dataDir, 'risk-register.json'));
 if (!riskRegisterValidate(riskRegister)) {
   console.error(`  ❌ risk-register.json: ${ajv.errorsText(riskRegisterValidate.errors)}`);
   errors++;
@@ -109,10 +112,11 @@ for (const t of tickets) {
 }
 
 // Check for orphaned ticket files
-for (const f of ticketFiles) {
-  const tid = f.replace('.json', '');
+const ticketFiles = readJsonDir(join(dataDir, 'tickets'), { includeFileName: true });
+for (const { fileName, data } of ticketFiles) {
+  const tid = fileName.replace('.json', '');
   if (!ticketIds.has(tid)) {
-    console.error(`  ❌ Orphaned ticket file: ${f}`);
+    console.error(`  ❌ Orphaned ticket file: ${fileName}`);
     errors++;
   }
 }

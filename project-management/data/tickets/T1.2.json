@@ -64,6 +64,18 @@
       ],
       "description": "Added comprehensive PM scripts documentation with usage examples, exit codes, CI integration, and troubleshooting",
       "timestamp": "2026-05-19T03:55:41.658Z"
+    },
+    {
+      "commit_hash": "335709e",
+      "files_changed": [
+        "scripts/pm-summary.js",
+        "scripts/pm-assess.js",
+        "scripts/README.md",
+        "project-knowledge/pm-scripts-reference.md",
+        "package.json"
+      ],
+      "description": "Added pm-summary script with structured summaries, auto temp-file output for large content, and updated documentation",
+      "timestamp": "2026-05-19T03:59:48.110Z"
     }
   ],
   "observability": {
@@ -77,8 +89,8 @@
   "assignee": null,
   "metadata": {
     "created_at": "2026-05-19T02:31:57.300Z",
-    "updated_at": "2026-05-19T03:55:41.658Z",
-    "version": 3
+    "updated_at": "2026-05-19T03:59:48.110Z",
+    "version": 4
   },
   "git_commit": "aca1c15"
 }

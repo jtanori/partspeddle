@@ -12,6 +12,48 @@ All scripts are Node.js ESM. They read from `project-management/data/` and valid
 npm install        # ensures ajv, ajv-formats are present
 ```
 
+## Shared Library: `scripts/lib/json-utils.js`
+
+All scripts use a centralized JSON utility module for consistency:
+
+| Function | Purpose |
+|----------|---------|
+| `readJson(path)` | Read and parse JSON file |
+| `writeJson(path, data, opts)` | Write formatted JSON (atomic by default) |
+| `updateJson(path, updater)` | Read → transform → write atomically |
+| `readJsonDir(dir, opts)` | Load all JSON files from a directory |
+| `backupJson(path)` | Create timestamped `.bak` backup |
+| `restoreJson(path)` | Restore from most recent backup |
+| `inspectJson(path)` | Return metadata without full parse |
+| `diffJson(before, after)` | Return changed paths between objects |
+| `batchUpdateJson(dir, updater)` | Batch transform all JSON files in directory |
+| `createValidator(schema)` | Create reusable AJV validator |
+
+**Features:**
+- Atomic writes (temp file + rename)
+- Automatic backup on write (opt-in)
+- Clear error codes: `JSON_FILE_NOT_FOUND`, `JSON_PARSE_ERROR`, `JSON_NO_BACKUP`
+- Creates missing directories automatically
+
+**Example:**
+
+```javascript
+import { readJson, updateJson, writeJson } from './lib/json-utils.js';
+
+// Read
+const milestones = readJson('project-management/data/milestones.json');
+
+// Atomic update
+updateJson('project-management/data/tickets/T1.2.json', (ticket) => ({
+  ...ticket,
+  status: 'completed',
+  metadata: { ...ticket.metadata, version: ticket.metadata.version + 1 }
+}));
+
+// Write with backup
+writeJson('project-management/data/new-artifact.json', data, { backup: true });
+```
+
 ---
 
 ## Script Inventory
