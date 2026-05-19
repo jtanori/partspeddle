@@ -233,6 +233,71 @@ app.get('/health/queue', async (req, res) => {
 
 ---
 
+## Outbox Pattern Governance
+
+### Canonical Integration Boundary
+
+**NO domain is allowed to publish directly to queues, Redis, or external brokers. EVER.**
+
+The only valid event emission path is:
+
+```
+DB transaction (domain mutation + outbox insert) → relay worker → event bus
+```
+
+This guarantees transactional durability. Any code that bypasses the outbox violates architectural law.
+
+### Ordering Guarantees
+
+The outbox relay guarantees **per-aggregate ordering only**:
+
+- Events with the same `aggregateId` are relayed in `created_at` ascending order
+- Cross-aggregate ordering is NOT guaranteed
+- Consumers must not assume global event ordering
+
+### Failure Semantics
+
+If the relay worker process crashes **AFTER publishing to the event bus but BEFORE marking the event as published**, the event will be duplicate-published on the next poll cycle.
+
+This is acceptable **ONLY BECAUSE** consumers deduplicate by `eventId`. Without consumer idempotency, crash-recovery becomes unsafe.
+
+### Concurrency Control
+
+Multiple relay workers may run concurrently. The outbox uses **optimistic locking** via `claimPending()`:
+
+```sql
+UPDATE outbox
+SET status = 'processing', updated_at = now()
+WHERE id = $1 AND status = 'pending'
+```
+
+Only the worker that successfully updates the row may publish the event. Others skip it.
+
+### Adaptive Polling (Future)
+
+MVP uses a fixed poll interval (3s). For scale, adopt adaptive polling:
+
+| Condition | Poll Interval |
+|-----------|--------------|
+| Idle (no pending events) | 5s |
+| Active backlog | 500ms–1s |
+| High backlog | Adaptive / backpressure |
+
+Fixed polling creates unnecessary DB load when idle and unnecessary latency when active.
+
+### Migration Naming Governance
+
+All database migrations follow strict rules:
+
+- **Format:** `YYYYMMDDHHMMSS_description.sql`
+- **Immutability:** Once merged, a migration is frozen. Never edit a merged migration.
+- **Additive preferred:** Add columns/tables; avoid destructive changes.
+- **Rollback strategy:** Every migration must have a documented rollback procedure.
+
+Supabase projects become migration graveyards without strict governance.
+
+---
+
 ## Poison Jobs
 
 Jobs that fail due to deterministic business-rule violations must NOT retry indefinitely.
@@ -243,6 +308,17 @@ Examples of poison conditions:
 - Invalid state machine transition (already validated before enqueue)
 - Missing required aggregate (deleted since enqueue)
 - Schema version mismatch
+- Permanent validation failure (e.g., schema incompatibility)
+
+**Poison event classification (required before M6):**
+
+| Failure Type | Retry? | Reason |
+|-------------|--------|--------|
+| Network timeout | Yes | Transient |
+| Broker unavailable | Yes | Transient |
+| Validation failure | No | Permanent |
+| Serialization corruption | No | Permanent |
+| Schema incompatibility | Maybe | Requires operator decision |
 
 Poison jobs bypass retry logic and trigger immediate alerting.
 

@@ -11,14 +11,16 @@ Defines the canonical domain event envelope. Every event emitted by any bounded 
 ```typescript
 interface DomainEvent {
   eventId: string;           // UUIDv4 — unique per event instance
-  eventType: string;         // domain.action format
+  eventType: string;         // domain.action format (past tense, ends in 'ed')
   eventVersion: number;      // Integer, starts at 1
+  schemaVersion: number;     // Envelope structure version, starts at 1
   occurredAt: string;        // ISO-8601 with milliseconds
   correlationId: string;     // UUID — traces distributed workflow
   causationId: string;       // UUID — event that triggered this event
   actorId: string;           // UUID of user, or "system"
   domain: string;            // Owning bounded context
   aggregateId: string;       // UUID of the affected aggregate
+  aggregateType?: string;    // Optional: semantic type of the aggregate
   payload: Record<string, unknown>; // Event-specific data
   metadata: {                // Optional operational context
     traceparent?: string;
@@ -36,8 +38,10 @@ interface DomainEvent {
   "required": ["eventId", "eventType", "eventVersion", "occurredAt", "correlationId", "actorId", "domain", "aggregateId", "payload"],
   "properties": {
     "eventId": { "type": "string", "format": "uuid" },
-    "eventType": { "type": "string", "pattern": "^[a-z]+\\.[a-z_]+$" },
+    "eventType": { "type": "string", "pattern": "^[a-z]+\\.[a-z]+(_[a-z]+)*ed$" },
     "eventVersion": { "type": "integer", "minimum": 1 },
+    "schemaVersion": { "type": "integer", "minimum": 1 },
+    "aggregateType": { "type": "string" },
     "occurredAt": { "type": "string", "format": "date-time" },
     "correlationId": { "type": "string", "format": "uuid" },
     "causationId": { "type": "string", "format": "uuid" },
@@ -186,13 +190,25 @@ MVP rule: No event versioning gymnastics. If breaking change needed, create new 
 
 ---
 
+## Idempotency Contract
+
+The outbox pattern provides **at-least-once delivery**. Duplicate publishes are possible under failure conditions (e.g., process crash after publish but before marking published).
+
+Therefore:
+
+- **`eventId` is the canonical deduplication key.** The relay worker MUST preserve `eventId` exactly. It MUST never generate a new ID during republication.
+- **All consumers MUST deduplicate by `eventId`.** A 24-hour deduplication window is the minimum operational requirement.
+- **Idempotency is not optional for financial or state-transition events.** It is a hard architectural constraint.
+
+---
+
 ## Event Ordering
 
-Event ordering is guaranteed **ONLY within a single aggregate stream**.
+Event ordering is guaranteed **ONLY within a single aggregate stream** (i.e., events sharing the same `aggregateId` are processed in `created_at` order).
 
 Cross-domain event ordering is **NOT guaranteed**.
 
-Consumers must tolerate eventual consistency.
+Global ordering is unnecessary and expensive. Consumers must tolerate eventual consistency.
 
 ## Final Principle
 

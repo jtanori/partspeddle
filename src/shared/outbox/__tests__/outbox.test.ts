@@ -37,13 +37,17 @@ class InMemoryDbClient {
     return this.rows as unknown as T[];
   }
 
-  async update(table: string, data: Record<string, unknown>, conditions: Record<string, unknown>): Promise<void> {
+  async update(table: string, data: Record<string, unknown>, conditions: Record<string, unknown>): Promise<number> {
     if (table === 'outbox') {
-      const row = this.rows.find(r => r.id === conditions.id);
+      const row = this.rows.find(r =>
+        Object.entries(conditions).every(([key, value]) => (r as Record<string, unknown>)[key] === value),
+      );
       if (row) {
         Object.assign(row, data);
+        return 1;
       }
     }
+    return 0;
   }
 
   getRows(): InMemoryRow[] {
@@ -90,6 +94,7 @@ describe('Outbox', () => {
     expect(row.correlation_id).toBe(sampleEvent.correlationId);
     expect(row.payload).toEqual(sampleEvent.payload);
     expect(row.retry_count).toBe(0);
+    expect(row.updated_at).toBeNull();
   });
 
   it('getPending returns only pending events', async () => {
@@ -128,6 +133,39 @@ describe('Outbox', () => {
     expect(updated.status).toBe('pending');
     expect(updated.retry_count).toBe(1);
     expect(updated.last_error).toBe('Connection timeout');
+  });
+
+  it('claimPending acquires a pending event', async () => {
+    await outbox.insert(sampleEvent);
+    const row = db.getRows()[0];
+
+    const claimed = await outbox.claimPending(row.id);
+
+    expect(claimed).toBe(true);
+    const updated = db.getRows()[0];
+    expect(updated.status).toBe('processing');
+    expect(updated.updated_at).toBeTruthy();
+  });
+
+  it('claimPending returns false if event is not pending', async () => {
+    await outbox.insert(sampleEvent);
+    const row = db.getRows()[0];
+    await outbox.markPublished(row.id);
+
+    const claimed = await outbox.claimPending(row.id);
+
+    expect(claimed).toBe(false);
+  });
+
+  it('claimPending prevents double-claim by concurrent workers', async () => {
+    await outbox.insert(sampleEvent);
+    const row = db.getRows()[0];
+
+    const first = await outbox.claimPending(row.id);
+    const second = await outbox.claimPending(row.id);
+
+    expect(first).toBe(true);
+    expect(second).toBe(false);
   });
 
   it('getFailedForDlq returns events exceeding max retries', async () => {

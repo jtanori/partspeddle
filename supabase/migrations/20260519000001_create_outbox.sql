@@ -1,7 +1,7 @@
 -- T1.3 — Outbox Pattern Implementation
 -- Transactional outbox table for durable event emission
 
-CREATE TYPE outbox_status AS ENUM ('pending', 'published', 'failed');
+CREATE TYPE outbox_status AS ENUM ('pending', 'processing', 'published', 'failed');
 
 CREATE TABLE outbox (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -13,6 +13,7 @@ CREATE TABLE outbox (
   status outbox_status NOT NULL DEFAULT 'pending',
   retry_count INTEGER NOT NULL DEFAULT 0,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ,
   published_at TIMESTAMPTZ,
   last_error TEXT,
 

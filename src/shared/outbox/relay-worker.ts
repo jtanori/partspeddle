@@ -99,7 +99,16 @@ export class OutboxRelayWorker {
         continue;
       }
 
+      // Optimistic locking: claim the event before publishing.
+      // If another relay worker already claimed it, skip.
+      const claimed = await this.outbox.claimPending(entry.id);
+      if (!claimed) {
+        continue;
+      }
+
       try {
+        // eventId is the canonical deduplication key and must never be mutated.
+        // Consumers MUST treat eventId as the idempotency key.
         await this.publisher.publish(entry);
         await this.outbox.markPublished(entry.id);
         processed++;

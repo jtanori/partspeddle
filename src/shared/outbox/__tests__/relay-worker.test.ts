@@ -39,6 +39,7 @@ class MockOutbox implements Outbox {
   async markFailed(id: string, error: string): Promise<void> {
     const entry = this.entries.find(e => e.id === id);
     if (entry) {
+      entry.status = 'pending';
       entry.retry_count++;
       entry.last_error = error;
     }
@@ -46,6 +47,16 @@ class MockOutbox implements Outbox {
 
   async getFailedForDlq(maxRetries: number): Promise<OutboxEntry[]> {
     return this.entries.filter(e => e.retry_count >= maxRetries && e.status !== 'published');
+  }
+
+  async claimPending(id: string): Promise<boolean> {
+    const entry = this.entries.find(e => e.id === id && e.status === 'pending');
+    if (entry) {
+      entry.status = 'processing';
+      entry.updated_at = new Date().toISOString();
+      return true;
+    }
+    return false;
   }
 
   getEntries(): OutboxEntry[] {
@@ -233,5 +244,34 @@ describe('OutboxRelayWorker', () => {
 
     const entry = outbox.getEntries()[0];
     expect(entry.last_error).toContain('Publish failed');
+  });
+
+  it('preserves event_id through relay as idempotency key', async () => {
+    await outbox.insert(sampleEvent);
+
+    await worker.poll();
+
+    const published = publisher.getPublished();
+    expect(published).toHaveLength(1);
+    expect(published[0].event_id).toBe(sampleEvent.eventId);
+  });
+
+  it('prevents double-publish with concurrent workers', async () => {
+    await outbox.insert(sampleEvent);
+
+    // Create a second worker sharing the same outbox and publisher
+    const worker2 = new OutboxRelayWorker(outbox, publisher, dlq, {
+      pollIntervalMs: 100,
+      maxRetries: 3,
+      batchSize: 10,
+    });
+
+    // Both workers poll simultaneously
+    const [processed1, processed2] = await Promise.all([worker.poll(), worker2.poll()]);
+
+    // Only one should have successfully published
+    expect(publisher.getPublished()).toHaveLength(1);
+    // Total processed count may be 0+1 or 1+0 depending on which worker won the claim
+    expect(processed1 + processed2).toBeGreaterThanOrEqual(1);
   });
 });

@@ -18,9 +18,10 @@ export interface OutboxEntry {
   payload: Record<string, unknown>;
   aggregate_id: string;
   correlation_id: string;
-  status: 'pending' | 'published' | 'failed';
+  status: 'pending' | 'processing' | 'published' | 'failed';
   retry_count: number;
   created_at: string;
+  updated_at: string | null;
   published_at: string | null;
   last_error: string | null;
 }
@@ -32,7 +33,7 @@ export interface OutboxEntry {
 export interface OutboxDbClient {
   insert(table: string, data: Record<string, unknown>): Promise<void>;
   query<T = unknown>(sql: string, params: unknown[]): Promise<T[]>;
-  update(table: string, data: Record<string, unknown>, conditions: Record<string, unknown>): Promise<void>;
+  update(table: string, data: Record<string, unknown>, conditions: Record<string, unknown>): Promise<number>;
 }
 
 /**
@@ -60,6 +61,7 @@ export class Outbox {
       status: 'pending',
       retry_count: 0,
       created_at: now,
+      updated_at: null,
       published_at: null,
       last_error: null,
     });
@@ -89,6 +91,19 @@ export class Outbox {
   /**
    * Record a publish failure and increment retry count.
    */
+  /**
+   * Atomically claim a pending event for processing.
+   * Returns true if the claim succeeded, false if another worker already claimed it.
+   */
+  async claimPending(id: string): Promise<boolean> {
+    const affected = await this.db.update(
+      this.table,
+      { status: 'processing', updated_at: new Date().toISOString() },
+      { id, status: 'pending' },
+    );
+    return affected > 0;
+  }
+
   async markFailed(id: string, error: string): Promise<void> {
     const entries = await this.db.query<OutboxEntry>(
       `SELECT retry_count FROM ${this.table} WHERE id = $1`,
@@ -97,7 +112,7 @@ export class Outbox {
     const current = entries[0]?.retry_count ?? 0;
     await this.db.update(
       this.table,
-      { retry_count: current + 1, last_error: error },
+      { status: 'pending', retry_count: current + 1, last_error: error },
       { id },
     );
   }
