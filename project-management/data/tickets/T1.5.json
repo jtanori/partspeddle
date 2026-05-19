@@ -24,6 +24,21 @@
       "path": "src/shared/supabase/pool.ts",
       "description": "Connection pool management",
       "type": "file"
+    },
+    {
+      "path": "src/shared/supabase/env.ts",
+      "description": "Environment validation (fail fast)",
+      "type": "file"
+    },
+    {
+      "path": "src/shared/supabase/types.ts",
+      "description": "Minimal Database type stub",
+      "type": "file"
+    },
+    {
+      "path": "project-knowledge/service-role-governance.md",
+      "description": "Service role boundaries and observability rules",
+      "type": "doc"
     }
   ],
   "acceptance_criteria": [
@@ -32,7 +47,22 @@
     "Pool respects max connections",
     "Missing env vars fail fast at startup"
   ],
-  "traceability": [],
+  "traceability": [
+    {
+      "commit_hash": "6588165",
+      "files_changed": [
+        "src/shared/supabase/client.ts",
+        "src/shared/supabase/pool.ts",
+        "src/shared/supabase/env.ts",
+        "src/shared/supabase/types.ts",
+        "project-knowledge/service-role-governance.md",
+        "src/shared/supabase/__tests__/client.test.ts",
+        "src/shared/supabase/__tests__/pool.test.ts"
+      ],
+      "description": "Implemented Supabase client factory with role awareness, postgres connection pool with statement_timeout, transaction helper, service-role governance doc",
+      "timestamp": "2026-05-19T06:33:16.000Z"
+    }
+  ],
   "observability": {
     "metrics": [
       "db_connections_active",
@@ -54,11 +84,11 @@
     }
   ],
   "estimated_hours": 2,
-  "status": "planned",
-  "assignee": null,
+  "status": "review",
+  "assignee": "Agent 1",
   "metadata": {
     "created_at": "2026-05-19T02:31:57.300Z",
-    "updated_at": "2026-05-19T02:31:57.300Z",
-    "version": 1
+    "updated_at": "2026-05-19T06:33:16.000Z",
+    "version": 2
   }
 }
