@@ -19,6 +19,24 @@ const jsonFlag = args.includes('--json') || args.includes('-j');
 const fullFlag = args.includes('--full');
 const helpFlag = args.includes('--help') || args.includes('-h');
 
+// ─── Scoped field access ────────────────────────────────────────────────────
+function parseFieldArg() {
+  const idx = args.findIndex(a => a === '--field');
+  if (idx !== -1 && args[idx + 1]) return [args[idx + 1].trim()];
+  return null;
+}
+function parseFieldsArg() {
+  const idx = args.findIndex(a => a === '--fields');
+  if (idx !== -1 && args[idx + 1]) return args[idx + 1].split(',').map(s => s.trim()).filter(Boolean);
+  return null;
+}
+const singleField = parseFieldArg();
+const multiFields = parseFieldsArg();
+const fieldPaths = singleField || multiFields || null;
+
+// ─── Dot-notation in ticket ID will be resolved after allTickets is loaded ──
+let fieldFromTicket = null;
+
 if (helpFlag) {
   console.log(`
 pm-summary.js — Generate structured summaries of tickets, milestones, or the full project
@@ -34,6 +52,8 @@ OPTIONS:
   --file, -f         Force output to temp file instead of stdout
   --json, -j         Output as JSON instead of plain text
   --full             Print all ticket fields (deliverables, criteria, traceability, etc.)
+  --field <path>     Print a specific field only (e.g., deliverables, observability.metrics)
+  --fields <paths>   Comma-separated list of fields to print
   --help, -h         Show this help
 
 EXAMPLES:
@@ -41,6 +61,9 @@ EXAMPLES:
   node scripts/pm-summary.js --milestone M1 --file
   node scripts/pm-summary.js --domain Shared --json
   node scripts/pm-summary.js --ticket T1.2 --full
+  node scripts/pm-summary.js --ticket T1.2 --field deliverables
+  node scripts/pm-summary.js --ticket T1.2 --fields title,domain,status
+  node scripts/pm-summary.js --ticket T1.2 --field observability.metrics
   node scripts/pm-summary.js --all
 `);
   process.exit(0);
@@ -53,6 +76,18 @@ const ticketsDir = join(__dirname, '../project-management/data/tickets');
 const allTickets = readdirSync(ticketsDir)
   .filter(f => f.endsWith('.json'))
   .map(f => JSON.parse(readFileSync(join(ticketsDir, f), 'utf8')));
+
+// Resolve dot-notation in ticket ID now that allTickets is loaded
+// Syntax: T1.2.deliverables or T1.2.observability.metrics
+if (ticketArg && ticketArg.includes('.') && ticketArg.split('.').length > 2) {
+  const parts = ticketArg.split('.');
+  const idParts = parts.slice(0, 2);
+  const maybeId = idParts.join('.');
+  if (allTickets.some(t => t.id === maybeId)) {
+    fieldFromTicket = parts.slice(2).join('.');
+    ticketIds[0] = maybeId;
+  }
+}
 
 // ─── Determine scope ────────────────────────────────────────────────────────
 let ticketsToSummarize = [];
@@ -75,6 +110,11 @@ if (ticketIds.length > 0) {
 } else {
   ticketsToSummarize = allTickets;
   scopeLabel = 'Full Project';
+}
+
+// Re-apply dot-notation field extraction after tickets are resolved
+if (fieldFromTicket && ticketIds.length === 1) {
+  Object.defineProperty(globalThis, '__pm_summary_field_paths', { value: [fieldFromTicket], writable: true, configurable: true });
 }
 
 // ─── Build summary ──────────────────────────────────────────────────────────
@@ -338,10 +378,73 @@ function formatJSON(ticketSummaries, projectSummary) {
 }
 
 // ─── Generate output ────────────────────────────────────────────────────────
+// ─── Field value extraction ─────────────────────────────────────────────────
+function getFieldValue(obj, path) {
+  const keys = path.split('.');
+  let val = obj;
+  for (const key of keys) {
+    if (val === null || val === undefined) return undefined;
+    val = val[key];
+  }
+  return val;
+}
+
+function formatFieldText(tickets, paths) {
+  const lines = [];
+  for (const ticket of tickets) {
+    if (tickets.length > 1) lines.push(`${ticket.id}:`);
+    for (const path of paths) {
+      const val = getFieldValue(ticket, path);
+      if (val === undefined) {
+        lines.push(`  ${path}: <undefined>`);
+      } else if (Array.isArray(val)) {
+        lines.push(`  ${path}:`);
+        for (const item of val) {
+          if (typeof item === 'object' && item !== null) {
+            lines.push(`    - ${JSON.stringify(item)}`);
+          } else {
+            lines.push(`    - ${item}`);
+          }
+        }
+      } else if (typeof val === 'object' && val !== null) {
+        lines.push(`  ${path}:`);
+        for (const [k, v] of Object.entries(val)) {
+          lines.push(`    ${k}: ${JSON.stringify(v)}`);
+        }
+      } else {
+        lines.push(`  ${path}: ${val}`);
+      }
+    }
+  }
+  return lines.join('\n');
+}
+
+function formatFieldJSON(tickets, paths) {
+  const out = [];
+  for (const ticket of tickets) {
+    const entry = { id: ticket.id };
+    for (const path of paths) {
+      entry[path] = getFieldValue(ticket, path);
+    }
+    out.push(entry);
+  }
+  return JSON.stringify(out.length === 1 ? out[0] : out, null, 2);
+}
+
+// ─── Resolve effective field paths (CLI args + dot-notation override) ───────
+const effectiveFieldPaths = globalThis.__pm_summary_field_paths || fieldPaths;
+
 const ticketSummaries = ticketsToSummarize.map(buildTicketSummary);
 const projectSummary = allFlag ? buildProjectSummary() : null;
 
-const outputText = jsonFlag ? formatJSON(ticketSummaries, projectSummary) : formatText(ticketSummaries, projectSummary);
+let outputText;
+if (effectiveFieldPaths && ticketIds.length > 0) {
+  outputText = jsonFlag
+    ? formatFieldJSON(ticketsToSummarize, effectiveFieldPaths)
+    : formatFieldText(ticketsToSummarize, effectiveFieldPaths);
+} else {
+  outputText = jsonFlag ? formatJSON(ticketSummaries, projectSummary) : formatText(ticketSummaries, projectSummary);
+}
 const lineCount = outputText.split('\n').length;
 const byteSize = Buffer.byteLength(outputText, 'utf8');
 
@@ -352,19 +455,20 @@ const LARGE_BYTE_THRESHOLD = 8 * 1024;
 const isLarge = lineCount > LARGE_LINE_THRESHOLD || byteSize > LARGE_BYTE_THRESHOLD;
 
 if (fileFlag || isLarge) {
-  // Write to temp directory
-  const tmpDir = join(tmpdir(), 'vintrack');
-  if (!existsSync(tmpDir)) mkdirSync(tmpDir, { recursive: true });
+  // Write to project-knowledge/reports/ for persistence and searchability
+  const reportsDir = join(__dirname, '../project-knowledge/reports');
+  if (!existsSync(reportsDir)) mkdirSync(reportsDir, { recursive: true });
 
   const ext = jsonFlag ? 'json' : 'txt';
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const scopeSlug = scopeLabel.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
-  const fileName = `vintrack-summary-${scopeSlug}-${timestamp}.${ext}`;
-  const filePath = join(tmpDir, fileName);
+  const fieldSlug = effectiveFieldPaths ? '_fields-' + effectiveFieldPaths.join('_') : '';
+  const fileName = `vintrack-summary-${scopeSlug}${fieldSlug}-${timestamp}.${ext}`;
+  const filePath = join(reportsDir, fileName);
 
   writeFileSync(filePath, outputText);
 
-  console.log(`Output written to temp file:`);
+  console.log(`Output written to report file:`);
   console.log(`  ${filePath}`);
   console.log(`  Lines: ${lineCount}  Size: ${(byteSize / 1024).toFixed(1)} KB`);
 
