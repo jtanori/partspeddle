@@ -1,0 +1,51 @@
+{
+  "id": "T4.4",
+  "milestone_id": "M4",
+  "title": "AI Enrichment Events",
+  "domain": "AI Intelligence",
+  "capability": "Event Publishing",
+  "purpose": "Publish enrichment results for marketplace consumption.",
+  "dependencies": [
+    "T4.3"
+  ],
+  "architectural_constraints": [
+    "Advisory events only (never authoritative)",
+    "Payload includes confidence score",
+    "Results validated before emit"
+  ],
+  "deliverables": [
+    {
+      "path": "src/ai-intelligence/domain/events/ai-events.ts",
+      "description": "AI domain events",
+      "type": "file"
+    },
+    {
+      "path": "src/ai-intelligence/services/enrichment-publisher.ts",
+      "description": "Enrichment result publisher",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Enrichment event emitted on successful identification",
+    "Event includes confidence score",
+    "Low confidence events flagged",
+    "Marketplace consumes enrichment event"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "ai_enrichments_emitted_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

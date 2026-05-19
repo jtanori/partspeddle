@@ -1,0 +1,49 @@
+{
+  "id": "T10.2",
+  "milestone_id": "M10",
+  "title": "Alerting Rules",
+  "domain": "Shared",
+  "capability": "Operational Response",
+  "purpose": "Define and deploy alerting rules.",
+  "dependencies": [
+    "T10.1"
+  ],
+  "architectural_constraints": [
+    "P1: < 2 min page",
+    "P2: < 15 min notification",
+    "P3: < 4 hour ticket"
+  ],
+  "deliverables": [
+    {
+      "path": "infra/prometheus/alerts.yml",
+      "description": "Prometheus alert rules",
+      "type": "config"
+    },
+    {
+      "path": "infra/alertmanager/alertmanager.yml",
+      "description": "Alertmanager routing",
+      "type": "config"
+    }
+  ],
+  "acceptance_criteria": [
+    "P1 alert fires on error rate > 0.1%",
+    "P2 alert fires on queue depth > 1000",
+    "P3 alert fires on disk usage > 80%",
+    "Alert routed to correct channel"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

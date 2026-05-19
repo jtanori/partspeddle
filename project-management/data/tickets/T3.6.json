@@ -1,0 +1,58 @@
+{
+  "id": "T3.6",
+  "milestone_id": "M3",
+  "title": "Marketplace Integration Tests",
+  "domain": "Marketplace",
+  "capability": "Quality Assurance",
+  "purpose": "Verify marketplace domain end-to-end.",
+  "dependencies": [
+    "T3.1",
+    "T3.2",
+    "T3.3",
+    "T3.4",
+    "T3.5"
+  ],
+  "architectural_constraints": [
+    "Test DB per run",
+    "Transaction rollback per test",
+    "RLS tested"
+  ],
+  "deliverables": [
+    {
+      "path": "src/marketplace/domain/entities/*.test.ts",
+      "description": "Entity unit tests",
+      "type": "test"
+    },
+    {
+      "path": "src/marketplace/application/services/*.test.ts",
+      "description": "Service unit tests",
+      "type": "test"
+    },
+    {
+      "path": "tests/integration/marketplace/*.test.ts",
+      "description": "API + RLS integration tests",
+      "type": "test"
+    }
+  ],
+  "acceptance_criteria": [
+    "Listing publish emits event",
+    "Inventory update reflects in listing",
+    "RLS prevents cross-seller access",
+    "Cursor pagination works"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

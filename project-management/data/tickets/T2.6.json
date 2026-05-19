@@ -1,0 +1,71 @@
+{
+  "id": "T2.6",
+  "milestone_id": "M2",
+  "title": "Supabase Auth Webhook Handler",
+  "domain": "Identity",
+  "capability": "Auth Sync",
+  "purpose": "Synchronize Supabase Auth lifecycle into Identity domain.",
+  "dependencies": [
+    "T2.1",
+    "T2.4"
+  ],
+  "architectural_constraints": [
+    "Webhook signature verification mandatory",
+    "Idempotency check (24h window)",
+    "Thin handler: validate → enqueue to queue",
+    "Reconciliation job for gaps"
+  ],
+  "deliverables": [
+    {
+      "path": "src/identity/infrastructure/webhooks/supabase-auth-webhook.ts",
+      "description": "Webhook receiver",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/queue/identity-webhook-worker.ts",
+      "description": "Webhook processing worker",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/queue/reconciliation-job.ts",
+      "description": "Auth sync reconciliation",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Valid webhook enqueues job (202 response)",
+    "Invalid signature returns 401",
+    "Duplicate webhook detected and ignored",
+    "Reconciliation backfills orphaned auth users",
+    "Out-of-order webhooks handled with delayed retry"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "identity_webhook_received_total",
+      "identity_webhook_processing_seconds"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Supabase down",
+      "mitigation": "Client retry, reconciliation covers gaps",
+      "severity": "high"
+    },
+    {
+      "scenario": "Webhook timeout",
+      "mitigation": "Supabase retries automatically",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:31:57.300Z",
+    "updated_at": "2026-05-19T02:31:57.300Z",
+    "version": 1
+  }
+}

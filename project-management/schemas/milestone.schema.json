@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/milestone",
+  "title": "Milestone",
+  "type": "object",
+  "required": ["id", "phase", "title", "purpose", "trust_principle", "exit_criteria", "tickets"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^M[0-9]+$",
+      "description": "Milestone identifier, e.g. M1, M2"
+    },
+    "phase": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Phase number in execution sequence"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 3,
+      "description": "Human-readable milestone title"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 10,
+      "description": "One-paragraph purpose statement"
+    },
+    "trust_principle": {
+      "type": "string",
+      "description": "Trust-level justification for this milestone"
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "in": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "out": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "exit_criteria": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "tickets": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^T[0-9]+\\.[0-9]+$" },
+      "description": "Array of ticket IDs belonging to this milestone"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^M[0-9]+$" },
+      "description": "Milestone IDs that must complete before this one"
+    },
+    "downstream_impact": {
+      "type": "string",
+      "description": "Description of what this milestone blocks"
+    },
+    "estimated_duration_days": {
+      "type": "number",
+      "minimum": 0.5
+    },
+    "status": {
+      "type": "string",
+      "enum": ["planned", "in_progress", "blocked", "completed"],
+      "default": "planned"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" },
+        "version": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

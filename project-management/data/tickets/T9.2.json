@@ -1,0 +1,66 @@
+{
+  "id": "T9.2",
+  "milestone_id": "M9",
+  "title": "Email Delivery Pipeline",
+  "domain": "Notifications",
+  "capability": "Email Transport",
+  "purpose": "Send transactional emails.",
+  "dependencies": [
+    "T9.1"
+  ],
+  "architectural_constraints": [
+    "Template-based (MJML or similar)",
+    "Retry: 3x exponential",
+    "Idempotent sends",
+    "Bounce handling"
+  ],
+  "deliverables": [
+    {
+      "path": "src/notifications/services/email-sender.ts",
+      "description": "Email send orchestrator",
+      "type": "file"
+    },
+    {
+      "path": "src/notifications/queue/email-worker.ts",
+      "description": "Email queue worker",
+      "type": "file"
+    },
+    {
+      "path": "src/notifications/templates/",
+      "description": "Email templates",
+      "type": "directory"
+    }
+  ],
+  "acceptance_criteria": [
+    "Email sent on seller activation",
+    "Email sent on payment receipt",
+    "Email sent on escrow release",
+    "Failed send retried 3x",
+    "Bounce tracked"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "notifications_email_sent_total",
+      "notifications_email_failed_total",
+      "notifications_email_bounced_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "SMTP provider down",
+      "mitigation": "Retry + fallback alert",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

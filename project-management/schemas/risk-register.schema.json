@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/risk-register",
+  "title": "RiskRegister",
+  "type": "object",
+  "required": ["version", "generated_at", "risks"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "category", "description", "likelihood", "impact", "mitigation", "owner"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^R[0-9]+$" },
+          "category": { "type": "string", "enum": ["Architecture", "Data", "Operations", "Performance", "External", "Security", "Implementation", "Timeline"] },
+          "description": { "type": "string" },
+          "scenario": { "type": "string" },
+          "likelihood": { "type": "string", "enum": ["Low", "Medium", "High"] },
+          "impact": { "type": "string", "enum": ["Low", "Medium", "High", "Critical"] },
+          "severity": { "type": "string", "enum": ["P1", "P2", "P3"] },
+          "mitigation": { "type": "string" },
+          "owner": { "type": "string" },
+          "trigger": { "type": "string" },
+          "response": {
+            "type": "object",
+            "properties": {
+              "avoid": { "type": "string" },
+              "mitigate": { "type": "string" },
+              "transfer": { "type": "string" },
+              "accept": { "type": "string" }
+            }
+          },
+          "status": { "type": "string", "enum": ["open", "mitigated", "accepted", "closed"], "default": "open" }
+        }
+      }
+    }
+  }
+}

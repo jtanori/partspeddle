@@ -1,0 +1,59 @@
+{
+  "id": "T4.2",
+  "milestone_id": "M4",
+  "title": "Image Ingestion Pipeline",
+  "domain": "AI Intelligence",
+  "capability": "Media Processing",
+  "purpose": "Receive and validate images for AI analysis.",
+  "dependencies": [
+    "T4.1"
+  ],
+  "architectural_constraints": [
+    "Max image size: 10MB",
+    "Supported formats: JPEG, PNG, WebP",
+    "Resize if dimension > 4096px",
+    "Queue job created per image"
+  ],
+  "deliverables": [
+    {
+      "path": "src/ai-intelligence/services/image-ingestion.ts",
+      "description": "Image validation and preprocessing",
+      "type": "file"
+    },
+    {
+      "path": "src/ai-intelligence/queue/image-analysis-job.ts",
+      "description": "Queue job definition",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Valid image accepted",
+    "Oversized image rejected",
+    "Unsupported format rejected",
+    "Queue job created with image reference"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "ai_images_ingested_total",
+      "ai_images_rejected_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Invalid image",
+      "mitigation": "Reject with validation error",
+      "severity": "low"
+    }
+  ],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

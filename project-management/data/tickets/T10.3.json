@@ -1,0 +1,63 @@
+{
+  "id": "T10.3",
+  "milestone_id": "M10",
+  "title": "DLQ Tooling & Replay",
+  "domain": "Shared",
+  "capability": "Operational Recovery",
+  "purpose": "Provide dead letter queue inspection and replay.",
+  "dependencies": [
+    "T1.4"
+  ],
+  "architectural_constraints": [
+    "CLI for DLQ inspection",
+    "Replay requires explicit confirmation",
+    "Audit log for all replays"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/dlq-inspect.ts",
+      "description": "DLQ inspection CLI",
+      "type": "script"
+    },
+    {
+      "path": "scripts/dlq-replay.ts",
+      "description": "DLQ replay CLI",
+      "type": "script"
+    },
+    {
+      "path": "src/shared/queue/dlq-replayer.ts",
+      "description": "DLQ replay service",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "CLI lists DLQ jobs",
+    "Replay re-enqueues with confirmation",
+    "Replay audit log created",
+    "Replay respects rate limits"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "dlq_replay_count_total",
+      "dlq_replay_failures_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Replay causes cascade failure",
+      "mitigation": "Rate limiting on replay",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

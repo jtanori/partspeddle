@@ -1,0 +1,54 @@
+{
+  "id": "T3.3",
+  "milestone_id": "M3",
+  "title": "Collection & Garage Aggregates",
+  "domain": "Marketplace",
+  "capability": "Catalog Organization",
+  "purpose": "Implement grouping structures for listings.",
+  "dependencies": [
+    "T3.2"
+  ],
+  "architectural_constraints": [
+    "Collection: buyer-organized, Garage: seller inventory, Yard: multi-seller",
+    "Collections owned by buyer",
+    "Garages and Yards owned by seller"
+  ],
+  "deliverables": [
+    {
+      "path": "src/marketplace/domain/entities/collection.ts",
+      "description": "Collection aggregate",
+      "type": "file"
+    },
+    {
+      "path": "src/marketplace/domain/entities/garage.ts",
+      "description": "Garage aggregate",
+      "type": "file"
+    },
+    {
+      "path": "src/marketplace/domain/entities/yard.ts",
+      "description": "Yard aggregate",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Buyer can create collection",
+    "Seller can create garage",
+    "Yard includes listings from multiple sellers",
+    "RLS enforces ownership"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

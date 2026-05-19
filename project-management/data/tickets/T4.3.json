@@ -1,0 +1,72 @@
+{
+  "id": "T4.3",
+  "milestone_id": "M4",
+  "title": "Gemini API Integration",
+  "domain": "AI Intelligence",
+  "capability": "AI Identification",
+  "purpose": "Call Gemini API for part/VIN identification.",
+  "dependencies": [
+    "T4.2",
+    "T1.4"
+  ],
+  "architectural_constraints": [
+    "Request timeout: 30s",
+    "Retry: 3x exponential",
+    "Rate limiting respected",
+    "Confidence score returned"
+  ],
+  "deliverables": [
+    {
+      "path": "src/ai-intelligence/services/gemini-client.ts",
+      "description": "Gemini API client",
+      "type": "file"
+    },
+    {
+      "path": "src/ai-intelligence/services/part-identification.ts",
+      "description": "Part identification orchestrator",
+      "type": "file"
+    },
+    {
+      "path": "src/ai-intelligence/services/vin-identification.ts",
+      "description": "VIN identification orchestrator",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Gemini API call succeeds",
+    "Timeout handled gracefully",
+    "Retry exhausted → DLQ",
+    "Confidence score included in result",
+    "No raw errors exposed to client"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "ai_gemini_requests_total",
+      "ai_gemini_latency_seconds",
+      "ai_gemini_errors_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Gemini API unavailable",
+      "mitigation": "Retry with backoff",
+      "severity": "high"
+    },
+    {
+      "scenario": "Rate limit exceeded",
+      "mitigation": "Queue deferred retry",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

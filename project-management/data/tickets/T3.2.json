@@ -1,0 +1,70 @@
+{
+  "id": "T3.2",
+  "milestone_id": "M3",
+  "title": "Listing & InventoryItem Aggregates",
+  "domain": "Marketplace",
+  "capability": "Domain Model",
+  "purpose": "Implement Listing aggregate with inventory coordination.",
+  "dependencies": [
+    "T3.1"
+  ],
+  "architectural_constraints": [
+    "Aggregate root: Listing",
+    "InventoryItem referenced (not part of aggregate)",
+    "Media items owned by listing",
+    "Status transitions: draft → published → archived"
+  ],
+  "deliverables": [
+    {
+      "path": "src/marketplace/domain/entities/listing.ts",
+      "description": "Listing aggregate root",
+      "type": "file"
+    },
+    {
+      "path": "src/marketplace/domain/entities/inventory-item.ts",
+      "description": "InventoryItem entity",
+      "type": "file"
+    },
+    {
+      "path": "src/marketplace/domain/entities/listing-media.ts",
+      "description": "ListingMedia entity",
+      "type": "file"
+    },
+    {
+      "path": "src/marketplace/domain/events/listing-events.ts",
+      "description": "Listing domain events",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Only active seller can publish",
+    "Only draft can be published",
+    "Published listing tracks publication_metadata",
+    "Media reordering mutates listing directly",
+    "Unit tests: 95%+ meaningful coverage"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "marketplace_listings_published_total",
+      "marketplace_inventory_items_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Seller not activated",
+      "mitigation": "Rejection with domain error",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 4,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

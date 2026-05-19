@@ -1,0 +1,63 @@
+{
+  "id": "T9.3",
+  "milestone_id": "M9",
+  "title": "Notification Event Consumers",
+  "domain": "Notifications",
+  "capability": "Event-Driven Delivery",
+  "purpose": "Consume events from all domains and trigger notifications.",
+  "dependencies": [
+    "T9.2"
+  ],
+  "architectural_constraints": [
+    "Event-driven only",
+    "No domain coupling",
+    "Idempotent processing"
+  ],
+  "deliverables": [
+    {
+      "path": "src/notifications/consumers/identity-consumer.ts",
+      "description": "Identity event consumer",
+      "type": "file"
+    },
+    {
+      "path": "src/notifications/consumers/transaction-consumer.ts",
+      "description": "Transaction event consumer",
+      "type": "file"
+    },
+    {
+      "path": "src/notifications/consumers/marketplace-consumer.ts",
+      "description": "Marketplace event consumer",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "user.created → welcome email",
+    "seller.activated → activation email",
+    "payment.received → receipt email",
+    "escrow.released → release email"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "notifications_consumed_total",
+      "notifications_delivery_latency_seconds"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Event out of order",
+      "mitigation": "Idempotency check + skip",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

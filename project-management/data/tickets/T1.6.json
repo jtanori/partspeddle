@@ -1,0 +1,65 @@
+{
+  "id": "T1.6",
+  "milestone_id": "M1",
+  "title": "Observability Bootstrap",
+  "domain": "Shared",
+  "capability": "Operational Visibility",
+  "purpose": "Emit structured logs, metrics, and traces from day one.",
+  "dependencies": [
+    "T1.1"
+  ],
+  "architectural_constraints": [
+    "JSON structured logs only",
+    "W3C traceparent propagation",
+    "No secrets in logs"
+  ],
+  "deliverables": [
+    {
+      "path": "src/shared/observability/logger.ts",
+      "description": "Structured JSON logger",
+      "type": "file"
+    },
+    {
+      "path": "src/shared/observability/metrics.ts",
+      "description": "Metrics collection",
+      "type": "file"
+    },
+    {
+      "path": "src/shared/observability/tracing.ts",
+      "description": "Distributed tracing",
+      "type": "file"
+    },
+    {
+      "path": "src/shared/api/middleware/correlation-id.ts",
+      "description": "Correlation ID middleware",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Log entry contains timestamp, level, service, correlationId",
+    "Traceparent propagates across API → queue → event",
+    "Metrics endpoint returns Prometheus format",
+    "Secrets are redacted from logs"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Metrics backend down",
+      "mitigation": "Local buffering (best effort)",
+      "severity": "low"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:31:57.300Z",
+    "updated_at": "2026-05-19T02:31:57.300Z",
+    "version": 1
+  }
+}

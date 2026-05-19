@@ -1,0 +1,70 @@
+{
+  "id": "T5.1",
+  "milestone_id": "M5",
+  "title": "Algolia Sync Pipeline",
+  "domain": "Search",
+  "capability": "Index Synchronization",
+  "purpose": "Sync listing changes to Algolia index.",
+  "dependencies": [
+    "T3.1",
+    "T1.4"
+  ],
+  "architectural_constraints": [
+    "Async sync via queue",
+    "Event-driven from marketplace domain",
+    "Idempotent updates",
+    "Partial update support"
+  ],
+  "deliverables": [
+    {
+      "path": "src/search/services/algolia-sync.ts",
+      "description": "Algolia index sync service",
+      "type": "file"
+    },
+    {
+      "path": "src/search/queue/indexing-worker.ts",
+      "description": "Indexing queue worker",
+      "type": "file"
+    },
+    {
+      "path": "src/search/mappers/listing-index.ts",
+      "description": "Listing to Algolia document mapper",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Listing publish triggers index update",
+    "Index update idempotent",
+    "Failed sync retried 3x",
+    "Search returns updated result"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "search_index_sync_total",
+      "search_index_sync_errors_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Algolia API down",
+      "mitigation": "Retry with backoff",
+      "severity": "high"
+    },
+    {
+      "scenario": "Invalid document format",
+      "mitigation": "Validation error + alert",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

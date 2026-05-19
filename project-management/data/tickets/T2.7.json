@@ -1,0 +1,70 @@
+{
+  "id": "T2.7",
+  "milestone_id": "M2",
+  "title": "Identity Queue Workers",
+  "domain": "Identity",
+  "capability": "Async Orchestration",
+  "purpose": "Process onboarding, webhook, and session async workflows.",
+  "dependencies": [
+    "T2.4",
+    "T1.4"
+  ],
+  "architectural_constraints": [
+    "identity-onboarding queue: 3x retry",
+    "identity-webhooks queue: 3x retry",
+    "identity-sessions queue: 3x retry",
+    "Idempotent handlers"
+  ],
+  "deliverables": [
+    {
+      "path": "src/identity/queue/onboarding-worker.ts",
+      "description": "Onboarding step processor",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/queue/webhook-worker.ts",
+      "description": "Webhook event processor",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/queue/session-worker.ts",
+      "description": "Session revocation processor",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Onboarding step completion updates DB",
+    "Webhook job processes auth event",
+    "Session revocation invalidates all active sessions",
+    "Retry exhausted → DLQ"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "identity_queue_jobs_total",
+      "identity_queue_job_duration_seconds"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Worker crash",
+      "mitigation": "BullMQ retry",
+      "severity": "medium"
+    },
+    {
+      "scenario": "DB unavailable",
+      "mitigation": "Retry with backoff",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:31:57.300Z",
+    "updated_at": "2026-05-19T02:31:57.300Z",
+    "version": 1
+  }
+}

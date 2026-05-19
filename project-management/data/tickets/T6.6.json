@@ -1,0 +1,58 @@
+{
+  "id": "T6.6",
+  "milestone_id": "M6",
+  "title": "Compensation Flows",
+  "domain": "Transactions",
+  "capability": "Failure Recovery",
+  "purpose": "Implement reversal on transaction failure.",
+  "dependencies": [
+    "T6.4"
+  ],
+  "architectural_constraints": [
+    "Saga pattern: undo completed steps",
+    "Compensation events: tx.failed, escrow.refunded",
+    "Idempotent compensation"
+  ],
+  "deliverables": [
+    {
+      "path": "src/transactions/domain/services/compensation-orchestrator.ts",
+      "description": "Compensation logic",
+      "type": "file"
+    },
+    {
+      "path": "src/transactions/queue/compensation-worker.ts",
+      "description": "Compensation queue worker",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Checkout failure triggers cart release",
+    "Escrow failure triggers payment refund",
+    "Compensation idempotent",
+    "All compensations logged"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "transactions_compensations_total",
+      "transactions_compensation_failures_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Compensation itself fails",
+      "mitigation": "Manual intervention + P1 alert",
+      "severity": "critical"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

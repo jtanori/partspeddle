@@ -1,0 +1,71 @@
+{
+  "id": "T1.4",
+  "milestone_id": "M1",
+  "title": "Queue Bootstrap (BullMQ)",
+  "domain": "Shared",
+  "capability": "Async Orchestration",
+  "purpose": "Establish durable queue infrastructure for all domains.",
+  "dependencies": [
+    "T1.1"
+  ],
+  "architectural_constraints": [
+    "BullMQ + Redis",
+    "Domain-scoped queues only",
+    "Default retry: 3x exponential",
+    "DLQ naming: domain-purpose-dlq"
+  ],
+  "deliverables": [
+    {
+      "path": "src/shared/queue/queue-factory.ts",
+      "description": "Queue creation factory",
+      "type": "file"
+    },
+    {
+      "path": "src/shared/queue/worker-factory.ts",
+      "description": "Worker creation factory",
+      "type": "file"
+    },
+    {
+      "path": "src/shared/queue/health.ts",
+      "description": "Queue health check",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Job enqueue succeeds",
+    "Worker processes job",
+    "Failed job retries 3x",
+    "Exhausted job moves to DLQ",
+    "Health check returns queue status"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "queue_jobs_completed_total",
+      "queue_jobs_failed_total",
+      "queue_waiting_count"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Redis unavailable",
+      "mitigation": "Jobs deferred to Postgres fallback",
+      "severity": "critical"
+    },
+    {
+      "scenario": "Worker crash loop",
+      "mitigation": "DLQ after 3 retries",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:31:57.300Z",
+    "updated_at": "2026-05-19T02:31:57.300Z",
+    "version": 1
+  }
+}

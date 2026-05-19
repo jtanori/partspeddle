@@ -1,0 +1,65 @@
+{
+  "id": "T6.1",
+  "milestone_id": "M6",
+  "title": "Transaction Database Schema",
+  "domain": "Transactions",
+  "capability": "Persistence",
+  "purpose": "Create transaction, cart, checkout, escrow tables.",
+  "dependencies": [
+    "T2.1",
+    "T3.1"
+  ],
+  "architectural_constraints": [
+    "Forward-only migrations",
+    "RLS mandatory",
+    "State enums: lowercase_snake_case",
+    "Payment status: pending, authorized, captured, refunded, failed"
+  ],
+  "deliverables": [
+    {
+      "path": "supabase/migrations/xxx_transaction_schema.sql",
+      "description": "transactions, carts, checkout_sessions, escrow_records",
+      "type": "migration"
+    },
+    {
+      "path": "supabase/migrations/xxx_transaction_triggers.sql",
+      "description": "State change triggers",
+      "type": "migration"
+    },
+    {
+      "path": "supabase/migrations/xxx_transaction_rls.sql",
+      "description": "RLS policies",
+      "type": "migration"
+    }
+  ],
+  "acceptance_criteria": [
+    "All tables created with correct FKs",
+    "Cart FK to buyer_profile",
+    "Transaction FK to listing + buyer + seller",
+    "Escrow FK to transaction",
+    "RLS prevents cross-party access"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [
+      "DB migration success/failure"
+    ],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "FK constraint violation",
+      "mitigation": "Domain error + rollback",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "id": "T9.1",
+  "milestone_id": "M9",
+  "title": "Notification Database Schema",
+  "domain": "Notifications",
+  "capability": "Persistence",
+  "purpose": "Create notification tracking tables.",
+  "dependencies": [
+    "T1.4"
+  ],
+  "architectural_constraints": [
+    "Forward-only migrations",
+    "RLS mandatory",
+    "Retry tracking"
+  ],
+  "deliverables": [
+    {
+      "path": "supabase/migrations/xxx_notifications_schema.sql",
+      "description": "notifications, notification_preferences, notification_templates",
+      "type": "migration"
+    },
+    {
+      "path": "supabase/migrations/xxx_notifications_rls.sql",
+      "description": "RLS policies",
+      "type": "migration"
+    }
+  ],
+  "acceptance_criteria": [
+    "Tables created",
+    "RLS restricts to recipient"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [
+      "DB migration success/failure"
+    ],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

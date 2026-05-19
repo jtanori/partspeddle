@@ -1,0 +1,68 @@
+{
+  "id": "T3.1",
+  "milestone_id": "M3",
+  "title": "Marketplace Database Schema",
+  "domain": "Marketplace",
+  "capability": "Persistence",
+  "purpose": "Create owned marketplace tables with constraints and triggers.",
+  "dependencies": [
+    "T2.1"
+  ],
+  "architectural_constraints": [
+    "Must conform to database-governance.md",
+    "Forward-only migrations",
+    "RLS mandatory",
+    "Listing status enum: draft, published, archived"
+  ],
+  "deliverables": [
+    {
+      "path": "supabase/migrations/xxx_marketplace_listings.sql",
+      "description": "Listings, inventory_items, listing_media",
+      "type": "migration"
+    },
+    {
+      "path": "supabase/migrations/xxx_marketplace_catalog.sql",
+      "description": "Collections, garages, yards",
+      "type": "migration"
+    },
+    {
+      "path": "supabase/migrations/xxx_marketplace_triggers.sql",
+      "description": "updated_at, inventory triggers",
+      "type": "migration"
+    },
+    {
+      "path": "supabase/migrations/xxx_marketplace_rls.sql",
+      "description": "RLS policies",
+      "type": "migration"
+    }
+  ],
+  "acceptance_criteria": [
+    "Listings table created with FK to seller_profiles",
+    "Inventory items owned by seller",
+    "RLS prevents cross-seller listing access",
+    "Status enum enforced at DB level"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [
+      "DB migration success/failure"
+    ],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Constraint violation",
+      "mitigation": "Mapped to domain error",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

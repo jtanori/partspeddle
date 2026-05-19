@@ -1,0 +1,76 @@
+{
+  "id": "T6.3",
+  "milestone_id": "M6",
+  "title": "Checkout State Machine",
+  "domain": "Transactions",
+  "capability": "Payment Coordination",
+  "purpose": "Implement deterministic checkout flow.",
+  "dependencies": [
+    "T6.2"
+  ],
+  "architectural_constraints": [
+    "States: pending → initiated → processing → completed | failed",
+    "Idempotency key required",
+    "Stripe PaymentIntent created on initiation",
+    "Events on all transitions"
+  ],
+  "deliverables": [
+    {
+      "path": "src/transactions/domain/entities/checkout-session.ts",
+      "description": "CheckoutSession aggregate",
+      "type": "file"
+    },
+    {
+      "path": "src/transactions/domain/services/stripe-coordinator.ts",
+      "description": "Stripe PaymentIntent coordination",
+      "type": "file"
+    },
+    {
+      "path": "src/transactions/domain/events/checkout-events.ts",
+      "description": "Checkout domain events",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Idempotency prevents duplicate checkout",
+    "Stripe PaymentIntent created",
+    "Payment failure transitions to failed",
+    "Payment success triggers escrow lock",
+    "Webhook signature verified"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "transactions_checkout_completed_total",
+      "transactions_checkout_failed_total",
+      "transactions_stripe_latency_seconds"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Stripe API unavailable",
+      "mitigation": "Retry with backoff",
+      "severity": "high"
+    },
+    {
+      "scenario": "Idempotency key collision",
+      "mitigation": "Return existing checkout",
+      "severity": "medium"
+    },
+    {
+      "scenario": "PaymentIntent requires 3DS",
+      "mitigation": "Return client_secret for client handling",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 5,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

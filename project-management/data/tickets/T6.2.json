@@ -1,0 +1,64 @@
+{
+  "id": "T6.2",
+  "milestone_id": "M6",
+  "title": "Cart Aggregate",
+  "domain": "Transactions",
+  "capability": "Domain Model",
+  "purpose": "Implement cart with staging and expiration.",
+  "dependencies": [
+    "T6.1"
+  ],
+  "architectural_constraints": [
+    "Aggregate root: Cart",
+    "Items reference InventoryItem",
+    "Expiration: 30 minutes",
+    "Cart abandoned after expiration"
+  ],
+  "deliverables": [
+    {
+      "path": "src/transactions/domain/entities/cart.ts",
+      "description": "Cart aggregate root",
+      "type": "file"
+    },
+    {
+      "path": "src/transactions/domain/entities/cart-item.ts",
+      "description": "CartItem entity",
+      "type": "file"
+    },
+    {
+      "path": "src/transactions/domain/events/cart-events.ts",
+      "description": "Cart domain events",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Buyer can add item to cart",
+    "Cart expires after 30 minutes",
+    "Expired cart emits cart.abandoned event",
+    "Cart total calculated correctly"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "transactions_cart_created_total",
+      "transactions_cart_abandoned_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Item no longer available",
+      "mitigation": "Validation error on checkout",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

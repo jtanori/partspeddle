@@ -1,0 +1,63 @@
+{
+  "id": "T8.2",
+  "milestone_id": "M8",
+  "title": "Escrow Hold Workflows",
+  "domain": "Vault",
+  "capability": "Trust Orchestration",
+  "purpose": "Implement escrow hold creation and management.",
+  "dependencies": [
+    "T8.1"
+  ],
+  "architectural_constraints": [
+    "Events only (never direct DB access from other domains)",
+    "State transitions validated",
+    "Audit log immutable"
+  ],
+  "deliverables": [
+    {
+      "path": "src/vault/domain/entities/escrow-state.ts",
+      "description": "EscrowState aggregate",
+      "type": "file"
+    },
+    {
+      "path": "src/vault/domain/services/hold-orchestrator.ts",
+      "description": "Hold creation logic",
+      "type": "file"
+    },
+    {
+      "path": "src/vault/domain/events/vault-events.ts",
+      "description": "Vault domain events",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Escrow hold created on payment capture",
+    "State transitions validated",
+    "Audit log records all changes",
+    "Events emitted on transitions"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "vault_escrow_holds_created_total",
+      "vault_escrow_releases_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Duplicate hold",
+      "mitigation": "Idempotency check",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

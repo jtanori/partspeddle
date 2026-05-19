@@ -1,0 +1,53 @@
+{
+  "id": "T1.2",
+  "milestone_id": "M1",
+  "title": "Shared Event Envelope Library",
+  "domain": "Shared",
+  "capability": "Event Infrastructure",
+  "purpose": "Implement canonical event envelope as TypeScript types and validation.",
+  "dependencies": [
+    "T1.1"
+  ],
+  "architectural_constraints": [
+    "Must conform to event-envelope-standard.md",
+    "Payload max 64KB",
+    "Zod schema validation"
+  ],
+  "deliverables": [
+    {
+      "path": "src/shared/event-bus/domain-event.ts",
+      "description": "Domain event base class",
+      "type": "file"
+    },
+    {
+      "path": "src/shared/event-bus/event-schema.ts",
+      "description": "Zod validation schema",
+      "type": "file"
+    },
+    {
+      "path": "src/shared/event-bus/event-catalog.ts",
+      "description": "Domain event catalog registry",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Event envelope validates all required fields",
+    "Invalid events throw structured error",
+    "Payload size enforcement works"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:31:57.300Z",
+    "updated_at": "2026-05-19T02:31:57.300Z",
+    "version": 1
+  }
+}

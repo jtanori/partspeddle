@@ -1,0 +1,128 @@
+{
+  "id": "T1.1",
+  "milestone_id": "M1",
+  "title": "Repository & Runtime Initialization",
+  "domain": "Shared",
+  "capability": "Runtime Bootstrap",
+  "purpose": "Generate the entire foundational file system upon which all subsequent implementation depends. This ticket is the root of reproducibility.",
+  "dependencies": [],
+  "architectural_constraints": [
+    "TypeScript 5.x strict mode (strict: true)",
+    "ESM modules only",
+    "Exact version pinning (no ^ or ~)",
+    "Node.js 20+ LTS"
+  ],
+  "deliverables": [
+    {
+      "path": "package.json",
+      "description": "Dependencies, scripts, engine requirements",
+      "type": "config"
+    },
+    {
+      "path": "tsconfig.json",
+      "description": "TypeScript 5.x strict, ESM, NodeNext resolution",
+      "type": "config"
+    },
+    {
+      "path": "eslint.config.js",
+      "description": "Lint rules, no-explicit-any, cross-domain import guards",
+      "type": "config"
+    },
+    {
+      "path": ".prettierrc",
+      "description": "Formatting rules",
+      "type": "config"
+    },
+    {
+      "path": ".gitignore",
+      "description": "Ignore patterns",
+      "type": "config"
+    },
+    {
+      "path": ".env.example",
+      "description": "Environment variable template",
+      "type": "config"
+    },
+    {
+      "path": "docker-compose.dev.yml",
+      "description": "Postgres + Redis with healthchecks",
+      "type": "config"
+    },
+    {
+      "path": "vitest.config.ts",
+      "description": "Base test config with coverage thresholds",
+      "type": "config"
+    },
+    {
+      "path": "vitest.unit.config.ts",
+      "description": "Unit test isolation",
+      "type": "config"
+    },
+    {
+      "path": "vitest.integration.config.ts",
+      "description": "Integration test setup",
+      "type": "config"
+    },
+    {
+      "path": "src/app.ts",
+      "description": "Express bootstrap with health endpoints",
+      "type": "file"
+    },
+    {
+      "path": "src/shared/observability/logger.ts",
+      "description": "Structured JSON logger",
+      "type": "file"
+    },
+    {
+      "path": "src/shared/errors/domain-error.ts",
+      "description": "Base domain error class",
+      "type": "file"
+    },
+    {
+      "path": "src/<domain>/...",
+      "description": "Full directory scaffold per module-template.md",
+      "type": "directory"
+    }
+  ],
+  "acceptance_criteria": [
+    "npm install succeeds with zero warnings",
+    "npm run typecheck passes (tsc --noEmit)",
+    "npm run lint passes with zero errors",
+    "npm run infra:up starts Postgres + Redis",
+    "npm run dev starts API server on port 3000",
+    "GET /health/ready returns 200",
+    "Directory structure matches repository-structure.md",
+    "All files committed to git with descriptive message"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Engine mismatch",
+      "mitigation": "package.json engines field blocks install",
+      "severity": "medium"
+    },
+    {
+      "scenario": "Port conflict",
+      "mitigation": ".env.example documents PORT override",
+      "severity": "low"
+    },
+    {
+      "scenario": "Docker unavailable",
+      "mitigation": "Document local Postgres/Redis install steps",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 4,
+  "status": "completed",
+  "assignee": "Agent 1",
+  "metadata": {
+    "created_at": "2026-05-19T02:31:57.300Z",
+    "updated_at": "2026-05-19T02:31:57.300Z",
+    "version": 1
+  }
+}

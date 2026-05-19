@@ -1,0 +1,63 @@
+{
+  "id": "T3.5",
+  "milestone_id": "M3",
+  "title": "Marketplace API Routes",
+  "domain": "Marketplace",
+  "capability": "HTTP Boundary",
+  "purpose": "Expose marketplace domain via REST endpoints.",
+  "dependencies": [
+    "T3.4"
+  ],
+  "architectural_constraints": [
+    "Thin controllers",
+    "JWT + RLS",
+    "Correlation ID propagation",
+    "Pagination: cursor-based"
+  ],
+  "deliverables": [
+    {
+      "path": "src/marketplace/api/routes/listing-routes.ts",
+      "description": "Listing CRUD routes",
+      "type": "file"
+    },
+    {
+      "path": "src/marketplace/api/routes/inventory-routes.ts",
+      "description": "Inventory management routes",
+      "type": "file"
+    },
+    {
+      "path": "src/marketplace/api/routes/catalog-routes.ts",
+      "description": "Collection/Garage/Yard routes",
+      "type": "file"
+    },
+    {
+      "path": "src/marketplace/api/dto/",
+      "description": "Zod validation schemas",
+      "type": "directory"
+    }
+  ],
+  "acceptance_criteria": [
+    "GET /v1/marketplace/listings with cursor pagination",
+    "POST /v1/marketplace/listings creates draft",
+    "PATCH /v1/marketplace/listings/:id/publish publishes",
+    "GET /v1/marketplace/inventory returns seller inventory"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "marketplace_api_requests_total",
+      "marketplace_api_latency_seconds"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

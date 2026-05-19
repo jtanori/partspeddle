@@ -1,0 +1,52 @@
+{
+  "id": "T10.4",
+  "milestone_id": "M10",
+  "title": "Rate Limiting & Abuse Prevention",
+  "domain": "Shared",
+  "capability": "Security",
+  "purpose": "Implement rate limiting at API gateway.",
+  "dependencies": [
+    "T1.1"
+  ],
+  "architectural_constraints": [
+    "Per-user rate limit",
+    "429 response with Retry-After",
+    "Exponential backoff for retries"
+  ],
+  "deliverables": [
+    {
+      "path": "src/shared/api/middleware/rate-limiter.ts",
+      "description": "Rate limit middleware",
+      "type": "file"
+    },
+    {
+      "path": "src/shared/api/middleware/abuse-detector.ts",
+      "description": "Basic abuse detection",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Rate limit enforced per user",
+    "429 returned with Retry-After",
+    "Abuse detection triggers alert",
+    "Legitimate traffic unaffected"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "api_rate_limited_requests_total",
+      "api_abuse_detections_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

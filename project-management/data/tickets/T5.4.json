@@ -1,0 +1,50 @@
+{
+  "id": "T5.4",
+  "milestone_id": "M5",
+  "title": "Search Autocomplete",
+  "domain": "Search",
+  "capability": "UX Enhancement",
+  "purpose": "Enable autocomplete suggestions.",
+  "dependencies": [
+    "T5.2"
+  ],
+  "architectural_constraints": [
+    "Response < 50ms",
+    "Debounced client-side",
+    "Result limit: 10"
+  ],
+  "deliverables": [
+    {
+      "path": "src/search/api/routes/autocomplete-routes.ts",
+      "description": "Autocomplete endpoint",
+      "type": "file"
+    },
+    {
+      "path": "src/search/services/autocomplete-index.ts",
+      "description": "Autocomplete index builder",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "GET /v1/search/autocomplete returns < 50ms",
+    "Partial term matches",
+    "Results ranked by relevance"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "search_autocomplete_latency_seconds"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

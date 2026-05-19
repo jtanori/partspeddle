@@ -1,0 +1,57 @@
+{
+  "id": "T1.8",
+  "milestone_id": "M1",
+  "title": "CI Pipeline Setup",
+  "domain": "Shared",
+  "capability": "Quality Gate",
+  "purpose": "Fast feedback loop for all code changes.",
+  "dependencies": [
+    "T1.1",
+    "T1.2",
+    "T1.4"
+  ],
+  "architectural_constraints": [
+    "Target: lint < 30s, unit < 2min, integration < 5min",
+    "Block merge on failure",
+    "Exact dependency versions"
+  ],
+  "deliverables": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "description": "GitHub Actions CI pipeline",
+      "type": "config"
+    },
+    {
+      "path": "scripts/setup-test-db.ts",
+      "description": "Test database setup script",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "CI passes on empty test suite",
+    "Lint stage < 30s",
+    "Integration tests connect to test DB + Redis",
+    "Merge blocked if CI fails"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Flaky infrastructure test",
+      "mitigation": "Mark skip, create ticket",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:31:57.300Z",
+    "updated_at": "2026-05-19T02:31:57.300Z",
+    "version": 1
+  }
+}

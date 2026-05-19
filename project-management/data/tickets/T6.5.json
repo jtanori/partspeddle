@@ -1,0 +1,63 @@
+{
+  "id": "T6.5",
+  "milestone_id": "M6",
+  "title": "Settlement Orchestration",
+  "domain": "Transactions",
+  "capability": "Payout",
+  "purpose": "Route funds to seller after escrow release.",
+  "dependencies": [
+    "T6.4"
+  ],
+  "architectural_constraints": [
+    "Stripe Transfer on release",
+    "Transfer grouped per seller (daily batch)",
+    "Events on all operations"
+  ],
+  "deliverables": [
+    {
+      "path": "src/transactions/domain/services/settlement-coordinator.ts",
+      "description": "Settlement orchestrator",
+      "type": "file"
+    },
+    {
+      "path": "src/transactions/queue/settlement-worker.ts",
+      "description": "Settlement batch worker",
+      "type": "file"
+    },
+    {
+      "path": "src/transactions/domain/events/settlement-events.ts",
+      "description": "Settlement domain events",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Transfer created on escrow release",
+    "Daily batch groups pending settlements",
+    "Transfer failure retried 3x",
+    "Settlement completed event emitted"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "transactions_settlements_total",
+      "transactions_settlement_failures_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Stripe transfer failure",
+      "mitigation": "Retry + alert",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

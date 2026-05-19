@@ -1,0 +1,85 @@
+{
+  "id": "T2.5",
+  "milestone_id": "M2",
+  "title": "Identity API Routes",
+  "domain": "Identity",
+  "capability": "HTTP Boundary",
+  "purpose": "Expose Identity domain via REST endpoints.",
+  "dependencies": [
+    "T2.4"
+  ],
+  "architectural_constraints": [
+    "Thin controllers: validation + use case invocation only",
+    "JWT validation at gateway",
+    "Correlation ID propagation",
+    "Rate limiting on sensitive endpoints"
+  ],
+  "deliverables": [
+    {
+      "path": "src/identity/api/routes/user-routes.ts",
+      "description": "User API routes",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/api/routes/profile-routes.ts",
+      "description": "Profile API routes",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/api/routes/seller-routes.ts",
+      "description": "Seller API routes",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/api/routes/session-routes.ts",
+      "description": "Session API routes",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/api/dto/",
+      "description": "Zod validation schemas",
+      "type": "directory"
+    }
+  ],
+  "acceptance_criteria": [
+    "GET /v1/identity/users/me returns authenticated user",
+    "PATCH /v1/identity/profiles/me updates profile + emits event",
+    "POST /v1/identity/sellers/register creates seller profile",
+    "POST /v1/identity/sellers/me/onboarding/:step completes step",
+    "Rate limit returns 429 with Retry-After"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "identity_api_requests_total",
+      "identity_api_latency_seconds"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Invalid JWT",
+      "mitigation": "401 response",
+      "severity": "low"
+    },
+    {
+      "scenario": "Duplicate registration",
+      "mitigation": "409 response",
+      "severity": "medium"
+    },
+    {
+      "scenario": "Invalid status transition",
+      "mitigation": "422 response",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 4,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:31:57.300Z",
+    "updated_at": "2026-05-19T02:31:57.300Z",
+    "version": 1
+  }
+}

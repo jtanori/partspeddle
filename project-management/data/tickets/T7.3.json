@@ -1,0 +1,50 @@
+{
+  "id": "T7.3",
+  "milestone_id": "M7",
+  "title": "Messaging Integration Tests",
+  "domain": "Messaging",
+  "capability": "Quality Assurance",
+  "purpose": "Verify messaging domain end-to-end.",
+  "dependencies": [
+    "T7.1",
+    "T7.2"
+  ],
+  "architectural_constraints": [
+    "Test DB per run",
+    "Transaction rollback per test",
+    "RLS tested"
+  ],
+  "deliverables": [
+    {
+      "path": "src/messaging/domain/entities/*.test.ts",
+      "description": "Entity unit tests",
+      "type": "test"
+    },
+    {
+      "path": "tests/integration/messaging/*.test.ts",
+      "description": "Integration tests",
+      "type": "test"
+    }
+  ],
+  "acceptance_criteria": [
+    "Conversation creation succeeds",
+    "Message delivery verified",
+    "RLS prevents unauthorized access",
+    "Events emitted"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

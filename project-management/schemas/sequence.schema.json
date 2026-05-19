@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/sequence",
+  "title": "ExecutionSequence",
+  "type": "object",
+  "required": ["version", "generated_at", "sprints", "parallelization_rules", "descope_triggers", "velocity_metrics"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "timeline_days": { "type": "integer", "minimum": 1 },
+    "sprints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "days", "batches"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^S[0-9]+$" },
+          "name": { "type": "string" },
+          "days": { "type": "object", "properties": { "start": { "type": "integer" }, "end": { "type": "integer" } } },
+          "batches": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "scope", "agents"],
+              "properties": {
+                "id": { "type": "string" },
+                "scope": { "type": "string" },
+                "execution_mode": { "type": "string", "enum": ["parallel", "sequential"] },
+                "agents": { "type": "integer", "minimum": 1 },
+                "review_gate": { "type": "string" },
+                "tickets": { "type": "array", "items": { "type": "string", "pattern": "^T[0-9]+\\.[0-9]+$" } }
+              }
+            }
+          },
+          "checkpoint": {
+            "type": "object",
+            "properties": {
+              "criteria": { "type": "array", "items": { "type": "string" } },
+              "gates": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "parallelization_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["parallel", "sequential", "reason"],
+        "properties": {
+          "parallel": { "type": "string" },
+          "sequential": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "descope_triggers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["failure", "action"],
+        "properties": {
+          "domain": { "type": "string" },
+          "failure": { "type": "string" },
+          "action": { "type": "string" }
+        }
+      }
+    },
+    "velocity_metrics": {
+      "type": "object",
+      "properties": {
+        "tickets_per_agent_per_day": { "type": "object", "properties": { "target": { "type": "number" }, "min": { "type": "number" }, "max": { "type": "number" } } },
+        "lines_of_code_per_agent_per_day": { "type": "object", "properties": { "target": { "type": "number" }, "min": { "type": "number" }, "max": { "type": "number" } } },
+        "test_cases_per_ticket": { "type": "object", "properties": { "target": { "type": "number" }, "min": { "type": "number" }, "max": { "type": "number" } } },
+        "review_rounds_per_pr": { "type": "object", "properties": { "target": { "type": "number" }, "max": { "type": "number" } } },
+        "merge_time_hours": { "type": "object", "properties": { "target": { "type": "number" }, "max": { "type": "number" } } },
+        "checkpoint_failure_rate_percent": { "type": "object", "properties": { "target": { "type": "number" }, "max": { "type": "number" } } }
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "id": "T5.2",
+  "milestone_id": "M5",
+  "title": "Search API Routes",
+  "domain": "Search",
+  "capability": "HTTP Boundary",
+  "purpose": "Expose search endpoints.",
+  "dependencies": [
+    "T5.1"
+  ],
+  "architectural_constraints": [
+    "Response < 100ms (cached if needed)",
+    "Cursor pagination",
+    "Filters validated"
+  ],
+  "deliverables": [
+    {
+      "path": "src/search/api/routes/search-routes.ts",
+      "description": "Search API routes",
+      "type": "file"
+    },
+    {
+      "path": "src/search/api/dto/search-request.ts",
+      "description": "Search request validation",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "GET /v1/search/listings returns results < 100ms",
+    "Filters work (price, category, location)",
+    "Cursor pagination returns next page",
+    "Empty query returns all (paginated)"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "search_api_latency_seconds",
+      "search_api_requests_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

@@ -1,0 +1,291 @@
+{
+  "version": 1,
+  "generated_at": "2026-05-19T03:37:28.079Z",
+  "risks": [
+    {
+      "id": "R1",
+      "category": "Architecture",
+      "description": "Cross-domain coupling introduced during implementation",
+      "scenario": "Developer imports transactions/domain/entities from marketplace/",
+      "likelihood": "High",
+      "impact": "Critical",
+      "severity": "P1",
+      "mitigation": "ESLint no-restricted-imports rule, code review checklist enforces boundary check, weekly architecture review",
+      "owner": "Architecture",
+      "trigger": "Any PR touching > 1 domain",
+      "response": {
+        "avoid": "",
+        "mitigate": "ESLint + review",
+        "transfer": "",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R2",
+      "category": "Architecture",
+      "description": "Event schema drift breaks consumers",
+      "scenario": "Producer changes payload shape without version bump; consumer fails to parse",
+      "likelihood": "Medium",
+      "impact": "Critical",
+      "severity": "P1",
+      "mitigation": "Event catalog enforcement, contract tests, Zod schema validation on consume",
+      "owner": "Architecture",
+      "trigger": "Any event schema change",
+      "response": {
+        "avoid": "",
+        "mitigate": "Catalog + contract tests",
+        "transfer": "",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R3",
+      "category": "Data",
+      "description": "RLS policy gaps expose user data",
+      "scenario": "New table added without RLS, or policy allows overly broad access",
+      "likelihood": "Medium",
+      "impact": "Critical",
+      "severity": "P1",
+      "mitigation": "RLS mandatory checklist item, integration tests verify unauthorized access blocked, security audit before production",
+      "owner": "Security",
+      "trigger": "Any schema migration",
+      "response": {
+        "avoid": "",
+        "mitigate": "Tests + audit",
+        "transfer": "",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R4",
+      "category": "Data",
+      "description": "Stripe webhook replay creates duplicate payments",
+      "scenario": "Stripe webhook replayed after timeout, payment processed twice",
+      "likelihood": "Medium",
+      "impact": "Critical",
+      "severity": "P1",
+      "mitigation": "Idempotency keys on all payment operations, webhook deduplication (24h window), reconciliation job validates Stripe vs local state",
+      "owner": "Transactions",
+      "trigger": "Any payment webhook handler change",
+      "response": {
+        "avoid": "",
+        "mitigate": "Idempotency",
+        "transfer": "",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R5",
+      "category": "Operations",
+      "description": "Queue worker crash loop stalls workflows",
+      "scenario": "Bug in queue worker causes infinite restart loop",
+      "likelihood": "Medium",
+      "impact": "High",
+      "severity": "P2",
+      "mitigation": "DLQ after 3 retries, alerting on DLQ growth, manual replay after fix",
+      "owner": "Operations",
+      "trigger": "Alert queue_jobs_failed_total > 5/min",
+      "response": {
+        "avoid": "",
+        "mitigate": "DLQ + alert",
+        "transfer": "",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R6",
+      "category": "Operations",
+      "description": "Outbox relay stall breaks eventual consistency",
+      "scenario": "Outbox relay worker stops polling; events never published",
+      "likelihood": "Low",
+      "impact": "High",
+      "severity": "P2",
+      "mitigation": "Health check 503, backlog alert, auto-restart on failure",
+      "owner": "Operations",
+      "trigger": "Alert outbox_backlog > 1000",
+      "response": {
+        "avoid": "",
+        "mitigate": "Health checks + alerts",
+        "transfer": "",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R7",
+      "category": "Performance",
+      "description": "DB connection pool exhaustion under load",
+      "scenario": "Load spike consumes all 20 connections",
+      "likelihood": "Medium",
+      "impact": "High",
+      "severity": "P2",
+      "mitigation": "Pool limit 20, query timeout 5s, circuit breaker (future), slow query log review",
+      "owner": "Operations",
+      "trigger": "Alert db_pool_wait_duration_seconds > 1s",
+      "response": {
+        "avoid": "",
+        "mitigate": "Monitoring",
+        "transfer": "",
+        "accept": "Scale later"
+      },
+      "status": "open"
+    },
+    {
+      "id": "R8",
+      "category": "Performance",
+      "description": "Algolia indexing lag exceeds 5 minutes",
+      "scenario": "Algolia indexing falls behind listing updates",
+      "likelihood": "Medium",
+      "impact": "Medium",
+      "severity": "P3",
+      "mitigation": "Indexing backlog monitoring, retry logic with backoff, manual reindex capability",
+      "owner": "Search",
+      "trigger": "Alert search_index_lag_seconds > 300",
+      "response": {
+        "avoid": "",
+        "mitigate": "Monitoring",
+        "transfer": "",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R9",
+      "category": "External",
+      "description": "Stripe API rate limit during flash sale",
+      "scenario": "High volume checkout triggers Stripe rate limit",
+      "likelihood": "Medium",
+      "impact": "High",
+      "severity": "P2",
+      "mitigation": "Queue rate limiting, exponential backoff, request batching",
+      "owner": "Transactions",
+      "trigger": "Stripe rate limit error code received",
+      "response": {
+        "avoid": "",
+        "mitigate": "Rate limit",
+        "transfer": "",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R10",
+      "category": "External",
+      "description": "Gemini API quota exceeded",
+      "scenario": "Image upload volume exceeds Gemini quota",
+      "likelihood": "High",
+      "impact": "Low",
+      "severity": "P3",
+      "mitigation": "Skip enrichment on quota exceeded, queue backoff, retry next day",
+      "owner": "AI",
+      "trigger": "Alert ai_jobs_failed_total with quota error code",
+      "response": {
+        "avoid": "",
+        "mitigate": "Backoff",
+        "transfer": "",
+        "accept": "Skip enrichment"
+      },
+      "status": "open"
+    },
+    {
+      "id": "R11",
+      "category": "Security",
+      "description": "Credential stuffing on auth endpoints",
+      "scenario": "Attacker brute-forces login credentials",
+      "likelihood": "Medium",
+      "impact": "High",
+      "severity": "P2",
+      "mitigation": "Rate limiting, CAPTCHA after 5 failures, account lockout",
+      "owner": "Security",
+      "trigger": "Alert auth_failures_per_ip > 10/min",
+      "response": {
+        "avoid": "",
+        "mitigate": "Rate limit + CAPTCHA",
+        "transfer": "",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R12",
+      "category": "Security",
+      "description": "Secrets committed to repository",
+      "scenario": ".env file or API key committed to git",
+      "likelihood": "Medium",
+      "impact": "Critical",
+      "severity": "P1",
+      "mitigation": ".env in .gitignore, pre-commit hook scanning for secrets, GitHub secret scanning enabled, quarterly key rotation",
+      "owner": "Security",
+      "trigger": "Any commit containing configuration",
+      "response": {
+        "avoid": "Pre-commit hooks",
+        "mitigate": "Scanning",
+        "transfer": "",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R13",
+      "category": "Implementation",
+      "description": "TDD discipline erodes under velocity pressure",
+      "scenario": "Velocity pressure leads to skipped tests",
+      "likelihood": "High",
+      "impact": "High",
+      "severity": "P2",
+      "mitigation": "CI blocks merge on test failure, coverage gates (80% line, 70% branch), review checklist enforces test presence",
+      "owner": "Engineering",
+      "trigger": "PR without tests",
+      "response": {
+        "avoid": "",
+        "mitigate": "CI gates",
+        "transfer": "",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R14",
+      "category": "Implementation",
+      "description": "State machine transitions bypass validation",
+      "scenario": "Direct DB update skips domain state machine logic",
+      "likelihood": "Low",
+      "impact": "Critical",
+      "severity": "P1",
+      "mitigation": "Unit tests 95%+, integration tests, DB constraints, code review enforces state machine usage",
+      "owner": "Engineering",
+      "trigger": "Any state transition logic change",
+      "response": {
+        "avoid": "",
+        "mitigate": "Tests + constraints",
+        "transfer": "",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R15",
+      "category": "Timeline",
+      "description": "M6 (Transactions) underestimation delays launch",
+      "scenario": "Transaction complexity exceeds allocated time",
+      "likelihood": "High",
+      "impact": "High",
+      "severity": "P2",
+      "mitigation": "Fixed 2-week allocation, descope plan ready, sequential agent review for trust-critical code",
+      "owner": "Product",
+      "trigger": "Checkpoint failure on M6",
+      "response": {
+        "avoid": "",
+        "mitigate": "Buffer time",
+        "transfer": "",
+        "accept": "Descope plan"
+      },
+      "status": "open"
+    }
+  ]
+}

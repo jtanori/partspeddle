@@ -1,0 +1,51 @@
+{
+  "id": "T8.4",
+  "milestone_id": "M8",
+  "title": "Vault Integration Tests",
+  "domain": "Vault",
+  "capability": "Quality Assurance",
+  "purpose": "Verify vault domain end-to-end.",
+  "dependencies": [
+    "T8.1",
+    "T8.2",
+    "T8.3"
+  ],
+  "architectural_constraints": [
+    "Test DB per run",
+    "Transaction rollback per test",
+    "RLS tested"
+  ],
+  "deliverables": [
+    {
+      "path": "src/vault/domain/entities/*.test.ts",
+      "description": "Entity unit tests",
+      "type": "test"
+    },
+    {
+      "path": "tests/integration/vault/*.test.ts",
+      "description": "Integration tests",
+      "type": "test"
+    }
+  ],
+  "acceptance_criteria": [
+    "Escrow hold → release flow works",
+    "Dispute freeze/release works",
+    "Audit log complete",
+    "RLS enforced"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

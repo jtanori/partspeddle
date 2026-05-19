@@ -1,0 +1,49 @@
+{
+  "id": "T8.1",
+  "milestone_id": "M8",
+  "title": "Vault Database Schema",
+  "domain": "Vault",
+  "capability": "Persistence",
+  "purpose": "Create escrow management tables.",
+  "dependencies": [
+    "T6.1"
+  ],
+  "architectural_constraints": [
+    "Forward-only migrations",
+    "RLS mandatory",
+    "Escrow state: pending, funded, inspection, releasing, released, disputed, resolved"
+  ],
+  "deliverables": [
+    {
+      "path": "supabase/migrations/xxx_vault_schema.sql",
+      "description": "escrow_state_transitions, vault_audit_log",
+      "type": "migration"
+    },
+    {
+      "path": "supabase/migrations/xxx_vault_rls.sql",
+      "description": "RLS policies",
+      "type": "migration"
+    }
+  ],
+  "acceptance_criteria": [
+    "Tables created with FK to transactions",
+    "RLS restricts to involved parties"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [
+      "DB migration success/failure"
+    ],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

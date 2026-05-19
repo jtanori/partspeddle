@@ -1,0 +1,494 @@
+[
+  {
+    "id": "M1",
+    "phase": 1,
+    "title": "Runtime Foundations",
+    "purpose": "Establish the runtime layer upon which all domains depend.",
+    "trust_principle": "If the foundation is wrong, every domain built on it is wrong.",
+    "scope": {
+      "in": [
+        "Repository initialization",
+        "Shared infrastructure (event bus, outbox, queue, observability)",
+        "Database governance (migrations, RLS patterns, connection pooling)",
+        "CI pipeline (lint, test, build)",
+        "Local development environment"
+      ],
+      "out": [
+        "Business logic",
+        "Domain-specific code",
+        "Frontend code",
+        "Production deployment automation"
+      ]
+    },
+    "exit_criteria": [
+      "npm run dev starts API server",
+      "npm run test:ci passes with empty test suite",
+      "npm run infra:up starts Postgres + Redis",
+      "supabase db reset applies migrations cleanly",
+      "Shared event envelope library compiles",
+      "Queue bootstrap connects to Redis"
+    ],
+    "tickets": [
+      "T1.1",
+      "T1.2",
+      "T1.3",
+      "T1.4",
+      "T1.5",
+      "T1.6",
+      "T1.7",
+      "T1.8"
+    ],
+    "dependencies": [],
+    "downstream_impact": "Blocks ALL subsequent milestones.",
+    "estimated_duration_days": 3,
+    "status": "in_progress",
+    "metadata": {
+      "created_at": "2026-05-19T02:28:56.226Z",
+      "updated_at": "2026-05-19T02:28:56.226Z",
+      "version": 1
+    }
+  },
+  {
+    "id": "M2",
+    "phase": 2,
+    "title": "Identity Domain",
+    "purpose": "Establish the root of trust for all platform actors.",
+    "trust_principle": "No transactional, marketplace, or messaging operation can occur without an established identity principal.",
+    "scope": {
+      "in": [
+        "Auth synchronization (Supabase Auth → Identity domain)",
+        "Profile lifecycle (User, Profile, BuyerProfile, SellerProfile)",
+        "Seller onboarding state machine",
+        "Stripe Connect integration",
+        "Identity events (user.created, seller.activated, etc.)",
+        "Onboarding queues"
+      ],
+      "out": [
+        "Advanced reputation",
+        "Multi-factor authentication beyond Supabase defaults",
+        "Social login provider management",
+        "Institutional identity verification (KYC/KYB)",
+        "RBAC beyond buyer/seller/admin"
+      ]
+    },
+    "exit_criteria": [
+      "User registration creates identity record + profile atomically",
+      "Seller onboarding transitions: pending → onboarding → review → active",
+      "Events emitted on all state transitions",
+      "RLS policies enforce data isolation",
+      "Integration tests verify trigger behavior"
+    ],
+    "tickets": [
+      "T2.1",
+      "T2.2",
+      "T2.3",
+      "T2.4",
+      "T2.5",
+      "T2.6",
+      "T2.7",
+      "T2.8"
+    ],
+    "dependencies": [
+      "M1"
+    ],
+    "downstream_impact": "Blocks M3 (Marketplace needs sellers), M6 (Transactions needs buyers/sellers), M7 (Messaging needs participants).",
+    "estimated_duration_days": 4,
+    "status": "planned",
+    "metadata": {
+      "created_at": "2026-05-19T02:28:56.226Z",
+      "updated_at": "2026-05-19T02:28:56.226Z",
+      "version": 1
+    }
+  },
+  {
+    "id": "M3",
+    "phase": 3,
+    "title": "Marketplace Core",
+    "purpose": "Establish inventory ownership and listing lifecycle.",
+    "trust_principle": "Buyers must trust that listings represent real, owned inventory.",
+    "scope": {
+      "in": [
+        "Listing aggregates (Listing, InventoryItem)",
+        "Catalog organization (Collection, Garage, Yard)",
+        "Media pipelines (Supabase Storage integration)",
+        "Publishing workflows (draft → published → archived)",
+        "Listing state machine",
+        "Search indexing events"
+      ],
+      "out": [
+        "Advanced pricing algorithms",
+        "Auction functionality",
+        "Bulk listing tools",
+        "Multi-currency support"
+      ]
+    },
+    "exit_criteria": [
+      "Seller can create listing",
+      "Listing transitions through valid states",
+      "Media upload links to listing",
+      "Events emitted on publish/unpublish",
+      "RLS prevents cross-seller inventory access"
+    ],
+    "tickets": [
+      "T3.1",
+      "T3.2",
+      "T3.3",
+      "T3.4",
+      "T3.5",
+      "T3.6"
+    ],
+    "dependencies": [
+      "M1",
+      "M2"
+    ],
+    "downstream_impact": "Blocks M4 (AI needs listings to enrich), M5 (Search needs listings to index), M6 (Transactions needs listings to purchase).",
+    "estimated_duration_days": 3,
+    "status": "planned",
+    "metadata": {
+      "created_at": "2026-05-19T02:28:56.226Z",
+      "updated_at": "2026-05-19T02:28:56.226Z",
+      "version": 1
+    }
+  },
+  {
+    "id": "M4",
+    "phase": 4,
+    "title": "AI Intelligence",
+    "purpose": "Augment inventory discovery and listing quality.",
+    "trust_principle": "AI assists operational intelligence but never overrides transactional truth.",
+    "scope": {
+      "in": [
+        "Image ingestion pipeline",
+        "Part/VIN identification (Gemini API)",
+        "Enrichment workflows (metadata extraction)",
+        "AI confidence scoring",
+        "Listing enrichment events"
+      ],
+      "out": [
+        "Autonomous listing creation",
+        "AI-driven pricing",
+        "Automated moderation",
+        "Predictive analytics"
+      ]
+    },
+    "exit_criteria": [
+      "Image upload triggers AI analysis queue job",
+      "Identification results include confidence score",
+      "Enrichment events emitted for marketplace consumption",
+      "Failed analysis retried with exponential backoff",
+      "AI output is advisory, never authoritative"
+    ],
+    "tickets": [
+      "T4.1",
+      "T4.2",
+      "T4.3",
+      "T4.4"
+    ],
+    "dependencies": [
+      "M1",
+      "M3"
+    ],
+    "downstream_impact": "Enhances M3 (listings) and M5 (search). Does not block M6.",
+    "estimated_duration_days": 2,
+    "status": "planned",
+    "metadata": {
+      "created_at": "2026-05-19T02:28:56.226Z",
+      "updated_at": "2026-05-19T02:28:56.226Z",
+      "version": 1
+    }
+  },
+  {
+    "id": "M5",
+    "phase": 5,
+    "title": "Search Infrastructure",
+    "purpose": "Enable inventory discovery.",
+    "trust_principle": "Buyers must find relevant inventory quickly and accurately.",
+    "scope": {
+      "in": [
+        "Algolia sync pipeline",
+        "Indexing queues (async, failure-tolerant)",
+        "Searchable projections (from marketplace events)",
+        "Ranking strategy (MVP: simple recency + relevance)",
+        "Autocomplete preparation"
+      ],
+      "out": [
+        "Semantic search",
+        "Personalized ranking",
+        "Visual search",
+        "AI-generated search suggestions"
+      ]
+    },
+    "exit_criteria": [
+      "Listing publish triggers Algolia index update",
+      "Search returns results < 100ms",
+      "Indexing failures retry and alert",
+      "Events consumed from marketplace domain only"
+    ],
+    "tickets": [
+      "T5.1",
+      "T5.2",
+      "T5.3",
+      "T5.4"
+    ],
+    "dependencies": [
+      "M1",
+      "M3"
+    ],
+    "downstream_impact": "Enhances M3 and M6. Does not block core transactions.",
+    "estimated_duration_days": 2,
+    "status": "planned",
+    "metadata": {
+      "created_at": "2026-05-19T02:28:56.226Z",
+      "updated_at": "2026-05-19T02:28:56.226Z",
+      "version": 1
+    }
+  },
+  {
+    "id": "M6",
+    "phase": 6,
+    "title": "Transaction Orchestration",
+    "purpose": "Enable trusted commerce.",
+    "trust_principle": "This is the operational core. All trust guarantees depend on deterministic transactional orchestration.",
+    "scope": {
+      "in": [
+        "Cart orchestration (staging, expiration)",
+        "Checkout state machine",
+        "Payment coordination (Stripe)",
+        "Escrow lifecycle",
+        "Settlement orchestration",
+        "Compensation flows",
+        "Reconciliation jobs",
+        "Idempotency enforcement"
+      ],
+      "out": [
+        "Subscription payments",
+        "Multi-currency",
+        "Complex tax calculation",
+        "Split payments",
+        "Cryptocurrency settlement"
+      ]
+    },
+    "exit_criteria": [
+      "Cart creates, updates, expires correctly",
+      "Checkout initiates payment intent",
+      "Payment authorization triggers escrow lock",
+      "Escrow release only after inspection/dispute resolution",
+      "Idempotency prevents duplicate charges",
+      "Compensation events reverse failed transactions",
+      "End-to-end test: buyer checkout → seller settlement"
+    ],
+    "tickets": [
+      "T6.1",
+      "T6.2",
+      "T6.3",
+      "T6.4",
+      "T6.5",
+      "T6.6",
+      "T6.7"
+    ],
+    "dependencies": [
+      "M1",
+      "M2",
+      "M3"
+    ],
+    "downstream_impact": "Blocks M7 (Messaging needs transaction context), M8 (Vault needs escrow state), M9 (Notifications need transaction events).",
+    "estimated_duration_days": 6,
+    "status": "planned",
+    "metadata": {
+      "created_at": "2026-05-19T02:28:56.226Z",
+      "updated_at": "2026-05-19T02:28:56.226Z",
+      "version": 1
+    }
+  },
+  {
+    "id": "M7",
+    "phase": 7,
+    "title": "Messaging",
+    "purpose": "Enable transaction-aware communication.",
+    "trust_principle": "Communication must remain durable, observable, and scoped to transactions.",
+    "scope": {
+      "in": [
+        "Conversation aggregates",
+        "Realtime delivery (Supabase Realtime)",
+        "Notification triggers",
+        "Moderation hooks (MVP minimal)"
+      ],
+      "out": [
+        "Voice/video calls",
+        "Group messaging",
+        "End-to-end encryption",
+        "Advanced moderation"
+      ]
+    },
+    "exit_criteria": [
+      "Buyer and seller can create conversation",
+      "Messages deliver in real time",
+      "Conversation scoped to transaction context",
+      "RLS prevents unauthorized access"
+    ],
+    "tickets": [
+      "T7.1",
+      "T7.2",
+      "T7.3"
+    ],
+    "dependencies": [
+      "M1",
+      "M6"
+    ],
+    "downstream_impact": "Enhances M6. Does not block M8 or M9.",
+    "estimated_duration_days": 2,
+    "status": "planned",
+    "metadata": {
+      "created_at": "2026-05-19T02:28:56.226Z",
+      "updated_at": "2026-05-19T02:28:56.226Z",
+      "version": 1
+    }
+  },
+  {
+    "id": "M8",
+    "phase": 8,
+    "title": "Vault Infrastructure",
+    "purpose": "Manage escrow hold and release workflows.",
+    "trust_principle": "Funds must only move through explicit, auditable, deterministic workflows.",
+    "scope": {
+      "in": [
+        "Escrow hold workflows",
+        "Inspection period management",
+        "Release orchestration",
+        "Dispute initiation",
+        "Transaction freeze logic"
+      ],
+      "out": [
+        "Institutional custody",
+        "Multi-signature releases",
+        "Insurance integration",
+        "Advanced dispute arbitration"
+      ]
+    },
+    "exit_criteria": [
+      "Escrow lock created on payment authorization",
+      "Release requires buyer confirmation or 72h timeout",
+      "Dispute freezes settlement",
+      "Compensation events handle reversal"
+    ],
+    "tickets": [
+      "T8.1",
+      "T8.2",
+      "T8.3",
+      "T8.4"
+    ],
+    "dependencies": [
+      "M1",
+      "M6"
+    ],
+    "downstream_impact": "Completes the trust loop with M6. Enables M9 notification events.",
+    "estimated_duration_days": 2,
+    "status": "planned",
+    "metadata": {
+      "created_at": "2026-05-19T02:28:56.226Z",
+      "updated_at": "2026-05-19T02:28:56.226Z",
+      "version": 1
+    }
+  },
+  {
+    "id": "M9",
+    "phase": 9,
+    "title": "Notification Infrastructure",
+    "purpose": "Deliver operational alerts to users.",
+    "trust_principle": "Users must be informed of critical state changes without being overwhelmed.",
+    "scope": {
+      "in": [
+        "Email delivery (transactional)",
+        "Push notification preparation (MVP: email only)",
+        "Transactional templates",
+        "Retry orchestration"
+      ],
+      "out": [
+        "SMS delivery",
+        "In-app notifications",
+        "Marketing emails",
+        "Preference center"
+      ]
+    },
+    "exit_criteria": [
+      "Event consumption triggers notification queue",
+      "Email sent on seller activation, payment receipt, escrow release",
+      "Failed deliveries retry with backoff",
+      "Notification preferences respected"
+    ],
+    "tickets": [
+      "T9.1",
+      "T9.2",
+      "T9.3",
+      "T9.4"
+    ],
+    "dependencies": [
+      "M1"
+    ],
+    "downstream_impact": "Enhances all domains. Does not block any core functionality.",
+    "estimated_duration_days": 2,
+    "status": "planned",
+    "metadata": {
+      "created_at": "2026-05-19T02:28:56.226Z",
+      "updated_at": "2026-05-19T02:28:56.226Z",
+      "version": 1
+    }
+  },
+  {
+    "id": "M10",
+    "phase": 10,
+    "title": "Platform Hardening",
+    "purpose": "Prepare platform for production load and operational scrutiny.",
+    "trust_principle": "Infrastructure quality directly impacts user trust.",
+    "scope": {
+      "in": [
+        "Observability completion (dashboards, alerting)",
+        "Metrics aggregation",
+        "DLQ tooling and replay",
+        "Rate limiting enforcement",
+        "Abuse prevention (basic)",
+        "Reconciliation validation",
+        "Load testing (smoke tests)"
+      ],
+      "out": [
+        "Chaos engineering",
+        "Multi-region deployment",
+        "Auto-scaling",
+        "Advanced fraud detection"
+      ]
+    },
+    "exit_criteria": [
+      "Grafana dashboards operational",
+      "P1 alerts page within 2 minutes",
+      "DLQ replay procedure documented and tested",
+      "Rate limits enforced at API Gateway",
+      "Load test: 100 concurrent checkouts pass"
+    ],
+    "tickets": [
+      "T10.1",
+      "T10.2",
+      "T10.3",
+      "T10.4",
+      "T10.5"
+    ],
+    "dependencies": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "M9"
+    ],
+    "downstream_impact": "No functional blockers. Operational readiness gate.",
+    "estimated_duration_days": 2,
+    "status": "planned",
+    "metadata": {
+      "created_at": "2026-05-19T02:28:56.226Z",
+      "updated_at": "2026-05-19T02:28:56.226Z",
+      "version": 1
+    }
+  }
+]

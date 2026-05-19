@@ -1,0 +1,65 @@
+{
+  "id": "T7.2",
+  "milestone_id": "M7",
+  "title": "Conversation Aggregate",
+  "domain": "Messaging",
+  "capability": "Domain Model",
+  "purpose": "Implement transaction-scoped messaging.",
+  "dependencies": [
+    "T7.1"
+  ],
+  "architectural_constraints": [
+    "Aggregate root: Conversation",
+    "Messages immutable after send",
+    "Participant validation on creation",
+    "Events on new message"
+  ],
+  "deliverables": [
+    {
+      "path": "src/messaging/domain/entities/conversation.ts",
+      "description": "Conversation aggregate",
+      "type": "file"
+    },
+    {
+      "path": "src/messaging/domain/entities/message.ts",
+      "description": "Message entity",
+      "type": "file"
+    },
+    {
+      "path": "src/messaging/domain/events/message-events.ts",
+      "description": "Messaging domain events",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Buyer can create conversation on transaction",
+    "Seller can reply",
+    "Message immutable after send",
+    "Conversation scoped to transaction",
+    "Events emitted on new message"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "messaging_messages_sent_total",
+      "messaging_conversations_created_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Non-participant sends message",
+      "mitigation": "Authorization error",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "id": "T8.3",
+  "milestone_id": "M8",
+  "title": "Dispute Management",
+  "domain": "Vault",
+  "capability": "Conflict Resolution",
+  "purpose": "Implement dispute initiation and resolution.",
+  "dependencies": [
+    "T8.2"
+  ],
+  "architectural_constraints": [
+    "Dispute freezes settlement",
+    "Resolution: buyer_wins, seller_wins, split",
+    "Compensation event on resolution"
+  ],
+  "deliverables": [
+    {
+      "path": "src/vault/domain/entities/dispute.ts",
+      "description": "Dispute aggregate",
+      "type": "file"
+    },
+    {
+      "path": "src/vault/domain/services/dispute-orchestrator.ts",
+      "description": "Dispute resolution logic",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Dispute initiation freezes settlement",
+    "Resolution emits compensation event",
+    "Audit log records resolution",
+    "Buyer/seller notified"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "vault_disputes_created_total",
+      "vault_disputes_resolved_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Dispute after release",
+      "mitigation": "Compensation flow triggered",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

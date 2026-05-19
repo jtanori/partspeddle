@@ -1,0 +1,49 @@
+{
+  "id": "T4.1",
+  "milestone_id": "M4",
+  "title": "AI Database Schema",
+  "domain": "AI Intelligence",
+  "capability": "Persistence",
+  "purpose": "Create AI analysis and result tables.",
+  "dependencies": [
+    "T3.1"
+  ],
+  "architectural_constraints": [
+    "Forward-only migrations",
+    "RLS mandatory",
+    "Result stored as JSONB"
+  ],
+  "deliverables": [
+    {
+      "path": "supabase/migrations/xxx_ai_analysis.sql",
+      "description": "ai_analysis_requests, ai_analysis_results",
+      "type": "migration"
+    },
+    {
+      "path": "supabase/migrations/xxx_ai_rls.sql",
+      "description": "RLS policies",
+      "type": "migration"
+    }
+  ],
+  "acceptance_criteria": [
+    "Tables created with correct FK relationships",
+    "RLS prevents cross-user access"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [
+      "DB migration success/failure"
+    ],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "id": "T6.4",
+  "milestone_id": "M6",
+  "title": "Escrow Lifecycle",
+  "domain": "Transactions",
+  "capability": "Trust Orchestration",
+  "purpose": "Manage escrow hold and release.",
+  "dependencies": [
+    "T6.3"
+  ],
+  "architectural_constraints": [
+    "States: pending_funds → funded → inspection → releasing → released | disputed → resolved",
+    "Release requires buyer confirmation or 72h timeout",
+    "Events on all transitions"
+  ],
+  "deliverables": [
+    {
+      "path": "src/transactions/domain/entities/escrow-record.ts",
+      "description": "EscrowRecord aggregate",
+      "type": "file"
+    },
+    {
+      "path": "src/transactions/domain/services/escrow-orchestrator.ts",
+      "description": "Escrow state machine logic",
+      "type": "file"
+    },
+    {
+      "path": "src/transactions/domain/events/escrow-events.ts",
+      "description": "Escrow domain events",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Escrow created on payment capture",
+    "Buyer confirmation triggers release",
+    "72h timeout auto-releases",
+    "Dispute freezes release",
+    "Compensation event emitted on reversal"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "transactions_escrow_created_total",
+      "transactions_escrow_released_total",
+      "transactions_escrow_disputed_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Buyer never confirms",
+      "mitigation": "Auto-release after 72h",
+      "severity": "medium"
+    },
+    {
+      "scenario": "Dispute raised after release",
+      "mitigation": "Compensation flow triggered",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 4,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

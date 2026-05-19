@@ -1,0 +1,52 @@
+{
+  "id": "T5.3",
+  "milestone_id": "M5",
+  "title": "Search Indexing Queue",
+  "domain": "Search",
+  "capability": "Async Indexing",
+  "purpose": "Queue-based indexing with failure tolerance.",
+  "dependencies": [
+    "T5.1"
+  ],
+  "architectural_constraints": [
+    "Queue: search-indexing",
+    "Retry: 3x exponential",
+    "DLQ after exhaustion"
+  ],
+  "deliverables": [
+    {
+      "path": "src/search/queue/search-indexing-queue.ts",
+      "description": "Queue setup",
+      "type": "file"
+    },
+    {
+      "path": "src/search/queue/reconciliation-job.ts",
+      "description": "Index reconciliation job",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Queue job processes listing update",
+    "Retry on failure",
+    "DLQ receives exhausted jobs",
+    "Reconciliation identifies missing index entries"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "search_queue_jobs_total",
+      "search_queue_dlq_count"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

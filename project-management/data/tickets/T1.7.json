@@ -1,0 +1,50 @@
+{
+  "id": "T1.7",
+  "milestone_id": "M1",
+  "title": "Error System",
+  "domain": "Shared",
+  "capability": "Failure Handling",
+  "purpose": "Establish canonical error hierarchy for all domains.",
+  "dependencies": [
+    "T1.1"
+  ],
+  "architectural_constraints": [
+    "All domain errors extend base DomainError",
+    "Raw errors wrapped before crossing boundaries",
+    "Error codes: DOMAIN_SPECIFIC_REASON"
+  ],
+  "deliverables": [
+    {
+      "path": "src/shared/errors/domain-error.ts",
+      "description": "Base domain error class",
+      "type": "file"
+    },
+    {
+      "path": "src/shared/errors/error-mapper.ts",
+      "description": "Error mapping utilities",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "DomainError contains code, message, correlationId, isRetryable",
+    "Raw Error wrapped in DomainError",
+    "API returns canonical error shape"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "errors_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 2,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:31:57.300Z",
+    "updated_at": "2026-05-19T02:31:57.300Z",
+    "version": 1
+  }
+}

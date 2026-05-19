@@ -1,0 +1,81 @@
+{
+  "id": "T2.4",
+  "milestone_id": "M2",
+  "title": "Identity Repositories",
+  "domain": "Identity",
+  "capability": "Persistence Boundary",
+  "purpose": "Implement repository pattern with outbox integration.",
+  "dependencies": [
+    "T2.1",
+    "T2.2",
+    "T2.3",
+    "T1.3"
+  ],
+  "architectural_constraints": [
+    "Aggregate-root only operations",
+    "No cross-domain joins",
+    "Atomic DB write + outbox insert",
+    "Idempotency on create operations"
+  ],
+  "deliverables": [
+    {
+      "path": "src/identity/infrastructure/persistence/user-repository.ts",
+      "description": "User repository implementation",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/infrastructure/persistence/profile-repository.ts",
+      "description": "Profile repository implementation",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/infrastructure/persistence/seller-profile-repository.ts",
+      "description": "SellerProfile repository implementation",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/infrastructure/persistence/user-repository.memory.ts",
+      "description": "In-memory test adapter",
+      "type": "test"
+    },
+    {
+      "path": "src/identity/infrastructure/persistence/seller-profile-repository.memory.ts",
+      "description": "In-memory test adapter",
+      "type": "test"
+    }
+  ],
+  "acceptance_criteria": [
+    "Repository find/save operations work",
+    "Save writes to outbox in same transaction",
+    "Idempotency prevents duplicate seller creation",
+    "Lazy buyer profile creation is atomic"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "identity_db_query_latency_seconds"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "DB constraint violation",
+      "mitigation": "Mapped to domain error",
+      "severity": "medium"
+    },
+    {
+      "scenario": "Outbox insert failure",
+      "mitigation": "Transaction rolls back",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 4,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:31:57.300Z",
+    "updated_at": "2026-05-19T02:31:57.300Z",
+    "version": 1
+  }
+}

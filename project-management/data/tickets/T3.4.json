@@ -1,0 +1,58 @@
+{
+  "id": "T3.4",
+  "milestone_id": "M3",
+  "title": "Marketplace Repositories",
+  "domain": "Marketplace",
+  "capability": "Persistence Boundary",
+  "purpose": "Implement repository pattern for marketplace domain.",
+  "dependencies": [
+    "T3.1",
+    "T3.2",
+    "T3.3"
+  ],
+  "architectural_constraints": [
+    "Aggregate-root only operations",
+    "No cross-domain joins",
+    "Atomic write + outbox insert",
+    "Idempotency on listing creation"
+  ],
+  "deliverables": [
+    {
+      "path": "src/marketplace/infrastructure/persistence/listing-repository.ts",
+      "description": "Listing repository",
+      "type": "file"
+    },
+    {
+      "path": "src/marketplace/infrastructure/persistence/inventory-item-repository.ts",
+      "description": "InventoryItem repository",
+      "type": "file"
+    },
+    {
+      "path": "src/marketplace/infrastructure/persistence/listing-repository.memory.ts",
+      "description": "In-memory test adapter",
+      "type": "test"
+    }
+  ],
+  "acceptance_criteria": [
+    "Save publishes events atomically",
+    "Find by seller works",
+    "Idempotency prevents duplicate listing creation"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "marketplace_db_query_latency_seconds"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

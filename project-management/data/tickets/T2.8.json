@@ -1,0 +1,62 @@
+{
+  "id": "T2.8",
+  "milestone_id": "M2",
+  "title": "Identity Integration Tests",
+  "domain": "Identity",
+  "capability": "Quality Assurance",
+  "purpose": "Verify Identity domain end-to-end.",
+  "dependencies": [
+    "T2.1",
+    "T2.2",
+    "T2.3",
+    "T2.4",
+    "T2.5",
+    "T2.6",
+    "T2.7"
+  ],
+  "architectural_constraints": [
+    "Test DB per run",
+    "Transaction rollback per test",
+    "RLS tested with authenticated role",
+    "Service role for setup"
+  ],
+  "deliverables": [
+    {
+      "path": "src/identity/domain/entities/*.test.ts",
+      "description": "Entity unit tests",
+      "type": "test"
+    },
+    {
+      "path": "src/identity/application/services/*.test.ts",
+      "description": "Service unit tests",
+      "type": "test"
+    },
+    {
+      "path": "tests/integration/identity/*.test.ts",
+      "description": "DB triggers, RLS, webhook integration tests",
+      "type": "test"
+    }
+  ],
+  "acceptance_criteria": [
+    "Auth sync trigger creates user + profile",
+    "Onboarding completion transitions seller status",
+    "RLS prevents unauthorized access",
+    "Webhook deduplication works",
+    "Event emission verified"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 4,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:31:57.300Z",
+    "updated_at": "2026-05-19T02:31:57.300Z",
+    "version": 1
+  }
+}

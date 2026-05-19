@@ -1,0 +1,75 @@
+{
+  "id": "T2.2",
+  "milestone_id": "M2",
+  "title": "User Aggregate & Profile Lifecycle",
+  "domain": "Identity",
+  "capability": "Domain Model",
+  "purpose": "Implement User aggregate with invariant enforcement.",
+  "dependencies": [
+    "T2.1"
+  ],
+  "architectural_constraints": [
+    "Aggregate root: User",
+    "Lazy creation: BuyerProfile",
+    "Auto-creation: Profile (via trigger)",
+    "Events emitted on state change"
+  ],
+  "deliverables": [
+    {
+      "path": "src/identity/domain/entities/user.ts",
+      "description": "User aggregate root",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/domain/entities/profile.ts",
+      "description": "Profile entity",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/domain/entities/buyer-profile.ts",
+      "description": "BuyerProfile entity",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/domain/events/user-events.ts",
+      "description": "User domain events",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "User enforces email uniqueness",
+    "Status transitions validated (no skips)",
+    "Suspension cascades to session revocation",
+    "user.created event emitted on creation",
+    "Unit tests: 95%+ meaningful coverage"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "identity_user_registrations_total",
+      "identity_user_suspensions_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Duplicate email",
+      "mitigation": "Validation error",
+      "severity": "medium"
+    },
+    {
+      "scenario": "Orphaned auth user",
+      "mitigation": "Reconciliation deactivates",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 4,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:31:57.300Z",
+    "updated_at": "2026-05-19T02:31:57.300Z",
+    "version": 1
+  }
+}

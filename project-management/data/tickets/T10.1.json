@@ -1,0 +1,59 @@
+{
+  "id": "T10.1",
+  "milestone_id": "M10",
+  "title": "Observability Dashboards",
+  "domain": "Shared",
+  "capability": "Operational Visibility",
+  "purpose": "Create Grafana dashboards for all domains.",
+  "dependencies": [
+    "T1.6"
+  ],
+  "architectural_constraints": [
+    "Dashboard per domain",
+    "Red metrics for errors > 0.1%",
+    "Latency percentiles: p50, p95, p99"
+  ],
+  "deliverables": [
+    {
+      "path": "infra/grafana/dashboards/identity.json",
+      "description": "Identity dashboard",
+      "type": "config"
+    },
+    {
+      "path": "infra/grafana/dashboards/marketplace.json",
+      "description": "Marketplace dashboard",
+      "type": "config"
+    },
+    {
+      "path": "infra/grafana/dashboards/transactions.json",
+      "description": "Transactions dashboard",
+      "type": "config"
+    },
+    {
+      "path": "infra/grafana/dashboards/platform.json",
+      "description": "Platform overview dashboard",
+      "type": "config"
+    }
+  ],
+  "acceptance_criteria": [
+    "Dashboards provisioned on startup",
+    "P1 alert: errors > 0.1%",
+    "Latency percentiles visible",
+    "Dashboards load < 2s"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

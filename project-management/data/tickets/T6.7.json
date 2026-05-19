@@ -1,0 +1,65 @@
+{
+  "id": "T6.7",
+  "milestone_id": "M6",
+  "title": "Transaction Integration Tests",
+  "domain": "Transactions",
+  "capability": "Quality Assurance",
+  "purpose": "Verify end-to-end transaction flow.",
+  "dependencies": [
+    "T6.1",
+    "T6.2",
+    "T6.3",
+    "T6.4",
+    "T6.5",
+    "T6.6"
+  ],
+  "architectural_constraints": [
+    "Test DB per run",
+    "Transaction rollback per test",
+    "Stripe mock for tests"
+  ],
+  "deliverables": [
+    {
+      "path": "src/transactions/domain/entities/*.test.ts",
+      "description": "Entity unit tests",
+      "type": "test"
+    },
+    {
+      "path": "src/transactions/application/services/*.test.ts",
+      "description": "Service unit tests",
+      "type": "test"
+    },
+    {
+      "path": "tests/integration/transactions/*.test.ts",
+      "description": "End-to-end transaction tests",
+      "type": "test"
+    },
+    {
+      "path": "tests/mocks/stripe-mock.ts",
+      "description": "Stripe API mock",
+      "type": "test"
+    }
+  ],
+  "acceptance_criteria": [
+    "Checkout → Payment → Escrow → Release → Settlement",
+    "Compensation reverses failed transaction",
+    "Idempotency prevents duplicate charges",
+    "RLS prevents cross-party access",
+    "End-to-end test: 100 concurrent checkouts"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [],
+  "estimated_hours": 5,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

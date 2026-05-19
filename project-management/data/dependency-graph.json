@@ -1,0 +1,569 @@
+{
+  "version": 1,
+  "generated_at": "2026-05-19T03:24:33.812Z",
+  "milestone_dependencies": [
+    {
+      "id": "M1",
+      "title": "Runtime Foundations",
+      "depends_on": [],
+      "blocks": [
+        "M2",
+        "M3",
+        "M4",
+        "M5",
+        "M6",
+        "M7",
+        "M8",
+        "M9",
+        "M10"
+      ],
+      "critical_path": true,
+      "parallelizable": false
+    },
+    {
+      "id": "M2",
+      "title": "Identity Domain",
+      "depends_on": [
+        "M1"
+      ],
+      "blocks": [
+        "M3",
+        "M6",
+        "M7"
+      ],
+      "critical_path": true,
+      "parallelizable": false
+    },
+    {
+      "id": "M3",
+      "title": "Marketplace Core",
+      "depends_on": [
+        "M1",
+        "M2"
+      ],
+      "blocks": [
+        "M4",
+        "M5",
+        "M6"
+      ],
+      "critical_path": true,
+      "parallelizable": false
+    },
+    {
+      "id": "M4",
+      "title": "AI Intelligence",
+      "depends_on": [
+        "M1",
+        "M3"
+      ],
+      "blocks": [],
+      "critical_path": false,
+      "parallelizable": true
+    },
+    {
+      "id": "M5",
+      "title": "Search Infrastructure",
+      "depends_on": [
+        "M1",
+        "M3"
+      ],
+      "blocks": [],
+      "critical_path": false,
+      "parallelizable": true
+    },
+    {
+      "id": "M6",
+      "title": "Transaction Orchestration",
+      "depends_on": [
+        "M1",
+        "M2",
+        "M3"
+      ],
+      "blocks": [
+        "M7",
+        "M8",
+        "M9",
+        "M10"
+      ],
+      "critical_path": true,
+      "parallelizable": false
+    },
+    {
+      "id": "M7",
+      "title": "Messaging",
+      "depends_on": [
+        "M1",
+        "M6"
+      ],
+      "blocks": [],
+      "critical_path": false,
+      "parallelizable": true
+    },
+    {
+      "id": "M8",
+      "title": "Vault Infrastructure",
+      "depends_on": [
+        "M1",
+        "M6"
+      ],
+      "blocks": [],
+      "critical_path": false,
+      "parallelizable": true
+    },
+    {
+      "id": "M9",
+      "title": "Notification Infrastructure",
+      "depends_on": [
+        "M1"
+      ],
+      "blocks": [],
+      "critical_path": false,
+      "parallelizable": true
+    },
+    {
+      "id": "M10",
+      "title": "Platform Hardening",
+      "depends_on": [
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M5",
+        "M6",
+        "M7",
+        "M8",
+        "M9"
+      ],
+      "blocks": [],
+      "critical_path": true,
+      "parallelizable": false
+    }
+  ],
+  "domain_events": [
+    {
+      "consumer_domain": "Marketplace",
+      "producer_domain": "Identity",
+      "events": [
+        "user.created",
+        "seller.activated"
+      ],
+      "required": true
+    },
+    {
+      "consumer_domain": "Transactions",
+      "producer_domain": "Identity",
+      "events": [
+        "user.created",
+        "user.suspended"
+      ],
+      "required": true
+    },
+    {
+      "consumer_domain": "Transactions",
+      "producer_domain": "Marketplace",
+      "events": [
+        "listing.published",
+        "listing.updated"
+      ],
+      "required": true
+    },
+    {
+      "consumer_domain": "AI Intelligence",
+      "producer_domain": "Marketplace",
+      "events": [
+        "media.uploaded"
+      ],
+      "required": false
+    },
+    {
+      "consumer_domain": "Search",
+      "producer_domain": "Marketplace",
+      "events": [
+        "listing.published",
+        "listing.archived"
+      ],
+      "required": false
+    },
+    {
+      "consumer_domain": "Vault",
+      "producer_domain": "Transactions",
+      "events": [
+        "escrow.created",
+        "escrow.locked"
+      ],
+      "required": true
+    },
+    {
+      "consumer_domain": "Notifications",
+      "producer_domain": "Transactions",
+      "events": [
+        "payment.authorized",
+        "escrow.released",
+        "transaction.completed"
+      ],
+      "required": false
+    },
+    {
+      "consumer_domain": "Notifications",
+      "producer_domain": "Identity",
+      "events": [
+        "seller.activated"
+      ],
+      "required": false
+    },
+    {
+      "consumer_domain": "Messaging",
+      "producer_domain": "Transactions",
+      "events": [
+        "transaction.created"
+      ],
+      "required": true
+    }
+  ],
+  "database": [
+    {
+      "table": "users",
+      "owned_by": "Identity",
+      "referenced_by": [
+        "Marketplace",
+        "Transactions",
+        "Messaging",
+        "Notifications"
+      ],
+      "mutation_rule": "owner_only"
+    },
+    {
+      "table": "profiles",
+      "owned_by": "Identity",
+      "referenced_by": [],
+      "mutation_rule": "owner_only"
+    },
+    {
+      "table": "buyer_profiles",
+      "owned_by": "Identity",
+      "referenced_by": [
+        "Transactions"
+      ],
+      "mutation_rule": "owner_only"
+    },
+    {
+      "table": "seller_profiles",
+      "owned_by": "Identity",
+      "referenced_by": [
+        "Marketplace"
+      ],
+      "mutation_rule": "owner_only"
+    },
+    {
+      "table": "listings",
+      "owned_by": "Marketplace",
+      "referenced_by": [
+        "Transactions"
+      ],
+      "mutation_rule": "owner_only"
+    },
+    {
+      "table": "inventory_items",
+      "owned_by": "Marketplace",
+      "referenced_by": [],
+      "mutation_rule": "owner_only"
+    },
+    {
+      "table": "transactions",
+      "owned_by": "Transactions",
+      "referenced_by": [
+        "Vault",
+        "Messaging"
+      ],
+      "mutation_rule": "owner_only"
+    },
+    {
+      "table": "carts",
+      "owned_by": "Transactions",
+      "referenced_by": [],
+      "mutation_rule": "owner_only"
+    },
+    {
+      "table": "checkout_sessions",
+      "owned_by": "Transactions",
+      "referenced_by": [],
+      "mutation_rule": "owner_only"
+    },
+    {
+      "table": "escrow_records",
+      "owned_by": "Vault",
+      "referenced_by": [],
+      "mutation_rule": "owner_only"
+    },
+    {
+      "table": "conversations",
+      "owned_by": "Messaging",
+      "referenced_by": [],
+      "mutation_rule": "owner_only"
+    },
+    {
+      "table": "messages",
+      "owned_by": "Messaging",
+      "referenced_by": [],
+      "mutation_rule": "owner_only"
+    },
+    {
+      "table": "notifications",
+      "owned_by": "Notifications",
+      "referenced_by": [],
+      "mutation_rule": "owner_only"
+    }
+  ],
+  "queues": [
+    {
+      "name": "identity-onboarding",
+      "producer": "Identity API",
+      "consumer": "Identity worker",
+      "blocks_if_down": "Seller activation",
+      "critical": true
+    },
+    {
+      "name": "identity-webhooks",
+      "producer": "Supabase Auth",
+      "consumer": "Identity worker",
+      "blocks_if_down": "Auth sync",
+      "critical": true
+    },
+    {
+      "name": "transaction-orchestration",
+      "producer": "Transactions API",
+      "consumer": "Transactions worker",
+      "blocks_if_down": "Checkout",
+      "critical": true
+    },
+    {
+      "name": "payment-webhooks",
+      "producer": "Stripe",
+      "consumer": "Transactions worker",
+      "blocks_if_down": "Payment reconciliation",
+      "critical": true
+    },
+    {
+      "name": "search-indexing",
+      "producer": "Marketplace events",
+      "consumer": "Search worker",
+      "blocks_if_down": "Search freshness",
+      "critical": false
+    },
+    {
+      "name": "ai-processing",
+      "producer": "Marketplace events",
+      "consumer": "AI worker",
+      "blocks_if_down": "AI enrichment",
+      "critical": false
+    },
+    {
+      "name": "notification-delivery",
+      "producer": "All domains",
+      "consumer": "Notifications worker",
+      "blocks_if_down": "User alerts",
+      "critical": false
+    },
+    {
+      "name": "settlement-batch",
+      "producer": "Transactions",
+      "consumer": "Transactions worker",
+      "blocks_if_down": "Seller payout",
+      "critical": true
+    }
+  ],
+  "services": [
+    {
+      "name": "API Gateway",
+      "depends_on": [
+        "Identity Service",
+        "Marketplace Service",
+        "Transaction Service",
+        "Vault Service",
+        "Messaging Service",
+        "Notification Service",
+        "AI Service",
+        "Search Service"
+      ],
+      "critical_path": true
+    },
+    {
+      "name": "Identity Service",
+      "depends_on": [
+        "Supabase Auth"
+      ],
+      "critical_path": true
+    },
+    {
+      "name": "Marketplace Service",
+      "depends_on": [
+        "Identity Service"
+      ],
+      "critical_path": true
+    },
+    {
+      "name": "Transaction Service",
+      "depends_on": [
+        "Identity Service",
+        "Marketplace Service",
+        "Stripe"
+      ],
+      "critical_path": true
+    },
+    {
+      "name": "Vault Service",
+      "depends_on": [
+        "Transaction Service"
+      ],
+      "critical_path": true
+    },
+    {
+      "name": "Messaging Service",
+      "depends_on": [
+        "Identity Service",
+        "Transaction Service"
+      ],
+      "critical_path": false
+    },
+    {
+      "name": "Notification Service",
+      "depends_on": [
+        "All domains"
+      ],
+      "critical_path": false
+    },
+    {
+      "name": "AI Service",
+      "depends_on": [
+        "Gemini API"
+      ],
+      "critical_path": false
+    },
+    {
+      "name": "Search Service",
+      "depends_on": [
+        "Algolia"
+      ],
+      "critical_path": false
+    }
+  ],
+  "infrastructure": [
+    {
+      "component": "Postgres",
+      "required_by": [
+        "All domains"
+      ],
+      "fallback": "None (hard dependency)",
+      "hard_dependency": true
+    },
+    {
+      "component": "Redis",
+      "required_by": [
+        "Queue workers"
+      ],
+      "fallback": "In-memory buffer 60s, then Postgres deferred jobs",
+      "hard_dependency": false
+    },
+    {
+      "component": "Supabase Auth",
+      "required_by": [
+        "Identity"
+      ],
+      "fallback": "None (hard dependency)",
+      "hard_dependency": true
+    },
+    {
+      "component": "Stripe",
+      "required_by": [
+        "Transactions"
+      ],
+      "fallback": "None (hard dependency)",
+      "hard_dependency": true
+    },
+    {
+      "component": "Algolia",
+      "required_by": [
+        "Search"
+      ],
+      "fallback": "Degraded search (DB fallback)",
+      "hard_dependency": false
+    },
+    {
+      "component": "Gemini API",
+      "required_by": [
+        "AI Intelligence"
+      ],
+      "fallback": "Skip enrichment",
+      "hard_dependency": false
+    },
+    {
+      "component": "Email provider",
+      "required_by": [
+        "Notifications"
+      ],
+      "fallback": "Queue backlog",
+      "hard_dependency": false
+    }
+  ],
+  "circular_dependencies": [
+    {
+      "potential_cycle": "Identity ↔ Marketplace",
+      "resolution": "One-way: Marketplace consumes Identity events only"
+    },
+    {
+      "potential_cycle": "Transactions ↔ Vault",
+      "resolution": "One-way: Vault consumes Transaction events only"
+    },
+    {
+      "potential_cycle": "Transactions ↔ Messaging",
+      "resolution": "One-way: Messaging consumes Transaction events only"
+    }
+  ],
+  "impact_analysis": [
+    {
+      "component": "Identity",
+      "impact": "No logins, no registrations, no seller activation → Platform halt",
+      "severity": "platform_halt"
+    },
+    {
+      "component": "Marketplace",
+      "impact": "No listings, no inventory → Discovery halt",
+      "severity": "commerce_halt"
+    },
+    {
+      "component": "Transactions",
+      "impact": "No checkout, no payments → Commerce halt",
+      "severity": "commerce_halt"
+    },
+    {
+      "component": "Stripe",
+      "impact": "No payment authorization → Checkout stall",
+      "severity": "commerce_halt"
+    },
+    {
+      "component": "Redis",
+      "impact": "Queue enqueue fails → Async workflows stall",
+      "severity": "degraded"
+    },
+    {
+      "component": "Postgres",
+      "impact": "All state mutations fail → Platform halt",
+      "severity": "platform_halt"
+    },
+    {
+      "component": "Search",
+      "impact": "Discovery degraded → Commerce continues",
+      "severity": "degraded"
+    },
+    {
+      "component": "AI",
+      "impact": "No enrichment → Commerce continues",
+      "severity": "degraded"
+    },
+    {
+      "component": "Notifications",
+      "impact": "No alerts → Commerce continues",
+      "severity": "degraded"
+    }
+  ]
+}

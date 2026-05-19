@@ -1,0 +1,60 @@
+{
+  "id": "T10.5",
+  "milestone_id": "M10",
+  "title": "Smoke Load Tests",
+  "domain": "Shared",
+  "capability": "Performance Validation",
+  "purpose": "Verify platform handles MVP load.",
+  "dependencies": [
+    "T6.7",
+    "T9.4"
+  ],
+  "architectural_constraints": [
+    "100 concurrent checkouts",
+    "Target: p95 < 2s",
+    "Failure rate < 0.1%"
+  ],
+  "deliverables": [
+    {
+      "path": "tests/load/smoke-test.ts",
+      "description": "Smoke load test suite",
+      "type": "test"
+    },
+    {
+      "path": "scripts/run-smoke-test.ts",
+      "description": "Load test runner",
+      "type": "script"
+    }
+  ],
+  "acceptance_criteria": [
+    "100 concurrent checkouts complete",
+    "p95 latency < 2s",
+    "Failure rate < 0.1%",
+    "Test results logged"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "load_test_requests_total",
+      "load_test_latency_p95",
+      "load_test_failure_rate"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Load test exceeds limits",
+      "mitigation": "Scale test environment",
+      "severity": "low"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:41:17.722Z",
+    "updated_at": "2026-05-19T02:41:17.722Z",
+    "version": 1
+  }
+}

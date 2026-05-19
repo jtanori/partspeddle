@@ -1,0 +1,349 @@
+{
+  "version": 1,
+  "generated_at": "2026-05-19T03:36:13.382Z",
+  "timeline_days": 20,
+  "sprints": [
+    {
+      "id": "S1",
+      "name": "Foundations + Identity Core",
+      "days": {
+        "start": 1,
+        "end": 3
+      },
+      "batches": [
+        {
+          "id": "A",
+          "scope": "M1 Foundations + M2 Identity Schema + Entities",
+          "execution_mode": "parallel",
+          "agents": 2,
+          "review_gate": "Architecture Gate",
+          "tickets": [
+            "T1.1",
+            "T1.2",
+            "T1.3",
+            "T1.4",
+            "T1.5",
+            "T1.6",
+            "T1.7",
+            "T1.8",
+            "T2.1",
+            "T2.2",
+            "T2.3"
+          ]
+        }
+      ],
+      "checkpoint": {
+        "criteria": [
+          "npm run test:ci passes",
+          "Schema migration runs clean",
+          "Architecture Gate review complete"
+        ],
+        "gates": [
+          "Architecture Gate"
+        ]
+      }
+    },
+    {
+      "id": "S2",
+      "name": "Identity Complete + Marketplace Core",
+      "days": {
+        "start": 4,
+        "end": 6
+      },
+      "batches": [
+        {
+          "id": "B",
+          "scope": "M2 Repositories + API + Webhooks + M3 Marketplace Schema + Entities",
+          "execution_mode": "parallel",
+          "agents": 2,
+          "review_gate": "Schema Gate + API Gate",
+          "tickets": [
+            "T2.4",
+            "T2.5",
+            "T2.6",
+            "T2.7",
+            "T2.8",
+            "T3.1",
+            "T3.2",
+            "T3.3"
+          ]
+        }
+      ],
+      "checkpoint": {
+        "criteria": [
+          "Identity E2E: registration → onboarding → activation",
+          "Marketplace schema validated",
+          "Schema Gate + API Gate review complete"
+        ],
+        "gates": [
+          "Schema Gate",
+          "API Gate"
+        ]
+      }
+    },
+    {
+      "id": "S3",
+      "name": "Marketplace Complete + Discovery",
+      "days": {
+        "start": 7,
+        "end": 9
+      },
+      "batches": [
+        {
+          "id": "C",
+          "scope": "M3 Media + API + Tests + M4 AI + M5 Search",
+          "execution_mode": "parallel",
+          "agents": 3,
+          "review_gate": "API Gate",
+          "tickets": [
+            "T3.4",
+            "T3.5",
+            "T3.6",
+            "T4.1",
+            "T4.2",
+            "T4.3",
+            "T4.4",
+            "T5.1",
+            "T5.2",
+            "T5.3",
+            "T5.4"
+          ]
+        }
+      ],
+      "checkpoint": {
+        "criteria": [
+          "Marketplace E2E: create listing → publish",
+          "AI smoke test: image → identification",
+          "Search smoke test: published listing discoverable",
+          "API Gate review complete"
+        ],
+        "gates": [
+          "API Gate"
+        ]
+      }
+    },
+    {
+      "id": "S4",
+      "name": "Transaction Core",
+      "days": {
+        "start": 10,
+        "end": 14
+      },
+      "batches": [
+        {
+          "id": "D1",
+          "scope": "M6 Schema + Cart + Checkout",
+          "execution_mode": "sequential",
+          "agents": 1,
+          "review_gate": "Trust Gate",
+          "tickets": [
+            "T6.1",
+            "T6.2",
+            "T6.3"
+          ]
+        },
+        {
+          "id": "D2",
+          "scope": "M6 Escrow + Settlement",
+          "execution_mode": "sequential",
+          "agents": 1,
+          "review_gate": "Trust Gate",
+          "tickets": [
+            "T6.4",
+            "T6.5",
+            "T6.6"
+          ]
+        }
+      ],
+      "checkpoint": {
+        "criteria": [
+          "Checkout creates Stripe PaymentIntent",
+          "Escrow locks on authorization",
+          "Settlement completes end-to-end",
+          "Trust Gate review complete"
+        ],
+        "gates": [
+          "Trust Gate"
+        ]
+      }
+    },
+    {
+      "id": "S5",
+      "name": "Supporting Domains + Transaction API",
+      "days": {
+        "start": 15,
+        "end": 17
+      },
+      "batches": [
+        {
+          "id": "E1",
+          "scope": "M6 Transaction API + E2E",
+          "execution_mode": "parallel",
+          "agents": 1,
+          "review_gate": "Trust Gate",
+          "tickets": [
+            "T6.7"
+          ]
+        },
+        {
+          "id": "E2",
+          "scope": "M7 Messaging + M8 Vault",
+          "execution_mode": "parallel",
+          "agents": 1,
+          "review_gate": "Trust Gate",
+          "tickets": [
+            "T7.1",
+            "T7.2",
+            "T7.3",
+            "T8.1",
+            "T8.2",
+            "T8.3",
+            "T8.4"
+          ]
+        },
+        {
+          "id": "E3",
+          "scope": "M9 Notifications",
+          "execution_mode": "parallel",
+          "agents": 1,
+          "review_gate": "Trust Gate",
+          "tickets": [
+            "T9.1",
+            "T9.2",
+            "T9.3",
+            "T9.4"
+          ]
+        }
+      ],
+      "checkpoint": {
+        "criteria": [
+          "Full E2E: buyer checkout → delivery → settlement",
+          "Vault releases after inspection timeout",
+          "Notification email sent on settlement",
+          "Trust Gate review complete"
+        ],
+        "gates": [
+          "Trust Gate"
+        ]
+      }
+    },
+    {
+      "id": "S6",
+      "name": "Platform Hardening",
+      "days": {
+        "start": 18,
+        "end": 20
+      },
+      "batches": [
+        {
+          "id": "F",
+          "scope": "M10 Observability + DLQ + Rate Limiting + Reconciliation + Load Testing",
+          "execution_mode": "sequential",
+          "agents": 1,
+          "review_gate": "Architecture Gate",
+          "tickets": [
+            "T10.1",
+            "T10.2",
+            "T10.3",
+            "T10.4",
+            "T10.5"
+          ]
+        }
+      ],
+      "checkpoint": {
+        "criteria": [
+          "100 concurrent checkouts pass",
+          "P1 alerts functional",
+          "Reconciliation zero discrepancies",
+          "Architecture Gate review complete"
+        ],
+        "gates": [
+          "Architecture Gate"
+        ]
+      }
+    }
+  ],
+  "parallelization_rules": [
+    {
+      "parallel": "M1 + M2 schema",
+      "sequential": "M2 API after M2 entities",
+      "reason": "Schema can be drafted while entities refined"
+    },
+    {
+      "parallel": "M3 + M4 + M5",
+      "sequential": "M6 after M3 complete",
+      "reason": "Discovery domains independent"
+    },
+    {
+      "parallel": "M7 + M8 + M9",
+      "sequential": "M6 escrow before M8 vault",
+      "reason": "Vault consumes escrow events"
+    },
+    {
+      "parallel": "T6.2 + T6.3",
+      "sequential": "T6.4 after T6.3",
+      "reason": "Escrow requires payment auth"
+    },
+    {
+      "parallel": "Multiple agents per batch",
+      "sequential": "Agents on same file",
+      "reason": "File-level merge conflicts"
+    }
+  ],
+  "descope_triggers": [
+    {
+      "domain": "AI Intelligence",
+      "failure": "M4 AI failing",
+      "action": "Skip enrichment, manual tagging"
+    },
+    {
+      "domain": "Search",
+      "failure": "M5 Search lagging",
+      "action": "Basic Algolia sync only, no ranking"
+    },
+    {
+      "domain": "Messaging",
+      "failure": "M7 Messaging broken",
+      "action": "Disable realtime, use polling"
+    },
+    {
+      "domain": "Notifications",
+      "failure": "M9 Notifications failing",
+      "action": "Basic email only, no preferences"
+    },
+    {
+      "domain": "Platform Hardening",
+      "failure": "M10 load test failing",
+      "action": "Reduce target to 50 concurrent"
+    }
+  ],
+  "velocity_metrics": {
+    "tickets_per_agent_per_day": {
+      "target": 2.5,
+      "min": 2,
+      "max": 3
+    },
+    "lines_of_code_per_agent_per_day": {
+      "target": 400,
+      "min": 300,
+      "max": 500
+    },
+    "test_cases_per_ticket": {
+      "target": 5,
+      "min": 4,
+      "max": 6
+    },
+    "review_rounds_per_pr": {
+      "target": 1,
+      "max": 2
+    },
+    "merge_time_hours": {
+      "target": 2,
+      "max": 4
+    },
+    "checkpoint_failure_rate_percent": {
+      "target": 5,
+      "max": 10
+    }
+  }
+}

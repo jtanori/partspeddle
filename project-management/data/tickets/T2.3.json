@@ -1,0 +1,75 @@
+{
+  "id": "T2.3",
+  "milestone_id": "M2",
+  "title": "SellerProfile & Onboarding State Machine",
+  "domain": "Identity",
+  "capability": "Seller Activation",
+  "purpose": "Implement deterministic seller lifecycle with guard conditions.",
+  "dependencies": [
+    "T2.2"
+  ],
+  "architectural_constraints": [
+    "States: pending → onboarding → review → active → suspended",
+    "Activation preconditions: Stripe account + verified identity + active user",
+    "activated_at immutable once set",
+    "Events: seller.activated, seller.deactivated"
+  ],
+  "deliverables": [
+    {
+      "path": "src/identity/domain/entities/seller-profile.ts",
+      "description": "SellerProfile aggregate",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/domain/entities/onboarding-state.ts",
+      "description": "OnboardingState entity",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/domain/events/seller-events.ts",
+      "description": "Seller domain events",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/domain/services/state-machine.ts",
+      "description": "State machine validation logic",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Invalid transitions rejected with domain error",
+    "All 4 onboarding steps required for review",
+    "Activation blocked without Stripe account",
+    "activated_at set only on first activation",
+    "Reactivation preserves activated_at"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "identity_seller_activations_total",
+      "identity_onboarding_completions_total"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Concurrent registration",
+      "mitigation": "Idempotency key prevents duplicate",
+      "severity": "medium"
+    },
+    {
+      "scenario": "Stripe account reused",
+      "mitigation": "Unique constraint violation",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 5,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T02:31:57.300Z",
+    "updated_at": "2026-05-19T02:31:57.300Z",
+    "version": 1
+  }
+}
