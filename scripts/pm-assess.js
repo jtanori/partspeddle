@@ -95,7 +95,7 @@ function assessTicket(ticket) {
   let deliverablesFound = 0;
   let deliverablesTotal = 0;
   for (const d of ticket.deliverables || []) {
-    if (d.type === 'directory') {
+    if (d.type === 'directory' && d.path && !d.path.includes('<')) {
       const exists = existsSync(d.path) && statSync(d.path).isDirectory();
       deliverablesTotal++;
       if (exists) deliverablesFound++;

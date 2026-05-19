@@ -30,7 +30,8 @@
     "pm:status": "node scripts/pm-status.js",
     "pm:report": "node scripts/pm-report.js",
     "pm:report:json": "node scripts/pm-report.js --json",
-    "pm:assess": "node scripts/pm-assess.js"
+    "pm:assess": "node scripts/pm-assess.js",
+    "pm:summary": "node scripts/pm-summary.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.49.4",

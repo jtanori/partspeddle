@@ -22,6 +22,7 @@ npm install        # ensures ajv, ajv-formats are present
 | `pm-status.js` | Colorful terminal dashboard | Daily standup, quick pulse check |
 | `pm-report.js` | Markdown or JSON report | Sprint reviews, stakeholder updates |
 | `pm-assess.js` | Structural ticket assessment | Pre-implementation sanity check |
+| `pm-summary.js` | Structured summary (ticket/milestone/project) | Deep-dive review, handoff docs |
 
 ---
 
@@ -283,11 +284,74 @@ node scripts/pm-assess.js --milestone M1
 
 ---
 
+## `pm-summary.js`
+
+**What it does:**
+- Generates structured summaries at ticket, milestone, domain, or project level
+- Shows dependency statuses, deliverable counts, test presence, traceability
+- Auto-detects large output and writes to temp file
+- Supports plain text and JSON output
+
+**Usage:**
+
+```bash
+# Single ticket
+npm run pm:summary -- --ticket T1.2
+
+# Milestone
+npm run pm:summary -- --milestone M1
+
+# Domain
+npm run pm:summary -- --domain Shared
+
+# Full project
+npm run pm:summary -- --all
+
+# JSON output
+npm run pm:summary -- --ticket T1.2 --json
+
+# Force file output
+npm run pm:summary -- --milestone M1 --file
+```
+
+**Auto File Output:**
+
+If output exceeds 80 lines or 8 KB, it automatically writes to a temp file:
+
+```
+/var/folders/.../T/vintrack/vintrack-summary-milestone_m1-2026-05-19T... .txt
+```
+
+Temp files are **not tracked by git** (written to OS temp directory).
+
+**Summary Fields per Ticket:**
+
+| Field | Source |
+|-------|--------|
+| `Status` | ticket.status |
+| `Deliverables` | Files counted vs found on disk |
+| `Tests` | Detects `.test.ts` adjacent to deliverables |
+| `Dependencies` | Each dependency ticket status shown |
+| `Traceability` | Number of traceability entries |
+| `Failure Modes` | Number of documented failure modes |
+| `Git Commit` | Final commit hash (if recorded) |
+
+**Project Summary ( `--all` ):**
+
+- Ticket counts by status and domain
+- Milestone progress bars
+- Critical path highlight
+- Blocked ticket list
+- In-progress ticket list
+- Total/completed hours
+
+---
+
 ## Data Flow
 
 ```
 project-management/data/
-  ├── milestones.json          ← validate-pm.js, pm-status.js, pm-report.js, pm-assess.js
+  ├── milestones.json          ← validate-pm.js, pm-status.js, pm-report.js, pm-assess.js, pm-summary.js
   ├── tickets/*.json           ← all scripts
   ├── dependency-graph.json    ← validate-pm.js
   ├── sequence.json            ← validate-pm.js

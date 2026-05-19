@@ -19,6 +19,7 @@ npm run pm:assess       # Ticket structural assessment
 | `pm-status.js` | `npm run pm:status` | Colorful CLI status dashboard |
 | `pm-report.js` | `npm run pm:report` | Generate Markdown/JSON project reports |
 | `pm-assess.js` | `npm run pm:assess` | Assess ticket health against actual codebase |
+| `pm-summary.js` | `npm run pm:summary` | Structured summary (ticket/milestone/domain/project) |
 
 ## Detailed Documentation
 
