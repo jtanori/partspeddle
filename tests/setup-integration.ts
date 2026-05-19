@@ -25,6 +25,7 @@ const REDIS_URL = process.env.REDIS_URL ?? 'redis://localhost:6379';
  */
 const TEST_RESET_TABLES = [
   'outbox',
+  'identity.users',
   'identity.profiles',
   'identity.seller_profiles',
   'identity.buyer_profiles',
