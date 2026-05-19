@@ -1,7 +1,7 @@
 import type { z } from 'zod';
 import { DomainError } from '../errors/domain-error.js';
 
-const EVENT_TYPE_PATTERN = /^[a-z]+\.[a-z_]+$/;
+const EVENT_TYPE_PATTERN = /^[a-z]+\.[a-z]+(_[a-z]+)*ed$/;
 
 export interface EventCatalogEntry {
   readonly version: number;

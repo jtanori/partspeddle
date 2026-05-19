@@ -23,10 +23,11 @@ function validatePayloadSize(payload: Record<string, unknown>): boolean {
  */
 export const domainEventSchema = z.object({
   eventId: z.string().uuid(),
-  eventType: z.string().regex(/^[a-z]+\.[a-z_]+$/, {
+  eventType: z.string().regex(/^[a-z]+\.[a-z]+(_[a-z]+)*ed$/, {
     message: 'Event type must match domain.action format (past tense, lowercase)',
   }),
   eventVersion: z.number().int().min(1),
+  schemaVersion: z.number().int().min(1),
   occurredAt: z.string().datetime(),
   correlationId: z.string().uuid(),
   causationId: z.string().uuid(),
@@ -35,6 +36,7 @@ export const domainEventSchema = z.object({
     message: 'Domain must be a single lowercase word',
   }),
   aggregateId: z.string().uuid(),
+  aggregateType: z.string().optional(),
   payload: z.record(z.unknown()).refine(validatePayloadSize, {
     message: `Payload exceeds hard limit of ${PAYLOAD_HARD_LIMIT_BYTES} bytes`,
   }),

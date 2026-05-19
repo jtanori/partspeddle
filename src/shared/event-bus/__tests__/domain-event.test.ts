@@ -20,6 +20,7 @@ describe('DomainEvent', () => {
     );
     expect(event.eventType).toBe('seller.activated');
     expect(event.eventVersion).toBe(1);
+    expect(event.schemaVersion).toBe(1);
     expect(event.correlationId).toBe(baseProps.correlationId);
     expect(event.causationId).toBe(baseProps.correlationId);
     expect(event.actorId).toBe('system');
@@ -44,6 +45,30 @@ describe('DomainEvent', () => {
     expect(event.eventVersion).toBe(2);
   });
 
+  it('defaults schemaVersion to 1', () => {
+    const event = new DomainEvent(baseProps);
+
+    expect(event.schemaVersion).toBe(1);
+  });
+
+  it('accepts optional schemaVersion', () => {
+    const event = new DomainEvent({ ...baseProps, schemaVersion: 2 });
+
+    expect(event.schemaVersion).toBe(2);
+  });
+
+  it('accepts optional aggregateType', () => {
+    const event = new DomainEvent({ ...baseProps, aggregateType: 'SellerProfile' });
+
+    expect(event.aggregateType).toBe('SellerProfile');
+  });
+
+  it('omits aggregateType when not provided', () => {
+    const event = new DomainEvent(baseProps);
+
+    expect(event.aggregateType).toBeUndefined();
+  });
+
   it('accepts optional causationId', () => {
     const causationId = '550e8400-e29b-41d4-a716-446655440001';
     const event = new DomainEvent({ ...baseProps, causationId });
@@ -63,6 +88,12 @@ describe('DomainEvent', () => {
       DomainError,
     );
     expect(() => new DomainEvent({ ...baseProps, eventType: 'Seller.Activated' })).toThrow(
+      DomainError,
+    );
+    expect(() => new DomainEvent({ ...baseProps, eventType: 'seller.activate' })).toThrow(
+      DomainError,
+    );
+    expect(() => new DomainEvent({ ...baseProps, eventType: 'payment.authorize' })).toThrow(
       DomainError,
     );
   });
@@ -132,6 +163,7 @@ describe('DomainEvent', () => {
     expect(json).toHaveProperty('eventId');
     expect(json).toHaveProperty('eventType', 'seller.activated');
     expect(json).toHaveProperty('eventVersion', 1);
+    expect(json).toHaveProperty('schemaVersion', 1);
     expect(json).toHaveProperty('occurredAt');
     expect(json).toHaveProperty('correlationId');
     expect(json).toHaveProperty('causationId');
@@ -140,5 +172,39 @@ describe('DomainEvent', () => {
     expect(json).toHaveProperty('aggregateId');
     expect(json).toHaveProperty('payload');
     expect(json).toHaveProperty('metadata');
+    expect(json).not.toHaveProperty('aggregateType');
+  });
+
+  it('includes aggregateType in JSON when provided', () => {
+    const event = new DomainEvent({ ...baseProps, aggregateType: 'SellerProfile' });
+    const json = event.toJSON();
+
+    expect(json).toHaveProperty('aggregateType', 'SellerProfile');
+  });
+
+  it('generates server-authoritative occurredAt by default', () => {
+    const before = new Date().toISOString();
+    const event = new DomainEvent(baseProps);
+    const after = new Date().toISOString();
+
+    expect(event.occurredAt >= before && event.occurredAt <= after).toBe(true);
+  });
+
+  it('ignores external occurredAt without trustedTimestamp flag', () => {
+    const externalTimestamp = '2020-01-01T00:00:00.000Z';
+    const event = new DomainEvent({ ...baseProps, occurredAt: externalTimestamp });
+
+    expect(event.occurredAt).not.toBe(externalTimestamp);
+  });
+
+  it('accepts external occurredAt when trustedTimestamp is true', () => {
+    const externalTimestamp = '2020-01-01T00:00:00.000Z';
+    const event = new DomainEvent({
+      ...baseProps,
+      occurredAt: externalTimestamp,
+      trustedTimestamp: true,
+    });
+
+    expect(event.occurredAt).toBe(externalTimestamp);
   });
 });

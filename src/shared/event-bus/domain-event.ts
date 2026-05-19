@@ -1,6 +1,6 @@
 import { DomainError } from '../errors/domain-error.js';
 
-const EVENT_TYPE_PATTERN = /^[a-z]+\.[a-z_]+$/;
+const EVENT_TYPE_PATTERN = /^[a-z]+\.[a-z]+(_[a-z]+)*ed$/;
 const DOMAIN_PATTERN = /^[a-z]+$/;
 export const PAYLOAD_HARD_LIMIT_BYTES = 64 * 1024;
 export const PAYLOAD_PREFERRED_LIMIT_BYTES = 32 * 1024;
@@ -19,12 +19,15 @@ export interface DomainEventProps {
   readonly eventId?: string;
   readonly eventType: string;
   readonly eventVersion?: number;
+  readonly schemaVersion?: number;
   readonly occurredAt?: string;
+  readonly trustedTimestamp?: boolean;
   readonly correlationId: string;
   readonly causationId?: string;
   readonly actorId: string;
   readonly domain: string;
   readonly aggregateId: string;
+  readonly aggregateType?: string;
   readonly payload: DomainEventPayload;
   readonly metadata?: DomainEventMetadata;
 }
@@ -41,12 +44,14 @@ export class DomainEvent {
   readonly eventId: string;
   readonly eventType: string;
   readonly eventVersion: number;
+  readonly schemaVersion: number;
   readonly occurredAt: string;
   readonly correlationId: string;
   readonly causationId: string;
   readonly actorId: string;
   readonly domain: string;
   readonly aggregateId: string;
+  readonly aggregateType?: string;
   readonly payload: DomainEventPayload;
   readonly metadata: DomainEventMetadata;
 
@@ -64,8 +69,13 @@ export class DomainEvent {
 
     this.eventId = props.eventId ?? crypto.randomUUID();
     this.eventVersion = props.eventVersion ?? 1;
-    this.occurredAt = props.occurredAt ?? new Date().toISOString();
+    this.schemaVersion = props.schemaVersion ?? 1;
+    this.occurredAt =
+      props.occurredAt && props.trustedTimestamp
+        ? props.occurredAt
+        : new Date().toISOString();
     this.causationId = props.causationId ?? props.correlationId;
+    this.aggregateType = props.aggregateType;
     this.metadata = props.metadata ?? {};
   }
 
@@ -73,10 +83,11 @@ export class DomainEvent {
    * Serializes the event to a plain JSON envelope.
    */
   toJSON(): Record<string, unknown> {
-    return {
+    const envelope: Record<string, unknown> = {
       eventId: this.eventId,
       eventType: this.eventType,
       eventVersion: this.eventVersion,
+      schemaVersion: this.schemaVersion,
       occurredAt: this.occurredAt,
       correlationId: this.correlationId,
       causationId: this.causationId,
@@ -86,6 +97,10 @@ export class DomainEvent {
       payload: this.payload,
       metadata: this.metadata,
     };
+    if (this.aggregateType !== undefined) {
+      envelope.aggregateType = this.aggregateType;
+    }
+    return envelope;
   }
 
   private _validateEventType(): void {

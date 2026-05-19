@@ -6,6 +6,7 @@ describe('domainEventSchema', () => {
     eventId: '550e8400-e29b-41d4-a716-446655440000',
     eventType: 'seller.activated',
     eventVersion: 1,
+    schemaVersion: 1,
     occurredAt: '2026-01-15T10:30:00.000Z',
     correlationId: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
     causationId: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
@@ -31,6 +32,8 @@ describe('domainEventSchema', () => {
   it('rejects invalid eventType format', () => {
     expect(() => domainEventSchema.parse({ ...validEvent, eventType: 'sellerActivated' })).toThrow();
     expect(() => domainEventSchema.parse({ ...validEvent, eventType: 'Seller.Activated' })).toThrow();
+    expect(() => domainEventSchema.parse({ ...validEvent, eventType: 'seller.activate' })).toThrow();
+    expect(() => domainEventSchema.parse({ ...validEvent, eventType: 'payment.authorize' })).toThrow();
   });
 
   it('rejects invalid UUID fields', () => {
@@ -49,6 +52,28 @@ describe('domainEventSchema', () => {
 
   it('rejects non-integer eventVersion', () => {
     expect(() => domainEventSchema.parse({ ...validEvent, eventVersion: 1.5 })).toThrow();
+  });
+
+  it('rejects schemaVersion below 1', () => {
+    expect(() => domainEventSchema.parse({ ...validEvent, schemaVersion: 0 })).toThrow();
+    expect(() => domainEventSchema.parse({ ...validEvent, schemaVersion: -1 })).toThrow();
+  });
+
+  it('rejects non-integer schemaVersion', () => {
+    expect(() => domainEventSchema.parse({ ...validEvent, schemaVersion: 1.5 })).toThrow();
+  });
+
+  it('accepts optional aggregateType', () => {
+    expect(() =>
+      domainEventSchema.parse({ ...validEvent, aggregateType: 'SellerProfile' }),
+    ).not.toThrow();
+  });
+
+  it('accepts omitted aggregateType', () => {
+    const noAggType = { ...validEvent };
+    delete (noAggType as Record<string, unknown>).aggregateType;
+
+    expect(() => domainEventSchema.parse(noAggType)).not.toThrow();
   });
 
   it('rejects invalid datetime', () => {
