@@ -49,6 +49,20 @@
       ],
       "description": "Implemented transactional outbox with relay worker, retry logic, DLQ routing, and Postgres migration",
       "timestamp": "2026-05-19T04:32:13.292Z"
+    },
+    {
+      "commit_hash": "e068a21",
+      "files_changed": [
+        "src/shared/outbox/outbox.ts",
+        "src/shared/outbox/relay-worker.ts",
+        "supabase/migrations/20260519000001_create_outbox.sql",
+        "src/shared/outbox/__tests__/outbox.test.ts",
+        "src/shared/outbox/__tests__/relay-worker.test.ts",
+        "project-knowledge/event-envelope-standard.md",
+        "project-knowledge/queue-contracts.md"
+      ],
+      "description": "T1.3 amendments: added claimPending with optimistic locking, processing status, eventId idempotency contract, per-aggregate ordering docs, failure semantics, outbox-as-boundary governance",
+      "timestamp": "2026-05-19T05:12:27.000Z"
     }
   ],
   "observability": {
@@ -76,8 +90,8 @@
   "assignee": "Agent 1",
   "metadata": {
     "created_at": "2026-05-19T02:31:57.300Z",
-    "updated_at": "2026-05-19T04:32:35.987Z",
-    "version": 3
+    "updated_at": "2026-05-19T05:12:27.000Z",
+    "version": 4
   },
   "git_commit": "b54cfa1"
 }
