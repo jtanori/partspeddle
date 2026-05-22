@@ -1,0 +1,31 @@
+{
+  "id": "T13.4",
+  "milestone_id": "M13",
+  "title": "Create subsystem registry for API boundaries",
+  "domain": "Shared",
+  "capability": "Knowledge Registry",
+  "purpose": "Register API boundary subsystems (backend routes, shared contracts, frontend API client).",
+  "dependencies": [
+    "T13.3"
+  ],
+  "architectural_constraints": [
+    "Must identify contract ownership",
+    "Must list all API routes",
+    "Must classify criticality"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/registry/api.json",
+      "description": "API boundary subsystem registry entry",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "API registry entry has owner field",
+    "API registry entry lists all route files",
+    "API criticality classified",
+    "Contract ownership identified"
+  ],
+  "estimated_hours": 1,
+  "status": "planned"
+}

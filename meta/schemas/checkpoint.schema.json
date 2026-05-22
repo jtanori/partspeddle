@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/checkpoint.schema.json",
+  "title": "VINTRACK Execution Checkpoint",
+  "description": "Canonical schema for execution checkpoints. Base version — T14.1 will finalize with resume-packet embedding.",
+  "type": "object",
+  "required": ["CHECKPOINT"],
+  "properties": {
+    "CHECKPOINT": {
+      "type": "object",
+      "required": ["metadata", "execution_state", "completed_work", "pending_work", "modified_files_snapshot", "rollback_point", "unresolved_risks", "next_safe_resume_step", "resume_contract"],
+      "properties": {
+        "metadata": {
+          "type": "object",
+          "required": ["checkpoint_id", "protocol_version", "task_id", "milestone", "sequence_number", "timestamp", "trigger"],
+          "properties": {
+            "checkpoint_id": { "type": "string", "pattern": "^cp_[A-Z0-9\\._]+_[0-9]{8}_[0-9]{6}_[a-z]+$" },
+            "protocol_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+            "task_id": { "type": "string", "pattern": "^T[0-9]+\\.[0-9A-Z]+$" },
+            "milestone": { "type": "string", "pattern": "^M[0-9]+(\\.[0-9]+)?$" },
+            "sequence_number": { "type": "number", "minimum": 1 },
+            "timestamp": { "type": "string", "format": "date-time" },
+            "trigger": { "type": "string", "enum": ["manual", "auto", "completion", "interruption", "drift", "heartbeat", "migration"] }
+          }
+        },
+        "execution_state": {
+          "type": "object",
+          "required": ["lifecycle_state", "phase", "current_surface"],
+          "properties": {
+            "lifecycle_state": { "type": "string", "enum": ["PLANNED", "READY", "EXECUTING", "CHECKPOINT_PENDING", "BLOCKED", "FAILED", "INTERRUPTED", "COMPLETE", "ROLLED_BACK"] },
+            "phase": { "type": "string" },
+            "current_surface": { "type": "string", "enum": ["backend", "frontend-rsc", "frontend-client", "shared", "infrastructure", "ci-cd", "fullstack", "governance"] },
+            "reasoning_cycles_since_last_checkpoint": { "type": "number", "minimum": 0 },
+            "files_modified_since_last_checkpoint": { "type": "number", "minimum": 0 }
+          }
+        },
+        "completed_work": {
+          "type": "object",
+          "required": ["files_created", "files_modified", "files_deleted", "validations_passed", "validations_failed", "validations_skipped"],
+          "properties": {
+            "files_created": { "type": "array", "items": { "type": "string" } },
+            "files_modified": { "type": "array", "items": { "type": "string" } },
+            "files_deleted": { "type": "array", "items": { "type": "string" } },
+            "validations_passed": { "type": "array", "items": { "type": "string" } },
+            "validations_failed": { "type": "array", "items": { "type": "string" } },
+            "validations_skipped": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "pending_work": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "modified_files_snapshot": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["path", "checksum", "lines_added", "lines_removed"],
+            "properties": {
+              "path": { "type": "string" },
+              "checksum": { "type": "string" },
+              "lines_added": { "type": "number", "minimum": 0 },
+              "lines_removed": { "type": "number", "minimum": 0 }
+            }
+          }
+        },
+        "rollback_point": {
+          "type": "object",
+          "required": ["git_commit", "git_branch", "clean_working_tree", "stashed_changes"],
+          "properties": {
+            "git_commit": { "type": "string" },
+            "git_branch": { "type": "string" },
+            "clean_working_tree": { "type": "boolean" },
+            "stashed_changes": { "type": "boolean" }
+          }
+        },
+        "unresolved_risks": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "next_safe_resume_step": {
+          "type": "object",
+          "required": ["description", "estimated_effort_minutes", "dependencies", "required_context"],
+          "properties": {
+            "description": { "type": "string" },
+            "estimated_effort_minutes": { "type": "number", "minimum": 0 },
+            "dependencies": { "type": "array", "items": { "type": "string" } },
+            "required_context": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "resume_contract": {
+          "type": "object",
+          "required": ["can_resume_from_this_checkpoint", "requires_context_rehydration"],
+          "properties": {
+            "can_resume_from_this_checkpoint": { "type": "boolean" },
+            "requires_context_rehydration": { "type": "boolean" },
+            "context_files_to_load": { "type": "array", "items": { "type": "string" } },
+            "forbidden_actions_on_resume": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "previous_checkpoint": {
+          "type": ["string", "null"],
+          "description": "Reference to previous checkpoint ID or null"
+        }
+      }
+    }
+  }
+}

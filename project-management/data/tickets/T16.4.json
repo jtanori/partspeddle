@@ -1,0 +1,36 @@
+{
+  "id": "T16.4",
+  "milestone_id": "M16",
+  "title": "Add drift reporting mechanism",
+  "domain": "Shared",
+  "capability": "Operational Telemetry",
+  "purpose": "Create a drift detector that compares expected vs actual execution state.",
+  "dependencies": [
+    "T16.3"
+  ],
+  "architectural_constraints": [
+    "Must detect planning loops",
+    "Must detect file modification stalls",
+    "Must detect intent simulation mode"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/detect-drift.ts",
+      "description": "Drift detection utility",
+      "type": "file"
+    },
+    {
+      "path": "meta/telemetry/drift-reports/",
+      "description": "Drift report output directory",
+      "type": "directory"
+    }
+  ],
+  "acceptance_criteria": [
+    "Drift detector identifies planning loops (3+ cycles)",
+    "Drift detector identifies file modification stalls (5+ min)",
+    "Drift detector identifies intent simulation (no mutations)",
+    "Report validates against drift schema"
+  ],
+  "estimated_hours": 3,
+  "status": "planned"
+}

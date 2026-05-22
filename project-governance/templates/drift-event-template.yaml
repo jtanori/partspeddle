@@ -1,0 +1,41 @@
+# Drift Event Template
+# Copy this file to: project-governance/runtime/drift-events/{task_id}-drift-{YYYYMMDD}_{HHMMSS}.json
+# Protocol: DRIFT_RECOVERY_PROTOCOL.md v1.0.0
+
+DRIFT_EVENT:
+  metadata:
+    drift_id: "drift_TASKID_YYYYMMDD_HHMMSS"
+    protocol_version: "1.0.0"
+    task_id: "TASKID"
+    milestone: "MILESTONE"
+    timestamp: "2026-01-01T00:00:00Z"
+    detected_by: "heartbeat_self_assessment"
+
+  classification:
+    type: "SCOPE_DRIFT"
+    severity: "MEDIUM"
+    confidence: 75
+
+  detection:
+    trigger: "describe_what_triggered_detection"
+    evidence:
+      - "Evidence item 1"
+      - "Evidence item 2"
+    first_heartbeat_with_indicator: "hb_TASKID_YYYYMMDD_HHMMSS"
+
+  impact:
+    affected_components: []
+    blast_radius: "describe_scope_of_impact"
+    rollback_complexity: "SIMPLE"
+
+  recovery:
+    rollback_required: false
+    rollback_point: null
+    recovery_sequence: []
+    escalation_path: null
+
+  resolution:
+    status: "OPEN"
+    resolved_at: null
+    resolution_method: null
+    follow_up_required: false

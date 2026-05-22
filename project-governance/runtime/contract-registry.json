@@ -1,0 +1,196 @@
+{
+  "contracts": {
+    "DomainEvent": {
+      "owner": "backend.shared",
+      "location": "src/shared/event-bus/domain-event.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "Canonical domain event envelope. Immutable operational fact emitted by any bounded context."
+    },
+    "DomainEventEnvelope": {
+      "owner": "backend.shared",
+      "location": "src/shared/event-bus/event-schema.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "Zod schema and inferred type for the canonical domain event envelope."
+    },
+    "EventCatalog": {
+      "owner": "backend.shared",
+      "location": "src/shared/event-bus/event-catalog.ts",
+      "consumers": ["backend"],
+      "description": "Central registry for all domain event types with schema validation."
+    },
+    "DomainError": {
+      "owner": "backend.shared",
+      "location": "src/shared/errors/domain-error.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "Standard domain error with code, correlationId, retryable flag, and safe JSON serialization."
+    },
+    "CanonicalError": {
+      "owner": "backend.shared",
+      "location": "src/shared/errors/error-mapper.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "Canonical API error response shape returned by all endpoints."
+    },
+    "TraceContext": {
+      "owner": "backend.shared",
+      "location": "src/shared/observability/tracing.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "W3C Trace Context propagated across service and queue boundaries."
+    },
+    "LogEntry": {
+      "owner": "backend.shared",
+      "location": "src/shared/observability/logger.ts",
+      "consumers": ["backend"],
+      "description": "Structured JSON log entry shape with redaction rules."
+    },
+    "OutboxEntry": {
+      "owner": "backend.shared",
+      "location": "src/shared/outbox/outbox.ts",
+      "consumers": ["backend"],
+      "description": "Transactional outbox table row shape for durable event emission."
+    },
+    "JobPayload": {
+      "owner": "backend.shared",
+      "location": "src/shared/queue/worker-factory.ts",
+      "consumers": ["backend"],
+      "description": "Canonical job payload shape enforced by all BullMQ workers."
+    },
+    "QueueNames": {
+      "owner": "backend.shared",
+      "location": "src/shared/queue/naming.ts",
+      "consumers": ["backend"],
+      "description": "Domain-scoped queue and DLQ naming convention."
+    },
+    "Database": {
+      "owner": "backend.shared",
+      "location": "src/shared/supabase/types.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "Minimal Supabase Database type stub for generic client usage."
+    },
+    "UserResponse": {
+      "owner": "backend.identity",
+      "location": "src/identity/api/dto/user-dto.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "API response DTO for user data."
+    },
+    "UpdateProfileRequest": {
+      "owner": "backend.identity",
+      "location": "src/identity/api/dto/profile-dto.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "API request DTO for updating a user profile."
+    },
+    "ProfileResponse": {
+      "owner": "backend.identity",
+      "location": "src/identity/api/dto/profile-dto.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "API response DTO for profile data."
+    },
+    "RegisterSellerRequest": {
+      "owner": "backend.identity",
+      "location": "src/identity/api/dto/seller-dto.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "API request DTO for registering a seller."
+    },
+    "CompleteOnboardingStepRequest": {
+      "owner": "backend.identity",
+      "location": "src/identity/api/dto/seller-dto.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "API request DTO for completing a seller onboarding step."
+    },
+    "SellerProfileResponse": {
+      "owner": "backend.identity",
+      "location": "src/identity/api/dto/seller-dto.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "API response DTO for seller profile data."
+    },
+    "UserCreatedEvent": {
+      "owner": "backend.identity",
+      "location": "src/identity/domain/events/user-events.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "Domain event emitted when a user is created."
+    },
+    "UserSuspendedEvent": {
+      "owner": "backend.identity",
+      "location": "src/identity/domain/events/user-events.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "Domain event emitted when a user is suspended."
+    },
+    "UserReactivatedEvent": {
+      "owner": "backend.identity",
+      "location": "src/identity/domain/events/user-events.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "Domain event emitted when a user is reactivated."
+    },
+    "SellerOnboardingStepCompletedEvent": {
+      "owner": "backend.identity",
+      "location": "src/identity/domain/events/seller-events.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "Domain event emitted when a seller completes an onboarding step."
+    },
+    "SellerActivatedEvent": {
+      "owner": "backend.identity",
+      "location": "src/identity/domain/events/seller-events.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "Domain event emitted when a seller is activated."
+    },
+    "SellerSuspendedEvent": {
+      "owner": "backend.identity",
+      "location": "src/identity/domain/events/seller-events.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "Domain event emitted when a seller is suspended."
+    },
+    "SellerReactivatedEvent": {
+      "owner": "backend.identity",
+      "location": "src/identity/domain/events/seller-events.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "Domain event emitted when a seller is reactivated."
+    },
+    "UserStatus": {
+      "owner": "backend.identity",
+      "location": "src/identity/domain/entities/user.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "User lifecycle status enum: active | suspended | deactivated."
+    },
+    "SellerStatus": {
+      "owner": "backend.identity",
+      "location": "src/identity/domain/entities/seller-profile.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "Seller lifecycle status enum: draft | pending_review | active | suspended."
+    },
+    "OnboardingStep": {
+      "owner": "backend.identity",
+      "location": "src/identity/domain/entities/onboarding-state.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "Seller onboarding step enum: identity | banking | tax | terms."
+    },
+    "AuthContext": {
+      "owner": "backend.identity",
+      "location": "src/identity/application/ports/auth-context.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "Canonical authenticated request shape used across the platform."
+    },
+    "UserRole": {
+      "owner": "backend.identity",
+      "location": "src/identity/application/ports/auth-context.ts",
+      "consumers": ["backend", "frontend"],
+      "description": "User role enum: user | seller | admin."
+    },
+    "VerifiedToken": {
+      "owner": "backend.identity",
+      "location": "src/identity/application/ports/identity-provider.ts",
+      "consumers": ["backend"],
+      "description": "Decoded JWT token shape abstracted from auth provider specifics."
+    },
+    "AuthUser": {
+      "owner": "backend.identity",
+      "location": "src/identity/application/ports/identity-provider.ts",
+      "consumers": ["backend"],
+      "description": "Normalized user shape returned by the identity provider port."
+    },
+    "IdentityProvider": {
+      "owner": "backend.identity",
+      "location": "src/identity/application/ports/identity-provider.ts",
+      "consumers": ["backend"],
+      "description": "Port interface abstracting authentication provider operations."
+    }
+  }
+}

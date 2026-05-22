@@ -1,0 +1,39 @@
+{
+  "id": "FEATURE-002",
+  "type": "feature-intake",
+  "status": "stabilized",
+  "title": "Milestone-scoped report generation",
+  "description": "PM tools can generate full-project reports (pm-report.js) and per-ticket assessments (pm-assess.js), but there is no tool to generate a focused, readable report for a single milestone. Operators need milestone-scoped reports for standups, stakeholder updates, and milestone reviews.",
+  "domain": "Shared",
+  "priority": "medium",
+  "ambiguity_score": 0,
+  "questions": [
+    {
+      "question": "Should this extend pm-report.js or be a standalone script?",
+      "proposed_options": [
+        { "label": "Extend pm-report.js with --milestone flag", "value": "extend", "description": "Add --milestone M1 flag to existing report script" },
+        { "label": "New standalone script", "value": "new", "description": "Create pm-milestone-report.js for focused output" }
+      ],
+      "operator_response": {
+        "selected_option": "extend",
+        "rationale": "Extend existing tool with --milestone flag for consistency"
+      },
+      "resolved": true
+    },
+    {
+      "question": "What output formats should be supported?",
+      "proposed_options": [
+        { "label": "Markdown only", "value": "md", "description": "Human-readable markdown output" },
+        { "label": "Markdown + JSON", "value": "both", "description": "Support both --json and default markdown" }
+      ],
+      "operator_response": {
+        "selected_option": "both",
+        "rationale": "JSON for programmatic consumption, Markdown for humans"
+      },
+      "resolved": true
+    }
+  ],
+  "operator_override": false,
+  "created_at": "2026-05-22T18:00:00Z",
+  "updated_at": "2026-05-22T18:00:00Z"
+}

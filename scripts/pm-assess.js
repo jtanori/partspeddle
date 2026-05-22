@@ -25,7 +25,16 @@ const milestoneSchema = JSON.parse(readFileSync(join(__dirname, '../project-mana
 const ticketValidate = ajv.compile(ticketSchema);
 const milestoneValidate = ajv.compile(milestoneSchema);
 
-const milestones = JSON.parse(readFileSync(join(__dirname, '../project-management/data/milestones.json'), 'utf8'));
+// Load milestones via registry
+const registry = JSON.parse(readFileSync(join(__dirname, '../project-management/data/milestones.registry.json'), 'utf8'));
+const milestones = [];
+for (const file of registry.files || []) {
+  const filePath = join(__dirname, '..', file);
+  if (existsSync(filePath)) {
+    const domain = JSON.parse(readFileSync(filePath, 'utf8'));
+    if (Array.isArray(domain)) milestones.push(...domain);
+  }
+}
 
 const ticketsDir = join(__dirname, '../project-management/data/tickets');
 const allTicketFiles = readdirSync(ticketsDir).filter(f => f.endsWith('.json'));

@@ -1,0 +1,41 @@
+{
+  "id": "T13.5",
+  "milestone_id": "M13",
+  "title": "Create ownership metadata and criticality classification",
+  "domain": "Shared",
+  "capability": "Knowledge Registry",
+  "purpose": "Standardize ownership and criticality metadata across all registered subsystems.",
+  "dependencies": [
+    "T13.4"
+  ],
+  "architectural_constraints": [
+    "Must be machine-queryable",
+    "Must support team-level ownership",
+    "Must support domain-level ownership"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/registry/ownership.schema.json",
+      "description": "Ownership metadata schema",
+      "type": "file"
+    },
+    {
+      "path": "meta/registry/criticality.schema.json",
+      "description": "Criticality classification schema",
+      "type": "file"
+    },
+    {
+      "path": "meta/registry/index.json",
+      "description": "Master registry index",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Ownership schema has required fields (owner, domain, team)",
+    "Criticality schema has levels (critical | important | normal)",
+    "Registry index lists all registered subsystems",
+    "Registry is machine-queryable (JSON only, no MD)"
+  ],
+  "estimated_hours": 2,
+  "status": "planned"
+}

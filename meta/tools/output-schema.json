@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/tool-output.schema.json",
+  "title": "VINTRACK Tool Output",
+  "description": "Normalized output envelope for all deterministic capability tools",
+  "type": "object",
+  "required": ["capability", "status", "timestamp", "summary"],
+  "properties": {
+    "capability": {
+      "type": "string",
+      "description": "Capability identifier that produced this output"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["PASS", "FAIL", "WARN", "SKIP", "TIMEOUT"],
+      "description": "Tool execution status"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of completion"
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Human-readable result summary (≤200 chars)"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "type"],
+        "properties": {
+          "path": { "type": "string" },
+          "type": { "type": "string", "enum": ["file", "directory", "report", "projection", "checkpoint"] },
+          "size_bytes": { "type": "number" },
+          "lines": { "type": "number" }
+        }
+      },
+      "description": "Files or outputs produced by this tool"
+    },
+    "data": {
+      "type": "object",
+      "description": "Structured payload specific to this capability"
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Non-fatal issues encountered"
+    },
+    "errors": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Fatal errors that prevented completion"
+    },
+    "metrics": {
+      "type": "object",
+      "description": "Numeric telemetry (duration_ms, items_scanned, etc.)"
+    },
+    "next_actions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Suggested next capabilities to invoke"
+    }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "id": "T11.5",
+  "milestone_id": "M11",
+  "title": "Milestone Registry Architecture",
+  "domain": "Shared",
+  "capability": "Governance Infrastructure",
+  "purpose": "Eliminate monolithic milestone storage and ad hoc secondary files by introducing a registry-based discovery model with modular domain-scoped milestone files.",
+  "dependencies": [
+    "T11.4"
+  ],
+  "architectural_constraints": [
+    "Registry is the ONLY authoritative discovery mechanism",
+    "Domain milestone files must be self-contained and schema-valid",
+    "All existing tools must resolve milestones through the registry",
+    "Global ID uniqueness must be enforced at aggregation time",
+    "Old milestones.json must be deprecated, not deleted immediately"
+  ],
+  "deliverables": [
+    {
+      "path": "project-management/data/milestones.registry.json",
+      "description": "Authoritative milestone registry with file discovery and load order",
+      "type": "schema"
+    },
+    {
+      "path": "project-management/milestones/",
+      "description": "Directory containing modular domain milestone files",
+      "type": "directory"
+    },
+    {
+      "path": "project-management/milestones/core.json",
+      "description": "Core product milestones M1-M10 extracted from monolith",
+      "type": "file"
+    },
+    {
+      "path": "project-management/milestones/governance.json",
+      "description": "Governance milestones M11-M19 extracted from governance-milestones.json",
+      "type": "file"
+    },
+    {
+      "path": "project-management/schemas/milestone-registry.schema.json",
+      "description": "JSON Schema for milestone registry validation",
+      "type": "schema"
+    },
+    {
+      "path": "scripts/lib/milestone-loader.js",
+      "description": "Aggregation layer: registry discovery + file resolution + validation + uniqueness enforcement",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "milestones.registry.json validates against its schema",
+    "All 19 milestones load correctly through the registry",
+    "validate-pm.js resolves milestones via registry, not hardcoded paths",
+    "resolve-continuation.ts resolves milestones via registry",
+    "milestone-progress.sh resolves milestones via registry",
+    "Duplicate milestone IDs across files are detected and rejected",
+    "Old milestones.json and governance-milestones.json marked deprecated with pointer to registry",
+    "All tests pass"
+  ],
+  "estimated_hours": 3,
+  "status": "completed",
+  "traceability": [
+    {
+      "commit_hash": "TBD",
+      "files_changed": [
+        "project-management/data/milestones.registry.json",
+        "project-management/schemas/milestone-registry.schema.json",
+        "project-management/milestones/core.json",
+        "project-management/milestones/governance.json",
+        "scripts/lib/milestone-loader.js",
+        "scripts/validate-pm.js",
+        "scripts/resolve-continuation.ts",
+        "scripts/pm-assess.js",
+        "scripts/pm-status.js",
+        "tools/governance/milestone-progress.sh",
+        "project-management/data/milestones.json",
+        "project-management/data/governance-milestones.json"
+      ],
+      "description": "Implemented milestone registry architecture with modular domain files and aggregation layer",
+      "timestamp": "2026-05-22T16:37:33.609Z"
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-05-22T15:00:00.000Z",
+    "updated_at": "2026-05-22T15:00:00.000Z",
+    "version": 1
+  }
+}

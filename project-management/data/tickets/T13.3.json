@@ -1,0 +1,31 @@
+{
+  "id": "T13.3",
+  "milestone_id": "M13",
+  "title": "Create subsystem registry for deployment",
+  "domain": "Shared",
+  "capability": "Knowledge Registry",
+  "purpose": "Register the deployment subsystem (Docker, CI/CD, Vercel).",
+  "dependencies": [
+    "T13.2"
+  ],
+  "architectural_constraints": [
+    "Must reference existing workflows",
+    "Must identify deployment targets",
+    "Must classify criticality"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/registry/deployment.json",
+      "description": "Deployment subsystem registry entry",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Deployment registry entry has owner field",
+    "Deployment registry entry lists CI workflows",
+    "Deployment criticality classified",
+    "Deployment targets identified"
+  ],
+  "estimated_hours": 1,
+  "status": "planned"
+}

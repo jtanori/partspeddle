@@ -1,0 +1,21 @@
+{
+  "protocol_version": "1.0.0",
+  "type": "CLARIFICATION_REQUEST",
+  "severity": "CRITICAL",
+  "status": "RESOLVED",
+  "emitted_at": "2026-05-22T18:05:00Z",
+  "resolved_at": "2026-05-22T18:05:00Z",
+  "execution_context": {
+    "issue": "response-truncation",
+    "impact": "observability-loop-broken"
+  },
+  "blocking_question": "Agent responses are being truncated, causing loss of critical status information. What output constraints should be enforced?",
+  "resolution": {
+    "max_lines_per_response": 15,
+    "parallel_commands_max": 1,
+    "status_format": "concise-key-metrics-only",
+    "verbose_output": "suppressed-by-default",
+    "rationale": "Prevent truncation by enforcing brevity"
+  },
+  "operator_confirmation": "Acknowledged. Enforce concise protocol."
+}

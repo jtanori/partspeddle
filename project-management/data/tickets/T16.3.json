@@ -1,0 +1,36 @@
+{
+  "id": "T16.3",
+  "milestone_id": "M16",
+  "title": "Implement heartbeat persistence",
+  "domain": "Shared",
+  "capability": "Operational Telemetry",
+  "purpose": "Write heartbeat events to disk during long-running executions.",
+  "dependencies": [
+    "T16.2"
+  ],
+  "architectural_constraints": [
+    "Must write asynchronously",
+    "Must not block execution",
+    "Must handle write failures gracefully"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/emit-heartbeat.ts",
+      "description": "Heartbeat emission utility",
+      "type": "file"
+    },
+    {
+      "path": "meta/telemetry/heartbeats/",
+      "description": "Heartbeat log directory",
+      "type": "directory"
+    }
+  ],
+  "acceptance_criteria": [
+    "Heartbeat utility writes to JSONL",
+    "Writes are asynchronous",
+    "Write failures logged but not blocking",
+    "At least 5 heartbeats emitted during test execution"
+  ],
+  "estimated_hours": 2,
+  "status": "planned"
+}

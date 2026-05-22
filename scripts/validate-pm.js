@@ -4,6 +4,7 @@ import addFormats from 'ajv-formats';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { readJson, readJsonDir, createValidator } from './lib/json-utils.js';
+import { loadMilestonesSync } from './lib/milestone-loader.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -21,9 +22,21 @@ const dependencyGraphSchema = readJson(join(schemaDir, 'dependency-graph.schema.
 const sequenceSchema = readJson(join(schemaDir, 'sequence.schema.json'));
 const riskRegisterSchema = readJson(join(schemaDir, 'risk-register.schema.json'));
 
-// Load data via json-utils
-const milestones = readJson(join(dataDir, 'milestones.json'));
+let errors = 0;
+
+// Load data via registry-based loader
+const { milestones, errors: loadErrors, warnings: loadWarnings } = loadMilestonesSync();
 const tickets = readJsonDir(join(dataDir, 'tickets'));
+
+// Report loader warnings
+for (const w of loadWarnings) {
+  console.log(`  ℹ️  ${w}`);
+}
+// Report loader errors
+for (const e of loadErrors) {
+  console.error(`  ❌ Loader: ${e}`);
+  errors++;
+}
 
 // Compile validators
 const milestoneValidate = ajv.compile(milestoneSchema);
@@ -31,8 +44,6 @@ const ticketValidate = ajv.compile(ticketSchema);
 const dependencyGraphValidate = ajv.compile(dependencyGraphSchema);
 const sequenceValidate = ajv.compile(sequenceSchema);
 const riskRegisterValidate = ajv.compile(riskRegisterSchema);
-
-let errors = 0;
 
 console.log('Validating milestones...');
 for (const m of milestones) {

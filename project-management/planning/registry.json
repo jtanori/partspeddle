@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0",
+  "schema": "https://vintrack.io/schemas/planning-registry.schema.json",
+  "intake": [
+    "project-management/planning/intake/FEATURE-001.json",
+    "project-management/planning/intake/FEATURE-002.json"
+  ],
+  "compiled": [
+    "project-management/planning/compiled/PLAN-M11-TICKET-PATHS.json",
+    "project-management/planning/compiled/PLAN-M11-MILESTONE-REPORT.json"
+  ],
+  "archived": [],
+  "active_plans": [],
+  "metadata": {
+    "created_at": "2026-05-22T16:30:00Z",
+    "updated_at": "2026-05-22T18:02:59.446Z"
+  }
+}

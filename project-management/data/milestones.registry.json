@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "schema": "https://vintrack.io/schemas/milestone-registry.schema.json",
+  "files": [
+    "project-management/milestones/core.json",
+    "project-management/milestones/governance.json"
+  ],
+  "active_collections": ["core", "governance"],
+  "load_order": "sequential"
+}

@@ -1,0 +1,37 @@
+{
+  "id": "T19.1",
+  "milestone_id": "M19",
+  "title": "Extract schemas as standalone package",
+  "domain": "Shared",
+  "capability": "SYNTH Extraction",
+  "purpose": "Extract all governance schemas into a standalone, versioned package.",
+  "dependencies": [
+    "T17.4",
+    "T18.4"
+  ],
+  "architectural_constraints": [
+    "Must have zero VINTRACK dependencies",
+    "Must be publishable to npm",
+    "Must have own test suite"
+  ],
+  "deliverables": [
+    {
+      "path": "packages/governance-schemas/",
+      "description": "Standalone schema package",
+      "type": "directory"
+    },
+    {
+      "path": "packages/governance-schemas/package.json",
+      "description": "Schema package manifest",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Schema package has zero VINTRACK imports",
+    "Package validates its own schemas",
+    "Package has test suite with >80% coverage",
+    "Package is publishable to npm"
+  ],
+  "estimated_hours": 4,
+  "status": "planned"
+}

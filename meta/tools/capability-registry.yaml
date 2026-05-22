@@ -1,0 +1,139 @@
+registry_version: "1.0.0"
+registry_authority: "runtime-governance-kernel.md"
+principle: "LLM composes pre-approved deterministic capabilities. NEVER arbitrary shell."
+
+enforcement:
+  default_network: false
+  default_timeout: 30s
+  max_output_bytes: 32768
+  require_structured_output: true
+  dry_run_supported: true
+  audit_log: "meta/tools/execution-log.jsonl"
+
+capabilities:
+  runtime.status:
+    description: "Emit concise runtime telemetry from canonical state"
+    command: "tools/runtime/status.sh"
+    access:
+      read:
+        - "project-governance/runtime/state/"
+      write: []
+    timeout: 5s
+    network: false
+    output_schema: "meta/tools/output-schema.json"
+    dry_run: false
+
+  runtime.audit:
+    description: "Run 28-check integrity audit with confidence scoring"
+    command: "tools/runtime/integrity-audit.sh"
+    access:
+      read:
+        - "project-governance/runtime/"
+        - "meta/"
+      write:
+        - "project-governance/runtime/audits/"
+    timeout: 30s
+    network: false
+    output_schema: "meta/tools/output-schema.json"
+    dry_run: false
+
+  runtime.lock:
+    description: "Read execution lock state"
+    command: "tools/runtime/lock-status.sh"
+    access:
+      read:
+        - "project-governance/runtime/state/execution-lock.json"
+      write: []
+    timeout: 5s
+    network: false
+    output_schema: "meta/tools/output-schema.json"
+    dry_run: false
+
+  runtime.checkpoint.list:
+    description: "List all checkpoints with metadata"
+    command: "tools/runtime/checkpoint-list.sh"
+    access:
+      read:
+        - "project-governance/runtime/checkpoints/"
+      write: []
+    timeout: 10s
+    network: false
+    output_schema: "meta/tools/output-schema.json"
+    dry_run: false
+
+  governance.continuation:
+    description: "Run work continuation resolution"
+    command: "tools/governance/continuation-resolve.sh"
+    access:
+      read:
+        - "project-governance/runtime/state/"
+        - "project-management/data/"
+      write: []
+    timeout: 15s
+    network: false
+    output_schema: "meta/tools/output-schema.json"
+    dry_run: false
+
+  governance.milestone.progress:
+    description: "Show milestone progress across all tickets"
+    command: "tools/governance/milestone-progress.sh"
+    access:
+      read:
+        - "project-management/data/"
+      write: []
+    timeout: 10s
+    network: false
+    output_schema: "meta/tools/output-schema.json"
+    dry_run: false
+
+  projection.generate:
+    description: "Regenerate all runtime projections"
+    command: "tools/projections/generate.sh"
+    access:
+      read:
+        - "project-governance/runtime/state/"
+        - "project-governance/runtime/heartbeats/"
+      write:
+        - "project-governance/runtime/projections/"
+    timeout: 15s
+    network: false
+    output_schema: "meta/tools/output-schema.json"
+    dry_run: false
+
+  projection.status:
+    description: "Check projection freshness and staleness"
+    command: "tools/projections/status.sh"
+    access:
+      read:
+        - "project-governance/runtime/projections/"
+        - "project-governance/runtime/state/"
+      write: []
+    timeout: 5s
+    network: false
+    output_schema: "meta/tools/output-schema.json"
+    dry_run: false
+
+  repository.validate:
+    description: "Pre-execution repository validation"
+    command: "tools/repository/validate.sh"
+    access:
+      read:
+        - ".git/"
+        - "project-governance/runtime/state/"
+      write: []
+    timeout: 10s
+    network: false
+    output_schema: "meta/tools/output-schema.json"
+    dry_run: false
+
+  repository.branch:
+    description: "Branch context and divergence status"
+    command: "tools/repository/branch-status.sh"
+    access:
+      read:
+        - ".git/"
+      write: []
+    timeout: 5s
+    network: false
+    output_schema: "meta/tools/output-schema.json"
+    dry_run: false

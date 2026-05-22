@@ -1,12 +1,21 @@
 #!/usr/bin/env node
-import { readFileSync, readdirSync } from 'fs';
+import { readFileSync, readdirSync, existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const milestones = JSON.parse(readFileSync(join(__dirname, '../project-management/data/milestones.json'), 'utf8'));
+// Load milestones via registry
+const registry = JSON.parse(readFileSync(join(__dirname, '../project-management/data/milestones.registry.json'), 'utf8'));
+const milestones = [];
+for (const file of registry.files || []) {
+  const filePath = join(__dirname, '..', file);
+  if (existsSync(filePath)) {
+    const domain = JSON.parse(readFileSync(filePath, 'utf8'));
+    if (Array.isArray(domain)) milestones.push(...domain);
+  }
+}
 
 // Load tickets from individual files
 const ticketsDir = join(__dirname, '../project-management/data/tickets');

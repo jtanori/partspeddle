@@ -1,0 +1,36 @@
+{
+  "id": "T19.4",
+  "milestone_id": "M19",
+  "title": "Extract telemetry systems",
+  "domain": "Shared",
+  "capability": "SYNTH Extraction",
+  "purpose": "Extract telemetry (heartbeat, drift, validation) into the engine package.",
+  "dependencies": [
+    "T19.2"
+  ],
+  "architectural_constraints": [
+    "Must be pluggable (different storage backends)",
+    "Must support async only",
+    "Must have zero blocking calls"
+  ],
+  "deliverables": [
+    {
+      "path": "packages/governance-engine/telemetry/",
+      "description": "Telemetry subsystem",
+      "type": "directory"
+    },
+    {
+      "path": "packages/governance-engine/telemetry/backends/",
+      "description": "Pluggable telemetry backends",
+      "type": "directory"
+    }
+  ],
+  "acceptance_criteria": [
+    "Telemetry has pluggable backend interface",
+    "Default backend is JSONL file",
+    "All telemetry is async",
+    "Zero blocking calls in telemetry code"
+  ],
+  "estimated_hours": 3,
+  "status": "planned"
+}

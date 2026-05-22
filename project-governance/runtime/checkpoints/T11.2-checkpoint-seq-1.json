@@ -1,0 +1,71 @@
+{
+  "CHECKPOINT": {
+    "metadata": {
+      "checkpoint_id": "cp_T11.2_20260522_043500_complete",
+      "protocol_version": "1.0.0",
+      "task_id": "T11.2",
+      "milestone": "M11",
+      "sequence_number": 1,
+      "timestamp": "2026-05-22T04:35:00Z",
+      "trigger": "completion"
+    },
+    "execution_state": {
+      "lifecycle_state": "COMPLETE",
+      "phase": "completion",
+      "current_surface": "shared",
+      "reasoning_cycles_since_last_checkpoint": 1,
+      "files_modified_since_last_checkpoint": 2
+    },
+    "completed_work": {
+      "files_created": [
+        "meta/conventions/naming.md",
+        "meta/conventions/taxonomy.md"
+      ],
+      "files_modified": [],
+      "files_deleted": [],
+      "validations_passed": [
+        "file-existence-validation",
+        "naming-convention-validation",
+        "taxonomy-coverage-validation",
+        "regex-pattern-validation"
+      ],
+      "validations_failed": [],
+      "validations_skipped": []
+    },
+    "pending_work": [],
+    "modified_files_snapshot": [
+      {
+        "path": "meta/conventions/naming.md",
+        "checksum": "sha256:canonical",
+        "lines_added": 180,
+        "lines_removed": 0
+      },
+      {
+        "path": "meta/conventions/taxonomy.md",
+        "checksum": "sha256:canonical",
+        "lines_added": 170,
+        "lines_removed": 0
+      }
+    ],
+    "rollback_point": {
+      "git_commit": "HEAD",
+      "git_branch": "feature/M11-governance-root",
+      "clean_working_tree": false,
+      "stashed_changes": false
+    },
+    "unresolved_risks": [],
+    "next_safe_resume_step": {
+      "description": "Terminal state — no pending work.",
+      "estimated_effort_minutes": 0,
+      "dependencies": [],
+      "required_context": []
+    },
+    "resume_contract": {
+      "can_resume_from_this_checkpoint": false,
+      "requires_context_rehydration": false,
+      "context_files_to_load": [],
+      "forbidden_actions_on_resume": []
+    },
+    "previous_checkpoint": null
+  }
+}

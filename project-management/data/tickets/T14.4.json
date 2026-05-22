@@ -1,0 +1,41 @@
+{
+  "id": "T14.4",
+  "milestone_id": "M14",
+  "title": "Create workflow registry and execution lifecycle standards",
+  "domain": "Shared",
+  "capability": "Cognitive Workflow Engine",
+  "purpose": "Define the formal execution lifecycle: BOOTSTRAP → VALIDATION → EXECUTION → VERIFICATION → CHECKPOINT → TRANSITION.",
+  "dependencies": [
+    "T14.3"
+  ],
+  "architectural_constraints": [
+    "Must map to existing runtime-governance-kernel.md",
+    "Must define phase entry/exit criteria",
+    "Must define automatic transitions"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/workflows/execution-lifecycle.json",
+      "description": "Execution lifecycle definition",
+      "type": "file"
+    },
+    {
+      "path": "meta/workflows/phase-transitions.md",
+      "description": "Phase transition rules",
+      "type": "file"
+    },
+    {
+      "path": "meta/workflows/workflow-registry.json",
+      "description": "Workflow registry index",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Execution lifecycle has 6 defined phases",
+    "Each phase has entry/exit criteria",
+    "Automatic transition conditions documented",
+    "Workflow registry indexes all known workflows"
+  ],
+  "estimated_hours": 2,
+  "status": "planned"
+}

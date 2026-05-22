@@ -1,0 +1,67 @@
+{
+  "protocol_version": "1.0.0",
+  "type": "CLARIFICATION_REQUEST",
+  "status": "RESOLVED",
+  "emitted_at": "2026-05-22T15:25:00Z",
+  "resolved_at": "2026-05-22T15:28:00Z",
+  "execution_context": {
+    "execution_id": "EXEC-2026-05-22-005",
+    "milestone_id": "M11",
+    "ticket_id": "T11.5",
+    "ticket_title": "Milestone Registry Architecture"
+  },
+  "blocking_question": "During T11.5 implementation (Milestone Registry Architecture), two implementation decisions remain unresolved that affect file creation and migration strategy.",
+  "questions": [
+    {
+      "id": "Q1",
+      "question": "Which domain milestone files should be created in project-management/milestones/?",
+      "proposed_options": [
+        {
+          "label": "Populated only",
+          "value": "populated_only",
+          "description": "Create only core.json (M1-M10) and governance.json (M11-M19). Future domains add files when milestones exist."
+        },
+        {
+          "label": "All domains with stubs",
+          "value": "all_stubs",
+          "description": "Create core.json, governance.json, frontend.json, marketplace.json, runtime.json — empty arrays for domains without milestones."
+        }
+      ],
+      "default_behavior_if_unanswered": "Create populated files only. No empty stubs.",
+      "operator_response": {
+          "selected_option": "populated_only",
+          "rationale": "Registry can reference future files before they exist; aggregation layer validates at load time."
+      }
+    },
+    {
+      "id": "Q2",
+      "question": "What deprecation strategy should be used for old milestone files (milestones.json, governance-milestones.json)?",
+      "proposed_options": [
+        {
+          "label": "Immediate stub replacement",
+          "value": "immediate_stub",
+          "description": "Replace contents with deprecated marker pointing to registry. No dual-load transition."
+        },
+        {
+          "label": "Dual-load transition period",
+          "value": "dual_load",
+          "description": "Old files remain functional for N days while tools migrate. Registry loads alongside old files."
+        }
+      ],
+      "default_behavior_if_unanswered": "Immediate stub replacement. Transitional duality reintroduces split authority.",
+      "operator_response": {
+          "selected_option": "immediate_stub",
+          "rationale": "ADR specifies registry is the ONLY discovery mechanism. No transitional duality."
+      }
+    }
+  ],
+  "resolution": {
+    "ambiguity_score": 0,
+    "operator_override": true,
+    "next_action": "Resume T11.5 implementation with resolved decisions."
+  },
+  "traceability": {
+    "conversation_turn": 45,
+    "operator_confirmation": "status query followed by direct resolution"
+  }
+}

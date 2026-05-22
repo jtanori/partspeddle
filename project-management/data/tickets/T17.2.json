@@ -1,0 +1,37 @@
+{
+  "id": "T17.2",
+  "milestone_id": "M17",
+  "title": "Automate projection generation (JSON→Markdown)",
+  "domain": "Shared",
+  "capability": "Governance Automation",
+  "purpose": "Create a script that generates Markdown projections from canonical JSON state.",
+  "dependencies": [
+    "T12.4",
+    "T17.1"
+  ],
+  "architectural_constraints": [
+    "Must use templates from T12.2",
+    "Must be idempotent",
+    "Must preserve manual edits in projections (with markers)"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/generate-projection.ts",
+      "description": "Projection generator",
+      "type": "file"
+    },
+    {
+      "path": "meta/projections/templates/",
+      "description": "Projection templates directory",
+      "type": "directory"
+    }
+  ],
+  "acceptance_criteria": [
+    "Projection generator produces valid Markdown",
+    "Output is idempotent (same input = same output)",
+    "Templates are parameterized",
+    "Projections include JSON source reference"
+  ],
+  "estimated_hours": 4,
+  "status": "planned"
+}

@@ -1,0 +1,36 @@
+{
+  "id": "T15.1",
+  "milestone_id": "M15",
+  "title": "Create event schemas for governance mutations",
+  "domain": "Shared",
+  "capability": "Governance Event System",
+  "purpose": "Define JSON schemas for governance events: mutations, workflow triggers, AI proposals, human approvals.",
+  "dependencies": [
+    "T14.4"
+  ],
+  "architectural_constraints": [
+    "Must capture actor (AI vs human)",
+    "Must capture before/after state",
+    "Must support event replay"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/schemas/governance-event.schema.json",
+      "description": "Governance event JSON schema",
+      "type": "file"
+    },
+    {
+      "path": "meta/schemas/mutation-event.schema.json",
+      "description": "Mutation event schema",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Event schema has actor field (AI | human)",
+    "Event schema has before/after state",
+    "Event schema has timestamp and correlation ID",
+    "Examples validate against schema"
+  ],
+  "estimated_hours": 2,
+  "status": "planned"
+}

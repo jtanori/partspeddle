@@ -1,0 +1,36 @@
+{
+  "id": "T16.2",
+  "milestone_id": "M16",
+  "title": "Create telemetry storage model",
+  "domain": "Shared",
+  "capability": "Operational Telemetry",
+  "purpose": "Define how telemetry data is stored: format, rotation, retention, compression.",
+  "dependencies": [
+    "T16.1"
+  ],
+  "architectural_constraints": [
+    "Must support JSONL append",
+    "Must support file rotation",
+    "Must not exceed 100MB per file"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/telemetry/storage-model.md",
+      "description": "Telemetry storage model",
+      "type": "file"
+    },
+    {
+      "path": "meta/telemetry/retention-policy.md",
+      "description": "Telemetry retention policy",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Storage model documented (JSONL, rotation, compression)",
+    "Retention policy defined (time-based or count-based)",
+    "File size limits defined",
+    "Query interface documented"
+  ],
+  "estimated_hours": 1,
+  "status": "planned"
+}

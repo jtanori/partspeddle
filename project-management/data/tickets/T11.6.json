@@ -1,0 +1,87 @@
+{
+  "id": "T11.6",
+  "milestone_id": "M11",
+  "title": "Planning State Machine Specification",
+  "domain": "Shared",
+  "capability": "Governance Architecture",
+  "purpose": "Design the planning orchestration layer that bridges ambiguous human intent to deterministic, immutable execution contracts through a formal state machine.",
+  "dependencies": [
+    "T11.5"
+  ],
+  "architectural_constraints": [
+    "Planning and execution MUST be separate layers",
+    "Compiled plans are immutable execution contracts once approved",
+    "Ambiguity must be resolved before compilation, never during execution",
+    "JSON is authority; Markdown is projection",
+    "Plans must not directly reference branches — abstraction: Plan → Milestone → Ticket → Branch"
+  ],
+  "deliverables": [
+    {
+      "path": "project-knowledge/adr/003-planning-orchestration.md",
+      "description": "Architecture Decision Record documenting planning state machine design",
+      "type": "file"
+    },
+    {
+      "path": "project-management/planning/schemas/feature-intake.schema.json",
+      "description": "Schema for raw feature intake records",
+      "type": "schema"
+    },
+    {
+      "path": "project-management/planning/schemas/compiled-plan.schema.json",
+      "description": "Schema for deterministic compiled plans",
+      "type": "schema"
+    },
+    {
+      "path": "project-management/planning/schemas/planning-registry.schema.json",
+      "description": "Schema for planning registry authority",
+      "type": "schema"
+    },
+    {
+      "path": "project-governance/protocols/PLANNING_PROTOCOL.md",
+      "description": "Protocol defining intake → ambiguity resolution → compilation lifecycle",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/protocols/PLAN_COMPILATION_PROTOCOL.md",
+      "description": "Protocol for compiling stabilized specifications into executable plans",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/protocols/AMBIGUITY_RESOLUTION_PROTOCOL.md",
+      "description": "Protocol for structured ambiguity detection and clarification loops",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "ADR documents complete state machine: DRAFT → RESOLVING → STABILIZED → COMPILED → APPROVED → SCHEDULED → ACTIVE → COMPLETE → ARCHIVED",
+    "All schemas validate against JSON Schema draft-07",
+    "Protocols define clear entry/exit conditions for each state transition",
+    "Ambiguity resolution protocol includes ambiguity_score and operator_override mechanisms",
+    "Plan compilation produces immutable execution contracts with ticket bindings",
+    "Execution authorization protocol integrates with plan state machine",
+    "Reviewed and approved before implementation begins"
+  ],
+  "estimated_hours": 4,
+  "status": "completed",
+  "traceability": [
+    {
+      "commit_hash": "TBD",
+      "files_changed": [
+        "project-management/planning/registry.json",
+        "project-management/planning/schemas/feature-intake.schema.json",
+        "project-management/planning/schemas/compiled-plan.schema.json",
+        "project-management/planning/schemas/planning-registry.schema.json",
+        "project-governance/protocols/PLANNING_PROTOCOL.md",
+        "project-governance/protocols/PLAN_COMPILATION_PROTOCOL.md",
+        "project-governance/protocols/AMBIGUITY_RESOLUTION_PROTOCOL.md"
+      ],
+      "description": "Created planning state machine schemas and protocols per ADR-003",
+      "timestamp": "2026-05-22T16:41:33.651Z"
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-05-22T15:00:00.000Z",
+    "updated_at": "2026-05-22T15:00:00.000Z",
+    "version": 1
+  }
+}

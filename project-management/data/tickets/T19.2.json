@@ -1,0 +1,36 @@
+{
+  "id": "T19.2",
+  "milestone_id": "M19",
+  "title": "Extract governance engine",
+  "domain": "Shared",
+  "capability": "SYNTH Extraction",
+  "purpose": "Extract the governance engine (workflow execution, state management, validation) into a standalone package.",
+  "dependencies": [
+    "T19.1"
+  ],
+  "architectural_constraints": [
+    "Must depend only on schema package",
+    "Must have zero VINTRACK business logic",
+    "Must be testable in isolation"
+  ],
+  "deliverables": [
+    {
+      "path": "packages/governance-engine/",
+      "description": "Standalone governance engine",
+      "type": "directory"
+    },
+    {
+      "path": "packages/governance-engine/package.json",
+      "description": "Engine package manifest",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Engine depends only on governance-schemas",
+    "Engine has zero VINTRACK business logic",
+    "Engine test suite passes in isolation",
+    "Engine validates against schema package"
+  ],
+  "estimated_hours": 5,
+  "status": "planned"
+}

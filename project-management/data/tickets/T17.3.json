@@ -1,0 +1,38 @@
+{
+  "id": "T17.3",
+  "milestone_id": "M17",
+  "title": "Automate repository audits",
+  "domain": "Shared",
+  "capability": "Governance Automation",
+  "purpose": "Create a script that audits the repository: schema validation, governance state integrity, dependency graph consistency.",
+  "dependencies": [
+    "T13.5",
+    "T17.2"
+  ],
+  "architectural_constraints": [
+    "Must run in <30 seconds",
+    "Must produce structured report",
+    "Must not modify files"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/audit-repository.ts",
+      "description": "Repository audit script",
+      "type": "file"
+    },
+    {
+      "path": "meta/audits/",
+      "description": "Audit report output directory",
+      "type": "directory"
+    }
+  ],
+  "acceptance_criteria": [
+    "Audit script runs in <30 seconds",
+    "Audit validates all schemas",
+    "Audit checks governance state integrity",
+    "Audit checks dependency graph consistency",
+    "Audit report is structured JSON"
+  ],
+  "estimated_hours": 4,
+  "status": "planned"
+}

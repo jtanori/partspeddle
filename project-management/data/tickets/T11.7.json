@@ -1,0 +1,61 @@
+{
+  "id": "T11.7",
+  "milestone_id": "M11",
+  "title": "Update ticket_paths to Project-Root-Relative Paths",
+  "domain": "Shared",
+  "capability": "Governance Standards",
+  "purpose": "Change ticket_paths from milestones-file-relative ('tickets/T1.1.json') to project-root-relative ('project-management/data/tickets/T1.1.json') for unambiguous resolution regardless of milestone file location.",
+  "dependencies": [
+    "T11.5"
+  ],
+  "architectural_constraints": [
+    "All paths must resolve from project root",
+    "Must not break validate-pm.js",
+    "Must not break milestone-loader.js",
+    "Schema documentation must reflect the convention"
+  ],
+  "deliverables": [
+    {
+      "path": "project-management/milestones/core.json",
+      "description": "Updated ticket_paths with project-root-relative paths",
+      "type": "file"
+    },
+    {
+      "path": "project-management/milestones/governance.json",
+      "description": "Updated ticket_paths with project-root-relative paths",
+      "type": "file"
+    },
+    {
+      "path": "project-management/schemas/milestone.schema.json",
+      "description": "Updated path description to specify project-root-relative",
+      "type": "schema"
+    }
+  ],
+  "acceptance_criteria": [
+    "All ticket_paths use project-management/data/tickets/ prefix",
+    "validate-pm.js passes with 0 errors",
+    "milestone-loader.js loads correctly",
+    "Schema documents project-root-relative convention"
+  ],
+  "estimated_hours": 0.5,
+  "status": "completed",
+  "traceability": [
+    {
+      "commit_hash": "TBD",
+      "files_changed": [
+        "project-management/milestones/core.json",
+        "project-management/milestones/governance.json",
+        "project-management/schemas/milestone.schema.json",
+        "meta/schemas/milestone.schema.json"
+      ],
+      "description": "Updated all ticket_paths to project-root-relative convention",
+      "timestamp": "2026-05-22T17:44:54.032Z"
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-05-22T17:00:00Z",
+    "updated_at": "2026-05-22T17:00:00Z",
+    "version": 1,
+    "plan_id": "PLAN-M11-TICKET-PATHS"
+  }
+}

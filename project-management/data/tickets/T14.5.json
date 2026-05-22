@@ -1,0 +1,43 @@
+{
+  "id": "T14.5",
+  "milestone_id": "M14",
+  "title": "Fix existing schema violations",
+  "domain": "Shared",
+  "capability": "Schema Authority",
+  "purpose": "Fix schema violations: M0.5 milestone ID (contains dot), T0.5.1 ticket ID (contains two dots), missing schema fields.",
+  "dependencies": [
+    "T14.4"
+  ],
+  "architectural_constraints": [
+    "Must not break existing references",
+    "Must provide migration path",
+    "Must update runtime-state.json"
+  ],
+  "deliverables": [
+    {
+      "path": "project-management/data/milestones/M10.json",
+      "description": "Renamed M0.5 to M10 (schema-compliant)",
+      "type": "file"
+    },
+    {
+      "path": "project-management/data/tickets/T10.1.json",
+      "description": "Renamed T0.5.1 to T10.1",
+      "type": "file"
+    },
+    {
+      "path": "meta/migrations/M0.5-to-M10.md",
+      "description": "Migration notes for rename",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "M0.5 renamed to M10 in all files",
+    "T0.5.1 renamed to T10.1 in all files",
+    "M10 validates against milestone schema",
+    "T10.1 validates against ticket schema",
+    "runtime-state.json updated",
+    "dependency-graph.json updated"
+  ],
+  "estimated_hours": 2,
+  "status": "planned"
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/planning-registry.schema.json",
+  "title": "Planning Registry",
+  "description": "Authoritative index of all planning artifacts",
+  "type": "object",
+  "required": ["version", "intake", "compiled", "archived"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "schema": {
+      "type": "string",
+      "format": "uri"
+    },
+    "intake": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Paths to feature intake files"
+    },
+    "compiled": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Paths to compiled plan files"
+    },
+    "archived": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Paths to archived plan files"
+    },
+    "active_plans": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Plan IDs currently in active or scheduled state"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

@@ -1,0 +1,653 @@
+[
+  {
+    "id": "M11",
+    "phase": 11,
+    "title": "Governance Root Normalization",
+    "purpose": "Create stable governance root structure with canonical naming, schema versioning, and folder taxonomy.",
+    "scope": {
+      "in": [
+        "Create /meta root directory",
+        "Define subsystem folder taxonomy",
+        "Define naming conventions",
+        "Define schema versioning rules",
+        "Define canonical JSON principle",
+        "Define markdown projection principle",
+        "Create base schemas",
+        "Create governance README"
+      ],
+      "out": [
+        "Automation",
+        "Repository-wide metadata generation",
+        "Topology systems",
+        "Policy enforcement",
+        "Projection generation"
+      ]
+    },
+    "exit_criteria": [
+      "/meta directory exists with stable structure",
+      "Naming conventions documented and ratified",
+      "Schema versioning rules defined",
+      "Base schemas validate against schema validator",
+      "Governance README explains canonical state principle"
+    ],
+    "tickets": [
+      "T11.1",
+      "T11.2",
+      "T11.3",
+      "T11.4",
+      "T11.5",
+      "T11.6",
+      "T11.7",
+      "T11.8"
+    ],
+    "dependencies": [],
+    "downstream_impact": "Blocks M12 (Projection), M14 (Workflows), M17 (Automation).",
+    "estimated_duration_days": 2,
+    "status": "completed",
+    "metadata": {
+      "wave": 1,
+      "risk": "LOW",
+      "governance_only": true
+    },
+    "ticket_paths": {
+      "T11.1": {
+        "path": "project-management/data/tickets/T11.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T11.2": {
+        "path": "project-management/data/tickets/T11.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T11.3": {
+        "path": "project-management/data/tickets/T11.3.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T11.4": {
+        "path": "project-management/data/tickets/T11.4.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T11.5": {
+        "path": "project-management/data/tickets/T11.5.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T11.6": {
+        "path": "project-management/data/tickets/T11.6.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T11.7": {
+        "path": "project-management/data/tickets/T11.7.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T11.8": {
+        "path": "project-management/data/tickets/T11.8.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "trust_principle": "Governance integrity ensures all downstream systems operate on reliable foundations."
+  },
+  {
+    "id": "M12",
+    "phase": 12,
+    "title": "Projection Architecture",
+    "purpose": "Separate canonical JSON state from Markdown projections. JSON is source of truth; Markdown is human-readable rendering.",
+    "scope": {
+      "in": [
+        "Define JSON source format",
+        "Define Markdown projection format",
+        "Create projection-generation conventions",
+        "Migrate existing project-knowledge conceptually"
+      ],
+      "out": [
+        "Full automation of projections",
+        "Rewriting all existing docs",
+        "Runtime changes"
+      ]
+    },
+    "exit_criteria": [
+      "JSON source format documented",
+      "Markdown projection format documented",
+      "At least one projection generated from JSON",
+      "project-knowledge files identified for dual-format migration"
+    ],
+    "tickets": [
+      "T12.1",
+      "T12.2",
+      "T12.3",
+      "T12.4"
+    ],
+    "dependencies": [
+      "M11"
+    ],
+    "downstream_impact": "Enables M17 (Automation). Blocks any automated doc generation.",
+    "estimated_duration_days": 2,
+    "status": "planned",
+    "metadata": {
+      "wave": 2,
+      "risk": "LOW",
+      "governance_only": true
+    },
+    "ticket_paths": {
+      "T12.1": {
+        "path": "project-management/data/tickets/T12.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T12.2": {
+        "path": "project-management/data/tickets/T12.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T12.3": {
+        "path": "project-management/data/tickets/T12.3.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T12.4": {
+        "path": "project-management/data/tickets/T12.4.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "trust_principle": "Governance integrity ensures all downstream systems operate on reliable foundations."
+  },
+  {
+    "id": "M13",
+    "phase": 13,
+    "title": "Runtime-Critical Registry",
+    "purpose": "Track only critical runtime systems: auth, database, deployment, API boundaries, shared infrastructure.",
+    "scope": {
+      "in": [
+        "Subsystem registry for auth",
+        "Subsystem registry for database",
+        "Subsystem registry for deployment",
+        "Subsystem registry for API boundaries",
+        "Ownership metadata",
+        "Criticality classification"
+      ],
+      "out": [
+        "Full repository registry",
+        "UI systems scanning",
+        "Full dependency graphs"
+      ]
+    },
+    "exit_criteria": [
+      "Auth subsystem registered with ownership",
+      "Database subsystem registered with ownership",
+      "Deployment subsystem registered with ownership",
+      "API boundary subsystem registered with ownership",
+      "Criticality classification applied to all registered subsystems"
+    ],
+    "tickets": [
+      "T13.1",
+      "T13.2",
+      "T13.3",
+      "T13.4",
+      "T13.5"
+    ],
+    "dependencies": [
+      "M11"
+    ],
+    "downstream_impact": "Enables M17 (Automation). Provides data for repository intelligence.",
+    "estimated_duration_days": 2,
+    "status": "planned",
+    "metadata": {
+      "wave": 3,
+      "risk": "LOW-MEDIUM",
+      "governance_only": true
+    },
+    "ticket_paths": {
+      "T13.1": {
+        "path": "project-management/data/tickets/T13.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T13.2": {
+        "path": "project-management/data/tickets/T13.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T13.3": {
+        "path": "project-management/data/tickets/T13.3.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T13.4": {
+        "path": "project-management/data/tickets/T13.4.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T13.5": {
+        "path": "project-management/data/tickets/T13.5.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "trust_principle": "Governance integrity ensures all downstream systems operate on reliable foundations."
+  },
+  {
+    "id": "M14",
+    "phase": 14,
+    "title": "Governance Workflow Layer",
+    "purpose": "Formalize execution workflows: ticket schemas, milestone schemas, checkpoint schemas, resume packet schemas, completion report schemas.",
+    "scope": {
+      "in": [
+        "Ticket schema formalization",
+        "Milestone schema formalization",
+        "Checkpoint schema formalization",
+        "Resume packet schema formalization",
+        "Completion report schema formalization",
+        "Workflow registry",
+        "Execution lifecycle standards",
+        "Fix existing schema violations"
+      ],
+      "out": [
+        "Autonomous workflow execution",
+        "Policy mutation",
+        "Runtime changes"
+      ]
+    },
+    "exit_criteria": [
+      "All schemas validate with strict mode",
+      "Existing M0.5 and T0.5.1 schema violations fixed",
+      "Workflow registry exists",
+      "Execution lifecycle standards documented"
+    ],
+    "tickets": [
+      "T14.1",
+      "T14.2",
+      "T14.3",
+      "T14.4",
+      "T14.5"
+    ],
+    "dependencies": [
+      "M11",
+      "M12"
+    ],
+    "downstream_impact": "Blocks M15 (GES), M16 (Telemetry). Enables structured governance workflows.",
+    "estimated_duration_days": 3,
+    "status": "planned",
+    "metadata": {
+      "wave": 4,
+      "risk": "MEDIUM",
+      "governance_only": true
+    },
+    "ticket_paths": {
+      "T14.1": {
+        "path": "project-management/data/tickets/T14.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T14.2": {
+        "path": "project-management/data/tickets/T14.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T14.3": {
+        "path": "project-management/data/tickets/T14.3.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T14.4": {
+        "path": "project-management/data/tickets/T14.4.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T14.5": {
+        "path": "project-management/data/tickets/T14.5.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "trust_principle": "Governance integrity ensures all downstream systems operate on reliable foundations."
+  },
+  {
+    "id": "M15",
+    "phase": 15,
+    "title": "Governance Event System",
+    "purpose": "Introduce governance lineage tracking: governance mutations, workflow triggers, AI proposal lineage, human approvals.",
+    "scope": {
+      "in": [
+        "Event schemas for governance mutations",
+        "Event registry",
+        "Mutation tracking standards",
+        "AI-generated change tracking",
+        "Human approval tracking"
+      ],
+      "out": [
+        "Auto-approval of changes",
+        "Autonomous mutation",
+        "Runtime changes"
+      ]
+    },
+    "exit_criteria": [
+      "Event schema validates",
+      "Event registry operational",
+      "At least 3 governance mutations logged with full lineage",
+      "Mutation tracking standards documented"
+    ],
+    "tickets": [
+      "T15.1",
+      "T15.2",
+      "T15.3",
+      "T15.4"
+    ],
+    "dependencies": [
+      "M14"
+    ],
+    "downstream_impact": "Enables M18 (Authority Levels). Provides audit trail for all governance changes.",
+    "estimated_duration_days": 3,
+    "status": "planned",
+    "metadata": {
+      "wave": 5,
+      "risk": "MEDIUM-HIGH",
+      "governance_only": true
+    },
+    "ticket_paths": {
+      "T15.1": {
+        "path": "project-management/data/tickets/T15.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T15.2": {
+        "path": "project-management/data/tickets/T15.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T15.3": {
+        "path": "project-management/data/tickets/T15.3.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T15.4": {
+        "path": "project-management/data/tickets/T15.4.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "trust_principle": "Governance integrity ensures all downstream systems operate on reliable foundations."
+  },
+  {
+    "id": "M16",
+    "phase": 16,
+    "title": "Operational Telemetry",
+    "purpose": "Add execution observability: heartbeat events, execution state tracking, drift reporting, validation telemetry.",
+    "scope": {
+      "in": [
+        "Telemetry schemas",
+        "Telemetry storage model",
+        "Heartbeat persistence",
+        "Drift reporting mechanism",
+        "Validation telemetry hooks"
+      ],
+      "out": [
+        "Autonomous remediation",
+        "Self-healing systems",
+        "Runtime changes"
+      ]
+    },
+    "exit_criteria": [
+      "Telemetry schema validates",
+      "Storage model operational",
+      "Heartbeat events written to disk",
+      "Drift report generated from telemetry data",
+      "Validation telemetry captures at least 3 validation runs"
+    ],
+    "tickets": [
+      "T16.1",
+      "T16.2",
+      "T16.3",
+      "T16.4"
+    ],
+    "dependencies": [
+      "M14"
+    ],
+    "downstream_impact": "Enables M18 (Authority Levels). Provides data for drift monitoring.",
+    "estimated_duration_days": 3,
+    "status": "planned",
+    "metadata": {
+      "wave": 6,
+      "risk": "MEDIUM-HIGH",
+      "governance_only": true
+    },
+    "ticket_paths": {
+      "T16.1": {
+        "path": "project-management/data/tickets/T16.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T16.2": {
+        "path": "project-management/data/tickets/T16.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T16.3": {
+        "path": "project-management/data/tickets/T16.3.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T16.4": {
+        "path": "project-management/data/tickets/T16.4.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "trust_principle": "Governance integrity ensures all downstream systems operate on reliable foundations."
+  },
+  {
+    "id": "M17",
+    "phase": 17,
+    "title": "Governance Automation",
+    "purpose": "Introduce safe automation: metadata generation, projection generation, repository audits, schema validation.",
+    "scope": {
+      "in": [
+        "Automated metadata generation for tickets/milestones",
+        "Automated projection generation (JSON→Markdown)",
+        "Automated repository audits",
+        "Automated schema validation"
+      ],
+      "out": [
+        "Architecture decisions",
+        "Policy mutation",
+        "Governance canonization",
+        "Autonomous authority"
+      ]
+    },
+    "exit_criteria": [
+      "Metadata generation produces valid ticket JSON",
+      "Projection generation produces valid Markdown from JSON",
+      "Repository audit runs in <30 seconds",
+      "Schema validation catches at least one violation"
+    ],
+    "tickets": [
+      "T17.1",
+      "T17.2",
+      "T17.3",
+      "T17.4"
+    ],
+    "dependencies": [
+      "M12",
+      "M13",
+      "M14"
+    ],
+    "downstream_impact": "Reduces manual governance overhead. Enables self-maintaining governance system.",
+    "estimated_duration_days": 4,
+    "status": "planned",
+    "metadata": {
+      "wave": 7,
+      "risk": "HIGH",
+      "governance_only": true
+    },
+    "ticket_paths": {
+      "T17.1": {
+        "path": "project-management/data/tickets/T17.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T17.2": {
+        "path": "project-management/data/tickets/T17.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T17.3": {
+        "path": "project-management/data/tickets/T17.3.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T17.4": {
+        "path": "project-management/data/tickets/T17.4.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "trust_principle": "Governance integrity ensures all downstream systems operate on reliable foundations."
+  },
+  {
+    "id": "M18",
+    "phase": 18,
+    "title": "Governance Authority Levels",
+    "purpose": "Implement graduated AI authority system: approval workflows, drift monitoring, rollback requirements, intervention thresholds.",
+    "scope": {
+      "in": [
+        "Approval workflow scaffolding",
+        "Drift monitoring",
+        "Rollback requirements",
+        "Intervention thresholds",
+        "Authority level 0-4 implementation"
+      ],
+      "out": [
+        "Full autonomous governance",
+        "Unsupervised AI execution"
+      ]
+    },
+    "exit_criteria": [
+      "Authority levels 0-3 operational",
+      "Level 4 requires explicit enablement",
+      "Drift monitoring catches at least one anomaly",
+      "Rollback mechanism tested",
+      "Intervention thresholds documented"
+    ],
+    "tickets": [
+      "T18.1",
+      "T18.2",
+      "T18.3",
+      "T18.4"
+    ],
+    "dependencies": [
+      "M15",
+      "M16",
+      "M17"
+    ],
+    "downstream_impact": "Enables selective autonomous governance. Human retains final authority.",
+    "estimated_duration_days": 4,
+    "status": "planned",
+    "metadata": {
+      "wave": 8,
+      "risk": "VERY HIGH",
+      "governance_only": true
+    },
+    "ticket_paths": {
+      "T18.1": {
+        "path": "project-management/data/tickets/T18.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T18.2": {
+        "path": "project-management/data/tickets/T18.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T18.3": {
+        "path": "project-management/data/tickets/T18.3.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T18.4": {
+        "path": "project-management/data/tickets/T18.4.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "trust_principle": "Governance integrity ensures all downstream systems operate on reliable foundations."
+  },
+  {
+    "id": "M19",
+    "phase": 19,
+    "title": "SYNTH Extraction Preparation",
+    "purpose": "Prepare reusable governance substrate for SYNTH extraction. Isolate VINTRACK-specific business logic.",
+    "scope": {
+      "in": [
+        "Extract schemas as standalone package",
+        "Extract governance engine",
+        "Extract orchestration workflows",
+        "Extract telemetry systems",
+        "Extract projection engine",
+        "Isolate VINTRACK-specific logic"
+      ],
+      "out": [
+        "Hard dependency between SYNTH and VINTRACK",
+        "Runtime coupling"
+      ]
+    },
+    "exit_criteria": [
+      "Governance substrate passes all tests independently",
+      "VINTRACK runtime operable without governance",
+      "SYNTH package has zero VINTRACK business logic",
+      "Extraction validated with at least one external test"
+    ],
+    "tickets": [
+      "T19.1",
+      "T19.2",
+      "T19.3",
+      "T19.4",
+      "T19.5"
+    ],
+    "dependencies": [
+      "M17",
+      "M18"
+    ],
+    "downstream_impact": "Governance becomes reusable product. VINTRACK runtime remains independent.",
+    "estimated_duration_days": 5,
+    "status": "planned",
+    "metadata": {
+      "wave": 9,
+      "risk": "EXTREME",
+      "governance_only": true
+    },
+    "ticket_paths": {
+      "T19.1": {
+        "path": "project-management/data/tickets/T19.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T19.2": {
+        "path": "project-management/data/tickets/T19.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T19.3": {
+        "path": "project-management/data/tickets/T19.3.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T19.4": {
+        "path": "project-management/data/tickets/T19.4.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T19.5": {
+        "path": "project-management/data/tickets/T19.5.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "trust_principle": "Governance integrity ensures all downstream systems operate on reliable foundations."
+  }
+]

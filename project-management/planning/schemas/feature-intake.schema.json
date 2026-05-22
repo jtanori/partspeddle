@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/feature-intake.schema.json",
+  "title": "Feature Intake",
+  "description": "Raw human request before ambiguity resolution",
+  "type": "object",
+  "required": ["id", "type", "status", "title", "description", "ambiguity_score", "created_at"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^FEATURE-[0-9]+$",
+      "description": "Unique intake identifier"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["feature-intake"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["unresolved", "resolving", "stabilized", "rejected"],
+      "default": "unresolved"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable request title"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Raw request description"
+    },
+    "requestor": {
+      "type": "string",
+      "description": "Who initiated the request"
+    },
+    "domain": {
+      "type": "string",
+      "enum": ["Shared", "Identity", "Marketplace", "Transactions", "Messaging", "Search", "AI", "Infrastructure"],
+      "description": "Primary domain"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "critical"],
+      "default": "medium"
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["question", "resolved"],
+        "properties": {
+          "question": { "type": "string" },
+          "proposed_options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": { "type": "string" },
+                "value": { "type": "string" },
+                "description": { "type": "string" }
+              }
+            }
+          },
+          "operator_response": {
+            "type": "object",
+            "properties": {
+              "selected_option": { "type": "string" },
+              "rationale": { "type": "string" }
+            }
+          },
+          "resolved": { "type": "boolean", "default": false }
+        }
+      },
+      "description": "Ambiguity questions requiring clarification"
+    },
+    "ambiguity_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "0 = fully resolved, 1 = completely ambiguous"
+    },
+    "operator_override": {
+      "type": "boolean",
+      "default": false,
+      "description": "Operator accepted ambiguity and overrides resolution requirement"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

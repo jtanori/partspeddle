@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-05-22T03:56:43.393Z",
+  "passed": false,
+  "issues": [
+    {
+      "severity": "MEDIUM",
+      "category": "consistency",
+      "message": "Last execution milestone (M3) does not match current milestone (M11)",
+      "recommendation": "Reconcile milestone transitions"
+    },
+    {
+      "severity": "HIGH",
+      "category": "heartbeat_continuity",
+      "message": "Execution is active but no heartbeats found",
+      "recommendation": "Emit heartbeat immediately per HEARTBEAT_POLICY.md"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "bootstrap_consistency",
+      "message": "Bootstrap milestone (M3) != current milestone (M11)",
+      "recommendation": "Regenerate runtime-bootstrap.json"
+    }
+  ],
+  "checks_total": 23,
+  "checks_passed": 21,
+  "runtime_confidence": 0.75,
+  "stale_surfaces": [],
+  "missing_files": [],
+  "projection_freshness_seconds": 18
+}

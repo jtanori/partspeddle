@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "generated_at": "2026-05-20T11:30:00Z",
+  "milestone_dependencies": [
+    { "id": "M11", "depends_on": [], "blocks": ["M12", "M13", "M14"] },
+    { "id": "M12", "depends_on": ["M11"], "blocks": ["M14", "M17"] },
+    { "id": "M13", "depends_on": ["M11"], "blocks": ["M17"] },
+    { "id": "M14", "depends_on": ["M11", "M12"], "blocks": ["M15", "M16", "M17"] },
+    { "id": "M15", "depends_on": ["M14"], "blocks": ["M18"] },
+    { "id": "M16", "depends_on": ["M14"], "blocks": ["M18"] },
+    { "id": "M17", "depends_on": ["M12", "M13", "M14"], "blocks": ["M18", "M19"] },
+    { "id": "M18", "depends_on": ["M15", "M16", "M17"], "blocks": ["M19"] },
+    { "id": "M19", "depends_on": ["M17", "M18"], "blocks": [] }
+  ],
+  "ticket_dependencies": [
+    { "id": "T11.1", "depends_on": [], "milestone": "M11" },
+    { "id": "T11.2", "depends_on": ["T11.1"], "milestone": "M11" },
+    { "id": "T11.3", "depends_on": ["T11.2"], "milestone": "M11" },
+    { "id": "T11.4", "depends_on": ["T11.3"], "milestone": "M11" },
+    { "id": "T12.1", "depends_on": ["T11.3"], "milestone": "M12" },
+    { "id": "T12.2", "depends_on": ["T12.1"], "milestone": "M12" },
+    { "id": "T12.3", "depends_on": ["T12.2"], "milestone": "M12" },
+    { "id": "T12.4", "depends_on": ["T12.3"], "milestone": "M12" },
+    { "id": "T13.1", "depends_on": ["T11.3"], "milestone": "M13" },
+    { "id": "T13.2", "depends_on": ["T13.1"], "milestone": "M13" },
+    { "id": "T13.3", "depends_on": ["T13.2"], "milestone": "M13" },
+    { "id": "T13.4", "depends_on": ["T13.3"], "milestone": "M13" },
+    { "id": "T13.5", "depends_on": ["T13.4"], "milestone": "M13" },
+    { "id": "T14.1", "depends_on": ["T11.3"], "milestone": "M14" },
+    { "id": "T14.2", "depends_on": ["T14.1"], "milestone": "M14" },
+    { "id": "T14.3", "depends_on": ["T14.2"], "milestone": "M14" },
+    { "id": "T14.4", "depends_on": ["T14.3"], "milestone": "M14" },
+    { "id": "T14.5", "depends_on": ["T14.4"], "milestone": "M14" },
+    { "id": "T15.1", "depends_on": ["T14.4"], "milestone": "M15" },
+    { "id": "T15.2", "depends_on": ["T15.1"], "milestone": "M15" },
+    { "id": "T15.3", "depends_on": ["T15.2"], "milestone": "M15" },
+    { "id": "T15.4", "depends_on": ["T15.3"], "milestone": "M15" },
+    { "id": "T16.1", "depends_on": ["T14.4"], "milestone": "M16" },
+    { "id": "T16.2", "depends_on": ["T16.1"], "milestone": "M16" },
+    { "id": "T16.3", "depends_on": ["T16.2"], "milestone": "M16" },
+    { "id": "T16.4", "depends_on": ["T16.3"], "milestone": "M16" },
+    { "id": "T17.1", "depends_on": ["T14.5", "T15.4"], "milestone": "M17" },
+    { "id": "T17.2", "depends_on": ["T12.4", "T17.1"], "milestone": "M17" },
+    { "id": "T17.3", "depends_on": ["T13.5", "T17.2"], "milestone": "M17" },
+    { "id": "T17.4", "depends_on": ["T17.3"], "milestone": "M17" },
+    { "id": "T18.1", "depends_on": ["T15.4", "T16.4"], "milestone": "M18" },
+    { "id": "T18.2", "depends_on": ["T18.1"], "milestone": "M18" },
+    { "id": "T18.3", "depends_on": ["T18.2"], "milestone": "M18" },
+    { "id": "T18.4", "depends_on": ["T18.3"], "milestone": "M18" },
+    { "id": "T19.1", "depends_on": ["T17.4", "T18.4"], "milestone": "M19" },
+    { "id": "T19.2", "depends_on": ["T19.1"], "milestone": "M19" },
+    { "id": "T19.3", "depends_on": ["T19.2"], "milestone": "M19" },
+    { "id": "T19.4", "depends_on": ["T19.2"], "milestone": "M19" },
+    { "id": "T19.5", "depends_on": ["T19.3", "T19.4"], "milestone": "M19" }
+  ],
+  "critical_path": [
+    "M11", "M12", "M14", "M15", "M18", "M19"
+  ],
+  "parallelizable": [
+    "M13", "M16"
+  ]
+}

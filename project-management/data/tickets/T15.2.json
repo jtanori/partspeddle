@@ -1,0 +1,36 @@
+{
+  "id": "T15.2",
+  "milestone_id": "M15",
+  "title": "Create event registry",
+  "domain": "Shared",
+  "capability": "Governance Event System",
+  "purpose": "Create the event registry: storage model, indexing, and query interface.",
+  "dependencies": [
+    "T15.1"
+  ],
+  "architectural_constraints": [
+    "Must append-only",
+    "Must support time-range queries",
+    "Must not block execution"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/events/registry.json",
+      "description": "Event registry index",
+      "type": "file"
+    },
+    {
+      "path": "meta/events/README.md",
+      "description": "Event registry documentation",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Registry supports append-only writes",
+    "Registry supports time-range queries",
+    "Registry does not block execution",
+    "Event storage format documented"
+  ],
+  "estimated_hours": 2,
+  "status": "planned"
+}

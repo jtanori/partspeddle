@@ -1,0 +1,120 @@
+{
+  "CHECKPOINT": {
+    "metadata": {
+      "checkpoint_id": "cp_T11.4_20260522_075500_complete",
+      "protocol_version": "1.0.0",
+      "task_id": "T11.4",
+      "milestone": "M11",
+      "sequence_number": 1,
+      "timestamp": "2026-05-22T07:55:00Z",
+      "trigger": "completion"
+    },
+    "execution_state": {
+      "lifecycle_state": "COMPLETE",
+      "phase": "completion",
+      "current_surface": "governance",
+      "reasoning_cycles_since_last_checkpoint": 1,
+      "files_modified_since_last_checkpoint": 14
+    },
+    "completed_work": {
+      "files_created": [
+        "meta/state/canonical-state.json",
+        "meta/recovery/contaminated-branch.md",
+        "meta/recovery/interrupted-session.md",
+        "meta/recovery/stale-lock.md",
+        "meta/recovery/drift-remediation.md",
+        "meta/recovery/invalid-runtime-state.md",
+        "tests/governance/invariants.test.ts",
+        "meta/workflows/merge-strategy.md",
+        "tools/runtime/integrity-audit.sh",
+        "tools/projections/generate.sh"
+      ],
+      "files_modified": [
+        "project-management/data/governance-tickets.json",
+        "tools/repository/validate.sh"
+      ],
+      "files_deleted": [],
+      "validations_passed": [
+        "canonical-state-schema-validation",
+        "recovery-playbook-existence-validation",
+        "invariant-test-suite-19-passed",
+        "capability-registry-tool-existence-validation",
+        "worktree-clean-validation",
+        "repository-branch-validation"
+      ],
+      "validations_failed": [],
+      "validations_skipped": []
+    },
+    "pending_work": [],
+    "modified_files_snapshot": [
+      {
+        "path": "meta/state/canonical-state.json",
+        "checksum": "sha256:canonical",
+        "lines_added": 85,
+        "lines_removed": 0
+      },
+      {
+        "path": "meta/recovery/contaminated-branch.md",
+        "checksum": "sha256:canonical",
+        "lines_added": 62,
+        "lines_removed": 0
+      },
+      {
+        "path": "meta/recovery/interrupted-session.md",
+        "checksum": "sha256:canonical",
+        "lines_added": 75,
+        "lines_removed": 0
+      },
+      {
+        "path": "meta/recovery/stale-lock.md",
+        "checksum": "sha256:canonical",
+        "lines_added": 68,
+        "lines_removed": 0
+      },
+      {
+        "path": "meta/recovery/drift-remediation.md",
+        "checksum": "sha256:canonical",
+        "lines_added": 85,
+        "lines_removed": 0
+      },
+      {
+        "path": "meta/recovery/invalid-runtime-state.md",
+        "checksum": "sha256:canonical",
+        "lines_added": 105,
+        "lines_removed": 0
+      },
+      {
+        "path": "tests/governance/invariants.test.ts",
+        "checksum": "sha256:canonical",
+        "lines_added": 185,
+        "lines_removed": 0
+      },
+      {
+        "path": "meta/workflows/merge-strategy.md",
+        "checksum": "sha256:canonical",
+        "lines_added": 95,
+        "lines_removed": 0
+      }
+    ],
+    "rollback_point": {
+      "git_commit": "9117e39",
+      "git_branch": "feature/T11.x-governance-runtime",
+      "clean_working_tree": true,
+      "stashed_changes": false
+    },
+    "unresolved_risks": [],
+    "next_safe_resume_step": {
+      "description": "Terminal state — no pending work.",
+      "estimated_effort_minutes": 0,
+      "dependencies": [],
+      "required_context": []
+    },
+    "resume_contract": {
+      "can_resume_from_this_checkpoint": false,
+      "requires_context_rehydration": false,
+      "context_files_to_load": [],
+      "forbidden_actions_on_resume": []
+    },
+    "previous_checkpoint": null
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "T15.3",
+  "milestone_id": "M15",
+  "title": "Implement mutation tracking standards",
+  "domain": "Shared",
+  "capability": "Governance Event System",
+  "purpose": "Define how mutations are tracked: what to log, when to log, retention policy.",
+  "dependencies": [
+    "T15.2"
+  ],
+  "architectural_constraints": [
+    "Must not impact runtime performance",
+    "Must support async logging",
+    "Must have retention policy"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/events/mutation-tracking.md",
+      "description": "Mutation tracking standards",
+      "type": "file"
+    },
+    {
+      "path": "meta/events/retention-policy.md",
+      "description": "Event retention policy",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Mutation tracking standards documented",
+    "Retention policy defined (time vs count)",
+    "Async logging strategy documented",
+    "Performance impact quantified (<1ms per event)"
+  ],
+  "estimated_hours": 1,
+  "status": "planned"
+}

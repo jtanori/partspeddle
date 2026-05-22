@@ -1,0 +1,52 @@
+{
+  "surfaces": {
+    "backend": {
+      "runtime": "node",
+      "root_paths": ["src/backend/identity/api", "src/backend/identity/application", "src/backend/identity/domain", "src/backend/identity/infrastructure", "src/backend/identity/queue", "src/backend/shared"],
+      "allowed_imports": ["shared", "infrastructure"],
+      "forbidden_imports": ["frontend-client", "frontend-rsc"],
+      "description": "API server, domain logic, repositories, queue workers"
+    },
+    "frontend-rsc": {
+      "runtime": "nextjs-server",
+      "root_paths": [],
+      "allowed_imports": ["shared", "frontend-shared"],
+      "forbidden_imports": ["backend-infrastructure", "backend-domain", "node-only"],
+      "description": "React Server Components, Server Actions, route handlers"
+    },
+    "frontend-client": {
+      "runtime": "browser",
+      "root_paths": [],
+      "allowed_imports": ["shared", "frontend-shared"],
+      "forbidden_imports": ["backend", "node-only", "infrastructure"],
+      "description": "Client Components, hooks, browser APIs"
+    },
+    "shared": {
+      "runtime": "universal",
+      "root_paths": ["src/shared"],
+      "allowed_imports": [],
+      "forbidden_imports": ["backend", "frontend-client", "frontend-rsc"],
+      "description": "Contracts, types, Zod schemas, utilities consumed by all surfaces"
+    },
+    "infrastructure": {
+      "runtime": "mixed",
+      "root_paths": ["docker-compose.dev.yml", "supabase", ".github/workflows"],
+      "allowed_imports": ["shared"],
+      "forbidden_imports": ["frontend-client", "frontend-rsc"],
+      "description": "Docker, CI/CD, database migrations, infrastructure config"
+    },
+    "ci-cd": {
+      "runtime": "actions",
+      "root_paths": [".github/workflows"],
+      "allowed_imports": [],
+      "forbidden_imports": ["backend", "frontend-client", "frontend-rsc"],
+      "description": "GitHub Actions, validation gates, deployment automation"
+    }
+  },
+  "cross_surface_rules": {
+    "shared_may_not_import_any_surface": true,
+    "backend_owns_contracts": true,
+    "frontend_consumes_contracts": true,
+    "infrastructure_is_independent": true
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "T12.1",
+  "milestone_id": "M12",
+  "title": "Define JSON source format",
+  "domain": "Shared",
+  "capability": "Projection Architecture",
+  "purpose": "Define the canonical JSON format for all governance state that will be projected to Markdown.",
+  "dependencies": [
+    "T11.3"
+  ],
+  "architectural_constraints": [
+    "Must be deterministic",
+    "Must support incremental updates",
+    "Must not duplicate runtime state"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/projections/json-source-format.md",
+      "description": "JSON source format specification",
+      "type": "file"
+    },
+    {
+      "path": "meta/projections/examples/ticket.json",
+      "description": "Example canonical ticket JSON",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "JSON format spec has field definitions",
+    "Example ticket JSON validates against schema",
+    "Format supports incremental updates",
+    "Format is deterministic (no ordering ambiguity)"
+  ],
+  "estimated_hours": 2,
+  "status": "planned"
+}

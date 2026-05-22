@@ -1,0 +1,7 @@
+{
+  "deprecated": true,
+  "since": "2026-05-22",
+  "reason": "Governance milestones moved to project-management/milestones/governance.json. Use the milestone registry for discovery.",
+  "registry": "project-management/data/milestones.registry.json",
+  "migration_guide": "See ADR-003: Planning Orchestration Architecture"
+}

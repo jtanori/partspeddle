@@ -1,0 +1,53 @@
+{
+  "timestamp": "2026-05-22T13:58:48.074Z",
+  "passed": true,
+  "issues": [
+    {
+      "severity": "MEDIUM",
+      "category": "consistency",
+      "message": "Last execution milestone (M11) does not match current milestone (M12)",
+      "recommendation": "Reconcile milestone transitions"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "projection_freshness",
+      "message": "Projection latest-status.md is stale (123 min old)",
+      "recommendation": "Regenerate projections with scripts/generate-runtime-projections.ts"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "projection_freshness",
+      "message": "Projection latest-heartbeat.md is stale (123 min old)",
+      "recommendation": "Regenerate projections with scripts/generate-runtime-projections.ts"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "projection_freshness",
+      "message": "Projection current-context.md is stale (123 min old)",
+      "recommendation": "Regenerate projections with scripts/generate-runtime-projections.ts"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "projection_freshness",
+      "message": "Projection resume-instruction.md is stale (123 min old)",
+      "recommendation": "Regenerate projections with scripts/generate-runtime-projections.ts"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "bootstrap_consistency",
+      "message": "Bootstrap milestone (M11) != current milestone (M12)",
+      "recommendation": "Regenerate runtime-bootstrap.json"
+    }
+  ],
+  "checks_total": 28,
+  "checks_passed": 22,
+  "runtime_confidence": 0.65,
+  "stale_surfaces": [
+    "Projection latest-status.md is stale (123 min old)",
+    "Projection latest-heartbeat.md is stale (123 min old)",
+    "Projection current-context.md is stale (123 min old)",
+    "Projection resume-instruction.md is stale (123 min old)"
+  ],
+  "missing_files": [],
+  "projection_freshness_seconds": 7392
+}

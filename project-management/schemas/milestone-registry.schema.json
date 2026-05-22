@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/milestone-registry.schema.json",
+  "title": "Milestone Registry",
+  "description": "Authoritative discovery registry for modular milestone files",
+  "type": "object",
+  "required": ["version", "files"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Registry format version"
+    },
+    "schema": {
+      "type": "string",
+      "format": "uri",
+      "description": "URI of the registry schema"
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Relative path from project root to a domain milestone file"
+      },
+      "minItems": 1,
+      "description": "Ordered list of milestone files to load"
+    },
+    "active_collections": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Domain collections currently in scope"
+    },
+    "load_order": {
+      "type": "string",
+      "enum": ["sequential", "parallel"],
+      "default": "sequential",
+      "description": "How to load domain files"
+    }
+  }
+}

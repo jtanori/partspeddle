@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/compiled-plan.schema.json",
+  "title": "Compiled Plan",
+  "description": "Immutable execution contract produced after ambiguity resolution",
+  "type": "object",
+  "required": ["plan_id", "type", "status", "milestone", "tickets", "execution_order", "compiled_at"],
+  "properties": {
+    "plan_id": {
+      "type": "string",
+      "pattern": "^PLAN-[A-Z0-9-]+$",
+      "description": "Unique plan identifier"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["compiled-plan"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["compiled", "approved", "scheduled", "active", "complete", "archived"],
+      "description": "Plan state machine position"
+    },
+    "milestone": {
+      "type": "string",
+      "pattern": "^M[0-9]+$",
+      "description": "Target milestone"
+    },
+    "tickets": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^T[0-9]+(\\.[0-9A-Z]+)+$"
+      },
+      "description": "Tickets bound to this plan"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^T[0-9]+(\\.[0-9A-Z]+)+$"
+      },
+      "description": "Tickets that must complete before this plan activates"
+    },
+    "execution_order": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^T[0-9]+(\\.[0-9A-Z]+)+$"
+      },
+      "description": "Deterministic ticket execution sequence"
+    },
+    "immutable": {
+      "type": "boolean",
+      "default": false,
+      "description": "Once approved, plan becomes append-only"
+    },
+    "compiled_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "approved_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "lock": { "type": "boolean", "default": false },
+        "active_ticket": { "type": ["string", "null"] },
+        "current_turn": { "type": "integer", "minimum": 0, "default": 0 },
+        "max_parallelism": { "type": "integer", "minimum": 1, "default": 1 },
+        "turn_history": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "turn": { "type": "integer" },
+              "ticket": { "type": "string" },
+              "started_at": { "type": "string", "format": "date-time" },
+              "completed_at": { "type": "string", "format": "date-time" }
+            }
+          }
+        }
+      }
+    },
+    "traceability": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "commit_hash": { "type": "string" },
+          "files_changed": { "type": "array", "items": { "type": "string" } },
+          "description": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

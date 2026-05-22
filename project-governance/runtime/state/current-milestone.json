@@ -1,0 +1,15 @@
+{
+  "protocol_version": "1.0.0",
+  "active_milestone": {
+    "id": "M1",
+    "title": "Runtime Foundations",
+    "status": "in_progress",
+    "phase": 1
+  },
+  "previous_milestone": {
+    "id": "M11",
+    "title": "Governance Root Normalization",
+    "status": "completed"
+  },
+  "updated_at": "2026-05-22T16:45:00Z"
+}

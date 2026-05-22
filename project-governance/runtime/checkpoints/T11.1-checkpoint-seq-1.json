@@ -1,0 +1,69 @@
+{
+  "CHECKPOINT": {
+    "metadata": {
+      "checkpoint_id": "cp_T11.1_20260522_035500_init",
+      "protocol_version": "1.0.0",
+      "task_id": "T11.1",
+      "milestone": "M11",
+      "sequence_number": 1,
+      "timestamp": "2026-05-22T03:55:00Z",
+      "trigger": "execution_start"
+    },
+    "execution_state": {
+      "lifecycle_state": "EXECUTING",
+      "phase": "initialization",
+      "current_surface": "shared",
+      "reasoning_cycles_since_last_checkpoint": 0,
+      "files_modified_since_last_checkpoint": 0
+    },
+    "completed_work": {
+      "files_created": [],
+      "files_modified": [],
+      "files_deleted": [],
+      "validations_passed": [],
+      "validations_failed": [],
+      "validations_skipped": []
+    },
+    "pending_work": [
+      "Create /meta directory and subdirectories",
+      "Write meta/README.md",
+      "Run integrity audit",
+      "Emit checkpoint"
+    ],
+    "modified_files_snapshot": [],
+    "rollback_point": {
+      "git_commit": "HEAD",
+      "git_branch": "feature/M11-governance-root",
+      "clean_working_tree": true,
+      "stashed_changes": false
+    },
+    "unresolved_risks": [
+      "meta/ directory must not conflict with existing project-governance/ paths"
+    ],
+    "next_safe_resume_step": {
+      "description": "Create /meta directory and all subdirectories per T11.1 deliverables",
+      "estimated_effort_minutes": 5,
+      "dependencies": [],
+      "required_context": [
+        "project-governance/protocols/EXECUTION_LIFECYCLE_PROTOCOL.md",
+        "project-management/data/governance-tickets.json"
+      ]
+    },
+    "resume_contract": {
+      "can_resume_from_this_checkpoint": true,
+      "requires_context_rehydration": true,
+      "context_files_to_load": [
+        "project-governance/runtime/state/active-execution.json",
+        "project-governance/runtime/state/current-milestone.json",
+        "project-governance/runtime/state/current-ticket.json",
+        "project-governance/runtime/checkpoints/T11.1-checkpoint-seq-1.json"
+      ],
+      "forbidden_actions_on_resume": [
+        "Do NOT recreate already-created files",
+        "Do NOT modify project-governance/ directory",
+        "Do NOT change runtime state without lock"
+      ]
+    },
+    "previous_checkpoint": null
+  }
+}

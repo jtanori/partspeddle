@@ -1,0 +1,25 @@
+{
+  "protocol_version": "1.0.0",
+  "locked": false,
+  "execution_id": "EXEC-2026-05-22-005",
+  "locked_at": "2026-05-22T07:43:13Z",
+  "locked_by": "agent",
+  "expires_at": "2026-05-22T09:43:13Z",
+  "released_at": "2026-05-22T07:55:00Z",
+  "release_reason": "safe_exit",
+  "lock_ttl_minutes": 120,
+  "acquire_rules": {
+    "requires_idle_state": true,
+    "requires_free_lock": true,
+    "requires_valid_ticket": true,
+    "requires_dependency_resolution": true
+  },
+  "release_rules": {
+    "on_safe_exit": true,
+    "on_terminal_state": true,
+    "on_stale_ttl": true,
+    "requires_checkpoint_flush": true,
+    "requires_bootstrap_generation": true
+  },
+  "updated_at": "2026-05-22T07:55:00Z"
+}

@@ -1,0 +1,101 @@
+{
+  "CHECKPOINT": {
+    "metadata": {
+      "checkpoint_id": "cp_T11.3_20260522_051500_complete",
+      "protocol_version": "1.0.0",
+      "task_id": "T11.3",
+      "milestone": "M11",
+      "sequence_number": 1,
+      "timestamp": "2026-05-22T05:15:00Z",
+      "trigger": "completion"
+    },
+    "execution_state": {
+      "lifecycle_state": "COMPLETE",
+      "phase": "completion",
+      "current_surface": "governance",
+      "reasoning_cycles_since_last_checkpoint": 1,
+      "files_modified_since_last_checkpoint": 6
+    },
+    "completed_work": {
+      "files_created": [
+        "meta/schemas/milestone.schema.json",
+        "meta/schemas/ticket.schema.json",
+        "meta/schemas/checkpoint.schema.json",
+        "meta/schemas/governance-state.schema.json"
+      ],
+      "files_modified": [
+        "meta/README.md",
+        "project-management/data/governance-tickets.json"
+      ],
+      "files_deleted": [],
+      "validations_passed": [
+        "schema-syntax-validation",
+        "milestone-schema-validation-M3",
+        "ticket-schema-validation-T3.5",
+        "checkpoint-schema-validation-T11.2",
+        "governance-state-schema-validation-active-execution"
+      ],
+      "validations_failed": [],
+      "validations_skipped": []
+    },
+    "pending_work": [],
+    "modified_files_snapshot": [
+      {
+        "path": "meta/schemas/milestone.schema.json",
+        "checksum": "sha256:canonical",
+        "lines_added": 75,
+        "lines_removed": 0
+      },
+      {
+        "path": "meta/schemas/ticket.schema.json",
+        "checksum": "sha256:canonical",
+        "lines_added": 95,
+        "lines_removed": 0
+      },
+      {
+        "path": "meta/schemas/checkpoint.schema.json",
+        "checksum": "sha256:canonical",
+        "lines_added": 125,
+        "lines_removed": 0
+      },
+      {
+        "path": "meta/schemas/governance-state.schema.json",
+        "checksum": "sha256:canonical",
+        "lines_added": 145,
+        "lines_removed": 0
+      },
+      {
+        "path": "meta/README.md",
+        "checksum": "sha256:canonical",
+        "lines_added": 10,
+        "lines_removed": 0
+      },
+      {
+        "path": "project-management/data/governance-tickets.json",
+        "checksum": "sha256:canonical",
+        "lines_added": 15,
+        "lines_removed": 1
+      }
+    ],
+    "rollback_point": {
+      "git_commit": "HEAD",
+      "git_branch": "feature/M11-governance-root",
+      "clean_working_tree": false,
+      "stashed_changes": false
+    },
+    "unresolved_risks": [],
+    "next_safe_resume_step": {
+      "description": "Terminal state — no pending work.",
+      "estimated_effort_minutes": 0,
+      "dependencies": [],
+      "required_context": []
+    },
+    "resume_contract": {
+      "can_resume_from_this_checkpoint": false,
+      "requires_context_rehydration": false,
+      "context_files_to_load": [],
+      "forbidden_actions_on_resume": []
+    },
+    "previous_checkpoint": null
+  }
+}

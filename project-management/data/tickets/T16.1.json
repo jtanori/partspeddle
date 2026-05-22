@@ -1,0 +1,41 @@
+{
+  "id": "T16.1",
+  "milestone_id": "M16",
+  "title": "Create telemetry schemas",
+  "domain": "Shared",
+  "capability": "Operational Telemetry",
+  "purpose": "Define schemas for telemetry: heartbeat, execution state, drift report, validation result.",
+  "dependencies": [
+    "T14.4"
+  ],
+  "architectural_constraints": [
+    "Must support time-series queries",
+    "Must support aggregation",
+    "Must not duplicate event schema"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/schemas/heartbeat.schema.json",
+      "description": "Heartbeat telemetry schema",
+      "type": "file"
+    },
+    {
+      "path": "meta/schemas/drift-report.schema.json",
+      "description": "Drift report schema",
+      "type": "file"
+    },
+    {
+      "path": "meta/schemas/validation-telemetry.schema.json",
+      "description": "Validation telemetry schema",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Heartbeat schema has timestamp, phase, progress",
+    "Drift report schema has anomaly fields",
+    "Validation telemetry schema has test results",
+    "All schemas distinct from event schema"
+  ],
+  "estimated_hours": 2,
+  "status": "planned"
+}

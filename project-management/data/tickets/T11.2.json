@@ -1,0 +1,47 @@
+{
+  "id": "T11.2",
+  "milestone_id": "M11",
+  "title": "Define naming conventions and folder taxonomy",
+  "domain": "Shared",
+  "capability": "Governance Standards",
+  "purpose": "Establish naming conventions for governance artifacts: files, schemas, tickets, milestones.",
+  "dependencies": [
+    "T11.1"
+  ],
+  "architectural_constraints": [
+    "Must be machine-parseable",
+    "Must support schema versioning",
+    "Must not break existing conventions without migration path"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/conventions/naming.md",
+      "description": "Naming convention specification",
+      "type": "file"
+    },
+    {
+      "path": "meta/conventions/taxonomy.md",
+      "description": "Folder taxonomy specification",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Naming conventions documented with examples",
+    "Folder taxonomy covers all governance subsystems",
+    "Conventions are machine-parseable (regex patterns provided)",
+    "Migration path for existing `project-governance/` artifacts defined"
+  ],
+  "estimated_hours": 2,
+  "status": "completed",
+  "traceability": [
+    {
+      "commit_hash": "TBD",
+      "files_changed": [
+        "meta/conventions/naming.md",
+        "meta/conventions/taxonomy.md"
+      ],
+      "description": "Defined naming conventions and folder taxonomy",
+      "timestamp": "2026-05-22T04:35:00Z"
+    }
+  ]
+}

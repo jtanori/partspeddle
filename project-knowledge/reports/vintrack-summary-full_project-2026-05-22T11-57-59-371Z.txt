@@ -1,0 +1,1156 @@
+VINTRACK PROJECT SUMMARY
+Generated: 2026-05-22T11:57:59.315Z
+Scope: Full Project
+================================================================================
+
+📊 PROJECT OVERVIEW
+  Total Tickets:        60
+  Total Milestones:     10
+  Estimated Hours:      173
+  Completed Hours:      21 (12%)
+
+  By Status:
+    planned         52
+    completed        7
+    review           1
+
+  By Domain:
+    Shared                14
+    Identity              14
+    Transactions           7
+    Marketplace            6
+    AI Intelligence        4
+    Search                 4
+    Vault                  4
+    Notifications          4
+    Messaging              3
+
+📋 MILESTONES
+  M1 ████████░░  78% in_progress    7/9 Runtime Foundations *
+  M2 ░░░░░░░░░░   0% planned       0/14 Identity Domain *
+  M3 ░░░░░░░░░░   0% planned        0/6 Marketplace Core *
+  M4 ░░░░░░░░░░   0% planned        0/4 AI Intelligence
+  M5 ░░░░░░░░░░   0% planned        0/4 Search Infrastructure
+  M6 ░░░░░░░░░░   0% planned        0/7 Transaction Orchestration *
+  M7 ░░░░░░░░░░   0% planned        0/3 Messaging
+  M8 ░░░░░░░░░░   0% planned        0/4 Vault Infrastructure
+  M9 ░░░░░░░░░░   0% planned        0/4 Notification Infrastructure
+  M10 ░░░░░░░░░░   0% planned        0/5 Platform Hardening *
+
+────────────────────────────────────────────────────────────────────────────────
+T1.1 — Repository & Runtime Initialization
+  Status:      completed
+  Domain:      Shared
+  Milestone:   M1 — Runtime Foundations
+  Capability:  Runtime Bootstrap
+  Hours:       4
+  Assignee:    Agent 1
+  Git Commit:  9b0c2f7
+  Version:     2
+  Deliverables: 14/14 on disk
+  Tests:       yes
+  Acceptance:  9 criteria
+  Traceability: 1 entries
+  Failure Modes: 3 documented
+
+────────────────────────────────────────────────────────────────────────────────
+T1.2 — Shared Event Envelope Library
+  Status:      completed
+  Domain:      Shared
+  Milestone:   M1 — Runtime Foundations
+  Capability:  Event Infrastructure
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  aca1c15
+  Version:     7
+  Deliverables: 3/3 on disk
+  Tests:       yes
+  Acceptance:  3 criteria
+  Traceability: 6 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ✅ T1.1 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T1.3 — Outbox Pattern Implementation
+  Status:      completed
+  Domain:      Shared
+  Milestone:   M1 — Runtime Foundations
+  Capability:  Event Durability
+  Hours:       4
+  Assignee:    Agent 1
+  Git Commit:  b54cfa1
+  Version:     4
+  Deliverables: 3/3 on disk
+  Tests:       yes
+  Acceptance:  4 criteria
+  Traceability: 2 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ✅ T1.2 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T1.4 — Queue Bootstrap (BullMQ)
+  Status:      completed
+  Domain:      Shared
+  Milestone:   M1 — Runtime Foundations
+  Capability:  Async Orchestration
+  Hours:       3
+  Assignee:    Agent 1
+  Git Commit:  none
+  Version:     2
+  Deliverables: 5/5 on disk
+  Tests:       yes
+  Acceptance:  5 criteria
+  Traceability: 1 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ✅ T1.1 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T1.5 — Supabase Client & Connection Pool
+  Status:      completed
+  Domain:      Shared
+  Milestone:   M1 — Runtime Foundations
+  Capability:  Persistence Access
+  Hours:       2
+  Assignee:    Agent 1
+  Git Commit:  none
+  Version:     2
+  Deliverables: 5/5 on disk
+  Tests:       yes
+  Acceptance:  4 criteria
+  Traceability: 1 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ✅ T1.1 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T1.5A — Infrastructure Simplification: Postgres + Redis Only
+  Status:      planned
+  Domain:      Shared
+  Milestone:   M1 — Runtime Foundations
+  Capability:  DevOps
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 3/3 on disk
+  Tests:       yes
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ✅ T1.5 — completed
+    👀 T1.8 — review
+
+────────────────────────────────────────────────────────────────────────────────
+T1.6 — Observability Bootstrap
+  Status:      completed
+  Domain:      Shared
+  Milestone:   M1 — Runtime Foundations
+  Capability:  Operational Visibility
+  Hours:       3
+  Assignee:    Agent 1
+  Git Commit:  none
+  Version:     2
+  Deliverables: 4/4 on disk
+  Tests:       yes
+  Acceptance:  4 criteria
+  Traceability: 1 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ✅ T1.1 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T1.7 — Error System
+  Status:      completed
+  Domain:      Shared
+  Milestone:   M1 — Runtime Foundations
+  Capability:  Failure Handling
+  Hours:       2
+  Assignee:    Agent 1
+  Git Commit:  none
+  Version:     2
+  Deliverables: 2/2 on disk
+  Tests:       yes
+  Acceptance:  3 criteria
+  Traceability: 1 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ✅ T1.1 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T1.8 — CI Pipeline Setup
+  Status:      review
+  Domain:      Shared
+  Milestone:   M1 — Runtime Foundations
+  Capability:  Quality Gate
+  Hours:       3
+  Assignee:    Agent 1
+  Git Commit:  none
+  Version:     2
+  Deliverables: 2/2 on disk
+  Tests:       yes
+  Acceptance:  4 criteria
+  Traceability: 1 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ✅ T1.1 — completed
+    ✅ T1.2 — completed
+    ✅ T1.4 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T10.1 — Observability Dashboards
+  Status:      planned
+  Domain:      Shared
+  Milestone:   M10 — Platform Hardening
+  Capability:  Operational Visibility
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/4 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ✅ T1.6 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T10.2 — Alerting Rules
+  Status:      planned
+  Domain:      Shared
+  Milestone:   M10 — Platform Hardening
+  Capability:  Operational Response
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/2 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T10.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T10.3 — DLQ Tooling & Replay
+  Status:      planned
+  Domain:      Shared
+  Milestone:   M10 — Platform Hardening
+  Capability:  Operational Recovery
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ✅ T1.4 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T10.4 — Rate Limiting & Abuse Prevention
+  Status:      planned
+  Domain:      Shared
+  Milestone:   M10 — Platform Hardening
+  Capability:  Security
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/2 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ✅ T1.1 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T10.5 — Smoke Load Tests
+  Status:      planned
+  Domain:      Shared
+  Milestone:   M10 — Platform Hardening
+  Capability:  Performance Validation
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/2 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T6.7 — planned
+    ⏳ T9.4 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.0A — ADR: Auth Provider Decoupling Strategy
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Architecture
+  Hours:       1
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 1/2 on disk
+  Tests:       yes
+  Acceptance:  3 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+
+────────────────────────────────────────────────────────────────────────────────
+T2.1 — Identity Database Schema
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Persistence
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ✅ T1.5 — completed
+    👀 T1.8 — review
+
+────────────────────────────────────────────────────────────────────────────────
+T2.1A — Auth Decoupling: Identity-Owned User Table
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Persistence
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T2.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.2 — User Aggregate & Profile Lifecycle
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Domain Model
+  Hours:       4
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 4/4 on disk
+  Tests:       yes
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T2.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.2A — Auth Provider Interface Abstraction
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Port/Adapter
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T2.2 — planned
+    ⏳ T2.1A — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.2B — Auth Middleware + Lazy User Provisioning
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Auth Boundary
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  7 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T2.1A — planned
+    ⏳ T2.2A — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.3 — SellerProfile & Onboarding State Machine
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Seller Activation
+  Hours:       5
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/4 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T2.2 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.4 — Identity Repositories
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Persistence Boundary
+  Hours:       4
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/5 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T2.1 — planned
+    ⏳ T2.2 — planned
+    ⏳ T2.3 — planned
+    ✅ T1.3 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T2.5 — Identity API Routes
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  HTTP Boundary
+  Hours:       4
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/5 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 3 documented
+  Dependencies:
+    ⏳ T2.4 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.6 — Supabase Auth Webhook Handler
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Auth Sync
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T2.1 — planned
+    ⏳ T2.4 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.6A — Hosted Auth Webhook Synchronization
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Auth Sync
+  Hours:       4
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  6 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T2.6 — planned
+    ⏳ T2.1A — planned
+    ⏳ T2.2A — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.6B — Webhook Reconciliation Governance
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Sync Governance
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T2.6A — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.7 — Identity Queue Workers
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Async Orchestration
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T2.4 — planned
+    ✅ T1.4 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T2.8 — Identity Integration Tests
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Quality Assurance
+  Hours:       4
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T2.1 — planned
+    ⏳ T2.2 — planned
+    ⏳ T2.3 — planned
+    ⏳ T2.4 — planned
+    ⏳ T2.5 — planned
+    ⏳ T2.6 — planned
+    ⏳ T2.7 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T3.1 — Marketplace Database Schema
+  Status:      planned
+  Domain:      Marketplace
+  Milestone:   M3 — Marketplace Core
+  Capability:  Persistence
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/4 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T2.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T3.2 — Listing & InventoryItem Aggregates
+  Status:      planned
+  Domain:      Marketplace
+  Milestone:   M3 — Marketplace Core
+  Capability:  Domain Model
+  Hours:       4
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/4 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T3.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T3.3 — Collection & Garage Aggregates
+  Status:      planned
+  Domain:      Marketplace
+  Milestone:   M3 — Marketplace Core
+  Capability:  Catalog Organization
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T3.2 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T3.4 — Marketplace Repositories
+  Status:      planned
+  Domain:      Marketplace
+  Milestone:   M3 — Marketplace Core
+  Capability:  Persistence Boundary
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  3 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T3.1 — planned
+    ⏳ T3.2 — planned
+    ⏳ T3.3 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T3.5 — Marketplace API Routes
+  Status:      planned
+  Domain:      Marketplace
+  Milestone:   M3 — Marketplace Core
+  Capability:  HTTP Boundary
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/4 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T3.4 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T3.6 — Marketplace Integration Tests
+  Status:      planned
+  Domain:      Marketplace
+  Milestone:   M3 — Marketplace Core
+  Capability:  Quality Assurance
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T3.1 — planned
+    ⏳ T3.2 — planned
+    ⏳ T3.3 — planned
+    ⏳ T3.4 — planned
+    ⏳ T3.5 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T4.1 — AI Database Schema
+  Status:      planned
+  Domain:      AI Intelligence
+  Milestone:   M4 — AI Intelligence
+  Capability:  Persistence
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/2 on disk
+  Tests:       no
+  Acceptance:  2 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T3.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T4.2 — Image Ingestion Pipeline
+  Status:      planned
+  Domain:      AI Intelligence
+  Milestone:   M4 — AI Intelligence
+  Capability:  Media Processing
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/2 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T4.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T4.3 — Gemini API Integration
+  Status:      planned
+  Domain:      AI Intelligence
+  Milestone:   M4 — AI Intelligence
+  Capability:  AI Identification
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T4.2 — planned
+    ✅ T1.4 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T4.4 — AI Enrichment Events
+  Status:      planned
+  Domain:      AI Intelligence
+  Milestone:   M4 — AI Intelligence
+  Capability:  Event Publishing
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/2 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T4.3 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T5.1 — Algolia Sync Pipeline
+  Status:      planned
+  Domain:      Search
+  Milestone:   M5 — Search Infrastructure
+  Capability:  Index Synchronization
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T3.1 — planned
+    ✅ T1.4 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T5.2 — Search API Routes
+  Status:      planned
+  Domain:      Search
+  Milestone:   M5 — Search Infrastructure
+  Capability:  HTTP Boundary
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/2 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T5.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T5.3 — Search Indexing Queue
+  Status:      planned
+  Domain:      Search
+  Milestone:   M5 — Search Infrastructure
+  Capability:  Async Indexing
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/2 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T5.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T5.4 — Search Autocomplete
+  Status:      planned
+  Domain:      Search
+  Milestone:   M5 — Search Infrastructure
+  Capability:  UX Enhancement
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/2 on disk
+  Tests:       no
+  Acceptance:  3 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T5.2 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T6.1 — Transaction Database Schema
+  Status:      planned
+  Domain:      Transactions
+  Milestone:   M6 — Transaction Orchestration
+  Capability:  Persistence
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T2.1 — planned
+    ⏳ T3.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T6.2 — Cart Aggregate
+  Status:      planned
+  Domain:      Transactions
+  Milestone:   M6 — Transaction Orchestration
+  Capability:  Domain Model
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T6.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T6.3 — Checkout State Machine
+  Status:      planned
+  Domain:      Transactions
+  Milestone:   M6 — Transaction Orchestration
+  Capability:  Payment Coordination
+  Hours:       5
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 3 documented
+  Dependencies:
+    ⏳ T6.2 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T6.4 — Escrow Lifecycle
+  Status:      planned
+  Domain:      Transactions
+  Milestone:   M6 — Transaction Orchestration
+  Capability:  Trust Orchestration
+  Hours:       4
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T6.3 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T6.5 — Settlement Orchestration
+  Status:      planned
+  Domain:      Transactions
+  Milestone:   M6 — Transaction Orchestration
+  Capability:  Payout
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T6.4 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T6.6 — Compensation Flows
+  Status:      planned
+  Domain:      Transactions
+  Milestone:   M6 — Transaction Orchestration
+  Capability:  Failure Recovery
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/2 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T6.4 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T6.7 — Transaction Integration Tests
+  Status:      planned
+  Domain:      Transactions
+  Milestone:   M6 — Transaction Orchestration
+  Capability:  Quality Assurance
+  Hours:       5
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/4 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T6.1 — planned
+    ⏳ T6.2 — planned
+    ⏳ T6.3 — planned
+    ⏳ T6.4 — planned
+    ⏳ T6.5 — planned
+    ⏳ T6.6 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T7.1 — Messaging Database Schema
+  Status:      planned
+  Domain:      Messaging
+  Milestone:   M7 — Messaging
+  Capability:  Persistence
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/2 on disk
+  Tests:       no
+  Acceptance:  3 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T2.1 — planned
+    ⏳ T6.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T7.2 — Conversation Aggregate
+  Status:      planned
+  Domain:      Messaging
+  Milestone:   M7 — Messaging
+  Capability:  Domain Model
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T7.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T7.3 — Messaging Integration Tests
+  Status:      planned
+  Domain:      Messaging
+  Milestone:   M7 — Messaging
+  Capability:  Quality Assurance
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/2 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T7.1 — planned
+    ⏳ T7.2 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T8.1 — Vault Database Schema
+  Status:      planned
+  Domain:      Vault
+  Milestone:   M8 — Vault Infrastructure
+  Capability:  Persistence
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/2 on disk
+  Tests:       no
+  Acceptance:  2 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T6.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T8.2 — Escrow Hold Workflows
+  Status:      planned
+  Domain:      Vault
+  Milestone:   M8 — Vault Infrastructure
+  Capability:  Trust Orchestration
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T8.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T8.3 — Dispute Management
+  Status:      planned
+  Domain:      Vault
+  Milestone:   M8 — Vault Infrastructure
+  Capability:  Conflict Resolution
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/2 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T8.2 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T8.4 — Vault Integration Tests
+  Status:      planned
+  Domain:      Vault
+  Milestone:   M8 — Vault Infrastructure
+  Capability:  Quality Assurance
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/2 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T8.1 — planned
+    ⏳ T8.2 — planned
+    ⏳ T8.3 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T9.1 — Notification Database Schema
+  Status:      planned
+  Domain:      Notifications
+  Milestone:   M9 — Notification Infrastructure
+  Capability:  Persistence
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/2 on disk
+  Tests:       no
+  Acceptance:  2 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ✅ T1.4 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T9.2 — Email Delivery Pipeline
+  Status:      planned
+  Domain:      Notifications
+  Milestone:   M9 — Notification Infrastructure
+  Capability:  Email Transport
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T9.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T9.3 — Notification Event Consumers
+  Status:      planned
+  Domain:      Notifications
+  Milestone:   M9 — Notification Infrastructure
+  Capability:  Event-Driven Delivery
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T9.2 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T9.4 — Notification Integration Tests
+  Status:      planned
+  Domain:      Notifications
+  Milestone:   M9 — Notification Infrastructure
+  Capability:  Quality Assurance
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T9.1 — planned
+    ⏳ T9.2 — planned
+    ⏳ T9.3 — planned
+
+================================================================================

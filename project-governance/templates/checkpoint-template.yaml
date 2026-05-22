@@ -1,0 +1,59 @@
+# Checkpoint Template
+# Copy this file to: project-governance/runtime/checkpoints/{task_id}-checkpoint-seq-{n}.json
+# Protocol: CHECKPOINT_PROTOCOL.md v1.0.0
+
+CHECKPOINT:
+  metadata:
+    checkpoint_id: "cp_TASKID_YYYYMMDD_HHMMSS"
+    protocol_version: "1.0.0"
+    task_id: "TASKID"
+    milestone: "MILESTONE"
+    sequence_number: 1
+    timestamp: "2026-01-01T00:00:00Z"
+    trigger: "file_count_threshold"
+
+  execution_state:
+    lifecycle_state: "EXECUTING"
+    phase: "implementation"
+    current_surface: "frontend"
+    reasoning_cycles_since_last_checkpoint: 0
+    files_modified_since_last_checkpoint: 0
+
+  completed_work:
+    files_created: []
+    files_modified: []
+    files_deleted: []
+    validations_passed: []
+    validations_failed: []
+    validations_skipped: []
+
+  pending_work:
+    - "Describe the next unit of work"
+
+  modified_files_snapshot: []
+
+  rollback_point:
+    git_commit: "abc1234"
+    git_branch: "feature/TASKID-description"
+    clean_working_tree: true
+    stashed_changes: false
+
+  unresolved_risks: []
+
+  next_safe_resume_step:
+    description: "Concrete, bounded next action (≤ 30 min estimated effort)"
+    estimated_effort_minutes: 15
+    dependencies: []
+    required_context: []
+
+  resume_contract:
+    can_resume_from_this_checkpoint: true
+    requires_context_rehydration: true
+    context_files_to_load:
+      - "project-governance/runtime/runtime-state.json"
+      - "project-governance/runtime/checkpoints/active-execution.md"
+    forbidden_actions_on_resume:
+      - "Do NOT re-run already-passing validations"
+      - "Do NOT recreate already-created files"
+
+  previous_checkpoint: null

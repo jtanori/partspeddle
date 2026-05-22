@@ -1,0 +1,147 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "vintrack-checkpoint",
+  "title": "VINTRACK Execution Checkpoint",
+  "description": "Serialized execution state for deterministic resumption after interruption",
+  "type": "object",
+  "required": [
+    "timestamp",
+    "milestone",
+    "ticket",
+    "execution_mode",
+    "surface",
+    "branch",
+    "completed_steps",
+    "remaining_steps",
+    "modified_files",
+    "active_constraints",
+    "acceptance_criteria",
+    "next_action"
+  ],
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of checkpoint creation"
+    },
+    "milestone": {
+      "type": "string",
+      "pattern": "^M[0-9]+$",
+      "description": "Active milestone identifier"
+    },
+    "ticket": {
+      "type": "string",
+      "pattern": "^T[0-9]+\\.[0-9A-Z]+$",
+      "description": "Active ticket identifier"
+    },
+    "execution_mode": {
+      "type": "string",
+      "enum": [
+        "GOVERNANCE",
+        "IMPLEMENTATION",
+        "REVIEW",
+        "REFACTOR",
+        "INCIDENT",
+        "MIGRATION"
+      ],
+      "description": "Current execution mode from execution-modes.md"
+    },
+    "surface": {
+      "type": "string",
+      "enum": [
+        "backend",
+        "frontend-rsc",
+        "frontend-client",
+        "shared",
+        "infrastructure",
+        "ci-cd",
+        "fullstack"
+      ],
+      "description": "Affected execution surface(s)"
+    },
+    "branch": {
+      "type": "string",
+      "description": "Current Git branch"
+    },
+    "segment_id": {
+      "type": "string",
+      "description": "Optional atomic segment identifier (e.g., T3.1A, T3.1B)"
+    },
+    "completed_steps": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Steps already executed in this ticket"
+    },
+    "remaining_steps": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Steps yet to execute"
+    },
+    "modified_files": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Files modified or created during execution"
+    },
+    "active_constraints": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "In-force architectural and governance constraints"
+    },
+    "blocked_by": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Blockers preventing progress",
+      "default": []
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Criteria from the active ticket"
+    },
+    "known_risks": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Identified risks for this execution",
+      "default": []
+    },
+    "next_action": {
+      "type": "string",
+      "description": "The single next action to execute"
+    },
+    "execution_scope_lock": {
+      "type": "object",
+      "description": "Immutable execution scope boundaries",
+      "properties": {
+        "allowed_domains": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "forbidden_actions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "scope_note": {
+          "type": "string"
+        }
+      }
+    },
+    "traceability_snapshot": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "commit_hash": { "type": "string" },
+          "files_changed": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "description": { "type": "string" },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}

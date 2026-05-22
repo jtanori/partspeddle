@@ -1,0 +1,63 @@
+{
+  "timestamp": "2026-05-22T03:44:32.103Z",
+  "passed": false,
+  "issues": [
+    {
+      "severity": "HIGH",
+      "category": "artifact_integrity",
+      "message": "Referenced checkpoint missing: project-governance/runtime/checkpoints/T3.7-checkpoint-seq-3.json",
+      "recommendation": "Regenerate checkpoint or update active-execution.json reference"
+    },
+    {
+      "severity": "HIGH",
+      "category": "artifact_integrity",
+      "message": "Referenced completion report missing: project-governance/runtime/completion-reports/T3.7-completion.yaml",
+      "recommendation": "Generate completion report or update active-execution.json reference"
+    },
+    {
+      "severity": "LOW",
+      "category": "projection_freshness",
+      "message": "Projection latest-status.md missing timestamp header",
+      "recommendation": "Regenerate projections"
+    },
+    {
+      "severity": "LOW",
+      "category": "projection_freshness",
+      "message": "Projection latest-heartbeat.md missing timestamp header",
+      "recommendation": "Regenerate projections"
+    },
+    {
+      "severity": "LOW",
+      "category": "projection_freshness",
+      "message": "Projection current-context.md missing timestamp header",
+      "recommendation": "Regenerate projections"
+    },
+    {
+      "severity": "LOW",
+      "category": "projection_freshness",
+      "message": "Projection resume-instruction.md missing timestamp header",
+      "recommendation": "Regenerate projections"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "staleness",
+      "message": "active-execution.json is stale (2219 min since last update)",
+      "recommendation": "Verify execution state is current; update timestamp if accurate"
+    }
+  ],
+  "checks_total": 18,
+  "checks_passed": 15,
+  "runtime_confidence": 0.51,
+  "stale_surfaces": [
+    "Projection latest-status.md missing timestamp header",
+    "Projection latest-heartbeat.md missing timestamp header",
+    "Projection current-context.md missing timestamp header",
+    "Projection resume-instruction.md missing timestamp header",
+    "active-execution.json is stale (2219 min since last update)"
+  ],
+  "missing_files": [
+    "Referenced checkpoint missing: project-governance/runtime/checkpoints/T3.7-checkpoint-seq-3.json",
+    "Referenced completion report missing: project-governance/runtime/completion-reports/T3.7-completion.yaml"
+  ],
+  "projection_freshness_seconds": 0
+}
