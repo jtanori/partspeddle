@@ -1,0 +1,48 @@
+{
+  "HEARTBEAT": {
+    "metadata": {
+      "heartbeat_id": "hb_T11.2_20260522_043500",
+      "protocol_version": "1.0.0",
+      "task_id": "T11.2",
+      "milestone": "M11",
+      "sequence_number": 2,
+      "timestamp": "2026-05-22T04:35:00Z",
+      "trigger": "completion"
+    },
+    "active_task": {
+      "description": "Completed naming conventions and taxonomy documents",
+      "progress_percent": 100,
+      "files_touched_since_last_heartbeat": 2,
+      "files_touched_total": 2,
+      "current_surface": "shared",
+      "current_phase": "completion"
+    },
+    "blockers": {
+      "active": [],
+      "resolved_since_last_heartbeat": []
+    },
+    "drift_risk": {
+      "level": "NONE",
+      "indicators": [],
+      "mitigations_active": []
+    },
+    "confidence": {
+      "score": 98,
+      "trend": "RISING",
+      "primary_concern": null
+    },
+    "still_executing": false,
+    "execution_health": "HEALTHY",
+    "drift_self_assessment": {
+      "still_within_scope": true,
+      "unauthorized_changes": false,
+      "speculative_reasoning_detected": false,
+      "architecture_consistency": "MAINTAINED",
+      "assumption_count_since_last_heartbeat": 0
+    },
+    "next_expected_heartbeat": {
+      "trigger_condition": "execution_complete",
+      "estimated_time": null
+    }
+  }
+}

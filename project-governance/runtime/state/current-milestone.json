@@ -1,0 +1,15 @@
+{
+  "protocol_version": "1.0.0",
+  "active_milestone": {
+    "id": "M11",
+    "title": "Governance Root Normalization",
+    "status": "in_progress",
+    "phase": 11
+  },
+  "previous_milestone": {
+    "id": "M3",
+    "title": "Frontend Foundation",
+    "status": "completed"
+  },
+  "updated_at": "2026-05-22T03:55:00Z"
+}

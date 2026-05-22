@@ -1,0 +1,15 @@
+{
+  "protocol_version": "1.0.0",
+  "active": false,
+  "ticket": null,
+  "last_ticket": {
+    "id": "T11.3",
+    "milestone_id": "M11",
+    "title": "Create base JSON schemas",
+    "domain": "Shared",
+    "capability": "Schema Authority",
+    "status": "completed",
+    "completed_at": "2026-05-22T05:15:00Z"
+  },
+  "updated_at": "2026-05-22T05:15:00Z"
+}

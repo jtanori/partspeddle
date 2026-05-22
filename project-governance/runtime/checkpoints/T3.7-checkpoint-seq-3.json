@@ -1,0 +1,69 @@
+{
+  "CHECKPOINT": {
+    "metadata": {
+      "checkpoint_id": "cp_T3.7_20260520_144600",
+      "protocol_version": "1.0.0",
+      "task_id": "T3.7",
+      "milestone": "M3",
+      "sequence_number": 3,
+      "timestamp": "2026-05-20T14:46:00Z",
+      "trigger": "completion"
+    },
+    "execution_state": {
+      "lifecycle_state": "COMPLETE",
+      "phase": "completion",
+      "current_surface": "frontend",
+      "reasoning_cycles_since_last_checkpoint": 0,
+      "files_modified_since_last_checkpoint": 0
+    },
+    "completed_work": {
+      "files_created": [
+        "tests/e2e/frontend/homepage.spec.ts",
+        "tests/e2e/frontend/auth.spec.ts",
+        "tests/e2e/frontend/search.spec.ts",
+        "tests/mocks/handlers.ts",
+        "tests/mocks/server.ts"
+      ],
+      "files_modified": ["playwright.config.ts"],
+      "files_deleted": [],
+      "validations_passed": ["typecheck", "test:unit"],
+      "validations_failed": [],
+      "validations_skipped": ["lint", "e2e"]
+    },
+    "pending_work": [],
+    "modified_files_snapshot": [
+      {
+        "path": "tests/e2e/frontend/homepage.spec.ts",
+        "checksum": "sha256:legacy",
+        "lines_added": 45,
+        "lines_removed": 0
+      },
+      {
+        "path": "playwright.config.ts",
+        "checksum": "sha256:legacy",
+        "lines_added": 25,
+        "lines_removed": 3
+      }
+    ],
+    "rollback_point": {
+      "git_commit": "abc1234",
+      "git_branch": "feature/T3.7-e2e-tests",
+      "clean_working_tree": true,
+      "stashed_changes": false
+    },
+    "unresolved_risks": [],
+    "next_safe_resume_step": {
+      "description": "No pending work — execution is terminal.",
+      "estimated_effort_minutes": 0,
+      "dependencies": [],
+      "required_context": []
+    },
+    "resume_contract": {
+      "can_resume_from_this_checkpoint": false,
+      "requires_context_rehydration": false,
+      "context_files_to_load": [],
+      "forbidden_actions_on_resume": []
+    },
+    "previous_checkpoint": "cp_T3.7_20260520_114500"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-05-20T09:00:00Z",
+  "contracts": [
+    {
+      "path": "src/shared/contracts/search/algolia-index-schema.ts",
+      "domain": "Search",
+      "owner": "M4.5",
+      "ticket": "T4.5.1",
+      "type": "schema",
+      "description": "Algolia index configuration: searchable, filterable, sortable attributes, ranking criteria",
+      "downstream_dependents": ["T3.5", "T5.1"]
+    },
+    {
+      "path": "src/shared/contracts/search/search-result.ts",
+      "domain": "Search",
+      "owner": "M4.5",
+      "ticket": "T4.5.1",
+      "type": "type",
+      "description": "Search result types: ListingHit, Facet, Filter, SearchParams, SearchResponse",
+      "downstream_dependents": ["T3.5", "T5.1"]
+    },
+    {
+      "path": "src/shared/contracts/search/algolia-config.ts",
+      "domain": "Search",
+      "owner": "M4.5",
+      "ticket": "T4.5.1",
+      "type": "interface",
+      "description": "Algolia config shape, env var contract, adapter interfaces",
+      "downstream_dependents": ["T3.5", "T5.1"]
+    }
+  ],
+  "owners": {
+    "M4.5": {
+      "name": "Shared Runtime Contracts",
+      "contact": "governance",
+      "escalation_policy": "breaking_changes_require_milestone_review"
+    }
+  },
+  "downstream_dependents": {
+    "T3.5": {
+      "milestone": "M3",
+      "surface": "frontend",
+      "consumes": ["ListingHit", "SearchParams", "SearchResponse", "Filter", "Facet"]
+    },
+    "T5.1": {
+      "milestone": "M5",
+      "surface": "backend",
+      "consumes": ["ListingHit", "AlgoliaIndexSettingsContract", "CANONICAL_INDEX_SETTINGS"]
+    }
+  },
+  "breaking_change_policy": {
+    "allowed_without_escalation": ["additive_fields", "new_exports", "documentation_updates"],
+    "requires_escalation": ["field_renames", "field_removals", "type_narrowing", "schema_constraint_tightening"],
+    "prohibited": ["breaking_changes_without_migration_path", "deletion_of_downstream_consumed_types"]
+  },
+  "contract_lock": {
+    "status": "active",
+    "locked_since": "2026-05-20T09:00:00Z",
+    "unlock_conditions": [
+      "all_downstream_milestones_completed",
+      "explicit_governance_review_approved"
+    ]
+  }
+}

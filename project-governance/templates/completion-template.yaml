@@ -1,0 +1,83 @@
+# Completion Report Template
+# Copy this file to: project-governance/runtime/completion-reports/{task_id}-completion.yaml
+# Protocol: COMPLETION_REPORT_SCHEMA.md v1.0.0
+
+completion_report:
+  metadata:
+    protocol_version: "1.0.0"
+    task_id: "TASKID"
+    milestone: "MILESTONE"
+    generated_at: "2026-01-01T00:00:00Z"
+    execution_duration_minutes: 0
+    agent_session_id: "session_unknown"
+
+  summary:
+    status: "COMPLETE"
+    one_line: "One-line description of what was accomplished"
+    confidence_score: 0
+    risk_level: "LOW"
+
+  artifact_inventory:
+    created: []
+    modified: []
+    deleted: []
+
+  validation_report:
+    passed: []
+    failed: []
+    skipped: []
+
+  assumption_disclosure:
+    verified: []
+    inferred: []
+    unverified: []
+
+  unresolved_items:
+    blockers: []
+    technical_debt: []
+    follow_up_tickets: []
+
+  drift_assessment:
+    drift_detected: false
+    drift_events: []
+    scope_adherence: "STRICT"
+    architecture_consistency: "MAINTAINED"
+
+  resumability:
+    resumable: false
+    resume_path: null
+    reason: "Terminal state — no pending work."
+
+  next_safe_action:
+    action: "CLOSE_TICKET_AND_COMMIT"
+    description: "What to do next"
+    estimated_effort_minutes: 0
+
+  governance_attestation:
+    checkpoint_written: false
+    checkpoint_path: null
+    heartbeat_emitted: false
+    artifact_inventory_complete: false
+    validations_executed: false
+    rollback_available: false
+    resumable_state_verified: false
+    drift_analysis_completed: false
+    gates_passed: 0
+    gates_total: 8
+    gate_results:
+      - id: "GATE_CHECKPOINT"
+        result: "PENDING"
+      - id: "GATE_HEARTBEAT"
+        result: "PENDING"
+      - id: "GATE_VALIDATIONS"
+        result: "PENDING"
+      - id: "GATE_ROLLBACK"
+        result: "PENDING"
+      - id: "GATE_ARTIFACTS"
+        result: "PENDING"
+      - id: "GATE_RESUMABLE"
+        result: "PENDING"
+      - id: "GATE_DRIFT"
+        result: "PENDING"
+      - id: "GATE_COMPLETION_REPORT"
+        result: "PENDING"

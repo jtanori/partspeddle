@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/milestone.schema.json",
+  "title": "VINTRACK Milestone",
+  "description": "Canonical schema for milestone definitions",
+  "type": "object",
+  "required": ["id", "phase", "title", "purpose", "scope", "exit_criteria", "tickets", "dependencies", "downstream_impact", "estimated_duration_days", "status"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^M[0-9]+(\\.[0-9]+)?$",
+      "description": "Milestone identifier"
+    },
+    "phase": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Execution phase ordering"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable milestone title"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Why this milestone exists"
+    },
+    "trust_principle": {
+      "type": "string",
+      "description": "Guiding trust principle for this milestone"
+    },
+    "scope": {
+      "type": "object",
+      "required": ["in", "out"],
+      "properties": {
+        "in": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "In-scope items"
+        },
+        "out": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Explicitly out-of-scope items"
+        }
+      }
+    },
+    "exit_criteria": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "description": "Conditions required to complete milestone"
+    },
+    "tickets": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^T[0-9]+(\\.[0-9A-Z]+)+$"
+      },
+      "description": "Ticket identifiers belonging to this milestone"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^M[0-9]+(\\.[0-9]+)?$"
+      },
+      "description": "Milestone dependencies that must complete first"
+    },
+    "downstream_impact": {
+      "type": "string",
+      "description": "Impact on subsequent milestones"
+    },
+    "estimated_duration_days": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Estimated calendar days to complete"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["planned", "in_progress", "completed", "blocked", "cancelled"],
+      "description": "Current milestone status"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional milestone metadata"
+    }
+  }
+}

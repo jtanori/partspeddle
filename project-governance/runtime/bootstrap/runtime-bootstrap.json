@@ -1,0 +1,30 @@
+{
+  "protocol_version": "1.0.0",
+  "bootstrap_type": "EXECUTION_START",
+  "generated_at": "2026-05-22T03:57:00Z",
+  "latest_checkpoint": {
+    "id": "cp_T11.1_20260522_035500_init",
+    "path": "project-governance/runtime/checkpoints/T11.1-checkpoint-seq-1.json"
+  },
+  "current_milestone": {
+    "id": "M11",
+    "title": "Governance Root Normalization"
+  },
+  "current_ticket": {
+    "id": "T11.1",
+    "title": "Create /meta root directory structure",
+    "status": "in_progress"
+  },
+  "safe_resume_point": "execution-start",
+  "resume_phase": "initialization",
+  "runtime_integrity_hash": null,
+  "unresolved_blockers": [],
+  "required_context_files": [
+    "project-governance/runtime/state/active-execution.json",
+    "project-governance/runtime/state/current-milestone.json",
+    "project-governance/runtime/state/current-ticket.json",
+    "project-governance/runtime/bootstrap/runtime-bootstrap.json",
+    "project-governance/runtime/projections/resume-instruction.md"
+  ],
+  "safe_exit_compliant": false
+}

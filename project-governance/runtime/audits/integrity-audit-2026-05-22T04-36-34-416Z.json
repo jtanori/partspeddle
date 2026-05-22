@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-05-22T04:36:34.407Z",
+  "passed": true,
+  "issues": [],
+  "checks_total": 28,
+  "checks_passed": 28,
+  "runtime_confidence": 1,
+  "stale_surfaces": [],
+  "missing_files": [],
+  "projection_freshness_seconds": 13
+}

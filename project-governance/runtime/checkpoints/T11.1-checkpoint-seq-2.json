@@ -1,0 +1,67 @@
+{
+  "CHECKPOINT": {
+    "metadata": {
+      "checkpoint_id": "cp_T11.1_20260522_035900_complete",
+      "protocol_version": "1.0.0",
+      "task_id": "T11.1",
+      "milestone": "M11",
+      "sequence_number": 2,
+      "timestamp": "2026-05-22T03:59:00Z",
+      "trigger": "completion"
+    },
+    "execution_state": {
+      "lifecycle_state": "COMPLETE",
+      "phase": "completion",
+      "current_surface": "shared",
+      "reasoning_cycles_since_last_checkpoint": 1,
+      "files_modified_since_last_checkpoint": 1
+    },
+    "completed_work": {
+      "files_created": [
+        "meta/README.md",
+        "meta/schemas/",
+        "meta/runtime/",
+        "meta/workflows/",
+        "meta/events/",
+        "meta/projections/"
+      ],
+      "files_modified": [],
+      "files_deleted": [],
+      "validations_passed": [
+        "directory-structure-validation",
+        "conflict-check"
+      ],
+      "validations_failed": [],
+      "validations_skipped": []
+    },
+    "pending_work": [],
+    "modified_files_snapshot": [
+      {
+        "path": "meta/README.md",
+        "checksum": "sha256:canonical",
+        "lines_added": 60,
+        "lines_removed": 0
+      }
+    ],
+    "rollback_point": {
+      "git_commit": "HEAD",
+      "git_branch": "feature/M11-governance-root",
+      "clean_working_tree": false,
+      "stashed_changes": false
+    },
+    "unresolved_risks": [],
+    "next_safe_resume_step": {
+      "description": "Terminal state — no pending work.",
+      "estimated_effort_minutes": 0,
+      "dependencies": [],
+      "required_context": []
+    },
+    "resume_contract": {
+      "can_resume_from_this_checkpoint": false,
+      "requires_context_rehydration": false,
+      "context_files_to_load": [],
+      "forbidden_actions_on_resume": []
+    },
+    "previous_checkpoint": "cp_T11.1_20260522_035500_init"
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/governance-state.schema.json",
+  "title": "VINTRACK Governance State",
+  "description": "Canonical schema for runtime governance state (active-execution.json)",
+  "type": "object",
+  "required": ["protocol_version", "runtime_status", "execution_active", "safe_to_resume", "execution", "safe_exit", "last_execution", "governance_compliance", "runtime_confidence", "drift_risk", "safe_exit_verification", "system"],
+  "properties": {
+    "protocol_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "runtime_status": {
+      "type": "string",
+      "enum": ["IDLE", "ACTIVE", "QUIESCENT", "RECOVERING"]
+    },
+    "execution_active": { "type": "boolean" },
+    "safe_to_resume": { "type": "boolean" },
+    "execution": {
+      "type": ["object", "null"],
+      "required": ["execution_id", "task_id", "milestone_id", "status", "started_at"],
+      "properties": {
+        "execution_id": { "type": "string", "pattern": "^EXEC-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{3}$" },
+        "task_id": { "type": "string", "pattern": "^T[0-9]+\\.[0-9A-Z]+$" },
+        "milestone_id": { "type": "string", "pattern": "^M[0-9]+(\\.[0-9]+)?$" },
+        "status": { "type": "string", "enum": ["PLANNED", "READY", "EXECUTING", "CHECKPOINT_PENDING", "BLOCKED", "FAILED", "INTERRUPTED", "COMPLETE", "ROLLED_BACK"] },
+        "started_at": { "type": "string", "format": "date-time" },
+        "checkpoint_path": { "type": ["string", "null"] },
+        "completion_report_path": { "type": ["string", "null"] }
+      }
+    },
+    "safe_exit": {
+      "type": ["object", "null"],
+      "required": ["exit_reason", "exited_at", "exit_checkpoint_id", "exit_checkpoint_path", "resume_instruction_path", "bootstrap_path", "projections_regenerated", "lock_released"],
+      "properties": {
+        "exit_reason": { "type": "string", "enum": ["completion", "exhaustion", "blocker", "timeout", "terminal", "unsafe"] },
+        "exited_at": { "type": "string", "format": "date-time" },
+        "exit_checkpoint_id": { "type": "string" },
+        "exit_checkpoint_path": { "type": "string" },
+        "resume_instruction_path": { "type": "string" },
+        "bootstrap_path": { "type": "string" },
+        "projections_regenerated": { "type": "boolean" },
+        "lock_released": { "type": "boolean" }
+      }
+    },
+    "last_execution": {
+      "type": "object",
+      "required": ["execution_id", "task_id", "milestone_id", "status", "started_at", "completed_at", "checkpoint_path", "completion_report_path"],
+      "properties": {
+        "execution_id": { "type": "string" },
+        "task_id": { "type": "string" },
+        "milestone_id": { "type": "string" },
+        "status": { "type": "string" },
+        "started_at": { "type": "string", "format": "date-time" },
+        "completed_at": { "type": "string", "format": "date-time" },
+        "checkpoint_path": { "type": "string" },
+        "completion_report_path": { "type": "string" }
+      }
+    },
+    "governance_compliance": {
+      "type": "object",
+      "required": ["heartbeat_policy", "checkpoint_protocol", "drift_detection", "enforcement_gates", "safe_exit_protocol", "state_mutation_rules", "resumability_validated"],
+      "properties": {
+        "heartbeat_policy": { "type": "string", "enum": ["ACTIVE", "INACTIVE"] },
+        "checkpoint_protocol": { "type": "string", "enum": ["ACTIVE", "INACTIVE"] },
+        "drift_detection": { "type": "string", "enum": ["ACTIVE", "INACTIVE"] },
+        "enforcement_gates": { "type": "string", "enum": ["ACTIVE", "INACTIVE"] },
+        "safe_exit_protocol": { "type": "string", "enum": ["ACTIVE", "INACTIVE"] },
+        "state_mutation_rules": { "type": "string", "enum": ["ACTIVE", "INACTIVE"] },
+        "resumability_validated": { "type": "boolean" },
+        "token_efficiency": { "type": "string", "enum": ["ACTIVE", "INACTIVE"] }
+      }
+    },
+    "runtime_confidence": {
+      "type": "object",
+      "required": ["score", "factors"],
+      "properties": {
+        "score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "factors": {
+          "type": "object",
+          "properties": {
+            "checkpoint_freshness": { "type": "number", "minimum": 0, "maximum": 1 },
+            "validation_coverage": { "type": "number", "minimum": 0, "maximum": 1 },
+            "drift_state": { "type": "number", "minimum": 0, "maximum": 1 },
+            "unresolved_blockers": { "type": "number", "minimum": 0, "maximum": 1 },
+            "heartbeat_age": { "type": "number", "minimum": 0, "maximum": 1 },
+            "projection_freshness": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        }
+      }
+    },
+    "drift_risk": {
+      "type": "object",
+      "required": ["level", "reason", "last_assessed_at"],
+      "properties": {
+        "level": { "type": "string", "enum": ["NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+        "reason": { "type": "string" },
+        "last_assessed_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "safe_exit_verification": {
+      "type": "object",
+      "required": ["lock_released", "checkpoint_persisted", "projections_synchronized", "no_active_mutations"],
+      "properties": {
+        "lock_released": { "type": "boolean" },
+        "checkpoint_persisted": { "type": "boolean" },
+        "projections_synchronized": { "type": "boolean" },
+        "no_active_mutations": { "type": "boolean" },
+        "last_verified_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "repository_context": {
+      "type": "object",
+      "required": ["branch", "base_branch", "worktree_clean", "head_commit", "promotion_status", "last_validated_at"],
+      "properties": {
+        "branch": { "type": "string" },
+        "base_branch": { "type": "string" },
+        "worktree_clean": { "type": "boolean" },
+        "head_commit": { "type": "string" },
+        "commits_in_execution": { "type": "array", "items": { "type": "string" } },
+        "promotion_status": { "type": "string", "enum": ["pending", "promoted", "merged", "abandoned"] },
+        "last_validated_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "system": {
+      "type": "object",
+      "required": ["name", "version", "updated_at"],
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "updated_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

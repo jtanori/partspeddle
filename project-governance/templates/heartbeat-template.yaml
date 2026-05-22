@@ -1,0 +1,49 @@
+# Heartbeat Template
+# Copy this file to: project-governance/runtime/heartbeats/{task_id}-heartbeat-seq-{n}.json
+# Protocol: HEARTBEAT_POLICY.md v1.0.0
+
+HEARTBEAT:
+  metadata:
+    heartbeat_id: "hb_TASKID_YYYYMMDD_HHMMSS"
+    protocol_version: "1.0.0"
+    task_id: "TASKID"
+    milestone: "MILESTONE"
+    sequence_number: 1
+    timestamp: "2026-01-01T00:00:00Z"
+    trigger: "time_elapsed"
+
+  active_task:
+    description: "What the agent is currently doing"
+    progress_percent: 0
+    files_touched_since_last_heartbeat: 0
+    files_touched_total: 0
+    current_surface: "frontend"
+    current_phase: "planning"
+
+  blockers:
+    active: []
+    resolved_since_last_heartbeat: []
+
+  drift_risk:
+    level: "NONE"
+    indicators: []
+    mitigations_active: []
+
+  confidence:
+    score: 100
+    trend: "STABLE"
+    primary_concern: null
+
+  still_executing: true
+  execution_health: "HEALTHY"
+
+  drift_self_assessment:
+    still_within_scope: true
+    unauthorized_changes: false
+    speculative_reasoning_detected: false
+    architecture_consistency: "MAINTAINED"
+    assumption_count_since_last_heartbeat: 0
+
+  next_expected_heartbeat:
+    trigger_condition: "time_elapsed"
+    estimated_time: "2026-01-01T00:10:00Z"

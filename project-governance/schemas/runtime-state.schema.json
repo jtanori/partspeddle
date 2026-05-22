@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "VINTRACK Runtime State",
+  "description": "Operational memory for governed orchestration.",
+  "type": "object",
+  "required": ["system", "active_phase", "active_milestone", "active_ticket", "execution_surface", "current_branch", "blocked_tickets", "completed_tickets", "active_constraints", "ci_requirements"],
+  "properties": {
+    "system": { "type": "string", "enum": ["VINTRACK"] },
+    "version": { "type": "string" },
+    "active_phase": { "type": "integer", "minimum": 1 },
+    "active_milestone": {
+      "type": "object",
+      "required": ["id", "title", "status"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^M[0-9]+$" },
+        "title": { "type": "string" },
+        "status": { "type": "string", "enum": ["planned", "in_progress", "completed"] }
+      }
+    },
+    "previous_milestone": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "pattern": "^M[0-9]+$" },
+        "title": { "type": "string" },
+        "status": { "type": "string", "enum": ["planned", "in_progress", "completed"] }
+      }
+    },
+    "active_ticket": {
+      "type": "object",
+      "required": ["id", "title", "status"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^T[0-9]+\\.[0-9A-Z]+$" },
+        "title": { "type": "string" },
+        "status": { "type": "string", "enum": ["planned", "in_progress", "review", "completed"] }
+      }
+    },
+    "execution_surface": { "type": "string", "enum": ["backend", "frontend-rsc", "frontend-client", "shared", "infrastructure", "fullstack", "ci-cd"] },
+    "current_branch": { "type": "string" },
+    "blocked_tickets": { "type": "array", "items": { "type": "string", "pattern": "^T[0-9]+\\.[0-9A-Z]+$" } },
+    "completed_tickets": { "type": "array", "items": { "type": "string", "pattern": "^T[0-9]+\\.[0-9A-Z]+$" } },
+    "required_governance_documents": { "type": "array", "items": { "type": "string" } },
+    "active_constraints": { "type": "array", "items": { "type": "string" } },
+    "ci_requirements": { "type": "array", "items": { "type": "string" } },
+    "updated_at": { "type": "string", "format": "date-time" }
+  }
+}

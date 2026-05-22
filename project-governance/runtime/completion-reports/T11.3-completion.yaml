@@ -1,0 +1,74 @@
+execution_id: EXEC-2026-05-22-004
+task_id: T11.3
+milestone_id: M11
+status: COMPLETE
+started_at: "2026-05-22T05:14:21Z"
+completed_at: "2026-05-22T05:15:00Z"
+duration_seconds: 39
+
+artifacts:
+  created:
+    - path: meta/schemas/milestone.schema.json
+      lines: 75
+      validation: true
+    - path: meta/schemas/ticket.schema.json
+      lines: 95
+      validation: true
+    - path: meta/schemas/checkpoint.schema.json
+      lines: 125
+      validation: true
+    - path: meta/schemas/governance-state.schema.json
+      lines: 145
+      validation: true
+    - path: project-governance/runtime/checkpoints/T11.3-checkpoint-seq-1.json
+      lines: 94
+      validation: true
+  modified:
+    - path: meta/README.md
+      lines_added: 10
+      validation: true
+    - path: project-management/data/governance-tickets.json
+      lines_added: 15
+      lines_removed: 1
+      validation: true
+  deleted: []
+
+validations:
+  passed:
+    - schema-syntax-validation
+    - milestone-schema-validation-M3
+    - ticket-schema-validation-T3.5
+    - checkpoint-schema-validation-T11.2
+    - governance-state-schema-validation-active-execution
+  failed: []
+  skipped: []
+
+assumptions:
+  - category: verified
+    description: AJV available in node_modules
+  - category: verified
+    description: M3 exists in milestones.json
+  - category: verified
+    description: T3.5 exists as standalone JSON file
+  - category: inferred
+    description: date-time format warnings are acceptable (AJV ignores unknown formats)
+
+confidence_score: 99
+
+governance_attestation:
+  gate_authorization: PASS
+  gate_checkpoint: PASS
+  gate_heartbeat: PASS
+  gate_validations: PASS
+  gate_rollback: PASS
+  gate_artifacts: PASS
+  gate_resumable: PASS
+  gate_drift: PASS
+  gate_completion_report: PASS
+  gate_human_notification: PASS
+
+drift_detected: false
+resumable: false
+next_safe_action: "T11.4 — Create governance README and canonical-state definitions"
+checkpoint_written: true
+governance_compliant: true

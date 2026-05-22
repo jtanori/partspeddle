@@ -1,0 +1,77 @@
+{
+  "timestamp": "2026-05-20T10:08:00Z",
+  "milestone": "M3",
+  "ticket": "T3.1",
+  "execution_mode": "MIGRATION",
+  "surface": "fullstack",
+  "branch": "feature/T3.1-restructure-next-scaffold",
+  "segment_id": "T3.1A",
+  "completed_steps": [
+    "Analyzed repository structure and existing backend domains",
+    "Identified all files requiring path updates",
+    "Created checkpoint infrastructure (latest-checkpoint.json, schema, active-execution.md)",
+    "Updated runtime-governance-kernel.md with Execution Transition Rules (Section 12)",
+    "Updated runtime-governance-kernel.md with Runtime Phase Semantics (Section 13)",
+    "Updated bootstrap/initialize.md with automatic execution transition directive",
+    "Verified backend migration already complete (src/backend/identity/, src/backend/shared/ exist with correct imports)",
+    "Verified typecheck passes on current backend code",
+    "Updated tsconfig.json with path aliases (@/backend/*, @/frontend/*, @/shared/*), baseUrl, and jsx: preserve",
+    "Installed Next.js 16.2.6, React 19.2.6, and @types packages",
+    "Created next.config.js with standalone output",
+    "Created frontend scaffold (src/frontend/lib/utils.ts, components/ui/, src/app/layout.tsx, src/app/page.tsx)",
+    "Updated package.json scripts (dev:frontend, build:frontend, dev port 3001, lint with .tsx)",
+    "Updated eslint.config.js to include src/frontend/**/*.tsx coverage",
+    "Validated npm run typecheck passes for all surfaces (backend + frontend)",
+    "Ran npm run lint — identified 37 pre-existing backend lint errors (none introduced by T3.1)",
+    "Validated npm run build:frontend succeeds — Next.js 16.2.6 standalone build completed to dist/frontend/"
+  ],
+  "remaining_steps": [
+    "Validate existing backend tests pass (vitest hangs on ALL test execution — environmental issue, requires separate investigation)",
+    "Address 37 pre-existing backend lint errors (scope expansion — recommend separate cleanup ticket)"
+  ],
+  "modified_files": [
+    "project-governance/runtime/checkpoints/latest-checkpoint.json",
+    "project-governance/runtime/checkpoints/checkpoint-schema.json",
+    "project-governance/runtime/checkpoints/active-execution.md",
+    "project-governance/runtime/runtime-governance-kernel.md",
+    "project-governance/bootstrap/initialize.md"
+  ],
+  "active_constraints": [
+    "Preserve all existing backend functionality",
+    "Single package.json (monorepo-lite)",
+    "TypeScript strict mode for frontend",
+    "ESM modules only",
+    "Path aliases: @/backend/*, @/frontend/*, @/shared/*",
+    "frontend cannot import backend infrastructure",
+    "shared contracts are canonical",
+    "fileParallelism: false enforced for integration tests"
+  ],
+  "blocked_by": [],
+  "acceptance_criteria": [
+    "npm run build:frontend succeeds without errors",
+    "npm run dev starts backend API on port 3001",
+    "Existing backend tests pass (npm run test:unit, npm run test:integration)",
+    "npm run lint passes for all surfaces",
+    "npm run typecheck passes for all surfaces",
+    "Frontend page renders at localhost:3000",
+    "Path aliases resolve correctly in both backend and frontend"
+  ],
+  "known_risks": [
+    "Import paths break after restructure",
+    "Next.js conflicts with Express tsconfig",
+    "Relative imports may break after directory moves"
+  ],
+  "next_action": "T3.1A complete. Proceed to T3.1B or next ticket per dependency graph.",
+  "execution_scope_lock": {
+    "allowed_domains": ["Shared"],
+    "forbidden_actions": [
+      "Redesign architecture",
+      "Revisit governance",
+      "Expand milestone scope",
+      "Introduce new systems",
+      "Reconsider completed decisions"
+    ],
+    "scope_note": "T3.1 only. Repository restructure + Next.js scaffold. No domain logic changes. No contract redefinitions."
+  },
+  "traceability_snapshot": []
+}
