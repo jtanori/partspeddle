@@ -13,6 +13,7 @@
 import { beforeAll, afterAll, beforeEach } from 'vitest';
 import postgres from 'postgres';
 import Redis from 'ioredis';
+import { assertPreflight } from './lib/infra-preflight.js';
 
 // ─── Configuration ──────────────────────────────────────────────────────────
 
@@ -36,36 +37,48 @@ const TEST_RESET_TABLES = [
 
 let sql: ReturnType<typeof postgres>;
 let redis: Redis;
+let preflightPassed = false;
 
 // ─── Lifecycle Hooks ────────────────────────────────────────────────────────
 
 beforeAll(async () => {
+  // Fast-fail if infrastructure is unavailable
+  await assertPreflight();
+  preflightPassed = true;
+
   sql = postgres(DATABASE_URL, {
     max: 5,
-    connect_timeout: 10,
+    connect_timeout: 2,
+    onnotice: () => {}, // suppress NOTICE spam during tests
   });
 
   redis = new Redis(REDIS_URL, {
-    maxRetriesPerRequest: null,
-    enableReadyCheck: false,
+    maxRetriesPerRequest: 3,
+    enableReadyCheck: true,
+    connectTimeout: 1000,
   });
 
   // Flush Redis to ensure clean state
   await redis.flushdb();
 
+  // Suppress Postgres NOTICE messages for this session
+  await sql`SET client_min_messages TO WARNING`;
+
   // Verify DB connectivity
   const result = await sql`SELECT 1 as connected`;
-  if (result[0]?.connected !== 1) {
+  if (result[0].connected !== 1) {
     throw new Error('Database connectivity check failed');
   }
 });
 
 afterAll(async () => {
-  await sql?.end({ timeout: 5 });
-  await redis?.quit();
+  if (!preflightPassed) return;
+  await sql.end({ timeout: 2 });
+  await redis.quit();
 });
 
 beforeEach(async () => {
+  if (!preflightPassed) return;
   // Reset all registered tables between tests
   for (const table of TEST_RESET_TABLES) {
     try {
