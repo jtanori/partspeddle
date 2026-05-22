@@ -1,0 +1,36 @@
+{
+  "id": "T18.4",
+  "milestone_id": "M18",
+  "title": "Add intervention thresholds",
+  "domain": "Shared",
+  "capability": "Governance Authority",
+  "purpose": "Define thresholds for human intervention: file count, execution time, risk level, anomaly count.",
+  "dependencies": [
+    "T18.3"
+  ],
+  "architectural_constraints": [
+    "Must be configurable per authority level",
+    "Must be enforceable in CI",
+    "Must have override mechanism (with logging)"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/workflows/intervention-thresholds.json",
+      "description": "Intervention threshold definitions",
+      "type": "file"
+    },
+    {
+      "path": "scripts/check-thresholds.ts",
+      "description": "Threshold checking utility",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Thresholds defined for all authority levels (0-4)",
+    "Thresholds configurable without code changes",
+    "Override mechanism exists with mandatory logging",
+    "CI enforces thresholds on PRs"
+  ],
+  "estimated_hours": 2,
+  "status": "planned"
+}

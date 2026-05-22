@@ -1,0 +1,36 @@
+{
+  "id": "T14.2",
+  "milestone_id": "M14",
+  "title": "Create resume packet schema",
+  "domain": "Shared",
+  "capability": "Schema Authority",
+  "purpose": "Formalize the resume packet JSON schema for interruption recovery.",
+  "dependencies": [
+    "T14.1"
+  ],
+  "architectural_constraints": [
+    "Must be embeddable in checkpoint",
+    "Must support git state capture",
+    "Must be versioned"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/schemas/resume-packet.schema.json",
+      "description": "Resume packet JSON schema",
+      "type": "file"
+    },
+    {
+      "path": "meta/schemas/resume-packet.example.json",
+      "description": "Example resume packet",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Resume packet schema has all required fields",
+    "Schema captures git state (branch, modified files)",
+    "Schema captures execution phase",
+    "Example validates against schema"
+  ],
+  "estimated_hours": 1,
+  "status": "planned"
+}

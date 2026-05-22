@@ -1,0 +1,87 @@
+{
+  "id": "T11.4",
+  "milestone_id": "M11",
+  "title": "Governance Consolidation Phase",
+  "domain": "Shared",
+  "capability": "Governance Hardening",
+  "purpose": "Transition from recovery state to stable governed state. Establish canonical authority, invariant testing, recovery procedures, and merge strategy.",
+  "dependencies": [
+    "T11.3"
+  ],
+  "architectural_constraints": [
+    "Must establish single source of truth",
+    "Must be adversarially testable",
+    "Must codify recovery playbooks",
+    "Must define integration topology before feature work resumes"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/state/canonical-state.json",
+      "description": "Single source of truth for all runtime governance",
+      "type": "file"
+    },
+    {
+      "path": "meta/recovery/contaminated-branch.md",
+      "description": "Contaminated branch recovery playbook",
+      "type": "file"
+    },
+    {
+      "path": "meta/recovery/interrupted-session.md",
+      "description": "Interrupted session recovery playbook",
+      "type": "file"
+    },
+    {
+      "path": "meta/recovery/stale-lock.md",
+      "description": "Stale lock recovery playbook",
+      "type": "file"
+    },
+    {
+      "path": "meta/recovery/drift-remediation.md",
+      "description": "Drift event remediation playbook",
+      "type": "file"
+    },
+    {
+      "path": "meta/recovery/invalid-runtime-state.md",
+      "description": "Corrupted runtime state recovery playbook",
+      "type": "file"
+    },
+    {
+      "path": "tests/governance/invariants.test.ts",
+      "description": "Governance invariant test suite",
+      "type": "file"
+    },
+    {
+      "path": "meta/workflows/merge-strategy.md",
+      "description": "Branch integration topology and merge gates",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "canonical-state.json is the ONLY authority for runtime state",
+    "All governance invariants pass under adversarial conditions",
+    "All 5 recovery playbooks are executable without operator memory",
+    "Merge strategy defines explicit rebase/merge/promotion order",
+    "Feature work freeze remains until consolidation passes validation"
+  ],
+  "estimated_hours": 4,
+  "status": "completed",
+  "traceability": [
+    {
+      "commit_hash": "9117e39",
+      "files_changed": [
+        "meta/state/canonical-state.json",
+        "meta/recovery/contaminated-branch.md",
+        "meta/recovery/interrupted-session.md",
+        "meta/recovery/stale-lock.md",
+        "meta/recovery/drift-remediation.md",
+        "meta/recovery/invalid-runtime-state.md",
+        "tests/governance/invariants.test.ts",
+        "meta/workflows/merge-strategy.md",
+        "tools/runtime/integrity-audit.sh",
+        "tools/projections/generate.sh"
+      ],
+      "description": "Governance consolidation: canonical authority, invariant tests, recovery playbooks, merge strategy",
+      "timestamp": "2026-05-22T07:43:13Z"
+    }
+  ]
+}

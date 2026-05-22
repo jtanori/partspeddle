@@ -1,0 +1,75 @@
+{
+  "id": "T11.1",
+  "milestone_id": "M11",
+  "title": "Create /meta root directory structure",
+  "domain": "Shared",
+  "capability": "Governance Infrastructure",
+  "purpose": "Establish the canonical governance root directory `/meta` with stable subsystem folders.",
+  "dependencies": [],
+  "architectural_constraints": [
+    "Must not conflict with existing `project-governance/`",
+    "Must support future migration from `project-governance/`",
+    "Must be detachable from VINTRACK runtime"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/",
+      "description": "Governance root directory",
+      "type": "directory"
+    },
+    {
+      "path": "meta/schemas/",
+      "description": "Canonical schema storage",
+      "type": "directory"
+    },
+    {
+      "path": "meta/runtime/",
+      "description": "Runtime state and checkpoints",
+      "type": "directory"
+    },
+    {
+      "path": "meta/workflows/",
+      "description": "Execution workflow definitions",
+      "type": "directory"
+    },
+    {
+      "path": "meta/events/",
+      "description": "Governance event log storage",
+      "type": "directory"
+    },
+    {
+      "path": "meta/projections/",
+      "description": "Markdown projection output",
+      "type": "directory"
+    },
+    {
+      "path": "meta/README.md",
+      "description": "Governance root documentation",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "`/meta` directory exists with all subdirectories",
+    "Directory structure matches governance taxonomy",
+    "README explains canonical state principle",
+    "No conflicts with existing `project-governance/` paths"
+  ],
+  "estimated_hours": 1,
+  "status": "completed",
+  "traceability": [
+    {
+      "commit_hash": "TBD",
+      "files_changed": [
+        "meta/",
+        "meta/schemas/",
+        "meta/runtime/",
+        "meta/workflows/",
+        "meta/events/",
+        "meta/projections/",
+        "meta/README.md"
+      ],
+      "description": "Created /meta governance root with all subdirectories",
+      "timestamp": "2026-05-22T03:55:00Z"
+    }
+  ]
+}

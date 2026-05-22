@@ -1,0 +1,36 @@
+{
+  "id": "T18.3",
+  "milestone_id": "M18",
+  "title": "Add rollback requirements",
+  "domain": "Shared",
+  "capability": "Governance Authority",
+  "purpose": "Define rollback requirements: when rollback is required, how to execute, verification.",
+  "dependencies": [
+    "T18.2"
+  ],
+  "architectural_constraints": [
+    "Must support git-based rollback",
+    "Must support file-based rollback",
+    "Must verify rollback succeeded"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/workflows/rollback-procedure.md",
+      "description": "Rollback procedure documentation",
+      "type": "file"
+    },
+    {
+      "path": "scripts/rollback.ts",
+      "description": "Rollback execution utility",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Rollback procedure covers git revert and file restore",
+    "Rollback utility executes procedure",
+    "Rollback verification checks state after rollback",
+    "Procedure tested with at least one simulated rollback"
+  ],
+  "estimated_hours": 2,
+  "status": "planned"
+}

@@ -1,0 +1,36 @@
+{
+  "id": "T19.3",
+  "milestone_id": "M19",
+  "title": "Extract orchestration workflows",
+  "domain": "Shared",
+  "capability": "SYNTH Extraction",
+  "purpose": "Extract workflow definitions (execution lifecycle, approval, rollback) into the engine package.",
+  "dependencies": [
+    "T19.2"
+  ],
+  "architectural_constraints": [
+    "Must be declarative (JSON/YAML)",
+    "Must be hot-swappable",
+    "Must support versioning"
+  ],
+  "deliverables": [
+    {
+      "path": "packages/governance-engine/workflows/",
+      "description": "Workflow definitions",
+      "type": "directory"
+    },
+    {
+      "path": "packages/governance-engine/workflows/README.md",
+      "description": "Workflow customization guide",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Workflows are declarative JSON",
+    "Workflows can be hot-swapped without restart",
+    "Workflows are versioned",
+    "All existing workflows extracted and validated"
+  ],
+  "estimated_hours": 3,
+  "status": "planned"
+}

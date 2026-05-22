@@ -1,0 +1,36 @@
+{
+  "id": "T14.1",
+  "milestone_id": "M14",
+  "title": "Create checkpoint schema",
+  "domain": "Shared",
+  "capability": "Schema Authority",
+  "purpose": "Formalize the checkpoint JSON schema for execution state snapshots.",
+  "dependencies": [
+    "T11.3"
+  ],
+  "architectural_constraints": [
+    "Must validate existing latest-checkpoint.json",
+    "Must support resume packets",
+    "Must be versioned"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/schemas/checkpoint.schema.json",
+      "description": "Checkpoint JSON schema",
+      "type": "file"
+    },
+    {
+      "path": "meta/schemas/checkpoint.example.json",
+      "description": "Example checkpoint",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Checkpoint schema validates existing checkpoints",
+    "Schema supports resume packet embedding",
+    "Schema version field present",
+    "Example validates against schema"
+  ],
+  "estimated_hours": 1,
+  "status": "planned"
+}

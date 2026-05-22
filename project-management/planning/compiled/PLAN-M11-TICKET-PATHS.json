@@ -1,0 +1,19 @@
+{
+  "plan_id": "PLAN-M11-TICKET-PATHS",
+  "type": "compiled-plan",
+  "status": "approved",
+  "milestone": "M11",
+  "tickets": ["T11.7"],
+  "dependencies": ["T11.5"],
+  "execution_order": ["T11.7"],
+  "immutable": true,
+  "compiled_at": "2026-05-22T17:00:00Z",
+  "approved_at": "2026-05-22T17:00:00Z",
+  "traceability": [
+    {
+      "source": "FEATURE-001",
+      "compilation_step": "single-ticket-plan",
+      "description": "Single ticket to update all ticket_paths to project-root-relative"
+    }
+  ]
+}

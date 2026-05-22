@@ -1,22 +1,23 @@
 {
   "protocol_version": "1.0.0",
-  "bootstrap_type": "EXECUTION_START",
-  "generated_at": "2026-05-22T03:57:00Z",
+  "bootstrap_type": "MILESTONE_TRANSITION",
+  "generated_at": "2026-05-22T13:58:00Z",
   "latest_checkpoint": {
-    "id": "cp_T11.1_20260522_035500_init",
-    "path": "project-governance/runtime/checkpoints/T11.1-checkpoint-seq-1.json"
+    "id": "cp_T11.4_20260522_075500_complete",
+    "path": "project-governance/runtime/checkpoints/T11.4-checkpoint-seq-1.json"
   },
   "current_milestone": {
+    "id": "M12",
+    "title": "Projection Architecture"
+  },
+  "current_ticket": null,
+  "previous_milestone": {
     "id": "M11",
-    "title": "Governance Root Normalization"
+    "title": "Governance Root Normalization",
+    "status": "completed"
   },
-  "current_ticket": {
-    "id": "T11.1",
-    "title": "Create /meta root directory structure",
-    "status": "in_progress"
-  },
-  "safe_resume_point": "execution-start",
-  "resume_phase": "initialization",
+  "safe_resume_point": "milestone-transition",
+  "resume_phase": "ticket-selection",
   "runtime_integrity_hash": null,
   "unresolved_blockers": [],
   "required_context_files": [
@@ -26,5 +27,5 @@
     "project-governance/runtime/bootstrap/runtime-bootstrap.json",
     "project-governance/runtime/projections/resume-instruction.md"
   ],
-  "safe_exit_compliant": false
+  "safe_exit_compliant": true
 }

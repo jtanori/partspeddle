@@ -1,0 +1,36 @@
+{
+  "id": "T14.3",
+  "milestone_id": "M14",
+  "title": "Create completion report schema",
+  "domain": "Shared",
+  "capability": "Schema Authority",
+  "purpose": "Formalize the completion report JSON schema for end-of-ticket audits.",
+  "dependencies": [
+    "T14.2"
+  ],
+  "architectural_constraints": [
+    "Must capture validation results",
+    "Must capture remaining risks",
+    "Must be machine-parseable for CI"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/schemas/completion-report.schema.json",
+      "description": "Completion report JSON schema",
+      "type": "file"
+    },
+    {
+      "path": "meta/schemas/completion-report.example.json",
+      "description": "Example completion report",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Completion report schema has validation section",
+    "Schema has remaining risks section",
+    "Schema has confidence score field (0-100)",
+    "Example validates against schema"
+  ],
+  "estimated_hours": 1,
+  "status": "planned"
+}

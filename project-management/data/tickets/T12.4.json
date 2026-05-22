@@ -1,0 +1,36 @@
+{
+  "id": "T12.4",
+  "milestone_id": "M12",
+  "title": "Migrate existing project-knowledge to dual JSON+MD",
+  "domain": "Shared",
+  "capability": "Projection Architecture",
+  "purpose": "Identify which project-knowledge files need dual-format migration and create migration plan.",
+  "dependencies": [
+    "T12.3"
+  ],
+  "architectural_constraints": [
+    "Must not break existing references",
+    "Must preserve git history",
+    "Must be reversible"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/projections/migration-plan.md",
+      "description": "Migration plan for project-knowledge",
+      "type": "file"
+    },
+    {
+      "path": "meta/projections/inventory.json",
+      "description": "Inventory of files to migrate",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Inventory lists all project-knowledge files",
+    "Each file classified as: migrate | keep-as-md | delete",
+    "Migration plan has phased approach",
+    "No existing references broken by migration"
+  ],
+  "estimated_hours": 2,
+  "status": "planned"
+}

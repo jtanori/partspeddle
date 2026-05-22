@@ -1,0 +1,37 @@
+{
+  "id": "T18.1",
+  "milestone_id": "M18",
+  "title": "Implement approval workflow scaffolding",
+  "domain": "Shared",
+  "capability": "Governance Authority",
+  "purpose": "Create the approval workflow structure: proposals, reviews, approvals, rejections.",
+  "dependencies": [
+    "T15.4",
+    "T16.4"
+  ],
+  "architectural_constraints": [
+    "Must support human-in-the-loop",
+    "Must support time-bound approvals",
+    "Must log all approval events"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/workflows/approval-workflow.json",
+      "description": "Approval workflow definition",
+      "type": "file"
+    },
+    {
+      "path": "scripts/create-proposal.ts",
+      "description": "Proposal creation utility",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Approval workflow has states (proposed → reviewed → approved | rejected)",
+    "Workflow supports human-in-the-loop",
+    "Workflow has timeout (default 7 days)",
+    "All approval events logged to GES"
+  ],
+  "estimated_hours": 3,
+  "status": "planned"
+}

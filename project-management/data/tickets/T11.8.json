@@ -1,0 +1,48 @@
+{
+  "id": "T11.8",
+  "milestone_id": "M11",
+  "title": "Milestone-Scoped Report Generation",
+  "domain": "Shared",
+  "capability": "PM Tooling",
+  "purpose": "Extend pm-report.js with --milestone flag to generate focused, readable reports for a single milestone including ticket breakdown, progress metrics, deliverables status, and dependency health.",
+  "dependencies": [
+    "T11.5"
+  ],
+  "architectural_constraints": [
+    "Must resolve milestones via registry (not hardcoded paths)",
+    "Must support --json and default Markdown output",
+    "Must include ticket deliverables status check",
+    "Must report dependency satisfaction"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/pm-report.js",
+      "description": "Extended with --milestone flag and focused report output",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "pm-report.js --milestone M11 produces focused milestone report",
+    "pm-report.js --milestone M11 --json produces structured JSON",
+    "Report includes: milestone metadata, ticket list with status, deliverables status, dependency health, hours summary",
+    "validate-pm.js passes with 0 errors"
+  ],
+  "estimated_hours": 1,
+  "status": "completed",
+  "traceability": [
+    {
+      "commit_hash": "TBD",
+      "files_changed": [
+        "scripts/pm-report.js"
+      ],
+      "description": "Extended pm-report.js with --milestone flag for focused milestone reports",
+      "timestamp": "2026-05-22T18:02:59.342Z"
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-05-22T18:00:00Z",
+    "updated_at": "2026-05-22T18:00:00Z",
+    "version": 1,
+    "plan_id": "PLAN-M11-MILESTONE-REPORT"
+  }
+}

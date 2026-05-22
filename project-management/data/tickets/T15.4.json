@@ -1,0 +1,36 @@
+{
+  "id": "T15.4",
+  "milestone_id": "M15",
+  "title": "Add event logging to existing governance mutations",
+  "domain": "Shared",
+  "capability": "Governance Event System",
+  "purpose": "Instrument existing governance code (runtime-state updates, checkpoint writes, contract mutations) with event logging.",
+  "dependencies": [
+    "T15.3"
+  ],
+  "architectural_constraints": [
+    "Must not break existing functionality",
+    "Must be additive only",
+    "Must be reversible"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/log-governance-event.ts",
+      "description": "Governance event logger utility",
+      "type": "file"
+    },
+    {
+      "path": "meta/events/2026-05-20-initial-mutations.jsonl",
+      "description": "Initial event log",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Event logger utility created",
+    "At least 3 governance mutations logged",
+    "Event log validates against schema",
+    "Existing functionality unaffected"
+  ],
+  "estimated_hours": 2,
+  "status": "planned"
+}

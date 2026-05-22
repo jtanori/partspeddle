@@ -1,0 +1,37 @@
+{
+  "id": "T18.2",
+  "milestone_id": "M18",
+  "title": "Add drift monitoring",
+  "domain": "Shared",
+  "capability": "Governance Authority",
+  "purpose": "Create continuous drift monitoring that watches for execution anomalies.",
+  "dependencies": [
+    "T18.1"
+  ],
+  "architectural_constraints": [
+    "Must run during execution",
+    "Must alert on anomalies",
+    "Must not block execution"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/drift-monitor.ts",
+      "description": "Continuous drift monitor",
+      "type": "file"
+    },
+    {
+      "path": "meta/telemetry/drift-alerts/",
+      "description": "Drift alert output directory",
+      "type": "directory"
+    }
+  ],
+  "acceptance_criteria": [
+    "Monitor runs every 60 seconds during execution",
+    "Monitor detects planning loops",
+    "Monitor detects intent simulation mode",
+    "Alerts written to telemetry storage",
+    "Alerts do not block execution"
+  ],
+  "estimated_hours": 3,
+  "status": "planned"
+}

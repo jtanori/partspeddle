@@ -1,0 +1,37 @@
+{
+  "id": "T17.1",
+  "milestone_id": "M17",
+  "title": "Automate metadata generation for tickets/milestones",
+  "domain": "Shared",
+  "capability": "Governance Automation",
+  "purpose": "Create a script that generates ticket/milestone metadata from minimal input.",
+  "dependencies": [
+    "T14.5",
+    "T15.4"
+  ],
+  "architectural_constraints": [
+    "Must validate against schemas",
+    "Must not overwrite existing files",
+    "Must be deterministic"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/generate-ticket.ts",
+      "description": "Ticket generator from template",
+      "type": "file"
+    },
+    {
+      "path": "scripts/generate-milestone.ts",
+      "description": "Milestone generator from template",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Ticket generator produces valid ticket JSON",
+    "Milestone generator produces valid milestone JSON",
+    "Generators do not overwrite existing files",
+    "Output is deterministic"
+  ],
+  "estimated_hours": 3,
+  "status": "planned"
+}

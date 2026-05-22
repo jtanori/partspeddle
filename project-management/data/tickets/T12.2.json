@@ -1,0 +1,36 @@
+{
+  "id": "T12.2",
+  "milestone_id": "M12",
+  "title": "Define Markdown projection format",
+  "domain": "Shared",
+  "capability": "Projection Architecture",
+  "purpose": "Define the Markdown output format and conventions for human-readable projections.",
+  "dependencies": [
+    "T12.1"
+  ],
+  "architectural_constraints": [
+    "Must be generated from JSON, not authored",
+    "Must be Git-friendly (stable diffs)",
+    "Must support tables, lists, headers"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/projections/markdown-projection-format.md",
+      "description": "Markdown projection format spec",
+      "type": "file"
+    },
+    {
+      "path": "meta/projections/examples/ticket.md",
+      "description": "Example projected ticket Markdown",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Markdown format spec has template definitions",
+    "Example projection renders correctly in GitHub preview",
+    "Projection diffs are stable (deterministic ordering)",
+    "Projection includes JSON source reference"
+  ],
+  "estimated_hours": 2,
+  "status": "planned"
+}

@@ -1,0 +1,37 @@
+{
+  "id": "T19.5",
+  "milestone_id": "M19",
+  "title": "Isolate VINTRACK-specific business logic",
+  "domain": "Shared",
+  "capability": "SYNTH Extraction",
+  "purpose": "Ensure all VINTRACK-specific logic remains in the product repo, not in governance packages.",
+  "dependencies": [
+    "T19.3",
+    "T19.4"
+  ],
+  "architectural_constraints": [
+    "Must pass dependency audit",
+    "Must have zero governance→product imports",
+    "Must document all product-specific extensions"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/extraction/boundary-audit.md",
+      "description": "Boundary audit report",
+      "type": "file"
+    },
+    {
+      "path": "meta/extraction/product-extensions.md",
+      "description": "Product-specific extensions catalog",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Dependency audit passes (zero governance→product imports)",
+    "Boundary audit documented",
+    "Product extensions cataloged",
+    "VINTRACK runtime operable without governance packages"
+  ],
+  "estimated_hours": 3,
+  "status": "planned"
+}

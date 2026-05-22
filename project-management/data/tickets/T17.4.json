@@ -1,0 +1,37 @@
+{
+  "id": "T17.4",
+  "milestone_id": "M17",
+  "title": "Automate schema validation",
+  "domain": "Shared",
+  "capability": "Governance Automation",
+  "purpose": "Create a script that validates all JSON artifacts against their schemas.",
+  "dependencies": [
+    "T17.3"
+  ],
+  "architectural_constraints": [
+    "Must run in CI",
+    "Must fail on schema violations",
+    "Must report all violations, not just first"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/validate-schemas.ts",
+      "description": "Schema validation script",
+      "type": "file"
+    },
+    {
+      "path": ".github/workflows/governance-validation.yml",
+      "description": "CI workflow for governance validation",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Validation script checks all JSON artifacts",
+    "Script fails with non-zero exit on violations",
+    "Script reports all violations (not just first)",
+    "CI workflow runs on PR",
+    "CI blocks merge on schema violations"
+  ],
+  "estimated_hours": 3,
+  "status": "planned"
+}

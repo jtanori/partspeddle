@@ -1,0 +1,36 @@
+{
+  "id": "T12.3",
+  "milestone_id": "M12",
+  "title": "Create projection-generation conventions",
+  "domain": "Shared",
+  "capability": "Projection Architecture",
+  "purpose": "Document how projections are generated: trigger conditions, generation pipeline, validation.",
+  "dependencies": [
+    "T12.2"
+  ],
+  "architectural_constraints": [
+    "Must support CI generation",
+    "Must support manual generation",
+    "Must validate projection before writing"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/projections/generation-conventions.md",
+      "description": "Projection generation pipeline",
+      "type": "file"
+    },
+    {
+      "path": "scripts/generate-projections.ts",
+      "description": "Projection generation script stub",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Generation conventions document CI trigger conditions",
+    "Script stub exists with clear interface",
+    "Validation step defined (verify projection matches source)",
+    "Rollback strategy for bad projections defined"
+  ],
+  "estimated_hours": 2,
+  "status": "planned"
+}

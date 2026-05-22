@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-05-22T14:00:08.471Z",
+  "passed": true,
+  "issues": [
+    {
+      "severity": "MEDIUM",
+      "category": "consistency",
+      "message": "Last execution milestone (M11) does not match current milestone (M12)",
+      "recommendation": "Reconcile milestone transitions"
+    }
+  ],
+  "checks_total": 28,
+  "checks_passed": 27,
+  "runtime_confidence": 0.95,
+  "stale_surfaces": [],
+  "missing_files": [],
+  "projection_freshness_seconds": 58
+}

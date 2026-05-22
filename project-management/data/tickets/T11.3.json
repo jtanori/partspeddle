@@ -1,0 +1,60 @@
+{
+  "id": "T11.3",
+  "milestone_id": "M11",
+  "title": "Create base JSON schemas",
+  "domain": "Shared",
+  "capability": "Schema Authority",
+  "purpose": "Create authoritative JSON schemas for milestone, ticket, checkpoint, and governance state.",
+  "dependencies": [
+    "T11.2"
+  ],
+  "architectural_constraints": [
+    "Must validate existing artifacts",
+    "Must use JSON Schema Draft 07",
+    "Must be versioned"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/schemas/milestone.schema.json",
+      "description": "Milestone JSON schema",
+      "type": "file"
+    },
+    {
+      "path": "meta/schemas/ticket.schema.json",
+      "description": "Ticket JSON schema",
+      "type": "file"
+    },
+    {
+      "path": "meta/schemas/checkpoint.schema.json",
+      "description": "Checkpoint JSON schema",
+      "type": "file"
+    },
+    {
+      "path": "meta/schemas/governance-state.schema.json",
+      "description": "Governance state schema",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "All schemas validate with ajv or equivalent",
+    "Existing M3 milestone validates against milestone schema",
+    "Existing T3.5 ticket validates against ticket schema",
+    "Schema versioning strategy documented"
+  ],
+  "estimated_hours": 3,
+  "status": "completed",
+  "traceability": [
+    {
+      "commit_hash": "TBD",
+      "files_changed": [
+        "meta/schemas/milestone.schema.json",
+        "meta/schemas/ticket.schema.json",
+        "meta/schemas/checkpoint.schema.json",
+        "meta/schemas/governance-state.schema.json",
+        "meta/README.md"
+      ],
+      "description": "Created base JSON schemas for governance artifacts",
+      "timestamp": "2026-05-22T05:14:21Z"
+    }
+  ]
+}

@@ -83,7 +83,7 @@ Before any execution begins, the system enters **pre-execution staging**. This i
 | Action | Description |
 |--------|-------------|
 | Read runtime state | Load `active-execution.json`, `current-ticket.json` |
-| Read ticket schema | Load ticket definition from `governance-tickets.json` |
+| Read ticket schema | Load ticket definition from `project-management/data/tickets/{ticket_id}.json` |
 | Validate dependencies | Check if dependencies are resolved |
 | Assess risk | Determine `estimated_risk` |
 | Identify rollback point | Determine `rollback_point` |

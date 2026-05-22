@@ -82,6 +82,30 @@
       "enum": ["planned", "in_progress", "completed", "blocked", "cancelled"],
       "description": "Current milestone status"
     },
+    "ticket_paths": {
+      "type": "object",
+      "description": "Registry mapping ticket IDs to their file paths and validation state",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["path"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Relative path from the project root to the ticket JSON file (e.g., project-management/data/tickets/T1.1.json)"
+          },
+          "exists": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the ticket file exists on disk"
+          },
+          "isValid": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the ticket file passes schema validation"
+          }
+        }
+      }
+    },
     "metadata": {
       "type": "object",
       "description": "Optional milestone metadata"

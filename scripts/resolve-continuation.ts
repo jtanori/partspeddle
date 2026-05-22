@@ -7,8 +7,8 @@
  * Usage: npx tsx scripts/resolve-continuation.ts [--json]
  */
 
-import { readFileSync, existsSync } from "fs";
-import { join } from "path";
+import { readFileSync, existsSync, readdirSync } from "fs";
+import { join, resolve } from "path";
 
 const GOVERNANCE_DIR = "project-management/data";
 const RUNTIME_DIR = "project-governance/runtime/state";
@@ -63,29 +63,35 @@ function loadJSON<T>(path: string): T | null {
 }
 
 function loadTickets(): Ticket[] {
-  // Try governance-tickets.json first, then fall back to individual tickets
-  const governanceTickets = loadJSON<Ticket[]>(
-    join(GOVERNANCE_DIR, "governance-tickets.json")
-  );
-  if (governanceTickets) return governanceTickets;
-
-  // Fallback: scan individual ticket files
-  // Not implemented — governance-tickets.json is canonical for M11+
-  return [];
+  const ticketsDir = join(GOVERNANCE_DIR, 'tickets');
+  if (!existsSync(ticketsDir)) return [];
+  return readdirSync(ticketsDir)
+    .filter((f: string) => f.endsWith('.json'))
+    .map((f: string) => JSON.parse(readFileSync(join(ticketsDir, f), 'utf-8')));
 }
 
 function loadMilestones(): Milestone[] {
-  const governanceMilestones = loadJSON<Milestone[]>(
-    join(GOVERNANCE_DIR, "governance-milestones.json")
-  );
-  if (governanceMilestones) return governanceMilestones;
-
-  const mainMilestones = loadJSON<Milestone[]>(
-    join(GOVERNANCE_DIR, "milestones.json")
-  );
-  if (mainMilestones) return mainMilestones;
-
-  return [];
+  // Registry-based loader (ADR-003)
+  const registryPath = join(GOVERNANCE_DIR, 'milestones.registry.json');
+  
+  if (!existsSync(registryPath)) {
+    return [];
+  }
+  
+  const registry = JSON.parse(readFileSync(registryPath, 'utf-8'));
+  const allMilestones: Milestone[] = [];
+  
+  for (const file of registry.files || []) {
+    const filePath = resolve(file);
+    if (existsSync(filePath)) {
+      const domainMilestones = JSON.parse(readFileSync(filePath, 'utf-8'));
+      if (Array.isArray(domainMilestones)) {
+        allMilestones.push(...domainMilestones);
+      }
+    }
+  }
+  
+  return allMilestones;
 }
 
 function findInterruptedExecution(): string | null {
@@ -273,10 +279,139 @@ function resolveContinuation(): ContinuationDecision {
   }
 
   // === PRIORITY 4: Dependency Unlocking ===
-  // TODO: Implement dependency graph traversal for blocked milestones
+  // Find blocked tickets whose dependencies just resolved
+  const blockedTickets = tickets.filter(
+    (t) => t.status === "blocked"
+  );
+  for (const ticket of blockedTickets) {
+    const deps = resolveDependencies(ticket, tickets);
+    if (deps.resolved) {
+      return {
+        protocol_version: "1.0.0",
+        resolved_at: now,
+        reason: "DEPENDENCY_UNBLOCKED",
+        reason_detail: `${ticket.id} dependencies resolved. Previously blocked by: ${ticket.dependencies.join(", ")}`,
+        selected_ticket: {
+          id: ticket.id,
+          milestone_id: ticket.milestone_id,
+          title: ticket.title,
+          priority: 4,
+        },
+        rejected_candidates: [],
+        dependency_basis: {
+          all_dependencies_resolved: true,
+          blocker_count: 0,
+        },
+        governance_basis: {
+          runtime_confidence: confidence,
+          drift_risk: driftRisk,
+          checkpoint_system: "ACTIVE",
+        },
+        state_inconsistencies: inconsistencies,
+        authorization_required: true,
+        next_action: `Execute ${ticket.id} — ${ticket.title}`,
+      };
+    }
+  }
 
   // === PRIORITY 5: Milestone Transition ===
-  // TODO: Implement milestone transition logic
+  // Active milestone is complete — find next milestone with executable work
+  const completedMilestoneIds = new Set(
+    milestones.filter((m) => m.status === "completed").map((m) => m.id)
+  );
+
+  const nextMilestone = milestones
+    .filter((m) => m.status === "planned" || m.status === "in_progress")
+    .filter((m) => {
+      const deps = (m as any).dependencies || [];
+      return deps.every((depId: string) => completedMilestoneIds.has(depId));
+    })
+    .sort((a, b) => ((a as any).phase ?? 999) - ((b as any).phase ?? 999))[0];
+
+  if (nextMilestone) {
+    const nextTickets = tickets.filter(
+      (t) => t.milestone_id === nextMilestone.id
+    );
+    const incompleteTickets = nextTickets.filter(
+      (t) => t.status !== "completed" && t.status !== "cancelled"
+    );
+
+    if (incompleteTickets.length > 0) {
+      for (const ticket of incompleteTickets) {
+        const deps = resolveDependencies(ticket, tickets);
+        if (deps.resolved) {
+          return {
+            protocol_version: "1.0.0",
+            resolved_at: now,
+            reason: "MILESTONE_TRANSITION",
+            reason_detail: `${activeMilestoneId} complete. Transitioning to ${nextMilestone.id}: ${nextMilestone.title}.`,
+            selected_ticket: {
+              id: ticket.id,
+              milestone_id: ticket.milestone_id,
+              title: ticket.title,
+              priority: 5,
+            },
+            rejected_candidates: [],
+            dependency_basis: {
+              all_dependencies_resolved: true,
+              blocker_count: 0,
+            },
+            governance_basis: {
+              runtime_confidence: confidence,
+              drift_risk: driftRisk,
+              checkpoint_system: "ACTIVE",
+            },
+            state_inconsistencies: inconsistencies,
+            authorization_required: true,
+            next_action: `Execute ${ticket.id} — ${ticket.title} (${nextMilestone.id})`,
+          };
+        }
+      }
+      // Next milestone has incomplete tickets but all are dependency-blocked
+      return {
+        protocol_version: "1.0.0",
+        resolved_at: now,
+        reason: "MILESTONE_TRANSITION_BLOCKED",
+        reason_detail: `${nextMilestone.id} is next but all tickets have unresolved dependencies.`,
+        selected_ticket: null,
+        rejected_candidates: [],
+        dependency_basis: {
+          all_dependencies_resolved: false,
+          blocker_count: incompleteTickets.length,
+        },
+        governance_basis: {
+          runtime_confidence: confidence,
+          drift_risk: driftRisk,
+          checkpoint_system: "ACTIVE",
+        },
+        state_inconsistencies: inconsistencies,
+        authorization_required: false,
+        next_action: `Resolve dependencies for ${nextMilestone.id} tickets before proceeding.`,
+      };
+    }
+
+    // Next milestone has no ticket definitions yet
+    return {
+      protocol_version: "1.0.0",
+      resolved_at: now,
+      reason: "MILESTONE_TRANSITION",
+      reason_detail: `${activeMilestoneId} complete. ${nextMilestone.id} (${nextMilestone.title}) is next but has no executable tickets defined.`,
+      selected_ticket: null,
+      rejected_candidates: [],
+      dependency_basis: {
+        all_dependencies_resolved: true,
+        blocker_count: 0,
+      },
+      governance_basis: {
+        runtime_confidence: confidence,
+        drift_risk: driftRisk,
+        checkpoint_system: "ACTIVE",
+      },
+      state_inconsistencies: inconsistencies,
+      authorization_required: false,
+      next_action: `Create ticket definitions for ${nextMilestone.id}, or proceed with branch promotion if governance work is complete.`,
+    };
+  }
 
   // === NO VALID TICKET ===
   return {
