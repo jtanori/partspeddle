@@ -48,8 +48,16 @@ if [ "$BRANCH_MATCH" = "false" ] && [ "$TICKET" != "NONE" ]; then
 fi
 
 # Build JSON
-ERRORS_JSON=$(printf '%s\n' "${ERRORS[@]}" | sed 's/^/    "/; s/$/"/; $!s/$/,/' | paste -sd '\n' -)
-WARNINGS_JSON=$(printf '%s\n' "${WARNINGS[@]}" | sed 's/^/    "/; s/$/"/; $!s/$/,/' | paste -sd '\n' -)
+if [ ${#ERRORS[@]} -gt 0 ]; then
+  ERRORS_JSON=$(printf '%s\n' "${ERRORS[@]}" | sed 's/^/    "/; s/$/"/; $!s/$/,/' | paste -sd '\n' -)
+else
+  ERRORS_JSON=""
+fi
+if [ ${#WARNINGS[@]} -gt 0 ]; then
+  WARNINGS_JSON=$(printf '%s\n' "${WARNINGS[@]}" | sed 's/^/    "/; s/$/"/; $!s/$/,/' | paste -sd '\n' -)
+else
+  WARNINGS_JSON=""
+fi
 
 cat <<EOF
 {
