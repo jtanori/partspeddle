@@ -1,68 +1,93 @@
 {
   "id": "T3.1",
   "milestone_id": "M3",
-  "title": "Marketplace Database Schema",
-  "domain": "Marketplace",
-  "capability": "Persistence",
-  "purpose": "Create owned marketplace tables with constraints and triggers.",
-  "dependencies": [
-    "T2.1"
-  ],
+  "title": "Repository Restructure + Next.js Scaffold",
+  "domain": "Shared",
+  "capability": "Fullstack Infrastructure",
+  "purpose": "Move backend domains to src/backend/, scaffold Next.js frontend in src/frontend/, establish shared contracts layer, and update all tooling configurations to support both surfaces.",
+  "dependencies": ["T2.8"],
   "architectural_constraints": [
-    "Must conform to database-governance.md",
-    "Forward-only migrations",
-    "RLS mandatory",
-    "Listing status enum: draft, published, archived"
+    "Preserve all existing backend functionality",
+    "Single package.json (monorepo-lite)",
+    "TypeScript strict mode for frontend",
+    "ESM modules only",
+    "Path aliases: @/backend/*, @/frontend/*, @/shared/*"
   ],
   "deliverables": [
     {
-      "path": "supabase/migrations/xxx_marketplace_listings.sql",
-      "description": "Listings, inventory_items, listing_media",
-      "type": "migration"
+      "path": "src/backend/",
+      "description": "All existing backend domains moved from src/identity/, src/shared/ (infra)",
+      "type": "directory"
     },
     {
-      "path": "supabase/migrations/xxx_marketplace_catalog.sql",
-      "description": "Collections, garages, yards",
-      "type": "migration"
+      "path": "src/frontend/app/",
+      "description": "Next.js App Router root with layout.tsx and page.tsx",
+      "type": "directory"
     },
     {
-      "path": "supabase/migrations/xxx_marketplace_triggers.sql",
-      "description": "updated_at, inventory triggers",
-      "type": "migration"
+      "path": "src/frontend/lib/",
+      "description": "Frontend utilities, API layer placeholder, Supabase clients placeholder",
+      "type": "directory"
     },
     {
-      "path": "supabase/migrations/xxx_marketplace_rls.sql",
-      "description": "RLS policies",
-      "type": "migration"
+      "path": "src/frontend/components/",
+      "description": "Component root with ui/ and domain/ folders",
+      "type": "directory"
+    },
+    {
+      "path": "src/shared/contracts/",
+      "description": "Shared contract layer root",
+      "type": "directory"
+    },
+    {
+      "path": "next.config.js",
+      "description": "Next.js config with standalone output",
+      "type": "config"
+    },
+    {
+      "path": "tsconfig.json",
+      "description": "Updated with path aliases for frontend",
+      "type": "config"
+    },
+    {
+      "path": "eslint.config.js",
+      "description": "Updated to include src/frontend/**/*.ts, src/frontend/**/*.tsx",
+      "type": "config"
     }
   ],
   "acceptance_criteria": [
-    "Listings table created with FK to seller_profiles",
-    "Inventory items owned by seller",
-    "RLS prevents cross-seller listing access",
-    "Status enum enforced at DB level"
+    "npm run build:frontend succeeds without errors",
+    "npm run dev starts backend API on port 3001",
+    "Existing backend tests pass (npm run test:unit, npm run test:integration)",
+    "npm run lint passes for all surfaces",
+    "npm run typecheck passes for all surfaces",
+    "Frontend page renders at localhost:3000",
+    "Path aliases resolve correctly in both backend and frontend"
   ],
   "traceability": [],
   "observability": {
     "metrics": [],
-    "logs": [
-      "DB migration success/failure"
-    ],
+    "logs": [],
     "traces": []
   },
   "failure_modes": [
     {
-      "scenario": "Constraint violation",
-      "mitigation": "Mapped to domain error",
+      "scenario": "Import paths break after restructure",
+      "mitigation": "Automated find/replace + full CI pass",
+      "severity": "high"
+    },
+    {
+      "scenario": "Next.js conflicts with Express tsconfig",
+      "mitigation": "Separate tsconfig paths or strict module boundaries",
       "severity": "medium"
     }
   ],
-  "estimated_hours": 3,
+  "estimated_hours": 6,
   "status": "planned",
   "assignee": null,
   "metadata": {
-    "created_at": "2026-05-19T02:41:17.722Z",
-    "updated_at": "2026-05-19T02:41:17.722Z",
+    "created_at": "2026-05-19T10:00:00.000Z",
+    "updated_at": "2026-05-19T10:00:00.000Z",
     "version": 1
   }
 }

@@ -1,5 +1,8 @@
 # VINTRACK — PR Governance
 
+> **Canonical branch strategy and merge flow are defined in [`git-workflow.md`](./git-workflow.md).**  
+> This document supplements it with PR size limits, templates, and merge tactics.
+
 ## Purpose
 
 Defines pull request standards, size limits, and merge requirements. Keeps implementation velocity high without sacrificing coherence.
@@ -49,11 +52,20 @@ One-sentence description.
 
 ## Branch Naming
 
+See [`git-workflow.md`](./git-workflow.md) for the canonical standard.
+
+Required format for feature work:
+
 ```
-feat/identity-seller-onboarding
-fix/transaction-escrow-timeout
-refactor/marketplace-listing-state
-docs/api-contract-update
+feature/T{x}-{short-kebab-description}
+```
+
+Examples:
+
+```
+feature/T1.4-queue-bootstrap
+feature/T2.1-identity-schema
+feature/T2.6A-hosted-auth-sync
 ```
 
 ---
@@ -64,7 +76,7 @@ docs/api-contract-update
 - [ ] Code review checklist completed
 - [ ] At least one approving review
 - [ ] No unresolved blocking comments
-- [ ] Branch is up to date with `main`
+- [ ] Branch is up to date with `develop` (for feature PRs) or `main` (for release PRs)
 
 ---
 
@@ -72,9 +84,9 @@ docs/api-contract-update
 
 **Squash and merge** for feature branches.
 
-Commit message format:
+Commit message format (Conventional Commits with ticket reference):
 ```
-feat(identity): add seller onboarding state machine
+feat(identity): add seller onboarding state machine (T2.3)
 
 - Implements pending → onboarding → review → active transitions
 - Adds onboarding_states table with step tracking

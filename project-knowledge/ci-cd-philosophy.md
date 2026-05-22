@@ -1,5 +1,8 @@
 # VINTRACK — CI/CD Philosophy
 
+> **Canonical branch strategy, merge flow, and GitHub Actions requirements are defined in [`git-workflow.md`](./git-workflow.md).**  
+> This document supplements it with pipeline philosophy, runtime targets, and deployment strategy.
+
 ## Purpose
 
 Defines the continuous integration and delivery approach. MVP-focused: fast feedback, minimal infrastructure, no premature deployment complexity.

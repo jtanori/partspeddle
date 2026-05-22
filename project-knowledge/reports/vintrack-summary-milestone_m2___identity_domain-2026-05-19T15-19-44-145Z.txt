@@ -1,0 +1,290 @@
+VINTRACK PROJECT SUMMARY
+Generated: 2026-05-19T15:19:44.135Z
+Scope: Milestone M2 — Identity Domain
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+T2.0A — ADR: Auth Provider Decoupling Strategy
+  Status:      completed
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Architecture
+  Hours:       1
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     2
+  Deliverables: 1/2 on disk
+  Tests:       yes
+  Acceptance:  3 criteria
+  Traceability: 1 entries
+  Failure Modes: 0 documented
+
+────────────────────────────────────────────────────────────────────────────────
+T2.1 — Identity Database Schema
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Persistence
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ✅ T1.5 — completed
+    👀 T1.8 — review
+
+────────────────────────────────────────────────────────────────────────────────
+T2.1A — Auth Decoupling: Identity-Owned User Table
+  Status:      completed
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Persistence
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     2
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 1 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T2.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.2 — User Aggregate & Profile Lifecycle
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Domain Model
+  Hours:       4
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 4/4 on disk
+  Tests:       yes
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T2.1 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.2A — Auth Provider Interface Abstraction
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Port/Adapter
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T2.2 — planned
+    ✅ T2.1A — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T2.2B — Auth Middleware + Lazy User Provisioning
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Auth Boundary
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  7 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ✅ T2.1A — completed
+    ⏳ T2.2A — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.2C — Authentication Context Contract
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Auth Boundary
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  6 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T2.2A — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.3 — SellerProfile & Onboarding State Machine
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Seller Activation
+  Hours:       5
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/4 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T2.2 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.4 — Identity Repositories
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Persistence Boundary
+  Hours:       4
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/5 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T2.1 — planned
+    ⏳ T2.2 — planned
+    ⏳ T2.3 — planned
+    ✅ T1.3 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T2.5 — Identity API Routes
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  HTTP Boundary
+  Hours:       4
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/5 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 3 documented
+  Dependencies:
+    ⏳ T2.4 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.6 — Supabase Auth Webhook Handler
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Auth Sync
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T2.1 — planned
+    ⏳ T2.4 — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.6A — Hosted Auth Webhook Synchronization
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Auth Sync
+  Hours:       4
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  6 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T2.6 — planned
+    ✅ T2.1A — completed
+    ⏳ T2.2A — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.6B — Webhook Reconciliation Governance
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Sync Governance
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T2.6A — planned
+
+────────────────────────────────────────────────────────────────────────────────
+T2.7 — Identity Queue Workers
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Async Orchestration
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  4 criteria
+  Traceability: 0 entries
+  Failure Modes: 2 documented
+  Dependencies:
+    ⏳ T2.4 — planned
+    ✅ T1.4 — completed
+
+────────────────────────────────────────────────────────────────────────────────
+T2.8 — Identity Integration Tests
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Quality Assurance
+  Hours:       4
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 0 documented
+  Dependencies:
+    ⏳ T2.1 — planned
+    ⏳ T2.2 — planned
+    ⏳ T2.3 — planned
+    ⏳ T2.4 — planned
+    ⏳ T2.5 — planned
+    ⏳ T2.6 — planned
+    ⏳ T2.7 — planned
+
+================================================================================

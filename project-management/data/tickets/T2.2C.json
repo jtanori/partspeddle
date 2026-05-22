@@ -1,0 +1,75 @@
+{
+  "id": "T2.2C",
+  "milestone_id": "M2",
+  "title": "Authentication Context Contract",
+  "domain": "Identity",
+  "capability": "Auth Boundary",
+  "purpose": "Establish a canonical authenticated request shape (AuthContext) before API routes proliferate. Prevents auth semantics drift across middleware, routes, workers, webhooks, and internal services.",
+  "dependencies": [
+    "T2.2A"
+  ],
+  "architectural_constraints": [
+    "AuthContext is the ONLY type used to represent an authenticated actor",
+    "No Supabase SDK types leak into AuthContext",
+    "AuthContext supports human users, service accounts, and future machine actors",
+    "Correlation ID and traceparent always present",
+    "Declared via global augmentation or explicit wrapper, not ambient any"
+  ],
+  "deliverables": [
+    {
+      "path": "src/identity/application/ports/auth-context.ts",
+      "description": "AuthContext interface and factory",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/api/types/express-augmentation.ts",
+      "description": "Express Request augmentation for auth context",
+      "type": "file"
+    },
+    {
+      "path": "src/identity/application/ports/__tests__/auth-context.test.ts",
+      "description": "Unit tests for context construction and validation",
+      "type": "test"
+    }
+  ],
+  "acceptance_criteria": [
+    "AuthContext contains: userId, authProvider, authProviderUserId, email, roles, correlationId, traceparent?",
+    "Express Request interface extended with optional auth: AuthContext",
+    "Factory function creates AuthContext from verified JWT payload",
+    "No @supabase/supabase-js types in AuthContext definition",
+    "Roles array supports at minimum: 'user', 'seller', 'admin'",
+    "Unit tests: 95%+ meaningful coverage"
+  ],
+  "traceability": [
+    {
+      "commit_hash": "pending",
+      "files_changed": [
+        "src/identity/application/ports/auth-context.ts",
+        "src/identity/application/ports/index.ts",
+        "src/identity/api/types/express-augmentation.ts"
+      ],
+      "description": "Created AuthContext contract with userId, authProvider, email, roles, correlationId, traceparent. Express Request augmentation. Factory function from VerifiedToken. Role helpers hasRole/requireRole. No Supabase types leaked.",
+      "timestamp": "2026-05-19T13:15:00Z"
+    }
+  ],
+  "observability": {
+    "metrics": [],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "JWT payload missing expected claims",
+      "mitigation": "Factory throws domain error with clear message",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 2,
+  "status": "completed",
+  "assignee": "agent",
+  "metadata": {
+    "created_at": "2026-05-19T14:30:00.000Z",
+    "updated_at": "2026-05-19T13:15:00Z",
+    "version": 1
+  }
+}

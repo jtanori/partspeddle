@@ -1,63 +1,97 @@
 {
   "id": "T3.5",
   "milestone_id": "M3",
-  "title": "Marketplace API Routes",
-  "domain": "Marketplace",
-  "capability": "HTTP Boundary",
-  "purpose": "Expose marketplace domain via REST endpoints.",
-  "dependencies": [
-    "T3.4"
-  ],
+  "title": "Search Results Page",
+  "domain": "Search",
+  "capability": "Frontend UI",
+  "purpose": "Create the search results page with Algolia InstantSearch integration, filter sidebar, and pagination. URL state syncs with search parameters.",
+  "dependencies": ["T3.3", "T3.4", "T4.5.1"],
   "architectural_constraints": [
-    "Thin controllers",
-    "JWT + RLS",
-    "Correlation ID propagation",
-    "Pagination: cursor-based"
+    "URL state syncs with search parameters (shareable, bookmarkable)",
+    "Algolia InstantSearch for frontend search experience",
+    "Filters: category, price range, condition, location",
+    "Pagination with page numbers",
+    "Responsive layout"
   ],
   "deliverables": [
     {
-      "path": "src/marketplace/api/routes/listing-routes.ts",
-      "description": "Listing CRUD routes",
+      "path": "src/frontend/app/search/page.tsx",
+      "description": "Search page with InstantSearch",
       "type": "file"
     },
     {
-      "path": "src/marketplace/api/routes/inventory-routes.ts",
-      "description": "Inventory management routes",
+      "path": "src/frontend/components/search/search-input.tsx",
+      "description": "Search input with autocomplete",
       "type": "file"
     },
     {
-      "path": "src/marketplace/api/routes/catalog-routes.ts",
-      "description": "Collection/Garage/Yard routes",
+      "path": "src/frontend/components/search/filter-sidebar.tsx",
+      "description": "Filter sidebar with category, price, condition filters",
       "type": "file"
     },
     {
-      "path": "src/marketplace/api/dto/",
-      "description": "Zod validation schemas",
-      "type": "directory"
+      "path": "src/frontend/components/search/result-list.tsx",
+      "description": "Search result list with hits",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/components/search/pagination.tsx",
+      "description": "Pagination controls",
+      "type": "file"
     }
   ],
   "acceptance_criteria": [
-    "GET /v1/marketplace/listings with cursor pagination",
-    "POST /v1/marketplace/listings creates draft",
-    "PATCH /v1/marketplace/listings/:id/publish publishes",
-    "GET /v1/marketplace/inventory returns seller inventory"
+    "Search queries return results from Algolia",
+    "Filters update results in real-time",
+    "URL syncs with search state (shareable)",
+    "Pagination works correctly",
+    "Empty state shown when no results",
+    "Loading state shown during search",
+    "Responsive on mobile and desktop"
   ],
-  "traceability": [],
+  "traceability": [
+    {
+      "commit_hash": "T3.5-EXECUTION",
+      "files_changed": [
+        "src/app/search/page.tsx",
+        "src/frontend/components/search/search-page-client.tsx",
+        "src/frontend/components/search/search-input.tsx",
+        "src/frontend/components/search/filter-sidebar.tsx",
+        "src/frontend/components/search/result-list.tsx",
+        "src/frontend/components/search/pagination.tsx"
+      ],
+      "description": "Implemented search results page with Algolia InstantSearch, URL state sync, filter sidebar, pagination, loading/empty states",
+      "timestamp": "2026-05-20T09:30:00Z"
+    }
+  ],
   "observability": {
     "metrics": [
-      "marketplace_api_requests_total",
-      "marketplace_api_latency_seconds"
+      "search_query_duration_seconds",
+      "search_results_total"
     ],
-    "logs": [],
+    "logs": [
+      "search.query.executed"
+    ],
     "traces": []
   },
-  "failure_modes": [],
-  "estimated_hours": 3,
+  "failure_modes": [
+    {
+      "scenario": "Algolia API quota exceeded",
+      "mitigation": "Fallback to backend search API",
+      "severity": "medium"
+    },
+    {
+      "scenario": "URL state desyncs with UI",
+      "mitigation": "URL is source of truth; UI derives from URL",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 6,
   "status": "planned",
   "assignee": null,
   "metadata": {
-    "created_at": "2026-05-19T02:41:17.722Z",
-    "updated_at": "2026-05-19T02:41:17.722Z",
+    "created_at": "2026-05-19T10:00:00.000Z",
+    "updated_at": "2026-05-19T10:00:00.000Z",
     "version": 1
   }
 }

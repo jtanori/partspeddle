@@ -29,7 +29,20 @@
     "Identity domain README explains auth provider port",
     "Code review checklist updated to flag Supabase SDK imports outside infrastructure"
   ],
-  "traceability": [],
+  "traceability": [
+    {
+      "commit_hash": "c95a691",
+      "timestamp": "2026-05-19T13:41:58.935Z",
+      "description": "ADR written and committed",
+      "files_changed": ["project-knowledge/adr/002-auth-provider-decoupling.md"]
+    },
+    {
+      "commit_hash": "7045292",
+      "timestamp": "2026-05-19T14:45:00.000Z",
+      "description": "Added identity bounded context README",
+      "files_changed": ["src/identity/README.md"]
+    }
+  ],
   "observability": {
     "metrics": [],
     "logs": [],
@@ -37,11 +50,11 @@
   },
   "failure_modes": [],
   "estimated_hours": 1,
-  "status": "planned",
+  "status": "completed",
   "assignee": null,
   "metadata": {
     "created_at": "2026-05-19T12:30:00.000Z",
-    "updated_at": "2026-05-19T12:30:00.000Z",
-    "version": 1
+    "updated_at": "2026-05-19T13:41:58.930Z",
+    "version": 2
   }
 }

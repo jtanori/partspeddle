@@ -6,7 +6,8 @@
   "capability": "HTTP Boundary",
   "purpose": "Expose Identity domain via REST endpoints.",
   "dependencies": [
-    "T2.4"
+    "T2.4",
+    "T2.6B"
   ],
   "architectural_constraints": [
     "Thin controllers: validation + use case invocation only",
@@ -75,11 +76,11 @@
     }
   ],
   "estimated_hours": 4,
-  "status": "planned",
-  "assignee": null,
+  "status": "completed",
+  "assignee": "agent",
   "metadata": {
     "created_at": "2026-05-19T02:31:57.300Z",
-    "updated_at": "2026-05-19T02:31:57.300Z",
+    "updated_at": "2026-05-19T14:45:00Z",
     "version": 1
   }
 }

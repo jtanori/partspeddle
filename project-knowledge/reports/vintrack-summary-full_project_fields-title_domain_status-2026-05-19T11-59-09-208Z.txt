@@ -1,0 +1,212 @@
+T1.1:
+  title: Repository & Runtime Initialization
+  domain: Shared
+  status: completed
+T1.2:
+  title: Shared Event Envelope Library
+  domain: Shared
+  status: completed
+T1.3:
+  title: Outbox Pattern Implementation
+  domain: Shared
+  status: completed
+T1.4:
+  title: Queue Bootstrap (BullMQ)
+  domain: Shared
+  status: completed
+T1.5:
+  title: Supabase Client & Connection Pool
+  domain: Shared
+  status: completed
+T1.6:
+  title: Observability Bootstrap
+  domain: Shared
+  status: completed
+T1.7:
+  title: Error System
+  domain: Shared
+  status: completed
+T1.8:
+  title: CI Pipeline Setup
+  domain: Shared
+  status: review
+T10.1:
+  title: Observability Dashboards
+  domain: Shared
+  status: planned
+T10.2:
+  title: Alerting Rules
+  domain: Shared
+  status: planned
+T10.3:
+  title: DLQ Tooling & Replay
+  domain: Shared
+  status: planned
+T10.4:
+  title: Rate Limiting & Abuse Prevention
+  domain: Shared
+  status: planned
+T10.5:
+  title: Smoke Load Tests
+  domain: Shared
+  status: planned
+T2.1:
+  title: Identity Database Schema
+  domain: Identity
+  status: planned
+T2.2:
+  title: User Aggregate & Profile Lifecycle
+  domain: Identity
+  status: planned
+T2.3:
+  title: SellerProfile & Onboarding State Machine
+  domain: Identity
+  status: planned
+T2.4:
+  title: Identity Repositories
+  domain: Identity
+  status: planned
+T2.5:
+  title: Identity API Routes
+  domain: Identity
+  status: planned
+T2.6:
+  title: Supabase Auth Webhook Handler
+  domain: Identity
+  status: planned
+T2.7:
+  title: Identity Queue Workers
+  domain: Identity
+  status: planned
+T2.8:
+  title: Identity Integration Tests
+  domain: Identity
+  status: planned
+T3.1:
+  title: Marketplace Database Schema
+  domain: Marketplace
+  status: planned
+T3.2:
+  title: Listing & InventoryItem Aggregates
+  domain: Marketplace
+  status: planned
+T3.3:
+  title: Collection & Garage Aggregates
+  domain: Marketplace
+  status: planned
+T3.4:
+  title: Marketplace Repositories
+  domain: Marketplace
+  status: planned
+T3.5:
+  title: Marketplace API Routes
+  domain: Marketplace
+  status: planned
+T3.6:
+  title: Marketplace Integration Tests
+  domain: Marketplace
+  status: planned
+T4.1:
+  title: AI Database Schema
+  domain: AI Intelligence
+  status: planned
+T4.2:
+  title: Image Ingestion Pipeline
+  domain: AI Intelligence
+  status: planned
+T4.3:
+  title: Gemini API Integration
+  domain: AI Intelligence
+  status: planned
+T4.4:
+  title: AI Enrichment Events
+  domain: AI Intelligence
+  status: planned
+T5.1:
+  title: Algolia Sync Pipeline
+  domain: Search
+  status: planned
+T5.2:
+  title: Search API Routes
+  domain: Search
+  status: planned
+T5.3:
+  title: Search Indexing Queue
+  domain: Search
+  status: planned
+T5.4:
+  title: Search Autocomplete
+  domain: Search
+  status: planned
+T6.1:
+  title: Transaction Database Schema
+  domain: Transactions
+  status: planned
+T6.2:
+  title: Cart Aggregate
+  domain: Transactions
+  status: planned
+T6.3:
+  title: Checkout State Machine
+  domain: Transactions
+  status: planned
+T6.4:
+  title: Escrow Lifecycle
+  domain: Transactions
+  status: planned
+T6.5:
+  title: Settlement Orchestration
+  domain: Transactions
+  status: planned
+T6.6:
+  title: Compensation Flows
+  domain: Transactions
+  status: planned
+T6.7:
+  title: Transaction Integration Tests
+  domain: Transactions
+  status: planned
+T7.1:
+  title: Messaging Database Schema
+  domain: Messaging
+  status: planned
+T7.2:
+  title: Conversation Aggregate
+  domain: Messaging
+  status: planned
+T7.3:
+  title: Messaging Integration Tests
+  domain: Messaging
+  status: planned
+T8.1:
+  title: Vault Database Schema
+  domain: Vault
+  status: planned
+T8.2:
+  title: Escrow Hold Workflows
+  domain: Vault
+  status: planned
+T8.3:
+  title: Dispute Management
+  domain: Vault
+  status: planned
+T8.4:
+  title: Vault Integration Tests
+  domain: Vault
+  status: planned
+T9.1:
+  title: Notification Database Schema
+  domain: Notifications
+  status: planned
+T9.2:
+  title: Email Delivery Pipeline
+  domain: Notifications
+  status: planned
+T9.3:
+  title: Notification Event Consumers
+  domain: Notifications
+  status: planned
+T9.4:
+  title: Notification Integration Tests
+  domain: Notifications
+  status: planned

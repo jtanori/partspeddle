@@ -5,7 +5,10 @@
   "domain": "Identity",
   "capability": "Auth Boundary",
   "purpose": "API middleware verifies JWT via IdentityProvider, lazily provisions identity.users on first authenticated request, and attaches auth context to the request. This is the PRIMARY user provisioning path; webhooks are reconciliation only.",
-  "dependencies": ["T2.1A", "T2.2A"],
+  "dependencies": [
+    "T2.1A",
+    "T2.2A"
+  ],
   "architectural_constraints": [
     "First authenticated request provisions identity.users atomically",
     "Webhook is reconciliation mechanism, not primary provisioning",
@@ -39,10 +42,28 @@
     "Correlation ID propagated from request header or generated",
     "No Supabase SDK import outside infrastructure/auth/"
   ],
-  "traceability": [],
+  "traceability": [
+    {
+      "commit_hash": "pending",
+      "files_changed": [
+        "src/identity/api/middleware/auth.ts",
+        "src/identity/api/middleware/correlation-id.ts",
+        "src/identity/application/services/lazy-user-provisioning.ts",
+        "src/identity/application/services/index.ts",
+        "src/identity/domain/repositories/user-repository.ts"
+      ],
+      "description": "Auth middleware verifies JWT via IdentityProvider, attaches AuthContext to Express request. Supports optional auth. Correlation ID middleware. Lazy user provisioning service: checks local DB, fetches from provider, creates domain User aggregate. IUserRepository interface defined.",
+      "timestamp": "2026-05-19T13:15:00Z"
+    }
+  ],
   "observability": {
-    "metrics": ["identity_auth_middleware_latency_seconds"],
-    "logs": ["Lazy provision success/failure", "JWT verification failure reason"],
+    "metrics": [
+      "identity_auth_middleware_latency_seconds"
+    ],
+    "logs": [
+      "Lazy provision success/failure",
+      "JWT verification failure reason"
+    ],
     "traces": []
   },
   "failure_modes": [
@@ -58,11 +79,11 @@
     }
   ],
   "estimated_hours": 3,
-  "status": "planned",
-  "assignee": null,
+  "status": "completed",
+  "assignee": "agent",
   "metadata": {
     "created_at": "2026-05-19T13:00:00.000Z",
-    "updated_at": "2026-05-19T13:00:00.000Z",
+    "updated_at": "2026-05-19T13:15:00Z",
     "version": 1
   }
 }

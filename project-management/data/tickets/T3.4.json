@@ -1,58 +1,87 @@
 {
   "id": "T3.4",
   "milestone_id": "M3",
-  "title": "Marketplace Repositories",
+  "title": "Homepage Shell",
   "domain": "Marketplace",
-  "capability": "Persistence Boundary",
-  "purpose": "Implement repository pattern for marketplace domain.",
-  "dependencies": [
-    "T3.1",
-    "T3.2",
-    "T3.3"
-  ],
+  "capability": "Frontend UI",
+  "purpose": "Create the homepage with featured listings, navigation shell, and auth-aware header. Demonstrates the server-first data fetching strategy and shared contract consumption.",
+  "dependencies": ["T3.3", "T3.3A"],
   "architectural_constraints": [
-    "Aggregate-root only operations",
-    "No cross-domain joins",
-    "Atomic write + outbox insert",
-    "Idempotency on listing creation"
+    "RSC fetches data via lib/api/",
+    "No raw fetch() in components",
+    "Uses shared contracts for typing",
+    "Navigation shell shows auth state",
+    "Responsive layout"
   ],
   "deliverables": [
     {
-      "path": "src/marketplace/infrastructure/persistence/listing-repository.ts",
-      "description": "Listing repository",
+      "path": "src/frontend/app/page.tsx",
+      "description": "Homepage RSC with featured listings",
       "type": "file"
     },
     {
-      "path": "src/marketplace/infrastructure/persistence/inventory-item-repository.ts",
-      "description": "InventoryItem repository",
+      "path": "src/frontend/app/layout.tsx",
+      "description": "Root layout with AuthProvider and global styles",
       "type": "file"
     },
     {
-      "path": "src/marketplace/infrastructure/persistence/listing-repository.memory.ts",
-      "description": "In-memory test adapter",
-      "type": "test"
+      "path": "src/frontend/components/layout/header.tsx",
+      "description": "Navigation header with auth state, logo, links",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/components/layout/footer.tsx",
+      "description": "Site footer",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/components/marketplace/listing-card.tsx",
+      "description": "Listing card component (RSC)",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/components/marketplace/listing-grid.tsx",
+      "description": "Grid layout for listing cards",
+      "type": "file"
     }
   ],
   "acceptance_criteria": [
-    "Save publishes events atomically",
-    "Find by seller works",
-    "Idempotency prevents duplicate listing creation"
+    "Homepage renders at / with real data from backend API",
+    "Featured listings display in a responsive grid",
+    "Auth state visible in header (logged in vs logged out)",
+    "Navigation links work (home, search, login, profile)",
+    "No raw fetch() calls in any component",
+    "All data typed via shared contracts",
+    "Page loads without client-side data fetching libraries"
   ],
   "traceability": [],
   "observability": {
     "metrics": [
-      "marketplace_db_query_latency_seconds"
+      "page_homepage_load_duration_seconds"
     ],
-    "logs": [],
+    "logs": [
+      "page.homepage.render"
+    ],
     "traces": []
   },
-  "failure_modes": [],
-  "estimated_hours": 3,
+  "failure_modes": [
+    {
+      "scenario": "API unavailable during render",
+      "mitigation": "Error boundary + fallback UI",
+      "severity": "medium"
+    },
+    {
+      "scenario": "Slow data fetch blocks page",
+      "mitigation": "Suspense boundaries + skeleton loaders",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 5,
   "status": "planned",
   "assignee": null,
   "metadata": {
-    "created_at": "2026-05-19T02:41:17.722Z",
-    "updated_at": "2026-05-19T02:41:17.722Z",
+    "created_at": "2026-05-19T10:00:00.000Z",
+    "updated_at": "2026-05-19T10:00:00.000Z",
     "version": 1
   }
 }

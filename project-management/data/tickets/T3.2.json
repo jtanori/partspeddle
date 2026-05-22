@@ -1,70 +1,80 @@
 {
   "id": "T3.2",
   "milestone_id": "M3",
-  "title": "Listing & InventoryItem Aggregates",
-  "domain": "Marketplace",
-  "capability": "Domain Model",
-  "purpose": "Implement Listing aggregate with inventory coordination.",
-  "dependencies": [
-    "T3.1"
-  ],
+  "title": "Shared Contract Layer",
+  "domain": "Shared",
+  "capability": "Contract Governance",
+  "purpose": "Establish src/shared/contracts/ as the single source of truth for data shapes consumed by both backend and frontend. Migrate existing Zod schemas from backend DTOs to shared contracts.",
+  "dependencies": ["T3.1"],
   "architectural_constraints": [
-    "Aggregate root: Listing",
-    "InventoryItem referenced (not part of aggregate)",
-    "Media items owned by listing",
-    "Status transitions: draft → published → archived"
+    "Backend owns contract definitions",
+    "Frontend consumes contracts read-only",
+    "No duplicate types in frontend",
+    "Contracts must include Zod schema + TypeScript type + example"
   ],
   "deliverables": [
     {
-      "path": "src/marketplace/domain/entities/listing.ts",
-      "description": "Listing aggregate root",
+      "path": "src/shared/contracts/index.ts",
+      "description": "Public exports for all shared contracts",
       "type": "file"
     },
     {
-      "path": "src/marketplace/domain/entities/inventory-item.ts",
-      "description": "InventoryItem entity",
+      "path": "src/shared/contracts/identity/user-schema.ts",
+      "description": "User Zod schema, type, and example",
       "type": "file"
     },
     {
-      "path": "src/marketplace/domain/entities/listing-media.ts",
-      "description": "ListingMedia entity",
+      "path": "src/shared/contracts/identity/profile-schema.ts",
+      "description": "Profile Zod schema, type, and example",
       "type": "file"
     },
     {
-      "path": "src/marketplace/domain/events/listing-events.ts",
-      "description": "Listing domain events",
+      "path": "src/shared/contracts/marketplace/listing-schema.ts",
+      "description": "Listing Zod schema, type, and example",
+      "type": "file"
+    },
+    {
+      "path": "src/shared/contracts/search/search-result-schema.ts",
+      "description": "Search result Zod schema, type, and example",
+      "type": "file"
+    },
+    {
+      "path": "src/backend/*/application/dto/*.ts",
+      "description": "Updated to import from shared/contracts instead of local definitions",
       "type": "file"
     }
   ],
   "acceptance_criteria": [
-    "Only active seller can publish",
-    "Only draft can be published",
-    "Published listing tracks publication_metadata",
-    "Media reordering mutates listing directly",
-    "Unit tests: 95%+ meaningful coverage"
+    "Both backend and frontend compile using shared contracts",
+    "No duplicate Zod schemas exist in backend DTOs",
+    "All contract files export schema + type + example",
+    "Frontend can import and use contracts without type errors",
+    "npm run typecheck passes across all surfaces"
   ],
   "traceability": [],
   "observability": {
-    "metrics": [
-      "marketplace_listings_published_total",
-      "marketplace_inventory_items_total"
-    ],
+    "metrics": [],
     "logs": [],
     "traces": []
   },
   "failure_modes": [
     {
-      "scenario": "Seller not activated",
-      "mitigation": "Rejection with domain error",
+      "scenario": "Circular dependencies between contracts",
+      "mitigation": "Flat contract structure; no cross-contract imports",
       "severity": "medium"
+    },
+    {
+      "scenario": "Frontend needs type not yet in contracts",
+      "mitigation": "Backend adds type to contracts; no frontend-only types",
+      "severity": "low"
     }
   ],
   "estimated_hours": 4,
   "status": "planned",
   "assignee": null,
   "metadata": {
-    "created_at": "2026-05-19T02:41:17.722Z",
-    "updated_at": "2026-05-19T02:41:17.722Z",
+    "created_at": "2026-05-19T10:00:00.000Z",
+    "updated_at": "2026-05-19T10:00:00.000Z",
     "version": 1
   }
 }

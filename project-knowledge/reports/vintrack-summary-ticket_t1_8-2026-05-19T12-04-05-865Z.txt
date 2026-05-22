@@ -1,0 +1,62 @@
+VINTRACK PROJECT SUMMARY
+Generated: 2026-05-19T12:04:05.857Z
+Scope: Ticket T1.8
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+T1.8 — CI Pipeline Setup
+  Status:      review
+  Domain:      Shared
+  Milestone:   M1 — Runtime Foundations
+  Capability:  Quality Gate
+  Hours:       3
+  Assignee:    Agent 1
+  Git Commit:  none
+  Version:     2
+  Deliverables: 2/2 on disk
+  Tests:       yes
+  Acceptance:  4 criteria
+  Traceability: 1 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ✅ T1.1 — completed
+    ✅ T1.2 — completed
+    ✅ T1.4 — completed
+
+  📌 PURPOSE
+    Fast feedback loop for all code changes.
+
+  🏗️  ARCHITECTURAL CONSTRAINTS
+    • Target: lint < 30s, unit < 2min, integration < 5min
+    • Block merge on failure
+    • Exact dependency versions
+
+  📁 DELIVERABLES
+    ✅ [config] .github/workflows/ci.yml
+       GitHub Actions CI pipeline
+    ✅ [file] scripts/setup-test-db.ts
+       Test database setup script
+
+  ✅ ACCEPTANCE CRITERIA
+    1. CI passes on empty test suite
+    2. Lint stage < 30s
+    3. Integration tests connect to test DB + Redis
+    4. Merge blocked if CI fails
+
+  🔗 TRACEABILITY
+    Commit: bbc59c2
+    Time:   2026-05-19T11:46:28.000Z
+    Desc:   Implemented CI pipeline: GitHub Actions with exact Node pinning, migration ordering governance, test DB setup with transaction safety, integration test isolation with centralized reset registry, Redis namespace isolation, serial test execution, timeout governance, healthcheck enforcement, artifact retention, concurrency cancellation
+      • .github/workflows/ci.yml
+      • .nvmrc
+      • scripts/setup-test-db.ts
+      • tests/setup-integration.ts
+      • vitest.integration.config.ts
+      • tests/scripts/setup-test-db.test.ts
+
+
+  ⚠️  FAILURE MODES
+    [MEDIUM] Flaky infrastructure test
+      Mitigation: Mark skip, create ticket
+
+================================================================================

@@ -5,7 +5,10 @@
   "domain": "Shared",
   "capability": "DevOps",
   "purpose": "Update local infrastructure to run only PostgreSQL and Redis. Remove Supabase stack assumptions from docker-compose, env vars, and documentation.",
-  "dependencies": ["T1.5", "T1.8"],
+  "dependencies": [
+    "T1.5",
+    "T1.8"
+  ],
   "architectural_constraints": [
     "Docker compose only runs postgres and redis services",
     "No local Supabase Auth, Storage, Studio, or Kong",
@@ -36,7 +39,14 @@
     "All tests pass with local postgres (no auth.users stub needed after T2.1A)",
     "Documentation reflects hosted-auth + local-infra model"
   ],
-  "traceability": [],
+  "traceability": [
+    {
+      "commit_hash": "4963a94",
+      "timestamp": "2026-05-19T13:41:58.961Z",
+      "description": "docker-compose, env, docs updated",
+      "files_changed": []
+    }
+  ],
   "observability": {
     "metrics": [],
     "logs": [],
@@ -50,11 +60,11 @@
     }
   ],
   "estimated_hours": 2,
-  "status": "planned",
+  "status": "completed",
   "assignee": null,
   "metadata": {
     "created_at": "2026-05-19T12:30:00.000Z",
-    "updated_at": "2026-05-19T12:30:00.000Z",
-    "version": 1
+    "updated_at": "2026-05-19T13:41:58.961Z",
+    "version": 2
   }
 }

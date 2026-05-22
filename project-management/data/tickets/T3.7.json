@@ -1,0 +1,99 @@
+{
+  "id": "T3.7",
+  "milestone_id": "M3",
+  "title": "Frontend Integration Tests",
+  "domain": "Shared",
+  "capability": "Testing",
+  "purpose": "Set up Playwright E2E tests and MSW-based component tests. Validate critical user journeys end-to-end.",
+  "dependencies": ["T3.4", "T3.5", "T3.6", "T0.5.1"],
+  "architectural_constraints": [
+    "Playwright for E2E critical journeys",
+    "MSW for API mocking in component tests",
+    "E2E tests require both frontend and backend running",
+    "Tests isolated (clean state between runs)"
+  ],
+  "deliverables": [
+    {
+      "path": "tests/e2e/frontend/homepage.spec.ts",
+      "description": "Homepage load and listing display E2E test",
+      "type": "test"
+    },
+    {
+      "path": "tests/e2e/frontend/auth.spec.ts",
+      "description": "Login/logout auth flow E2E test",
+      "type": "test"
+    },
+    {
+      "path": "tests/e2e/frontend/search.spec.ts",
+      "description": "Search and filter E2E test",
+      "type": "test"
+    },
+    {
+      "path": "tests/mocks/handlers.ts",
+      "description": "MSW API mock handlers",
+      "type": "test"
+    },
+    {
+      "path": "tests/mocks/server.ts",
+      "description": "MSW server setup for tests",
+      "type": "test"
+    },
+    {
+      "path": "playwright.config.ts",
+      "description": "Playwright configuration",
+      "type": "config"
+    }
+  ],
+  "acceptance_criteria": [
+    "E2E tests pass in CI",
+    "Homepage loads and shows listings",
+    "Auth flow (login/logout) works end-to-end",
+    "Search returns results and filters work",
+    "MSW mocks backend API consistently",
+    "Tests run against preview deployment in CI",
+    "No flaky tests (retry logic if needed)"
+  ],
+  "traceability": [
+    {
+      "commit_hash": "T3.7-EXECUTION",
+      "files_changed": [
+        "tests/mocks/handlers.ts",
+        "tests/mocks/server.ts",
+        "playwright.config.ts",
+        "tests/e2e/frontend/homepage.spec.ts",
+        "tests/e2e/frontend/auth.spec.ts",
+        "tests/e2e/frontend/search.spec.ts"
+      ],
+      "description": "Implemented Playwright E2E test suite and MSW mock infrastructure. Tests cover homepage load, auth state, search page functionality. Playwright browsers installed.",
+      "timestamp": "2026-05-20T11:00:00Z"
+    }
+  ],
+  "observability": {
+    "metrics": [
+      "e2e_test_duration_seconds",
+      "e2e_test_flakiness_rate"
+    ],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "E2E tests flaky due to timing",
+      "mitigation": "Explicit waits, stable selectors, retry logic",
+      "severity": "medium"
+    },
+    {
+      "scenario": "Backend not available during E2E",
+      "mitigation": "E2E tests depend on backend-integration-tests CI job",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 5,
+  "status": "in_progress",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T10:00:00.000Z",
+    "updated_at": "2026-05-19T10:00:00.000Z",
+    "version": 1
+  }
+}
