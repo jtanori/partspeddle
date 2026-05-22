@@ -146,11 +146,22 @@
       "Feature work freeze remains until consolidation passes validation"
     ],
     "estimated_hours": 4,
-    "status": "in_progress",
+    "status": "completed",
     "traceability": [
       {
-        "commit_hash": "TBD",
-        "files_changed": ["meta/state/canonical-state.json", "meta/recovery/", "tests/governance/", "meta/workflows/merge-strategy.md"],
+        "commit_hash": "9117e39",
+        "files_changed": [
+          "meta/state/canonical-state.json",
+          "meta/recovery/contaminated-branch.md",
+          "meta/recovery/interrupted-session.md",
+          "meta/recovery/stale-lock.md",
+          "meta/recovery/drift-remediation.md",
+          "meta/recovery/invalid-runtime-state.md",
+          "tests/governance/invariants.test.ts",
+          "meta/workflows/merge-strategy.md",
+          "tools/runtime/integrity-audit.sh",
+          "tools/projections/generate.sh"
+        ],
         "description": "Governance consolidation: canonical authority, invariant tests, recovery playbooks, merge strategy",
         "timestamp": "2026-05-22T07:43:13Z"
       }

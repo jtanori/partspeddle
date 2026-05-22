@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-05-22T11:34:49.464Z",
+  "passed": true,
+  "issues": [
+    {
+      "severity": "MEDIUM",
+      "category": "projection_freshness",
+      "message": "Projection latest-status.md is stale (371 min old)",
+      "recommendation": "Regenerate projections with scripts/generate-runtime-projections.ts"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "projection_freshness",
+      "message": "Projection latest-heartbeat.md is stale (371 min old)",
+      "recommendation": "Regenerate projections with scripts/generate-runtime-projections.ts"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "projection_freshness",
+      "message": "Projection current-context.md is stale (371 min old)",
+      "recommendation": "Regenerate projections with scripts/generate-runtime-projections.ts"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "projection_freshness",
+      "message": "Projection resume-instruction.md is stale (371 min old)",
+      "recommendation": "Regenerate projections with scripts/generate-runtime-projections.ts"
+    }
+  ],
+  "checks_total": 28,
+  "checks_passed": 24,
+  "runtime_confidence": 0.75,
+  "stale_surfaces": [
+    "Projection latest-status.md is stale (371 min old)",
+    "Projection latest-heartbeat.md is stale (371 min old)",
+    "Projection current-context.md is stale (371 min old)",
+    "Projection resume-instruction.md is stale (371 min old)"
+  ],
+  "missing_files": [],
+  "projection_freshness_seconds": 22243
+}
