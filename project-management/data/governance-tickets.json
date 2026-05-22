@@ -117,29 +117,44 @@
   {
     "id": "T11.4",
     "milestone_id": "M11",
-    "title": "Create governance README and canonical-state definitions",
+    "title": "Governance Consolidation Phase",
     "domain": "Shared",
-    "capability": "Governance Documentation",
-    "purpose": "Document the canonical state principle: JSON is truth, Markdown is projection.",
+    "capability": "Governance Hardening",
+    "purpose": "Transition from recovery state to stable governed state. Establish canonical authority, invariant testing, recovery procedures, and merge strategy.",
     "dependencies": ["T11.3"],
     "architectural_constraints": [
-      "Must explain JCSP clearly",
-      "Must define Projection Engine role",
-      "Must not duplicate product documentation"
+      "Must establish single source of truth",
+      "Must be adversarially testable",
+      "Must codify recovery playbooks",
+      "Must define integration topology before feature work resumes"
     ],
     "deliverables": [
-      { "path": "meta/README.md", "description": "Governance system overview", "type": "file" },
-      { "path": "meta/principles/canonical-state.md", "description": "JCSP definition and examples", "type": "file" },
-      { "path": "meta/principles/detachability.md", "description": "CIP definition and boundary rules", "type": "file" }
+      { "path": "meta/state/canonical-state.json", "description": "Single source of truth for all runtime governance", "type": "file" },
+      { "path": "meta/recovery/contaminated-branch.md", "description": "Contaminated branch recovery playbook", "type": "file" },
+      { "path": "meta/recovery/interrupted-session.md", "description": "Interrupted session recovery playbook", "type": "file" },
+      { "path": "meta/recovery/stale-lock.md", "description": "Stale lock recovery playbook", "type": "file" },
+      { "path": "meta/recovery/drift-remediation.md", "description": "Drift event remediation playbook", "type": "file" },
+      { "path": "meta/recovery/invalid-runtime-state.md", "description": "Corrupted runtime state recovery playbook", "type": "file" },
+      { "path": "tests/governance/invariants.test.ts", "description": "Governance invariant test suite", "type": "file" },
+      { "path": "meta/workflows/merge-strategy.md", "description": "Branch integration topology and merge gates", "type": "file" }
     ],
     "acceptance_criteria": [
-      "README explains all 6 foundational principles",
-      "Canonical-state document has examples",
-      "Detachability document defines runtime boundary",
-      "Documents reviewed for clarity"
+      "canonical-state.json is the ONLY authority for runtime state",
+      "All governance invariants pass under adversarial conditions",
+      "All 5 recovery playbooks are executable without operator memory",
+      "Merge strategy defines explicit rebase/merge/promotion order",
+      "Feature work freeze remains until consolidation passes validation"
     ],
-    "estimated_hours": 2,
-    "status": "planned"
+    "estimated_hours": 4,
+    "status": "in_progress",
+    "traceability": [
+      {
+        "commit_hash": "TBD",
+        "files_changed": ["meta/state/canonical-state.json", "meta/recovery/", "tests/governance/", "meta/workflows/merge-strategy.md"],
+        "description": "Governance consolidation: canonical authority, invariant tests, recovery playbooks, merge strategy",
+        "timestamp": "2026-05-22T07:43:13Z"
+      }
+    ]
   },
   {
     "id": "T12.1",

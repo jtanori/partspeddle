@@ -1,0 +1,80 @@
+{
+  "$schema": "https://vintrack.io/schemas/governance-state.schema.json",
+  "protocol_version": "1.0.0",
+  "authority": "meta/state/canonical-state.json",
+  "principle": "This file is the ONLY mutable runtime state. All other state files are derived projections.",
+  "updated_at": "2026-05-22T07:43:13Z",
+  "execution": {
+    "execution_id": "EXEC-2026-05-22-005",
+    "task_id": "T11.4",
+    "milestone_id": "M11",
+    "status": "EXECUTING",
+    "started_at": "2026-05-22T07:43:13Z",
+    "checkpoint_path": null,
+    "completion_report_path": null
+  },
+  "last_execution": {
+    "execution_id": "EXEC-2026-05-22-004",
+    "task_id": "T11.3",
+    "milestone_id": "M11",
+    "status": "COMPLETE",
+    "started_at": "2026-05-22T05:14:21Z",
+    "completed_at": "2026-05-22T05:15:00Z"
+  },
+  "milestone": {
+    "id": "M11",
+    "title": "Governance Root Normalization",
+    "status": "in_progress",
+    "phase": 11,
+    "completed_tickets": ["T11.1", "T11.2", "T11.3"],
+    "pending_tickets": ["T11.4"]
+  },
+  "ticket": {
+    "id": "T11.4",
+    "title": "Governance Consolidation Phase",
+    "status": "in_progress",
+    "started_at": "2026-05-22T07:43:13Z"
+  },
+  "lock": {
+    "locked": true,
+    "execution_id": "EXEC-2026-05-22-005",
+    "locked_at": "2026-05-22T07:43:13Z",
+    "locked_by": "agent",
+    "expires_at": "2026-05-22T09:43:13Z"
+  },
+  "repository": {
+    "branch": "feature/T11.x-governance-runtime",
+    "base_branch": "main",
+    "worktree_clean": true,
+    "head_commit": "79e5cfe",
+    "promotion_status": "pending"
+  },
+  "governance": {
+    "heartbeat_policy": "ACTIVE",
+    "checkpoint_protocol": "ACTIVE",
+    "drift_detection": "ACTIVE",
+    "enforcement_gates": "ACTIVE",
+    "safe_exit_protocol": "ACTIVE",
+    "state_mutation_rules": "ACTIVE",
+    "token_efficiency": "ACTIVE",
+    "work_continuation": "ACTIVE",
+    "tool_capability": "ACTIVE",
+    "repository_governance": "ACTIVE"
+  },
+  "confidence": {
+    "score": 0.99,
+    "factors": {
+      "checkpoint_freshness": 1.0,
+      "validation_coverage": 1.0,
+      "drift_state": 1.0,
+      "unresolved_blockers": 1.0,
+      "heartbeat_age": 1.0,
+      "projection_freshness": 1.0
+    }
+  },
+  "drift": {
+    "level": "NONE",
+    "reason": "Governance consolidation initiated. Feature work frozen."
+  },
+  "safe_exit": null
+}
