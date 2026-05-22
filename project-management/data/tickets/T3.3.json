@@ -1,54 +1,91 @@
 {
   "id": "T3.3",
   "milestone_id": "M3",
-  "title": "Collection & Garage Aggregates",
-  "domain": "Marketplace",
-  "capability": "Catalog Organization",
-  "purpose": "Implement grouping structures for listings.",
-  "dependencies": [
-    "T3.2"
-  ],
+  "title": "Supabase Auth Topology",
+  "domain": "Identity",
+  "capability": "Authentication",
+  "purpose": "Implement Supabase Auth integration for Next.js using @supabase/ssr. Establish cookie-based sessions, route protection middleware, and OAuth callback handling.",
+  "dependencies": ["T3.2"],
   "architectural_constraints": [
-    "Collection: buyer-organized, Garage: seller inventory, Yard: multi-seller",
-    "Collections owned by buyer",
-    "Garages and Yards owned by seller"
+    "PKCE flow for OAuth",
+    "Cookie-based sessions (httpOnly, secure)",
+    "@supabase/ssr for server-side session management",
+    "Frontend calls Supabase ONLY for auth/session",
+    "Business operations flow through backend APIs"
   ],
   "deliverables": [
     {
-      "path": "src/marketplace/domain/entities/collection.ts",
-      "description": "Collection aggregate",
+      "path": "src/frontend/lib/supabase/client.ts",
+      "description": "Browser-only Supabase client",
       "type": "file"
     },
     {
-      "path": "src/marketplace/domain/entities/garage.ts",
-      "description": "Garage aggregate",
+      "path": "src/frontend/lib/supabase/server.ts",
+      "description": "Server-only Supabase client for RSC and middleware",
       "type": "file"
     },
     {
-      "path": "src/marketplace/domain/entities/yard.ts",
-      "description": "Yard aggregate",
+      "path": "src/frontend/middleware.ts",
+      "description": "Next.js middleware for route protection",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/app/auth/callback/route.ts",
+      "description": "OAuth callback route handler",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/components/auth-provider.tsx",
+      "description": "React context for client-side auth state",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/hooks/use-auth.ts",
+      "description": "Auth hook for components",
       "type": "file"
     }
   ],
   "acceptance_criteria": [
-    "Buyer can create collection",
-    "Seller can create garage",
-    "Yard includes listings from multiple sellers",
-    "RLS enforces ownership"
+    "Login flow works end-to-end (email/password and OAuth)",
+    "Logout clears session and redirects",
+    "Protected routes redirect unauthenticated users to /login",
+    "Session persists across page refreshes",
+    "Session refresh happens automatically",
+    "Auth state visible in header component",
+    "No Supabase business queries in frontend code"
   ],
   "traceability": [],
   "observability": {
-    "metrics": [],
-    "logs": [],
+    "metrics": [
+      "auth_login_success_total",
+      "auth_login_failure_total",
+      "auth_session_refresh_duration_seconds"
+    ],
+    "logs": [
+      "auth.login.success",
+      "auth.login.failure",
+      "auth.session.refreshed"
+    ],
     "traces": []
   },
-  "failure_modes": [],
-  "estimated_hours": 3,
+  "failure_modes": [
+    {
+      "scenario": "Session cookie not set correctly",
+      "mitigation": "Verify httpOnly, secure, sameSite attributes",
+      "severity": "critical"
+    },
+    {
+      "scenario": "OAuth callback fails",
+      "mitigation": "Error handling in callback route + user-friendly error page",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 5,
   "status": "planned",
   "assignee": null,
   "metadata": {
-    "created_at": "2026-05-19T02:41:17.722Z",
-    "updated_at": "2026-05-19T02:41:17.722Z",
+    "created_at": "2026-05-19T10:00:00.000Z",
+    "updated_at": "2026-05-19T10:00:00.000Z",
     "version": 1
   }
 }

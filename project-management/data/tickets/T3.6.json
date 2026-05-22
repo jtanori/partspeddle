@@ -1,44 +1,72 @@
 {
   "id": "T3.6",
   "milestone_id": "M3",
-  "title": "Marketplace Integration Tests",
-  "domain": "Marketplace",
-  "capability": "Quality Assurance",
-  "purpose": "Verify marketplace domain end-to-end.",
-  "dependencies": [
-    "T3.1",
-    "T3.2",
-    "T3.3",
-    "T3.4",
-    "T3.5"
-  ],
+  "title": "Component Architecture + shadcn/ui",
+  "domain": "Shared",
+  "capability": "Frontend Infrastructure",
+  "purpose": "Initialize shadcn/ui, create base UI primitives, and establish the component directory structure for all domains.",
+  "dependencies": ["T3.1"],
   "architectural_constraints": [
-    "Test DB per run",
-    "Transaction rollback per test",
-    "RLS tested"
+    "shadcn/ui base primitives in components/ui/",
+    "Domain components in components/{domain}/",
+    "Atomic design methodology",
+    "Server Components as default",
+    "Storybook explicitly deferred"
   ],
   "deliverables": [
     {
-      "path": "src/marketplace/domain/entities/*.test.ts",
-      "description": "Entity unit tests",
-      "type": "test"
+      "path": "src/frontend/components/ui/button.tsx",
+      "description": "Button primitive with variants",
+      "type": "file"
     },
     {
-      "path": "src/marketplace/application/services/*.test.ts",
-      "description": "Service unit tests",
-      "type": "test"
+      "path": "src/frontend/components/ui/input.tsx",
+      "description": "Input primitive",
+      "type": "file"
     },
     {
-      "path": "tests/integration/marketplace/*.test.ts",
-      "description": "API + RLS integration tests",
-      "type": "test"
+      "path": "src/frontend/components/ui/card.tsx",
+      "description": "Card primitive",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/components/ui/dialog.tsx",
+      "description": "Dialog primitive",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/components/ui/form.tsx",
+      "description": "Form primitives (label, field, error)",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/components/ui/skeleton.tsx",
+      "description": "Skeleton loader primitive",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/components/ui/badge.tsx",
+      "description": "Badge primitive",
+      "type": "file"
+    },
+    {
+      "path": "components.json",
+      "description": "shadcn/ui configuration",
+      "type": "config"
+    },
+    {
+      "path": "tailwind.config.ts",
+      "description": "Tailwind CSS configuration",
+      "type": "config"
     }
   ],
   "acceptance_criteria": [
-    "Listing publish emits event",
-    "Inventory update reflects in listing",
-    "RLS prevents cross-seller access",
-    "Cursor pagination works"
+    "shadcn/ui initialized successfully",
+    "All base primitives render without errors",
+    "Component directory structure established",
+    "Tailwind CSS configured and working",
+    "No import violations per direction matrix",
+    "Design tokens consistent (colors, spacing, typography)"
   ],
   "traceability": [],
   "observability": {
@@ -46,13 +74,19 @@
     "logs": [],
     "traces": []
   },
-  "failure_modes": [],
-  "estimated_hours": 3,
+  "failure_modes": [
+    {
+      "scenario": "shadcn/ui conflicts with existing Tailwind config",
+      "mitigation": "Merge configs carefully; test build",
+      "severity": "low"
+    }
+  ],
+  "estimated_hours": 4,
   "status": "planned",
   "assignee": null,
   "metadata": {
-    "created_at": "2026-05-19T02:41:17.722Z",
-    "updated_at": "2026-05-19T02:41:17.722Z",
+    "created_at": "2026-05-19T10:00:00.000Z",
+    "updated_at": "2026-05-19T10:00:00.000Z",
     "version": 1
   }
 }

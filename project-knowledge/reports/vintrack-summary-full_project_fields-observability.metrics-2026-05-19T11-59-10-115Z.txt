@@ -1,0 +1,173 @@
+T1.1:
+  observability.metrics:
+T1.2:
+  observability.metrics:
+T1.3:
+  observability.metrics:
+    - outbox_backlog
+    - outbox_relay_latency_seconds
+T1.4:
+  observability.metrics:
+    - queue_jobs_completed_total
+    - queue_jobs_failed_total
+    - queue_waiting_count
+T1.5:
+  observability.metrics:
+    - db_connections_active
+    - db_query_latency_seconds
+T1.6:
+  observability.metrics:
+T1.7:
+  observability.metrics:
+    - errors_total
+T1.8:
+  observability.metrics:
+T10.1:
+  observability.metrics:
+T10.2:
+  observability.metrics:
+T10.3:
+  observability.metrics:
+    - dlq_replay_count_total
+    - dlq_replay_failures_total
+T10.4:
+  observability.metrics:
+    - api_rate_limited_requests_total
+    - api_abuse_detections_total
+T10.5:
+  observability.metrics:
+    - load_test_requests_total
+    - load_test_latency_p95
+    - load_test_failure_rate
+T2.1:
+  observability.metrics:
+T2.2:
+  observability.metrics:
+    - identity_user_registrations_total
+    - identity_user_suspensions_total
+T2.3:
+  observability.metrics:
+    - identity_seller_activations_total
+    - identity_onboarding_completions_total
+T2.4:
+  observability.metrics:
+    - identity_db_query_latency_seconds
+T2.5:
+  observability.metrics:
+    - identity_api_requests_total
+    - identity_api_latency_seconds
+T2.6:
+  observability.metrics:
+    - identity_webhook_received_total
+    - identity_webhook_processing_seconds
+T2.7:
+  observability.metrics:
+    - identity_queue_jobs_total
+    - identity_queue_job_duration_seconds
+T2.8:
+  observability.metrics:
+T3.1:
+  observability.metrics:
+T3.2:
+  observability.metrics:
+    - marketplace_listings_published_total
+    - marketplace_inventory_items_total
+T3.3:
+  observability.metrics:
+T3.4:
+  observability.metrics:
+    - marketplace_db_query_latency_seconds
+T3.5:
+  observability.metrics:
+    - marketplace_api_requests_total
+    - marketplace_api_latency_seconds
+T3.6:
+  observability.metrics:
+T4.1:
+  observability.metrics:
+T4.2:
+  observability.metrics:
+    - ai_images_ingested_total
+    - ai_images_rejected_total
+T4.3:
+  observability.metrics:
+    - ai_gemini_requests_total
+    - ai_gemini_latency_seconds
+    - ai_gemini_errors_total
+T4.4:
+  observability.metrics:
+    - ai_enrichments_emitted_total
+T5.1:
+  observability.metrics:
+    - search_index_sync_total
+    - search_index_sync_errors_total
+T5.2:
+  observability.metrics:
+    - search_api_latency_seconds
+    - search_api_requests_total
+T5.3:
+  observability.metrics:
+    - search_queue_jobs_total
+    - search_queue_dlq_count
+T5.4:
+  observability.metrics:
+    - search_autocomplete_latency_seconds
+T6.1:
+  observability.metrics:
+T6.2:
+  observability.metrics:
+    - transactions_cart_created_total
+    - transactions_cart_abandoned_total
+T6.3:
+  observability.metrics:
+    - transactions_checkout_completed_total
+    - transactions_checkout_failed_total
+    - transactions_stripe_latency_seconds
+T6.4:
+  observability.metrics:
+    - transactions_escrow_created_total
+    - transactions_escrow_released_total
+    - transactions_escrow_disputed_total
+T6.5:
+  observability.metrics:
+    - transactions_settlements_total
+    - transactions_settlement_failures_total
+T6.6:
+  observability.metrics:
+    - transactions_compensations_total
+    - transactions_compensation_failures_total
+T6.7:
+  observability.metrics:
+T7.1:
+  observability.metrics:
+T7.2:
+  observability.metrics:
+    - messaging_messages_sent_total
+    - messaging_conversations_created_total
+T7.3:
+  observability.metrics:
+T8.1:
+  observability.metrics:
+T8.2:
+  observability.metrics:
+    - vault_escrow_holds_created_total
+    - vault_escrow_releases_total
+T8.3:
+  observability.metrics:
+    - vault_disputes_created_total
+    - vault_disputes_resolved_total
+T8.4:
+  observability.metrics:
+T9.1:
+  observability.metrics:
+T9.2:
+  observability.metrics:
+    - notifications_email_sent_total
+    - notifications_email_failed_total
+    - notifications_email_bounced_total
+T9.3:
+  observability.metrics:
+    - notifications_consumed_total
+    - notifications_delivery_latency_seconds
+T9.4:
+  observability.metrics:

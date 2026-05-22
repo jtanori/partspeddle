@@ -5,7 +5,10 @@
   "domain": "Identity",
   "capability": "Port/Adapter",
   "purpose": "Create an IdentityProvider port so Supabase Auth is replaceable. No domain code depends on Supabase SDK semantics.",
-  "dependencies": ["T2.2", "T2.1A"],
+  "dependencies": [
+    "T2.2",
+    "T2.1A"
+  ],
   "architectural_constraints": [
     "Interface in application/ports, implementation in infrastructure/auth",
     "Supabase SDK isolated to infrastructure layer only",
@@ -36,9 +39,22 @@
     "JWT verification works with Supabase JWKS endpoint",
     "Domain error thrown on invalid token (not SDK error leaked)"
   ],
-  "traceability": [],
+  "traceability": [
+    {
+      "commit_hash": "pending",
+      "files_changed": [
+        "src/identity/application/ports/identity-provider.ts",
+        "src/identity/infrastructure/auth/supabase-auth-provider.ts",
+        "src/identity/infrastructure/auth/index.ts"
+      ],
+      "description": "Implemented IdentityProvider port with verifyToken, getUser, revokeSessions. SupabaseAuthProvider adapter using jose for JWT verification. Supabase SDK isolated to infrastructure/auth/.",
+      "timestamp": "2026-05-19T13:15:00Z"
+    }
+  ],
   "observability": {
-    "metrics": ["identity_auth_verify_latency_seconds"],
+    "metrics": [
+      "identity_auth_verify_latency_seconds"
+    ],
     "logs": [],
     "traces": []
   },
@@ -50,11 +66,11 @@
     }
   ],
   "estimated_hours": 3,
-  "status": "planned",
-  "assignee": null,
+  "status": "completed",
+  "assignee": "agent",
   "metadata": {
     "created_at": "2026-05-19T12:30:00.000Z",
-    "updated_at": "2026-05-19T12:30:00.000Z",
+    "updated_at": "2026-05-19T13:15:00Z",
     "version": 1
   }
 }

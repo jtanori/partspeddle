@@ -5,7 +5,11 @@
   "domain": "Identity",
   "capability": "Auth Sync",
   "purpose": "Replace local auth trigger sync with hosted Supabase Auth webhook → identity.users synchronization. user.created/update/deleted webhooks enqueue jobs that mutate identity.users.",
-  "dependencies": ["T2.6", "T2.1A", "T2.2A"],
+  "dependencies": [
+    "T2.6",
+    "T2.1A",
+    "T2.2A"
+  ],
   "architectural_constraints": [
     "Webhook signature verified against Supabase secret",
     "Async processing via queue (return 202 immediately)",
@@ -59,11 +63,11 @@
     }
   ],
   "estimated_hours": 4,
-  "status": "planned",
-  "assignee": null,
+  "status": "completed",
+  "assignee": "agent",
   "metadata": {
     "created_at": "2026-05-19T12:30:00.000Z",
-    "updated_at": "2026-05-19T12:30:00.000Z",
+    "updated_at": "2026-05-19T14:45:00Z",
     "version": 1
   }
 }

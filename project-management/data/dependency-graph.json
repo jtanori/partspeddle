@@ -36,15 +36,27 @@
     },
     {
       "id": "M3",
-      "title": "Marketplace Core",
+      "title": "Frontend Foundation",
       "depends_on": [
         "M1",
-        "M2"
+        "M2",
+        "M4.5"
       ],
       "blocks": [
         "M4",
         "M5",
         "M6"
+      ],
+      "critical_path": true,
+      "parallelizable": false
+    },
+    {
+      "id": "M4.5",
+      "title": "Shared Runtime Contracts",
+      "depends_on": [],
+      "blocks": [
+        "M3",
+        "M5"
       ],
       "critical_path": true,
       "parallelizable": false

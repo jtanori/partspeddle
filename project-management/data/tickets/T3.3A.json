@@ -1,0 +1,98 @@
+{
+  "id": "T3.3A",
+  "milestone_id": "M3",
+  "title": "API Access Layer + Observability",
+  "domain": "Shared",
+  "capability": "Frontend Infrastructure",
+  "purpose": "Create typed API access layer, Sentry integration, error boundaries, and correlation ID propagation for frontend observability.",
+  "dependencies": ["T3.3"],
+  "architectural_constraints": [
+    "All backend calls flow through src/frontend/lib/api/",
+    "No raw fetch() in components",
+    "Auth injection automatic",
+    "Error normalization for UI display",
+    "Sentry captures browser and server errors",
+    "Correlation IDs propagate end-to-end"
+  ],
+  "deliverables": [
+    {
+      "path": "src/frontend/lib/api/client.ts",
+      "description": "Base HTTP client with interceptors, retry, timeout",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/lib/api/identity.ts",
+      "description": "Identity domain API wrappers",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/lib/api/marketplace.ts",
+      "description": "Marketplace domain API wrappers",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/lib/api/search.ts",
+      "description": "Search domain API wrappers",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/lib/api/errors.ts",
+      "description": "Error normalization from backend DomainError to frontend-friendly errors",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/lib/sentry.ts",
+      "description": "Sentry initialization for browser and server",
+      "type": "file"
+    },
+    {
+      "path": "src/frontend/app/global-error.tsx",
+      "description": "Global React error boundary with Sentry",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "All API calls flow through lib/api/ (no raw fetch in components)",
+    "Auth token injected automatically",
+    "Errors normalized for UI display",
+    "Sentry captures unhandled exceptions",
+    "Correlation IDs present in frontend logs",
+    "Hydration mismatches detected and logged",
+    "Retry policy works for idempotent GETs"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": [
+      "api_request_duration_seconds",
+      "api_request_errors_total"
+    ],
+    "logs": [
+      "api.request.start",
+      "api.request.success",
+      "api.request.error"
+    ],
+    "traces": [
+      "frontend-to-backend-request"
+    ]
+  },
+  "failure_modes": [
+    {
+      "scenario": "API timeout not handled gracefully",
+      "mitigation": "Timeout with user-friendly error message",
+      "severity": "medium"
+    },
+    {
+      "scenario": "Sentry DSN missing in production",
+      "mitigation": "Build-time validation of required env vars",
+      "severity": "low"
+    }
+  ],
+  "estimated_hours": 5,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-19T10:00:00.000Z",
+    "updated_at": "2026-05-19T10:00:00.000Z",
+    "version": 1
+  }
+}

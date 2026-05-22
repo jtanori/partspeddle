@@ -21,15 +21,33 @@ vintrack/
 │   ├── transactions/
 │   └── ...
 ├── src/                        # Source code
-│   ├── identity/
-│   ├── marketplace/
-│   ├── ai-intelligence/
-│   ├── search/
-│   ├── transactions/
-│   ├── messaging/
-│   ├── vault/
-│   ├── notifications/
-│   └── shared/
+│   ├── backend/                # Backend bounded contexts
+│   │   ├── identity/
+│   │   ├── marketplace/
+│   │   ├── ai-intelligence/
+│   │   ├── search/
+│   │   ├── transactions/
+│   │   ├── messaging/
+│   │   ├── vault/
+│   │   ├── notifications/
+│   │   └── app.ts              # Express bootstrap
+│   ├── frontend/               # Next.js App Router
+│   │   ├── app/                # Route pages
+│   │   ├── components/         # Domain-scoped + UI components
+│   │   ├── hooks/              # Data-fetching and auth hooks
+│   │   ├── lib/                # API layer, Supabase clients, utilities
+│   │   └── styles/
+│   └── shared/                 # Cross-cutting contracts and constants
+│       ├── contracts/          # Zod schemas, shared TypeScript types
+│       ├── constants/
+│       ├── feature-flags/      # Typed feature flag definitions
+│       ├── event-bus/          # Domain event publication/subscription
+│       ├── outbox/             # Transactional outbox pattern
+│       ├── queue/              # BullMQ factory, job definitions
+│       ├── observability/      # Logger, metrics, tracing
+│       ├── supabase/           # Client factory, connection pooling
+│       ├── validation/         # Common zod schemas (deprecated → contracts)
+│       └── errors/             # Base error classes
 ├── tests/                      # Cross-domain integration tests
 ├── supabase/                   # Migrations, functions, RLS policies
 │   ├── migrations/
@@ -99,6 +117,33 @@ src/shared/
 
 ---
 
+## Frontend Module Structure
+
+```
+src/frontend/
+  app/                          # Next.js App Router pages
+  components/
+    ui/                         # shadcn/ui primitives (atoms, molecules)
+    identity/                   # Identity domain components
+    marketplace/                # Marketplace domain components
+    search/                     # Search domain components
+    layout/                     # Cross-cutting layout components
+  hooks/                        # Data-fetching and auth hooks
+  lib/
+    api/                        # Typed API access layer
+    supabase/                   # Browser + SSR clients
+    sentry.ts                   # Error tracking initialization
+  styles/                       # Global styles, Tailwind config
+```
+
+**Advanced pattern (post-M3):** Per-domain runtime separation:
+```
+src/frontend/marketplace/
+  server/                       # RSC-only components
+  client/                       # "use client" components
+  shared/                       # Types and utilities for both
+```
+
 ## Cross-Domain Rules
 
 | Rule | Enforcement |
@@ -107,6 +152,8 @@ src/shared/
 | No shared database tables | Each domain owns its tables exclusively |
 | Communication via events only | `src/shared/event-bus/` |
 | No direct service-to-service HTTP calls | Async via queues or events |
+| **Frontend may NOT import backend implementation** | ESLint `no-restricted-imports` |
+| **Shared code must be runtime-agnostic** | ESLint + `runtime-sovereignty.md` |
 
 ---
 

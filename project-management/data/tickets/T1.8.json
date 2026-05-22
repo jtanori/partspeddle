@@ -61,11 +61,11 @@
     }
   ],
   "estimated_hours": 3,
-  "status": "review",
+  "status": "completed",
   "assignee": "Agent 1",
   "metadata": {
     "created_at": "2026-05-19T02:31:57.300Z",
-    "updated_at": "2026-05-19T11:46:28.000Z",
+    "updated_at": "2026-05-19T22:40:00Z",
     "version": 2
   }
 }

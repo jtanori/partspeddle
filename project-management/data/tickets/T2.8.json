@@ -44,7 +44,21 @@
     "Webhook deduplication works",
     "Event emission verified"
   ],
-  "traceability": [],
+  "traceability": [
+    {
+      "commit_hash": "pending",
+      "files_changed": [
+        "tests/setup-integration.ts",
+        "tests/integration/identity/*.test.ts",
+        "src/shared/outbox/postgres-adapter.ts",
+        "supabase/migrations/20260519000001_create_outbox.sql",
+        "src/identity/infrastructure/webhooks/supabase-auth-webhook.ts",
+        "src/identity/domain/entities/__tests__/seller-profile.test.ts"
+      ],
+      "description": "Fixed integration test setup, outbox schema, RLS tests, webhook auth, seller-profile assertions",
+      "timestamp": "2026-05-20T04:20:00Z"
+    }
+  ],
   "observability": {
     "metrics": [],
     "logs": [],
@@ -52,11 +66,11 @@
   },
   "failure_modes": [],
   "estimated_hours": 4,
-  "status": "planned",
-  "assignee": null,
+  "status": "completed",
+  "assignee": "kimi",
   "metadata": {
     "created_at": "2026-05-19T02:31:57.300Z",
-    "updated_at": "2026-05-19T02:31:57.300Z",
+    "updated_at": "2026-05-20T04:20:00Z",
     "version": 1
   }
 }

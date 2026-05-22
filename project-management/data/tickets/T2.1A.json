@@ -5,7 +5,9 @@
   "domain": "Identity",
   "capability": "Persistence",
   "purpose": "Replace auth.users FK dependency with an identity-owned users table that synchronizes with external auth providers (Supabase Auth hosted).",
-  "dependencies": ["T2.1"],
+  "dependencies": [
+    "T2.1"
+  ],
   "architectural_constraints": [
     "No local auth.users table or stub",
     "identity.users is the system-of-record for user identity within VINTRACK",
@@ -14,18 +16,18 @@
   ],
   "deliverables": [
     {
-      "path": "supabase/migrations/20260519180001_identity_users_table.sql",
-      "description": "Create identity.users with auth_provider_id, email, status",
+      "path": "supabase/migrations/20260519170001_identity_schema.sql",
+      "description": "identity.users as system-of-record (merged with T2.1 schema migration)",
       "type": "migration"
     },
     {
-      "path": "supabase/migrations/20260519180002_migrate_fks_to_identity_users.sql",
-      "description": "Update all FKs from auth.users to identity.users",
+      "path": "supabase/migrations/20260519170002_identity_triggers.sql",
+      "description": "Triggers without auth.users sync (provisioning is lazy/API-driven per ADR-002)",
       "type": "migration"
     },
     {
-      "path": "supabase/migrations/20260519180003_remove_auth_trigger.sql",
-      "description": "Remove handle_new_user trigger that depends on auth.users",
+      "path": "supabase/migrations/20260519170003_identity_rls.sql",
+      "description": "Deny-all RLS fallback for identity-owned tables",
       "type": "migration"
     }
   ],
@@ -36,10 +38,19 @@
     "Integration tests insert into identity.users directly",
     "auth.users stub removed from test setup"
   ],
-  "traceability": [],
+  "traceability": [
+    {
+      "commit_hash": "5e534f8",
+      "timestamp": "2026-05-19T13:41:58.966Z",
+      "description": "Schema migration: identity.users replaces auth.users",
+      "files_changed": []
+    }
+  ],
   "observability": {
     "metrics": [],
-    "logs": ["Migration execution success/failure"],
+    "logs": [
+      "Migration execution success/failure"
+    ],
     "traces": []
   },
   "failure_modes": [
@@ -50,11 +61,11 @@
     }
   ],
   "estimated_hours": 2,
-  "status": "planned",
+  "status": "completed",
   "assignee": null,
   "metadata": {
     "created_at": "2026-05-19T12:30:00.000Z",
-    "updated_at": "2026-05-19T12:30:00.000Z",
-    "version": 1
+    "updated_at": "2026-05-19T13:41:58.965Z",
+    "version": 2
   }
 }

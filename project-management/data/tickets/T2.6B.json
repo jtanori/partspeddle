@@ -5,7 +5,9 @@
   "domain": "Identity",
   "capability": "Sync Governance",
   "purpose": "Define webhook idempotency, ordering, and reconciliation semantics for hosted auth provider synchronization. Webhooks are reconciliation; lazy provisioning is primary.",
-  "dependencies": ["T2.6A"],
+  "dependencies": [
+    "T2.6A"
+  ],
   "architectural_constraints": [
     "Idempotency key: auth_provider + event_id (future-proofs multi-provider)",
     "24h deduplication window minimum",
@@ -43,7 +45,10 @@
       "identity_webhook_dedup_total",
       "identity_reconciliation_orphans_found"
     ],
-    "logs": ["Webhook deduplication hits", "Reconciliation backfill actions"],
+    "logs": [
+      "Webhook deduplication hits",
+      "Reconciliation backfill actions"
+    ],
     "traces": []
   },
   "failure_modes": [
@@ -59,11 +64,11 @@
     }
   ],
   "estimated_hours": 2,
-  "status": "planned",
-  "assignee": null,
+  "status": "completed",
+  "assignee": "agent",
   "metadata": {
     "created_at": "2026-05-19T13:00:00.000Z",
-    "updated_at": "2026-05-19T13:00:00.000Z",
+    "updated_at": "2026-05-19T14:45:00Z",
     "version": 1
   }
 }

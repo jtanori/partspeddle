@@ -1,0 +1,275 @@
+T1.1:
+  deliverables:
+    - {"path":"package.json","description":"Dependencies, scripts, engine requirements","type":"config"}
+    - {"path":"tsconfig.json","description":"TypeScript 5.x strict, ESM, NodeNext resolution","type":"config"}
+    - {"path":"eslint.config.js","description":"Lint rules, no-explicit-any, cross-domain import guards","type":"config"}
+    - {"path":".prettierrc","description":"Formatting rules","type":"config"}
+    - {"path":".gitignore","description":"Ignore patterns","type":"config"}
+    - {"path":".env.example","description":"Environment variable template","type":"config"}
+    - {"path":"docker-compose.dev.yml","description":"Postgres + Redis with healthchecks","type":"config"}
+    - {"path":"vitest.config.ts","description":"Base test config with coverage thresholds","type":"config"}
+    - {"path":"vitest.unit.config.ts","description":"Unit test isolation","type":"config"}
+    - {"path":"vitest.integration.config.ts","description":"Integration test setup","type":"config"}
+    - {"path":"src/app.ts","description":"Express bootstrap with health endpoints","type":"file"}
+    - {"path":"src/shared/observability/logger.ts","description":"Structured JSON logger","type":"file"}
+    - {"path":"src/shared/errors/domain-error.ts","description":"Base domain error class","type":"file"}
+    - {"path":"src/<domain>/...","description":"Full directory scaffold per module-template.md","type":"directory"}
+    - {"path":".git/","description":"Git repository initialized with descriptive commit history","type":"directory"}
+T1.2:
+  deliverables:
+    - {"path":"src/shared/event-bus/domain-event.ts","description":"Domain event base class","type":"file"}
+    - {"path":"src/shared/event-bus/event-schema.ts","description":"Zod validation schema","type":"file"}
+    - {"path":"src/shared/event-bus/event-catalog.ts","description":"Domain event catalog registry","type":"file"}
+T1.3:
+  deliverables:
+    - {"path":"src/shared/outbox/outbox.ts","description":"Outbox insert/query interface","type":"file"}
+    - {"path":"src/shared/outbox/relay-worker.ts","description":"Polling relay worker","type":"file"}
+    - {"path":"supabase/migrations/20260519000001_create_outbox.sql","description":"Outbox table migration","type":"migration"}
+T1.4:
+  deliverables:
+    - {"path":"src/shared/queue/queue-factory.ts","description":"Queue creation factory","type":"file"}
+    - {"path":"src/shared/queue/worker-factory.ts","description":"Worker creation factory","type":"file"}
+    - {"path":"src/shared/queue/health.ts","description":"Queue health check","type":"file"}
+    - {"path":"src/shared/queue/redis-connection.ts","description":"Shared Redis connection singleton","type":"file"}
+    - {"path":"src/shared/queue/naming.ts","description":"Queue/DLQ naming convention utility","type":"file"}
+T1.5:
+  deliverables:
+    - {"path":"src/shared/supabase/client.ts","description":"Typed Supabase client","type":"file"}
+    - {"path":"src/shared/supabase/pool.ts","description":"Connection pool management","type":"file"}
+    - {"path":"src/shared/supabase/env.ts","description":"Environment validation (fail fast)","type":"file"}
+    - {"path":"src/shared/supabase/types.ts","description":"Minimal Database type stub","type":"file"}
+    - {"path":"project-knowledge/service-role-governance.md","description":"Service role boundaries and observability rules","type":"doc"}
+T1.6:
+  deliverables:
+    - {"path":"src/shared/observability/logger.ts","description":"Structured JSON logger","type":"file"}
+    - {"path":"src/shared/observability/metrics.ts","description":"Metrics collection","type":"file"}
+    - {"path":"src/shared/observability/tracing.ts","description":"Distributed tracing","type":"file"}
+    - {"path":"src/shared/api/middleware/correlation-id.ts","description":"Correlation ID middleware","type":"file"}
+T1.7:
+  deliverables:
+    - {"path":"src/shared/errors/domain-error.ts","description":"Base domain error class","type":"file"}
+    - {"path":"src/shared/errors/error-mapper.ts","description":"Error mapping utilities","type":"file"}
+T1.8:
+  deliverables:
+    - {"path":".github/workflows/ci.yml","description":"GitHub Actions CI pipeline","type":"config"}
+    - {"path":"scripts/setup-test-db.ts","description":"Test database setup script","type":"file"}
+T10.1:
+  deliverables:
+    - {"path":"infra/grafana/dashboards/identity.json","description":"Identity dashboard","type":"config"}
+    - {"path":"infra/grafana/dashboards/marketplace.json","description":"Marketplace dashboard","type":"config"}
+    - {"path":"infra/grafana/dashboards/transactions.json","description":"Transactions dashboard","type":"config"}
+    - {"path":"infra/grafana/dashboards/platform.json","description":"Platform overview dashboard","type":"config"}
+T10.2:
+  deliverables:
+    - {"path":"infra/prometheus/alerts.yml","description":"Prometheus alert rules","type":"config"}
+    - {"path":"infra/alertmanager/alertmanager.yml","description":"Alertmanager routing","type":"config"}
+T10.3:
+  deliverables:
+    - {"path":"scripts/dlq-inspect.ts","description":"DLQ inspection CLI","type":"script"}
+    - {"path":"scripts/dlq-replay.ts","description":"DLQ replay CLI","type":"script"}
+    - {"path":"src/shared/queue/dlq-replayer.ts","description":"DLQ replay service","type":"file"}
+T10.4:
+  deliverables:
+    - {"path":"src/shared/api/middleware/rate-limiter.ts","description":"Rate limit middleware","type":"file"}
+    - {"path":"src/shared/api/middleware/abuse-detector.ts","description":"Basic abuse detection","type":"file"}
+T10.5:
+  deliverables:
+    - {"path":"tests/load/smoke-test.ts","description":"Smoke load test suite","type":"test"}
+    - {"path":"scripts/run-smoke-test.ts","description":"Load test runner","type":"script"}
+T2.1:
+  deliverables:
+    - {"path":"supabase/migrations/xxx_identity_schema.sql","description":"Users, profiles, buyer_profiles, seller_profiles, onboarding_states, user_sessions","type":"migration"}
+    - {"path":"supabase/migrations/xxx_identity_triggers.sql","description":"updated_at, handle_new_user, handle_onboarding_completion","type":"migration"}
+    - {"path":"supabase/migrations/xxx_identity_rls.sql","description":"RLS policies per table","type":"migration"}
+T2.2:
+  deliverables:
+    - {"path":"src/identity/domain/entities/user.ts","description":"User aggregate root","type":"file"}
+    - {"path":"src/identity/domain/entities/profile.ts","description":"Profile entity","type":"file"}
+    - {"path":"src/identity/domain/entities/buyer-profile.ts","description":"BuyerProfile entity","type":"file"}
+    - {"path":"src/identity/domain/events/user-events.ts","description":"User domain events","type":"file"}
+T2.3:
+  deliverables:
+    - {"path":"src/identity/domain/entities/seller-profile.ts","description":"SellerProfile aggregate","type":"file"}
+    - {"path":"src/identity/domain/entities/onboarding-state.ts","description":"OnboardingState entity","type":"file"}
+    - {"path":"src/identity/domain/events/seller-events.ts","description":"Seller domain events","type":"file"}
+    - {"path":"src/identity/domain/services/state-machine.ts","description":"State machine validation logic","type":"file"}
+T2.4:
+  deliverables:
+    - {"path":"src/identity/infrastructure/persistence/user-repository.ts","description":"User repository implementation","type":"file"}
+    - {"path":"src/identity/infrastructure/persistence/profile-repository.ts","description":"Profile repository implementation","type":"file"}
+    - {"path":"src/identity/infrastructure/persistence/seller-profile-repository.ts","description":"SellerProfile repository implementation","type":"file"}
+    - {"path":"src/identity/infrastructure/persistence/user-repository.memory.ts","description":"In-memory test adapter","type":"test"}
+    - {"path":"src/identity/infrastructure/persistence/seller-profile-repository.memory.ts","description":"In-memory test adapter","type":"test"}
+T2.5:
+  deliverables:
+    - {"path":"src/identity/api/routes/user-routes.ts","description":"User API routes","type":"file"}
+    - {"path":"src/identity/api/routes/profile-routes.ts","description":"Profile API routes","type":"file"}
+    - {"path":"src/identity/api/routes/seller-routes.ts","description":"Seller API routes","type":"file"}
+    - {"path":"src/identity/api/routes/session-routes.ts","description":"Session API routes","type":"file"}
+    - {"path":"src/identity/api/dto/","description":"Zod validation schemas","type":"directory"}
+T2.6:
+  deliverables:
+    - {"path":"src/identity/infrastructure/webhooks/supabase-auth-webhook.ts","description":"Webhook receiver","type":"file"}
+    - {"path":"src/identity/queue/identity-webhook-worker.ts","description":"Webhook processing worker","type":"file"}
+    - {"path":"src/identity/queue/reconciliation-job.ts","description":"Auth sync reconciliation","type":"file"}
+T2.7:
+  deliverables:
+    - {"path":"src/identity/queue/onboarding-worker.ts","description":"Onboarding step processor","type":"file"}
+    - {"path":"src/identity/queue/webhook-worker.ts","description":"Webhook event processor","type":"file"}
+    - {"path":"src/identity/queue/session-worker.ts","description":"Session revocation processor","type":"file"}
+T2.8:
+  deliverables:
+    - {"path":"src/identity/domain/entities/*.test.ts","description":"Entity unit tests","type":"test"}
+    - {"path":"src/identity/application/services/*.test.ts","description":"Service unit tests","type":"test"}
+    - {"path":"tests/integration/identity/*.test.ts","description":"DB triggers, RLS, webhook integration tests","type":"test"}
+T3.1:
+  deliverables:
+    - {"path":"supabase/migrations/xxx_marketplace_listings.sql","description":"Listings, inventory_items, listing_media","type":"migration"}
+    - {"path":"supabase/migrations/xxx_marketplace_catalog.sql","description":"Collections, garages, yards","type":"migration"}
+    - {"path":"supabase/migrations/xxx_marketplace_triggers.sql","description":"updated_at, inventory triggers","type":"migration"}
+    - {"path":"supabase/migrations/xxx_marketplace_rls.sql","description":"RLS policies","type":"migration"}
+T3.2:
+  deliverables:
+    - {"path":"src/marketplace/domain/entities/listing.ts","description":"Listing aggregate root","type":"file"}
+    - {"path":"src/marketplace/domain/entities/inventory-item.ts","description":"InventoryItem entity","type":"file"}
+    - {"path":"src/marketplace/domain/entities/listing-media.ts","description":"ListingMedia entity","type":"file"}
+    - {"path":"src/marketplace/domain/events/listing-events.ts","description":"Listing domain events","type":"file"}
+T3.3:
+  deliverables:
+    - {"path":"src/marketplace/domain/entities/collection.ts","description":"Collection aggregate","type":"file"}
+    - {"path":"src/marketplace/domain/entities/garage.ts","description":"Garage aggregate","type":"file"}
+    - {"path":"src/marketplace/domain/entities/yard.ts","description":"Yard aggregate","type":"file"}
+T3.4:
+  deliverables:
+    - {"path":"src/marketplace/infrastructure/persistence/listing-repository.ts","description":"Listing repository","type":"file"}
+    - {"path":"src/marketplace/infrastructure/persistence/inventory-item-repository.ts","description":"InventoryItem repository","type":"file"}
+    - {"path":"src/marketplace/infrastructure/persistence/listing-repository.memory.ts","description":"In-memory test adapter","type":"test"}
+T3.5:
+  deliverables:
+    - {"path":"src/marketplace/api/routes/listing-routes.ts","description":"Listing CRUD routes","type":"file"}
+    - {"path":"src/marketplace/api/routes/inventory-routes.ts","description":"Inventory management routes","type":"file"}
+    - {"path":"src/marketplace/api/routes/catalog-routes.ts","description":"Collection/Garage/Yard routes","type":"file"}
+    - {"path":"src/marketplace/api/dto/","description":"Zod validation schemas","type":"directory"}
+T3.6:
+  deliverables:
+    - {"path":"src/marketplace/domain/entities/*.test.ts","description":"Entity unit tests","type":"test"}
+    - {"path":"src/marketplace/application/services/*.test.ts","description":"Service unit tests","type":"test"}
+    - {"path":"tests/integration/marketplace/*.test.ts","description":"API + RLS integration tests","type":"test"}
+T4.1:
+  deliverables:
+    - {"path":"supabase/migrations/xxx_ai_analysis.sql","description":"ai_analysis_requests, ai_analysis_results","type":"migration"}
+    - {"path":"supabase/migrations/xxx_ai_rls.sql","description":"RLS policies","type":"migration"}
+T4.2:
+  deliverables:
+    - {"path":"src/ai-intelligence/services/image-ingestion.ts","description":"Image validation and preprocessing","type":"file"}
+    - {"path":"src/ai-intelligence/queue/image-analysis-job.ts","description":"Queue job definition","type":"file"}
+T4.3:
+  deliverables:
+    - {"path":"src/ai-intelligence/services/gemini-client.ts","description":"Gemini API client","type":"file"}
+    - {"path":"src/ai-intelligence/services/part-identification.ts","description":"Part identification orchestrator","type":"file"}
+    - {"path":"src/ai-intelligence/services/vin-identification.ts","description":"VIN identification orchestrator","type":"file"}
+T4.4:
+  deliverables:
+    - {"path":"src/ai-intelligence/domain/events/ai-events.ts","description":"AI domain events","type":"file"}
+    - {"path":"src/ai-intelligence/services/enrichment-publisher.ts","description":"Enrichment result publisher","type":"file"}
+T5.1:
+  deliverables:
+    - {"path":"src/search/services/algolia-sync.ts","description":"Algolia index sync service","type":"file"}
+    - {"path":"src/search/queue/indexing-worker.ts","description":"Indexing queue worker","type":"file"}
+    - {"path":"src/search/mappers/listing-index.ts","description":"Listing to Algolia document mapper","type":"file"}
+T5.2:
+  deliverables:
+    - {"path":"src/search/api/routes/search-routes.ts","description":"Search API routes","type":"file"}
+    - {"path":"src/search/api/dto/search-request.ts","description":"Search request validation","type":"file"}
+T5.3:
+  deliverables:
+    - {"path":"src/search/queue/search-indexing-queue.ts","description":"Queue setup","type":"file"}
+    - {"path":"src/search/queue/reconciliation-job.ts","description":"Index reconciliation job","type":"file"}
+T5.4:
+  deliverables:
+    - {"path":"src/search/api/routes/autocomplete-routes.ts","description":"Autocomplete endpoint","type":"file"}
+    - {"path":"src/search/services/autocomplete-index.ts","description":"Autocomplete index builder","type":"file"}
+T6.1:
+  deliverables:
+    - {"path":"supabase/migrations/xxx_transaction_schema.sql","description":"transactions, carts, checkout_sessions, escrow_records","type":"migration"}
+    - {"path":"supabase/migrations/xxx_transaction_triggers.sql","description":"State change triggers","type":"migration"}
+    - {"path":"supabase/migrations/xxx_transaction_rls.sql","description":"RLS policies","type":"migration"}
+T6.2:
+  deliverables:
+    - {"path":"src/transactions/domain/entities/cart.ts","description":"Cart aggregate root","type":"file"}
+    - {"path":"src/transactions/domain/entities/cart-item.ts","description":"CartItem entity","type":"file"}
+    - {"path":"src/transactions/domain/events/cart-events.ts","description":"Cart domain events","type":"file"}
+T6.3:
+  deliverables:
+    - {"path":"src/transactions/domain/entities/checkout-session.ts","description":"CheckoutSession aggregate","type":"file"}
+    - {"path":"src/transactions/domain/services/stripe-coordinator.ts","description":"Stripe PaymentIntent coordination","type":"file"}
+    - {"path":"src/transactions/domain/events/checkout-events.ts","description":"Checkout domain events","type":"file"}
+T6.4:
+  deliverables:
+    - {"path":"src/transactions/domain/entities/escrow-record.ts","description":"EscrowRecord aggregate","type":"file"}
+    - {"path":"src/transactions/domain/services/escrow-orchestrator.ts","description":"Escrow state machine logic","type":"file"}
+    - {"path":"src/transactions/domain/events/escrow-events.ts","description":"Escrow domain events","type":"file"}
+T6.5:
+  deliverables:
+    - {"path":"src/transactions/domain/services/settlement-coordinator.ts","description":"Settlement orchestrator","type":"file"}
+    - {"path":"src/transactions/queue/settlement-worker.ts","description":"Settlement batch worker","type":"file"}
+    - {"path":"src/transactions/domain/events/settlement-events.ts","description":"Settlement domain events","type":"file"}
+T6.6:
+  deliverables:
+    - {"path":"src/transactions/domain/services/compensation-orchestrator.ts","description":"Compensation logic","type":"file"}
+    - {"path":"src/transactions/queue/compensation-worker.ts","description":"Compensation queue worker","type":"file"}
+T6.7:
+  deliverables:
+    - {"path":"src/transactions/domain/entities/*.test.ts","description":"Entity unit tests","type":"test"}
+    - {"path":"src/transactions/application/services/*.test.ts","description":"Service unit tests","type":"test"}
+    - {"path":"tests/integration/transactions/*.test.ts","description":"End-to-end transaction tests","type":"test"}
+    - {"path":"tests/mocks/stripe-mock.ts","description":"Stripe API mock","type":"test"}
+T7.1:
+  deliverables:
+    - {"path":"supabase/migrations/xxx_messaging_schema.sql","description":"conversations, messages, conversation_participants","type":"migration"}
+    - {"path":"supabase/migrations/xxx_messaging_rls.sql","description":"RLS policies","type":"migration"}
+T7.2:
+  deliverables:
+    - {"path":"src/messaging/domain/entities/conversation.ts","description":"Conversation aggregate","type":"file"}
+    - {"path":"src/messaging/domain/entities/message.ts","description":"Message entity","type":"file"}
+    - {"path":"src/messaging/domain/events/message-events.ts","description":"Messaging domain events","type":"file"}
+T7.3:
+  deliverables:
+    - {"path":"src/messaging/domain/entities/*.test.ts","description":"Entity unit tests","type":"test"}
+    - {"path":"tests/integration/messaging/*.test.ts","description":"Integration tests","type":"test"}
+T8.1:
+  deliverables:
+    - {"path":"supabase/migrations/xxx_vault_schema.sql","description":"escrow_state_transitions, vault_audit_log","type":"migration"}
+    - {"path":"supabase/migrations/xxx_vault_rls.sql","description":"RLS policies","type":"migration"}
+T8.2:
+  deliverables:
+    - {"path":"src/vault/domain/entities/escrow-state.ts","description":"EscrowState aggregate","type":"file"}
+    - {"path":"src/vault/domain/services/hold-orchestrator.ts","description":"Hold creation logic","type":"file"}
+    - {"path":"src/vault/domain/events/vault-events.ts","description":"Vault domain events","type":"file"}
+T8.3:
+  deliverables:
+    - {"path":"src/vault/domain/entities/dispute.ts","description":"Dispute aggregate","type":"file"}
+    - {"path":"src/vault/domain/services/dispute-orchestrator.ts","description":"Dispute resolution logic","type":"file"}
+T8.4:
+  deliverables:
+    - {"path":"src/vault/domain/entities/*.test.ts","description":"Entity unit tests","type":"test"}
+    - {"path":"tests/integration/vault/*.test.ts","description":"Integration tests","type":"test"}
+T9.1:
+  deliverables:
+    - {"path":"supabase/migrations/xxx_notifications_schema.sql","description":"notifications, notification_preferences, notification_templates","type":"migration"}
+    - {"path":"supabase/migrations/xxx_notifications_rls.sql","description":"RLS policies","type":"migration"}
+T9.2:
+  deliverables:
+    - {"path":"src/notifications/services/email-sender.ts","description":"Email send orchestrator","type":"file"}
+    - {"path":"src/notifications/queue/email-worker.ts","description":"Email queue worker","type":"file"}
+    - {"path":"src/notifications/templates/","description":"Email templates","type":"directory"}
+T9.3:
+  deliverables:
+    - {"path":"src/notifications/consumers/identity-consumer.ts","description":"Identity event consumer","type":"file"}
+    - {"path":"src/notifications/consumers/transaction-consumer.ts","description":"Transaction event consumer","type":"file"}
+    - {"path":"src/notifications/consumers/marketplace-consumer.ts","description":"Marketplace event consumer","type":"file"}
+T9.4:
+  deliverables:
+    - {"path":"src/notifications/services/*.test.ts","description":"Service unit tests","type":"test"}
+    - {"path":"tests/integration/notifications/*.test.ts","description":"Integration tests","type":"test"}
+    - {"path":"tests/mocks/email-mock.ts","description":"Email transport mock","type":"test"}

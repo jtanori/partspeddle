@@ -1,0 +1,155 @@
+VINTRACK PROJECT SUMMARY
+Generated: 2026-05-19T15:22:13.053Z
+Scope: Tickets: T2.0A, T2.1, T2.1A
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+T2.0A — ADR: Auth Provider Decoupling Strategy
+  Status:      completed
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Architecture
+  Hours:       1
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     2
+  Deliverables: 1/2 on disk
+  Tests:       yes
+  Acceptance:  3 criteria
+  Traceability: 1 entries
+  Failure Modes: 0 documented
+
+  📌 PURPOSE
+    Document the decision to decouple VINTRACK from local Supabase stack, using hosted Supabase Auth + local PostgreSQL + local Redis. Establish the IdentityProvider port pattern.
+
+  🏗️  ARCHITECTURAL CONSTRAINTS
+    • Auth provider is a commodity service, not domain model
+    • Identity domain owns user lifecycle, not auth provider
+    • JWT verification is infrastructure concern, hidden behind port
+    • All auth provider SDK imports isolated to infrastructure/auth/
+
+  📁 DELIVERABLES
+    ✅ [doc] project-knowledge/adr/002-auth-provider-decoupling.md
+       Architecture Decision Record for auth decoupling
+    ❌ [doc] src/identity/README.md
+       Identity domain README with auth provider boundary
+
+  ✅ ACCEPTANCE CRITERIA
+    1. ADR documents context, decision, consequences, and migration path
+    2. Identity domain README explains auth provider port
+    3. Code review checklist updated to flag Supabase SDK imports outside infrastructure
+
+  🔗 TRACEABILITY
+    Commit: c95a691
+    Time:   2026-05-19T13:41:58.935Z
+    Desc:   ADR written and committed
+
+
+────────────────────────────────────────────────────────────────────────────────
+T2.1 — Identity Database Schema
+  Status:      planned
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Persistence
+  Hours:       3
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     1
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 0 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ✅ T1.5 — completed
+    👀 T1.8 — review
+
+  📌 PURPOSE
+    Create owned tables with constraints, triggers, and RLS.
+
+  🏗️  ARCHITECTURAL CONSTRAINTS
+    • Must conform to database-governance.md
+    • Enum values: lowercase_snake_case
+    • RLS mandatory
+    • Forward-only migrations
+
+  📁 DELIVERABLES
+    ❌ [migration] supabase/migrations/xxx_identity_schema.sql
+       Users, profiles, buyer_profiles, seller_profiles, onboarding_states, user_sessions
+    ❌ [migration] supabase/migrations/xxx_identity_triggers.sql
+       updated_at, handle_new_user, handle_onboarding_completion
+    ❌ [migration] supabase/migrations/xxx_identity_rls.sql
+       RLS policies per table
+
+  ✅ ACCEPTANCE CRITERIA
+    1. All tables created with correct types
+    2. FK users.id → auth.users.id enforced
+    3. Trigger auto-creates profile on auth user insert
+    4. RLS prevents cross-user reads
+    5. Integration tests verify constraints
+
+  ⚠️  FAILURE MODES
+    [MEDIUM] Auth user exists before trigger
+      Mitigation: Reconciliation job backfills
+
+  📡 OBSERVABILITY
+    Logs:
+      • DB migration success/failure
+
+────────────────────────────────────────────────────────────────────────────────
+T2.1A — Auth Decoupling: Identity-Owned User Table
+  Status:      completed
+  Domain:      Identity
+  Milestone:   M2 — Identity Domain
+  Capability:  Persistence
+  Hours:       2
+  Assignee:    unassigned
+  Git Commit:  none
+  Version:     2
+  Deliverables: 0/3 on disk
+  Tests:       no
+  Acceptance:  5 criteria
+  Traceability: 1 entries
+  Failure Modes: 1 documented
+  Dependencies:
+    ⏳ T2.1 — planned
+
+  📌 PURPOSE
+    Replace auth.users FK dependency with an identity-owned users table that synchronizes with external auth providers (Supabase Auth hosted).
+
+  🏗️  ARCHITECTURAL CONSTRAINTS
+    • No local auth.users table or stub
+    • identity.users is the system-of-record for user identity within VINTRACK
+    • auth_provider_id stores the external Supabase Auth UUID
+    • Forward-only migration: add identity.users, migrate FKs, deprecate auth references
+
+  📁 DELIVERABLES
+    ❌ [migration] supabase/migrations/20260519180001_identity_users_table.sql
+       Create identity.users with auth_provider_id, email, status
+    ❌ [migration] supabase/migrations/20260519180002_migrate_fks_to_identity_users.sql
+       Update all FKs from auth.users to identity.users
+    ❌ [migration] supabase/migrations/20260519180003_remove_auth_trigger.sql
+       Remove handle_new_user trigger that depends on auth.users
+
+  ✅ ACCEPTANCE CRITERIA
+    1. identity.users table exists with UUID PK and auth_provider_id TEXT UNIQUE
+    2. All identity tables FK to identity.users(id) not auth.users(id)
+    3. No references to auth.users in any migration
+    4. Integration tests insert into identity.users directly
+    5. auth.users stub removed from test setup
+
+  🔗 TRACEABILITY
+    Commit: 5e534f8
+    Time:   2026-05-19T13:41:58.966Z
+    Desc:   Schema migration: identity.users replaces auth.users
+
+
+  ⚠️  FAILURE MODES
+    [MEDIUM] Existing test data references auth.users
+      Mitigation: Update setup-integration.ts TEST_RESET_TABLES and all test fixtures
+
+  📡 OBSERVABILITY
+    Logs:
+      • Migration execution success/failure
+
+================================================================================

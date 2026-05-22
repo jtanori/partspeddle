@@ -1,0 +1,47 @@
+{
+  "id": "M0.5",
+  "phase": 0,
+  "title": "Toolchain Stabilization",
+  "purpose": "Establish deterministic, non-flaky test execution before any feature milestone declares completion. Test infrastructure integrity is a prerequisite for all governance guarantees.",
+  "trust_principle": "A milestone without passing tests is a milestone without proof. A test runner that hangs is a test runner that lies.",
+  "scope": {
+    "in": [
+      "Test runner configuration and debugging",
+      "Test environment isolation",
+      "ESM/CJS boundary resolution",
+      "Path alias verification",
+      "CI test gate stabilization",
+      "Minimal reproduction creation"
+    ],
+    "out": [
+      "Feature code changes",
+      "UI modifications",
+      "Architecture redesign",
+      "New business logic"
+    ]
+  },
+  "exit_criteria": [
+    "vitest runs empty test suite without hanging",
+    "vitest runs single unit test without hanging",
+    "vitest runs frontend component test without hanging",
+    "npm run test:unit completes and returns exit code",
+    "CI test gate passes consistently (3 consecutive runs)",
+    "Root cause documented with reproduction steps"
+  ],
+  "tickets": [
+    "T0.5.1"
+  ],
+  "dependencies": [
+    "M1"
+  ],
+  "downstream_impact": "Unblocks ALL test-dependent tickets. Without this, no milestone can reach 'completed' status.",
+  "estimated_duration_days": 1,
+  "status": "in_progress",
+  "metadata": {
+    "created_at": "2026-05-20T09:40:00.000Z",
+    "updated_at": "2026-05-20T09:40:00.000Z",
+    "version": 1,
+    "lane": "infrastructure",
+    "precedes_all_feature_milestones": true
+  }
+}
