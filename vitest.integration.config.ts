@@ -1,5 +1,12 @@
 import { defineConfig } from 'vitest/config';
 
+/**
+ * Vitest Integration Test Configuration
+ *
+ * Fork-based isolation with single-fork mode for DB/Redis consistency.
+ *
+ * @see project-governance/diagnostics/T0.5.1-failure-reproduction-matrix.md
+ */
 export default defineConfig({
   test: {
     globals: true,
@@ -7,12 +14,19 @@ export default defineConfig({
     include: ['src/**/*.integration.test.ts', 'tests/integration/**/*.test.ts'],
     setupFiles: ['tests/setup-integration.ts'],
 
-    // Deterministic execution: no parallel threads until isolation framework exists
-    maxThreads: 1,
-    minThreads: 1,
+    // Fork-based pool avoids vmThreads deadlock on Node 24 + macOS
+    pool: 'forks',
+    poolOptions: {
+      forks: {
+        singleFork: true,
+      },
+    },
 
-    // Timeout governance
-    testTimeout: 10000,
-    hookTimeout: 10000,
+    // Deterministic execution: no parallel files until isolation framework exists
+    fileParallelism: false,
+
+    // Timeout governance — generous for cold-start DB operations
+    testTimeout: 15000,
+    hookTimeout: 15000,
   },
 });

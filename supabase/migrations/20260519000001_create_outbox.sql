@@ -9,7 +9,7 @@ CREATE TABLE outbox (
   event_type TEXT NOT NULL,
   payload JSONB NOT NULL DEFAULT '{}',
   aggregate_id UUID NOT NULL,
-  correlation_id UUID NOT NULL,
+  correlation_id TEXT NOT NULL,
   traceparent TEXT,
   status outbox_status NOT NULL DEFAULT 'pending',
   retry_count INTEGER NOT NULL DEFAULT 0,

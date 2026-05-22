@@ -1,10 +1,14 @@
 name: CI
 
 on:
-  push:
-    branches: [main]
   pull_request:
-    branches: [main]
+    branches:
+      - develop
+      - main
+
+  push:
+    branches:
+      - develop
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -54,6 +58,28 @@ jobs:
 
       - name: Run unit tests
         run: npm run test:unit
+
+  frontend-build:
+    name: Frontend Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build frontend
+        run: npm run build:frontend
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
   integration-tests:
     name: Integration Tests
@@ -138,3 +164,23 @@ jobs:
             coverage/
             logs/
           retention-days: 7
+
+  frontend-e2e-tests:
+    name: Frontend E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [frontend-build, integration-tests]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: E2E tests placeholder
+        run: echo "E2E tests not yet configured — placeholder until Playwright/Cypress setup"

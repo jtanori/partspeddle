@@ -12,10 +12,11 @@
 | Authority | Location | Format |
 |-----------|----------|--------|
 | Architecture | `project-knowledge/` | Markdown |
+| Git Workflow & Branch Governance | `project-knowledge/git-workflow.md` | Markdown |
 | Milestones & Tickets | `project-management/data/` | JSON + Schema |
 | Domain Blueprints | `blueprints/<domain>/` | Markdown |
 | Reference Cards | `project-knowledge/<domain>/` | Markdown |
-| Governance | `project-knowledge/*-standards.md` | Markdown |
+| Governance | `project-knowledge/*-standards.md`, `project-knowledge/*-governance.md`, `project-knowledge/architecture-boundaries.md` | Markdown |
 
 **Rule:** `project-management/data/milestones.json` and `data/tickets/*.json` are the absolute authorities for implementation sequencing. No code work without a valid ticket.
 
@@ -55,6 +56,24 @@ When starting work on any VINTRACK task:
 5. Read full file → ONLY when granular detail required
 6. NEVER pre-load all of project-knowledge/
 ```
+
+### Surface Switch Protocol
+
+When switching between execution surfaces (backend ↔ frontend, frontend ↔ shared):
+
+1. **STOP** — Do not accumulate context from previous surface
+2. **Read surface-specific governance** — `runtime-sovereignty.md`, `import-direction-matrix.md`
+3. **Re-evaluate:**
+   - Runtime constraints (which APIs are available?)
+   - Import legality (is this import allowed?)
+   - Contract ownership (am I consuming or defining?)
+   - Auth assumptions (server-side JWT vs client-side session)
+   - Caching semantics (who invalidates? who re-renders?)
+   - Deployment implications (Vercel, backend compute, or both?)
+   - Test surface (unit, component, integration, or E2E?)
+4. **Confirm understanding** — State which surface you're working in
+
+**Trigger:** Any PR touching files in more than one surface requires explicit surface-switch review.
 
 ---
 
@@ -147,9 +166,15 @@ Every code change MUST update the ticket's traceability:
 Every commit MUST pass:
 
 ```bash
-npm run lint        # ESLint + Prettier
-npm run typecheck   # tsc --noEmit
+npm run lint        # ESLint + Prettier (all surfaces)
+npm run typecheck   # tsc --noEmit (all surfaces)
 npm run test:unit   # Unit tests for affected domain
+```
+
+**Frontend-specific gates:**
+```bash
+npm run build:frontend   # next build must succeed
+npm run test:e2e         # Playwright E2E tests (if critical journey affected)
 ```
 
 CI blocks merge on any failure.
@@ -157,6 +182,8 @@ CI blocks merge on any failure.
 ---
 
 ## Workflow Orchestration
+
+All branch operations, feature branch naming, merge flow, and CI triggers are governed by `project-knowledge/git-workflow.md`. Agents MUST read it before starting any implementation.
 
 ### Plan Mode Default
 
@@ -255,7 +282,9 @@ Fix failing CI tests autonomously.
 
 Allowed domains: Identity, Marketplace, AI Intelligence, Search, Transactions, Messaging, Vault (simplified), Notifications.
 
-**Explicitly excluded:** Advanced reputation, multi-vault orchestration, distributed logistics, graph-native runtime, autonomous moderation, complex fraud systems.
+Allowed surfaces: Backend (Node.js/Express), Frontend (Next.js App Router), Shared Contracts.
+
+**Explicitly excluded:** Advanced reputation, multi-vault orchestration, distributed logistics, graph-native runtime, autonomous moderation, complex fraud systems, mobile app, edge workers.
 
 ### Implementation Sequence
 

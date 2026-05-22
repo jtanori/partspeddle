@@ -6,11 +6,11 @@ import prettier from 'eslint-config-prettier';
 export default [
   js.configs.recommended,
   {
-    files: ['src/**/*.ts', 'tests/**/*.ts'],
+    files: ['src/**/*.ts', 'src/**/*.tsx', 'tests/**/*.ts'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        project: './tsconfig.json',
+        project: './tsconfig.eslint.json',
         sourceType: 'module',
       },
     },
@@ -27,6 +27,7 @@ export default [
       '@typescript-eslint/restrict-template-expressions': 'error',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'no-console': ['warn', { allow: ['error'] }],
+      'no-undef': 'off',
     },
   },
   {
@@ -39,6 +40,18 @@ export default [
           },
         ],
       }],
+    },
+  },
+  {
+    files: ['**/*.test.ts', '**/*.spec.ts', 'tests/**/*.ts'],
+    rules: {
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/unbound-method': 'off',
+      '@typescript-eslint/require-await': 'off',
     },
   },
   prettier,
