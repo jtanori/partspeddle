@@ -1,0 +1,90 @@
+{
+  "version": "1.0.0",
+  "description": "Deterministic pattern recognition rules for governance workflow intelligence",
+  "rules": [
+    {
+      "id": "interrupted-sessions",
+      "name": "Repeated Interrupted Sessions",
+      "description": "Detects when executions are frequently interrupted without completion",
+      "category": "operational",
+      "signal": "execution.started without matching execution.completed within same session",
+      "threshold": {
+        "min_occurrences": 2,
+        "window_hours": 24
+      },
+      "severity": "warn",
+      "confidence_boost": 0.15,
+      "suggestion_category": "investigation"
+    },
+    {
+      "id": "repeated-drift",
+      "name": "Repeated Drift Events",
+      "description": "Detects when drift is detected multiple times in succession",
+      "category": "governance",
+      "signal": "diagnostics.drift_detected or drift.level != NONE",
+      "threshold": {
+        "min_occurrences": 2,
+        "window_hours": 48
+      },
+      "severity": "error",
+      "confidence_boost": 0.2,
+      "suggestion_category": "governance"
+    },
+    {
+      "id": "failed-consolidations",
+      "name": "Repeated Failed Consolidations",
+      "description": "Detects when consolidation attempts fail repeatedly",
+      "category": "operational",
+      "signal": "execution.failed with payload containing consolidation",
+      "threshold": {
+        "min_occurrences": 2,
+        "window_hours": 72
+      },
+      "severity": "error",
+      "confidence_boost": 0.18,
+      "suggestion_category": "recovery"
+    },
+    {
+      "id": "milestone-exhaustion",
+      "name": "Milestone Exhaustion Pattern",
+      "description": "Detects when a milestone has many pending tickets with slow progress",
+      "category": "planning",
+      "signal": "milestone.pending_tickets > 5 AND completed_tickets growth < 1 per day",
+      "threshold": {
+        "min_pending": 5,
+        "max_completion_rate_per_day": 1
+      },
+      "severity": "warn",
+      "confidence_boost": 0.12,
+      "suggestion_category": "planning"
+    },
+    {
+      "id": "validation-degradation",
+      "name": "Validation Failure Escalation",
+      "description": "Detects increasing validation failure rate",
+      "category": "governance",
+      "signal": "validation.failed events increasing over time",
+      "threshold": {
+        "min_failures": 3,
+        "window_hours": 24
+      },
+      "severity": "critical",
+      "confidence_boost": 0.25,
+      "suggestion_category": "governance"
+    },
+    {
+      "id": "stale-locks",
+      "name": "Stale Lock Accumulation",
+      "description": "Detects when execution locks are not being released",
+      "category": "runtime",
+      "signal": "lock.locked = true with age > 10 minutes",
+      "threshold": {
+        "min_stale_locks": 1,
+        "max_age_minutes": 10
+      },
+      "severity": "warn",
+      "confidence_boost": 0.1,
+      "suggestion_category": "operational"
+    }
+  ]
+}
