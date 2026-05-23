@@ -1,0 +1,108 @@
+{
+  "id": "execution-lifecycle",
+  "version": "1.0.0",
+  "layer": 2,
+  "scope": "execution",
+  "canonical": true,
+  "status": "active",
+  "derives_from": ["runtime-governance-kernel", "CANONICAL_AUTHORITY_HIERARCHY"],
+  "narrative_ref": "execution-lifecycle.md",
+  "purpose": "Canonical state machine, mandatory headers, and mandatory footers for every execution unit.",
+  "state_machine": {
+    "states": [
+      { "id": "PLANNED", "terminal": false, "semantics": "Task exists in ticket system but has not been prepared for execution.", "entry_trigger": "Ticket created and validated against schema.", "exit_trigger": "Execution header written and dependencies satisfied." },
+      { "id": "READY", "terminal": false, "semantics": "Task is prepared, dependencies are resolved, and execution may begin.", "entry_trigger": "Dependencies complete; scope lock acquired; rollback point identified.", "exit_trigger": "EXECUTION_START header emitted." },
+      { "id": "EXECUTING", "terminal": false, "semantics": "Active work is in progress. File modifications, reasoning, and validation occur here.", "entry_trigger": "EXECUTION_START acknowledged.", "exit_trigger": "Work paused for checkpoint, blocked, failed, interrupted, or complete." },
+      { "id": "CHECKPOINT_PENDING", "terminal": false, "semantics": "Work is paused to persist state before continuing.", "entry_trigger": "Checkpoint trigger fired.", "exit_trigger": "Checkpoint written and validated." },
+      { "id": "BLOCKED", "terminal": false, "semantics": "Execution cannot continue due to an external dependency or unsatisfied precondition.", "entry_trigger": "Blocker detected during execution.", "exit_trigger": "Blocker resolved and scope re-validated." },
+      { "id": "FAILED", "terminal": true, "semantics": "Execution terminated without achieving acceptance criteria.", "entry_trigger": "Validation gate failed; unrecoverable error; drift detected.", "exit_trigger": "Rollback executed or failure escalated." },
+      { "id": "INTERRUPTED", "terminal": false, "semantics": "Execution halted by external event (context window, user stop, system failure).", "entry_trigger": "Context compaction; user interruption; process termination.", "exit_trigger": "Resume packet loaded; state reconstructed." },
+      { "id": "COMPLETE", "terminal": true, "semantics": "Execution terminated successfully with all acceptance criteria met.", "entry_trigger": "All validations passed; completion report generated.", "exit_trigger": "None — terminal state." },
+      { "id": "ROLLED_BACK", "terminal": true, "semantics": "Execution was reverted to a prior safe state.", "entry_trigger": "Rollback triggered by FAILURE, DRIFT, or user escalation.", "exit_trigger": "State restored; ticket returned to PLANNED or READY." }
+    ],
+    "transitions": [
+      { "from": "PLANNED", "to": "READY", "trigger": "dependencies_resolved", "guard": null, "description": "Execution header written and dependencies satisfied." },
+      { "from": "READY", "to": "EXECUTING", "trigger": "EXECUTION_START_emitted", "guard": null, "description": "Execution begins." },
+      { "from": "EXECUTING", "to": "CHECKPOINT_PENDING", "trigger": "checkpoint_trigger_fired", "guard": null, "description": "Checkpoint requested." },
+      { "from": "CHECKPOINT_PENDING", "to": "EXECUTING", "trigger": "checkpoint_validated", "guard": null, "description": "Resume from checkpoint." },
+      { "from": "EXECUTING", "to": "BLOCKED", "trigger": "blocker_detected", "guard": null, "description": "External dependency or precondition unsatisfied." },
+      { "from": "BLOCKED", "to": "EXECUTING", "trigger": "blocker_cleared", "guard": null, "description": "Blocker resolved." },
+      { "from": "EXECUTING", "to": "FAILED", "trigger": "unrecoverable_failure", "guard": null, "description": "Validation gate failed or drift detected." },
+      { "from": "EXECUTING", "to": "INTERRUPTED", "trigger": "external_halt", "guard": null, "description": "Context compaction, user stop, or system failure." },
+      { "from": "EXECUTING", "to": "COMPLETE", "trigger": "all_criteria_met", "guard": null, "description": "All acceptance criteria satisfied." },
+      { "from": "FAILED", "to": "ROLLED_BACK", "trigger": "rollback_executed", "guard": null, "description": "Revert to safe state." },
+      { "from": "INTERRUPTED", "to": "EXECUTING", "trigger": "resume_successful", "guard": null, "description": "Resume from interruption." },
+      { "from": "INTERRUPTED", "to": "READY", "trigger": "resume_failed", "guard": null, "description": "Re-plan required." },
+      { "from": "ROLLED_BACK", "to": "PLANNED", "trigger": "requeued", "guard": null, "description": "Re-queue for re-execution." }
+    ],
+    "forbidden_transitions": [
+      { "from": "PLANNED", "to": "EXECUTING", "reason": "Must pass through READY." },
+      { "from": "COMPLETE", "to": "*", "reason": "Terminal state. No exit." },
+      { "from": "FAILED", "to": "COMPLETE", "reason": "Must roll back first." },
+      { "from": "BLOCKED", "to": "COMPLETE", "reason": "Must resume executing first." }
+    ]
+  },
+  "invariants": [
+    { "id": "no_idle_after_validation", "expression": "validation_passed → state ≠ IDLE", "severity": "CRITICAL", "description": "An idle runtime after successful validation is a governance violation." },
+    { "id": "terminal_state_immutable", "expression": "state ∈ {COMPLETE, FAILED, ROLLED_BACK} → historical_state_immutable", "severity": "HIGH", "description": "Once a ticket reaches a terminal state, its execution history is immutable." },
+    { "id": "header_required", "expression": "state = EXECUTING → execution_header_present", "severity": "CRITICAL", "description": "Every execution must begin with an EXECUTION_START header." },
+    { "id": "footer_required", "expression": "state ∈ terminal → execution_footer_present", "severity": "CRITICAL", "description": "Every execution must end with an EXECUTION_COMPLETE footer." }
+  ],
+  "rules": [
+    { "id": "continuation_resolution_required", "condition": "state = PLANNED", "action": "run scripts/resolve-continuation.ts before execution", "severity": "CRITICAL", "description": "Execution must not begin without continuation resolution." },
+    { "id": "no_conversational_memory_start", "condition": "state = PLANNED", "action": "reject execution from conversational memory or improvised selection", "severity": "HIGH", "description": "Forbidden: starting execution from conversational memory without resolution." }
+  ],
+  "schemas": {
+    "execution_header": {
+      "type": "object",
+      "required": ["protocol_version", "timestamp", "task_id", "milestone", "surface", "scope", "dependencies", "estimated_risk", "rollback_available", "checkpoint_strategy", "acceptance_criteria", "resume_packet_loaded"],
+      "properties": {
+        "protocol_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "task_id": { "type": "string", "pattern": "^T[0-9]+\\.[0-9A-Z]+$" },
+        "milestone": { "type": "string", "pattern": "^M[0-9]+$" },
+        "domain": { "type": "string" },
+        "surface": { "type": "string", "enum": ["frontend", "backend", "shared", "fullstack", "infrastructure", "governance", "ci-cd"] },
+        "scope": { "type": "object", "properties": { "in": { "type": "array", "items": { "type": "string" }, "minItems": 1 }, "out": { "type": "array", "items": { "type": "string" } } } },
+        "dependencies": { "type": "object", "properties": { "resolved": { "type": "array", "items": { "type": "string" } }, "external": { "type": "array", "items": { "type": "string" } } } },
+        "estimated_risk": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+        "rollback_available": { "type": "boolean" },
+        "rollback_point": { "type": "string" },
+        "checkpoint_strategy": { "type": "string" },
+        "acceptance_criteria": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "contract_locks": { "type": "array", "items": { "type": "string" } },
+        "resume_packet_loaded": { "type": "boolean" },
+        "previous_checkpoint": { "type": "string" }
+      }
+    },
+    "execution_footer": {
+      "type": "object",
+      "required": ["protocol_version", "timestamp", "task_id", "status", "execution_duration_minutes", "files_created", "files_modified", "files_deleted", "validations_run", "blockers_encountered", "drift_detected", "resumable", "next_safe_action", "checkpoint_written", "governance_compliant", "completion_report_path"],
+      "properties": {
+        "protocol_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "task_id": { "type": "string", "pattern": "^T[0-9]+\\.[0-9A-Z]+$" },
+        "status": { "type": "string", "enum": ["PLANNED", "READY", "EXECUTING", "CHECKPOINT_PENDING", "BLOCKED", "FAILED", "INTERRUPTED", "COMPLETE", "ROLLED_BACK"] },
+        "execution_duration_minutes": { "type": "integer", "minimum": 0 },
+        "files_created": { "type": "array", "items": { "type": "string" } },
+        "files_modified": { "type": "array", "items": { "type": "string" } },
+        "files_deleted": { "type": "array", "items": { "type": "string" } },
+        "validations_run": { "type": "array", "items": { "type": "object", "properties": { "name": { "type": "string" }, "result": { "type": "string", "enum": ["PASSED", "FAILED", "SKIPPED"] }, "reason": { "type": "string" } } } },
+        "blockers_encountered": { "type": "array", "items": { "type": "string" } },
+        "drift_detected": { "type": "boolean" },
+        "drift_events": { "type": "array", "items": { "type": "string" } },
+        "resumable": { "type": "boolean" },
+        "next_safe_action": { "type": "string" },
+        "checkpoint_written": { "type": "boolean" },
+        "checkpoint_path": { "type": "string" },
+        "governance_compliant": { "type": "boolean" },
+        "completion_report_path": { "type": "string" }
+      }
+    }
+  },
+  "metadata": {
+    "created_at": "2026-05-22T23:50:00Z",
+    "updated_at": "2026-05-22T23:50:00Z",
+    "author": "governance-system"
+  }
+}

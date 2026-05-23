@@ -1,0 +1,42 @@
+{
+  "id": "state-mutation",
+  "version": "1.0.0",
+  "layer": 2,
+  "scope": "state",
+  "canonical": true,
+  "status": "active",
+  "derives_from": ["runtime-governance-kernel", "CANONICAL_AUTHORITY_HIERARCHY", "execution-lifecycle"],
+  "narrative_ref": "state-mutation.md",
+  "purpose": "Who and what may mutate active-execution.json. Prevent concurrent mutation chaos.",
+  "invariants": [
+    { "id": "golden_rule", "expression": "mutation_event ∈ permitted_events → lock_held ∧ execution_active", "severity": "CRITICAL", "description": "active-execution.json is the single source of truth. Only 5 events may mutate it. All other writes are protocol violations." },
+    { "id": "lock_before_mutate", "expression": "mutation(active-execution.json) → lock_held_by_mutator", "severity": "CRITICAL", "description": "Before any mutation of active-execution.json, the mutator must hold the lock." }
+  ],
+  "rules": [
+    { "id": "lock_acquisition_stale", "condition": "locked === false OR expires_at < now", "action": "allow_lock_acquisition", "severity": "HIGH", "description": "Stale lock recovery permitted." },
+    { "id": "lock_acquisition_active", "condition": "execution_active === false OR current_execution_is_lock_holder", "action": "allow_lock_acquisition", "severity": "HIGH", "description": "Lock may be acquired if no active execution or holder re-acquires." },
+    { "id": "lock_acquisition_ticket_exists", "condition": "ticket_exists_in_system", "action": "allow_lock_acquisition", "severity": "CRITICAL", "description": "Ticket must exist in ticket system." },
+    { "id": "lock_acquisition_dependencies", "condition": "all_dependencies_in_COMPLETE_status", "action": "allow_lock_acquisition", "severity": "CRITICAL", "description": "All ticket dependencies must be complete." },
+    { "id": "lock_release_terminal", "condition": "status ∈ {COMPLETE, FAILED, ROLLED_BACK}", "action": "release_lock_automatically", "severity": "HIGH", "description": "Lock released on terminal state transition." },
+    { "id": "lock_release_ttl", "condition": "TTL_expired AND no_heartbeat_15min", "action": "release_lock_automatically", "severity": "MEDIUM", "description": "Lock expires if no heartbeat in 15 minutes." },
+    { "id": "lock_release_override", "condition": "human_operator_explicit_release", "action": "release_lock_with_logging", "severity": "HIGH", "description": "Human override permitted, logged in drift-events/." }
+  ],
+  "schemas": {
+    "execution_lock": {
+      "type": "object",
+      "required": ["locked", "execution_id", "locked_at", "locked_by", "expires_at"],
+      "properties": {
+        "locked": { "type": "boolean" },
+        "execution_id": { "type": "string", "pattern": "^EXEC-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{3}$" },
+        "locked_at": { "type": "string", "format": "date-time" },
+        "locked_by": { "type": "string" },
+        "expires_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "metadata": {
+    "created_at": "2026-05-22T23:50:00Z",
+    "updated_at": "2026-05-22T23:50:00Z",
+    "author": "governance-system"
+  }
+}

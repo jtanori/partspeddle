@@ -1,0 +1,107 @@
+{
+  "id": "checkpoint",
+  "version": "1.0.0",
+  "layer": 2,
+  "scope": "recovery",
+  "canonical": true,
+  "status": "active",
+  "derives_from": ["runtime-governance-kernel", "CANONICAL_AUTHORITY_HIERARCHY", "execution-lifecycle"],
+  "narrative_ref": "checkpoint.md",
+  "purpose": "When checkpoints are written, what they contain, and how execution resumes from them.",
+  "triggers": [
+    { "id": "before_architecture_mutation", "category": "mandatory", "condition": "new directories or moved domains", "description": "Structural changes are hard to reverse." },
+    { "id": "before_large_refactor", "category": "mandatory", "condition": "refactor touching many files", "description": "Rollback without checkpoint is expensive." },
+    { "id": "after_milestone_completion", "category": "mandatory", "condition": "milestone reaches terminal state", "description": "Milestones are governance boundaries; state must persist." },
+    { "id": "every_10_files", "category": "mandatory", "condition": "files_modified_since_last_checkpoint >= 10", "description": "File count proxy for complexity and drift risk." },
+    { "id": "every_30_minutes", "category": "mandatory", "condition": "execution_time_since_last_checkpoint >= 30 min", "description": "Time-based guardrail against silent drift." },
+    { "id": "before_dependency_changes", "category": "mandatory", "condition": "adding/removing dependencies", "description": "Affects entire dependency graph." },
+    { "id": "before_db_migration", "category": "mandatory", "condition": "database migration execution", "description": "Migrations are irreversible without down-migration." },
+    { "id": "before_contract_lock_change", "category": "mandatory", "condition": "CONTRACT_LOCK status change", "description": "Critical governance boundary." },
+    { "id": "state_blocked", "category": "mandatory", "condition": "transition to BLOCKED", "description": "Blocked state must be resumable when blocker clears." },
+    { "id": "state_interrupted", "category": "mandatory", "condition": "transition to INTERRUPTED", "description": "Required for resume after external halt." },
+    { "id": "before_high_risk_deletion", "category": "optional", "condition": "destructive file deletion", "description": "Deletions are destructive." },
+    { "id": "after_complex_reasoning", "category": "optional", "condition": ">3 reasoning cycles without file modification", "description": "Checkpoint reasoning state." },
+    { "id": "user_request", "category": "optional", "condition": "human demands checkpoint", "description": "Human-in-the-loop may demand at any time." }
+  ],
+  "rules": [
+    { "id": "throttle_min_interval", "condition": "time_since_last_checkpoint < 5 minutes", "action": "skip non-mandatory checkpoint", "severity": "MEDIUM", "description": "Minimum interval 5 minutes (except INTERRUPTED, always immediate)." },
+    { "id": "throttle_max_files", "condition": "files_modified_since_last_checkpoint > 10", "action": "MUST pause and write checkpoint", "severity": "HIGH", "description": "Maximum un-checkpointed file modifications: 10." },
+    { "id": "throttle_max_time", "condition": "execution_time_since_last_checkpoint > 30 minutes", "action": "MUST pause and write checkpoint", "severity": "HIGH", "description": "Maximum un-checkpointed execution time: 30 minutes." }
+  ],
+  "invariants": [
+    { "id": "checkpoint_supersedes_memory", "expression": "checkpoint_exists → resume_from_checkpoint", "severity": "CRITICAL", "description": "latest-checkpoint.json is the sole resumability anchor. It supersedes conversational memory." },
+    { "id": "interrupted_always_checkpoints", "expression": "state = INTERRUPTED → checkpoint_emitted_immediately", "severity": "CRITICAL", "description": "Interrupted state must always trigger immediate checkpoint." }
+  ],
+  "schemas": {
+    "checkpoint_payload": {
+      "type": "object",
+      "required": ["CHECKPOINT"],
+      "properties": {
+        "CHECKPOINT": {
+          "type": "object",
+          "required": ["metadata", "execution_state", "completed_work", "pending_work", "modified_files_snapshot", "rollback_point", "unresolved_risks", "next_safe_resume_step", "resume_contract"],
+          "properties": {
+            "metadata": {
+              "type": "object",
+              "required": ["checkpoint_id", "protocol_version", "task_id", "milestone", "sequence_number", "timestamp", "trigger"],
+              "properties": {
+                "checkpoint_id": { "type": "string", "pattern": "^cp_[A-Z0-9\\._]+_[0-9]{8}_[0-9]{6}_[a-z]+$" },
+                "protocol_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+                "task_id": { "type": "string", "pattern": "^T[0-9]+\\.[0-9A-Z]+$" },
+                "milestone": { "type": "string", "pattern": "^M[0-9]+$" },
+                "sequence_number": { "type": "integer", "minimum": 1 },
+                "timestamp": { "type": "string", "format": "date-time" },
+                "trigger": { "type": "string", "enum": ["manual", "auto", "completion", "interruption", "drift", "heartbeat", "migration"] }
+              }
+            },
+            "execution_state": {
+              "type": "object",
+              "required": ["lifecycle_state", "phase", "current_surface"],
+              "properties": {
+                "lifecycle_state": { "type": "string", "enum": ["PLANNED", "READY", "EXECUTING", "CHECKPOINT_PENDING", "BLOCKED", "FAILED", "INTERRUPTED", "COMPLETE", "ROLLED_BACK"] },
+                "phase": { "type": "string" },
+                "current_surface": { "type": "string", "enum": ["backend", "frontend-rsc", "frontend-client", "shared", "infrastructure", "ci-cd", "fullstack", "governance"] },
+                "reasoning_cycles_since_last_checkpoint": { "type": "integer", "minimum": 0 },
+                "files_modified_since_last_checkpoint": { "type": "integer", "minimum": 0 }
+              }
+            },
+            "completed_work": {
+              "type": "object",
+              "required": ["files_created", "files_modified", "files_deleted", "validations_passed", "validations_failed", "validations_skipped"],
+              "properties": {
+                "files_created": { "type": "array", "items": { "type": "string" } },
+                "files_modified": { "type": "array", "items": { "type": "string" } },
+                "files_deleted": { "type": "array", "items": { "type": "string" } },
+                "validations_passed": { "type": "array", "items": { "type": "string" } },
+                "validations_failed": { "type": "array", "items": { "type": "string" } },
+                "validations_skipped": { "type": "array", "items": { "type": "string" } }
+              }
+            },
+            "pending_work": { "type": "array", "items": { "type": "string" } },
+            "modified_files_snapshot": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "path": { "type": "string" },
+                  "checksum": { "type": "string" },
+                  "lines_added": { "type": "integer" },
+                  "lines_removed": { "type": "integer" }
+                }
+              }
+            },
+            "rollback_point": { "type": "string" },
+            "unresolved_risks": { "type": "array", "items": { "type": "string" } },
+            "next_safe_resume_step": { "type": "string" },
+            "resume_contract": { "type": "string" }
+          }
+        }
+      }
+    }
+  },
+  "metadata": {
+    "created_at": "2026-05-22T23:50:00Z",
+    "updated_at": "2026-05-22T23:50:00Z",
+    "author": "governance-system"
+  }
+}

@@ -23,8 +23,9 @@ Eliminate authority fragmentation, drift risk, and contradictory agent interpret
 | Layer | Name | Location | Authority | Override Rule |
 |-------|------|----------|-----------|---------------|
 | 0 | **Schemas** | `project-management/schemas/`, `meta/schemas/` | Machine-parseable structural authority | Cannot be overridden by any text document |
+| 0.5 | **Protocol Definitions** | `meta/governance/protocols/*.json` | Machine-readable operational semantics | Generated artifacts (markdown, validators) derive from here |
 | 1 | **Runtime Kernel** | `project-governance/runtime/runtime-governance-kernel.md` | Execution authority — invariants, principles, escalation paths ONLY | Higher layers may extend but never contradict |
-| 2 | **Protocols** | `project-governance/protocols/*.md` | Behavior authority — operational specifics | Overrides kernel on operational specifics when canonical |
+| 2 | **Protocols** | `project-governance/protocols/*.md` | Behavior authority — operational specifics | Overrides kernel on operational specifics when canonical. **Generated from Layer 0.5** |
 | 3 | **Templates** | `project-governance/templates/` | Generation authority — artifact templates | Overrides protocols on artifact structure when canonical |
 | 4 | **Projections** | `project-governance/runtime/projections/` | Read-only operational views | Never mutative; derived from layers 0–3 |
 | 5 | **Human Guides** | `project-knowledge/`, `AGENTS.md` | Human-facing operational guidance | Subordinate to all other layers; may simplify but not contradict |
@@ -32,9 +33,10 @@ Eliminate authority fragmentation, drift risk, and contradictory agent interpret
 ### 2.1 Layer Precedence Rules
 
 1. **Lower layers override higher layers on specificity.** A Layer 2 protocol document that defines checkpoint triggers overrides a Layer 1 kernel statement about the same topic.
-2. **The kernel cannot contradict schemas.** If `ticket.schema.json` (Layer 0) requires a field, no protocol (Layer 2) may declare it optional.
-3. **Projections (Layer 4) are read-only.** They derive from canonical state and may never be treated as authority for behavior.
-4. **Human guides (Layer 5) are lossy.** They exist for human comprehension and may omit edge cases, but they must not introduce rules absent from layers 0–3.
+2. **JSON protocol definitions (Layer 0.5) are canonical for operational semantics.** The markdown protocols in Layer 2 are **generated reflections** of Layer 0.5. If a generated protocol contradicts the JSON definition, the JSON definition wins.
+3. **The kernel cannot contradict schemas.** If `ticket.schema.json` (Layer 0) requires a field, no protocol (Layer 2) may declare it optional.
+4. **Projections (Layer 4) are read-only.** They derive from canonical state and may never be treated as authority for behavior.
+5. **Human guides (Layer 5) are lossy.** They exist for human comprehension and may omit edge cases, but they must not introduce rules absent from layers 0–3.
 
 ### 2.2 Cross-Silo Supremacy
 
@@ -100,14 +102,22 @@ When document A supersedes document B:
 
 ## 4. Document Registry
 
-### 4.1 Layer 1 — Runtime Kernel
+### 4.1 Layer 0.5 — Protocol Definitions (JSON Canonical)
+
+| Document | Scope | Status | Generates |
+|----------|-------|--------|-----------|
+| `meta/governance/protocols/execution-lifecycle.json` | execution | active | `project-governance/protocols/execution-lifecycle.protocol.md`, `scripts/validators/protocol-execution-lifecycle.ts` |
+| `meta/governance/protocols/checkpoint.json` | recovery | active | `project-governance/protocols/checkpoint.protocol.md`, `scripts/validators/protocol-checkpoint.ts` |
+| `meta/governance/protocols/state-mutation.json` | state | active | `project-governance/protocols/state-mutation.protocol.md`, `scripts/validators/protocol-state-mutation.ts` |
+
+### 4.2 Layer 1 — Runtime Kernel
 
 | Document | Scope | Status | Derives From |
 |----------|-------|--------|--------------|
 | `runtime/runtime-governance-kernel.md` | execution | active | — |
 | `runtime/execution-modes.md` | execution | active | `runtime-governance-kernel.md` |
 
-### 4.2 Layer 2 — Protocols
+### 4.3 Layer 2 — Protocols
 
 | Document | Scope | Status | Derives From |
 |----------|-------|--------|--------------|
@@ -129,7 +139,7 @@ When document A supersedes document B:
 | `protocols/COMPLETION_REPORT_SCHEMA.md` | governance | active | `runtime-governance-kernel.md` |
 | `protocols/README.md` | guide | active | — |
 
-### 4.3 Deprecated / Merged Documents
+### 4.4 Deprecated / Merged Documents
 
 | Document | Status | Superseded By | Reason |
 |----------|--------|---------------|--------|
