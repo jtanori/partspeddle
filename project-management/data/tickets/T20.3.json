@@ -62,7 +62,7 @@
   ],
   "traceability": [
     {
-      "commit_hash": "ef97e05",
+      "commit_hash": "0f59407",
       "files_changed": [
         "meta/governance/events/schemas/governance-event.schema.json",
         "meta/governance/events/event-catalog.json",
