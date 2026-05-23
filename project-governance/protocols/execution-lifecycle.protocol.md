@@ -2,15 +2,14 @@
 authority:
   level: protocol
   layer: 2
-  canonical: true
-  supersedes:
-    -
+  canonical: false
+  supersedes: []
   derives_from:
     - runtime-governance-kernel
     - CANONICAL_AUTHORITY_HIERARCHY
   scope: execution
   status: active
-  version: "1.0.0"
+  version: 1.0.0
 ---
 
 # Execution Lifecycle Protocol

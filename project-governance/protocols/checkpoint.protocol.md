@@ -2,16 +2,15 @@
 authority:
   level: protocol
   layer: 2
-  canonical: true
-  supersedes:
-    -
+  canonical: false
+  supersedes: []
   derives_from:
     - runtime-governance-kernel
     - CANONICAL_AUTHORITY_HIERARCHY
     - execution-lifecycle
   scope: recovery
   status: active
-  version: "1.0.0"
+  version: 1.0.0
 ---
 
 # Checkpoint Protocol

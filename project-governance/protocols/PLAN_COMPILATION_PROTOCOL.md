@@ -3,14 +3,13 @@ authority:
   level: protocol
   layer: 2
   canonical: true
-  supersedes:
-    -
+  supersedes: []
   derives_from:
     - runtime-governance-kernel.md
     - ../adr/003-planning-orchestration.md
   scope: planning
   status: active
-  version: "1.0.0"
+  version: 1.0.0
 ---
 
 # Plan Compilation Protocol

@@ -3,13 +3,11 @@ authority:
   level: kernel
   layer: 1
   canonical: false
-  supersedes:
-    -
-  derives_from:
-    -
+  supersedes: []
+  derives_from: []
   scope: execution
   status: deprecated
-  version: "1.0.0"
+  version: 1.0.0
   superseded_by:
     - ../protocols/EXECUTION_AUTHORIZATION_PROTOCOL.md
     - ../protocols/EXECUTION_LIFECYCLE_PROTOCOL.md

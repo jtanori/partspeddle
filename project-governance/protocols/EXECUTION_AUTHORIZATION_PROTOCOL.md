@@ -3,14 +3,13 @@ authority:
   level: protocol
   layer: 2
   canonical: true
-  supersedes:
-    -
+  supersedes: []
   derives_from:
     - ../CANONICAL_AUTHORITY_HIERARCHY.md
     - ../runtime/runtime-governance-kernel.md
   scope: authorization
   status: active
-  version: "1.0.0"
+  version: 1.0.0
 ---
 
 # Execution Authorization Protocol

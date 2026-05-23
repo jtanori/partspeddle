@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/authority-declaration.schema.json",
+  "title": "VINTRACK Authority Declaration",
+  "description": "Schema for YAML frontmatter authority declarations in governance documents.",
+  "type": "object",
+  "required": ["authority"],
+  "properties": {
+    "authority": {
+      "type": "object",
+      "required": ["level", "layer", "canonical", "scope", "status", "version"],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["kernel", "protocol", "template", "projection", "guide"],
+          "description": "Document type within the authority hierarchy"
+        },
+        "layer": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5,
+          "description": "Authority hierarchy layer (0-5)"
+        },
+        "canonical": {
+          "type": "boolean",
+          "description": "Whether this is the current authority for its scope"
+        },
+        "supersedes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Documents this one replaces"
+        },
+        "superseded_by": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Documents that replace this one"
+        },
+        "derives_from": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Higher-layer documents this one extends"
+        },
+        "scope": {
+          "type": "string",
+          "enum": ["execution", "behavior", "state", "recovery", "authorization", "planning", "governance"],
+          "description": "Governance topic this document owns"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "deprecated", "draft", "superseded"],
+          "description": "Lifecycle state of the document itself"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "description": "Semver for document revision tracking"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}

@@ -3,13 +3,11 @@ authority:
   level: kernel
   layer: 1
   canonical: true
-  supersedes:
-    -
-  derives_from:
-    -
+  supersedes: []
+  derives_from: []
   scope: execution
   status: active
-  version: "1.0.0"
+  version: 1.0.0
 ---
 
 # VINTRACK Runtime Governance Kernel

@@ -3,13 +3,12 @@ authority:
   level: protocol
   layer: 2
   canonical: true
-  supersedes:
-    -
+  supersedes: []
   derives_from:
     - runtime-governance-kernel.md
   scope: governance
   status: active
-  version: "1.0.0"
+  version: 1.0.0
 ---
 
 # Heartbeat Policy

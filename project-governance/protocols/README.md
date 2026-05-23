@@ -3,13 +3,11 @@ authority:
   level: guide
   layer: 2
   canonical: true
-  supersedes:
-    -
-  derives_from:
-    -
+  supersedes: []
+  derives_from: []
   scope: governance
   status: active
-  version: "1.0.0"
+  version: 1.0.0
 ---
 
 # Runtime Governance Protocols
