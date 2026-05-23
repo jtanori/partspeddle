@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/suggestion-engine.schema.json",
+  "title": "VINTRACK Governance Suggestion",
+  "description": "Schema for governance suggestions. Every suggestion must include rationale, priority, confidence, and an actionable recipe.",
+  "type": "object",
+  "required": ["suggestion_id", "timestamp", "category", "title", "rationale", "priority", "confidence", "recipe", "deterministic_hash"],
+  "properties": {
+    "suggestion_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique suggestion identifier"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC generation timestamp"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["operational", "governance", "recovery", "planning", "deployment", "investigation"],
+      "description": "Suggestion category"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5,
+      "description": "Human-readable suggestion title"
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Why this suggestion was generated"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["P0", "P1", "P2", "P3"],
+      "description": "Priority level: P0=critical, P1=high, P2=medium, P3=low"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Confidence score 0.0–1.0"
+    },
+    "recipe": {
+      "type": "object",
+      "required": ["action", "steps"],
+      "properties": {
+        "action": {
+          "type": "string",
+          "description": "One-line actionable command or instruction"
+        },
+        "steps": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ordered list of steps to execute"
+        },
+        "prerequisites": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Conditions that must be true before executing"
+        },
+        "validation": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "How to verify the suggestion was applied correctly"
+        }
+      }
+    },
+    "suppressed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this suggestion was suppressed due to degraded state"
+    },
+    "suppression_reason": {
+      "type": ["string", "null"],
+      "description": "Why the suggestion was suppressed"
+    },
+    "source_signals": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Input signals that triggered this suggestion"
+    },
+    "deterministic_hash": {
+      "type": "string",
+      "description": "Hash of input signals for reproducibility verification"
+    }
+  },
+  "additionalProperties": false
+}

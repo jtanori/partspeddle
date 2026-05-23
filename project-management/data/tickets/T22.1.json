@@ -36,7 +36,20 @@
     "Investigation suggested after repeated failures",
     "Deterministic output for identical inputs"
   ],
-  "traceability": [],
+  "traceability": [
+    {
+      "commit_hash": "TBD",
+      "files_changed": [
+        "meta/governance/intelligence/suggestion-engine.schema.json",
+        "scripts/suggest-next-actions.ts",
+        "project-governance/intelligence/suggestions/tests/run-suggestion-tests.ts",
+        "package.json",
+        "meta/state/canonical-state.json"
+      ],
+      "description": "Implemented governance suggestion engine with 6 categories, deterministic generation, degraded-state suppression, rationale, priority, confidence, and recipes",
+      "timestamp": "2026-05-20T10:00:00Z"
+    }
+  ],
   "observability": {
     "metrics": ["suggestions_generated_per_day", "suggestion_acceptance_rate", "suppressed_suggestions_count"],
     "logs": [],
@@ -55,8 +68,8 @@
     }
   ],
   "estimated_hours": 5,
-  "status": "planned",
-  "assignee": null,
+  "status": "completed",
+  "assignee": "agent",
   "metadata": {
     "created_at": "2026-05-20T09:00:00Z",
     "updated_at": "2026-05-20T09:00:00Z",
