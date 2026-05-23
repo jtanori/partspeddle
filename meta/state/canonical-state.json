@@ -3,38 +3,49 @@
   "protocol_version": "1.0.0",
   "authority": "meta/state/canonical-state.json",
   "principle": "This file is the ONLY mutable runtime state. All other state files are derived projections.",
-  "updated_at": "2026-05-22T16:45:00Z",
-  "execution": null,
+  "updated_at": "2026-05-20T09:15:00Z",
+  "execution": {
+    "execution_id": "EXEC-2026-05-20-001",
+    "task_id": "T21.1",
+    "milestone_id": "M21",
+    "status": "EXECUTING",
+    "started_at": "2026-05-20T09:00:00Z"
+  },
   "last_execution": {
-    "execution_id": "EXEC-2026-05-22-005",
-    "task_id": "T11.6",
-    "milestone_id": "M11",
+    "execution_id": "EXEC-2026-05-20-000",
+    "task_id": "T20.3",
+    "milestone_id": "M20",
     "status": "COMPLETE",
-    "started_at": "2026-05-22T15:00:00Z",
-    "completed_at": "2026-05-22T16:45:00Z"
+    "started_at": "2026-05-20T08:00:00Z",
+    "completed_at": "2026-05-20T08:50:00Z"
   },
   "milestone": {
-    "id": "M11",
-    "title": "Governance Root Normalization",
-    "status": "completed",
-    "phase": 11,
-    "completed_tickets": ["T11.1", "T11.2", "T11.3", "T11.4", "T11.5", "T11.6"],
-    "pending_tickets": []
+    "id": "M21",
+    "title": "Runtime Observability and Diagnostics",
+    "status": "in_progress",
+    "phase": 21,
+    "completed_tickets": [],
+    "pending_tickets": ["T21.2", "T21.3"]
   },
-  "ticket": null,
+  "ticket": {
+    "id": "T21.1",
+    "title": "Structured Runtime Telemetry",
+    "status": "in_progress",
+    "assignee": "agent"
+  },
   "lock": {
-    "locked": false,
-    "execution_id": null,
-    "locked_at": null,
-    "locked_by": null,
-    "expires_at": null
+    "locked": true,
+    "execution_id": "EXEC-2026-05-20-001",
+    "locked_at": "2026-05-20T09:00:00Z",
+    "locked_by": "agent",
+    "expires_at": "2026-05-20T10:00:00Z"
   },
   "repository": {
-    "branch": "feature/T11.x-governance-runtime",
+    "branch": "main",
     "base_branch": "main",
     "worktree_clean": false,
-    "head_commit": "79e5cfe",
-    "promotion_status": "pending"
+    "head_commit": "5a06852",
+    "promotion_status": "clean"
   },
   "governance": {
     "heartbeat_policy": "ACTIVE",
@@ -56,17 +67,12 @@
       "drift_state": 1.0,
       "unresolved_blockers": 1.0,
       "heartbeat_age": 1.0,
-      "projection_freshness": 0.9
+      "projection_freshness": 0.95
     }
   },
   "drift": {
     "level": "NONE",
-    "reason": "M11 fully complete. Registry architecture and planning state machine specified. 101 tickets, 19 milestones, 0 validation errors."
+    "reason": "M20 complete. M21-M25 planned. T21.1 in progress. 123 tickets, 26 milestones, 0 validation errors."
   },
-  "safe_exit": {
-    "exit_reason": "completion",
-    "exited_at": "2026-05-22T16:45:00Z",
-    "exit_checkpoint_id": "cp_T11.6_20260522_164500_complete",
-    "lock_released": true
-  }
+  "safe_exit": null
 }

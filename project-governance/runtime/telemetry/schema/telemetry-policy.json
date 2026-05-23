@@ -1,0 +1,46 @@
+{
+  "version": "1.0.0",
+  "description": "Runtime telemetry stream policy",
+  "format": "ndjson",
+  "encoding": "utf-8",
+  "line_ending": "\n",
+  "retention": {
+    "strategy": "time_based",
+    "immutable": true,
+    "max_age_days": {
+      "debug": 30,
+      "info": 90,
+      "warn": 365,
+      "error": 365,
+      "critical": -1
+    },
+    "max_size_mb": 500,
+    "archive_after_days": 30,
+    "archive_format": "gz"
+  },
+  "streams": [
+    {
+      "name": "default",
+      "path": "project-governance/runtime/telemetry/logs/default.ndjson",
+      "severity_filter": ["info", "warn", "error", "critical"],
+      "categories": ["*"]
+    },
+    {
+      "name": "errors",
+      "path": "project-governance/runtime/telemetry/errors/errors.ndjson",
+      "severity_filter": ["error", "critical"],
+      "categories": ["*"]
+    },
+    {
+      "name": "traces",
+      "path": "project-governance/runtime/telemetry/traces/traces.ndjson",
+      "severity_filter": ["debug", "info", "warn", "error", "critical"],
+      "categories": ["execution", "runtime", "diagnostics"]
+    }
+  ],
+  "validation": {
+    "schema": "project-governance/runtime/telemetry/schema/telemetry-event.schema.json",
+    "reject_on_invalid": true,
+    "max_payload_size_bytes": 32768
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/telemetry-event.schema.json",
+  "title": "VINTRACK Runtime Telemetry Event",
+  "description": "Schema for runtime telemetry events. Telemetry captures operational metrics, execution metadata, and diagnostics — distinct from governance events which capture governance actions.",
+  "type": "object",
+  "required": ["event_id", "timestamp", "category", "name", "value"],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique telemetry event identifier"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC event timestamp"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["execution", "planning", "validation", "recovery", "governance", "runtime", "diagnostics"],
+      "description": "Telemetry category"
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z]+(_[a-z]+)*$",
+      "description": "Metric name, e.g. execution_duration_ms"
+    },
+    "value": {
+      "description": "Metric value (numeric, string, or object)"
+    },
+    "unit": {
+      "type": ["string", "null"],
+      "description": "Unit of measurement, e.g. ms, bytes, percent"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["debug", "info", "warn", "error", "critical"],
+      "description": "Event severity"
+    },
+    "execution_id": {
+      "type": ["string", "null"],
+      "pattern": "^EXEC-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{3}$",
+      "description": "Associated execution ID"
+    },
+    "session_id": {
+      "type": ["string", "null"],
+      "description": "Agent session identifier"
+    },
+    "correlation_id": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "Traces distributed operation"
+    },
+    "source": {
+      "type": "string",
+      "description": "Component that emitted the telemetry"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional context (labels, dimensions)"
+    }
+  },
+  "additionalProperties": false
+}
