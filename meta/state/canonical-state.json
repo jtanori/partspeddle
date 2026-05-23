@@ -3,48 +3,37 @@
   "protocol_version": "1.0.0",
   "authority": "meta/state/canonical-state.json",
   "principle": "This file is the ONLY mutable runtime state. All other state files are derived projections.",
-  "updated_at": "2026-05-20T09:15:00Z",
-  "execution": {
-    "execution_id": "EXEC-2026-05-20-001",
-    "task_id": "T21.1",
-    "milestone_id": "M21",
-    "status": "EXECUTING",
-    "started_at": "2026-05-20T09:00:00Z"
-  },
+  "updated_at": "2026-05-20T09:45:00Z",
+  "execution": null,
   "last_execution": {
-    "execution_id": "EXEC-2026-05-20-000",
-    "task_id": "T20.3",
-    "milestone_id": "M20",
+    "execution_id": "EXEC-2026-05-20-003",
+    "task_id": "T21.3",
+    "milestone_id": "M21",
     "status": "COMPLETE",
-    "started_at": "2026-05-20T08:00:00Z",
-    "completed_at": "2026-05-20T08:50:00Z"
+    "started_at": "2026-05-20T09:00:00Z",
+    "completed_at": "2026-05-20T09:45:00Z"
   },
   "milestone": {
     "id": "M21",
     "title": "Runtime Observability and Diagnostics",
-    "status": "in_progress",
+    "status": "completed",
     "phase": 21,
-    "completed_tickets": [],
-    "pending_tickets": ["T21.2", "T21.3"]
+    "completed_tickets": ["T21.1", "T21.2", "T21.3"],
+    "pending_tickets": []
   },
-  "ticket": {
-    "id": "T21.1",
-    "title": "Structured Runtime Telemetry",
-    "status": "in_progress",
-    "assignee": "agent"
-  },
+  "ticket": null,
   "lock": {
-    "locked": true,
-    "execution_id": "EXEC-2026-05-20-001",
-    "locked_at": "2026-05-20T09:00:00Z",
-    "locked_by": "agent",
-    "expires_at": "2026-05-20T10:00:00Z"
+    "locked": false,
+    "execution_id": null,
+    "locked_at": null,
+    "locked_by": null,
+    "expires_at": null
   },
   "repository": {
     "branch": "main",
     "base_branch": "main",
     "worktree_clean": false,
-    "head_commit": "5a06852",
+    "head_commit": "8de0d5e",
     "promotion_status": "clean"
   },
   "governance": {
@@ -60,19 +49,24 @@
     "repository_governance": "ACTIVE"
   },
   "confidence": {
-    "score": 0.98,
+    "score": 0.99,
     "factors": {
       "checkpoint_freshness": 1.0,
       "validation_coverage": 1.0,
       "drift_state": 1.0,
       "unresolved_blockers": 1.0,
       "heartbeat_age": 1.0,
-      "projection_freshness": 0.95
+      "projection_freshness": 0.98
     }
   },
   "drift": {
     "level": "NONE",
-    "reason": "M20 complete. M21-M25 planned. T21.1 in progress. 123 tickets, 26 milestones, 0 validation errors."
+    "reason": "M21 complete. M22 next. 123 tickets, 26 milestones, 0 validation errors."
   },
-  "safe_exit": null
+  "safe_exit": {
+    "exit_reason": "milestone_complete",
+    "exited_at": "2026-05-20T09:45:00Z",
+    "exit_checkpoint_id": "cp_M21_20260520_094500_complete",
+    "lock_released": true
+  }
 }

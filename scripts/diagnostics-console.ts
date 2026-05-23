@@ -1,0 +1,225 @@
+#!/usr/bin/env tsx
+/**
+ * diagnostics-console.ts
+ * Runtime diagnostic console. CLI-first implementation.
+ * Operates using structured telemetry and governance events only.
+ */
+import { readFileSync, existsSync, mkdirSync, writeFileSync } from "fs";
+import { resolve, join } from "path";
+
+const GOV_STREAMS_DIR = resolve("project-governance/runtime/events/streams");
+const TELEMETRY_DIR = resolve("project-governance/runtime/telemetry/logs");
+const DIAGNOSTICS_DIR = resolve("project-governance/runtime/diagnostics");
+const CANONICAL_STATE_PATH = resolve("meta/state/canonical-state.json");
+
+interface DiagnosticFilters {
+  severity?: string;
+  category?: string;
+  execution_id?: string;
+  since?: string;
+}
+
+interface GovernanceEvent {
+  timestamp: string;
+  event_type: string;
+  severity: string;
+  category: string;
+  execution_id?: string | null;
+  payload?: Record<string, unknown>;
+}
+
+interface TelemetryEvent {
+  timestamp: string;
+  category: string;
+  name: string;
+  value: unknown;
+  severity: string;
+  execution_id?: string | null;
+}
+
+function readNdjson(path: string): Record<string, unknown>[] {
+  if (!existsSync(path)) return [];
+  const text = readFileSync(path, "utf-8");
+  return text.split("\n").filter(l => l.trim() !== "").map(line => {
+    try { return JSON.parse(line); } catch { return null; }
+  }).filter(Boolean) as Record<string, unknown>[];
+}
+
+function loadGovEvents(streamName: string): GovernanceEvent[] {
+  return readNdjson(join(GOV_STREAMS_DIR, `${streamName}.ndjson`)) as GovernanceEvent[];
+}
+
+function loadTelemetry(streamName: string): TelemetryEvent[] {
+  return readNdjson(join(TELEMETRY_DIR, `${streamName}.ndjson`)) as TelemetryEvent[];
+}
+
+function loadCanonicalState(): Record<string, unknown> | null {
+  if (!existsSync(CANONICAL_STATE_PATH)) return null;
+  return JSON.parse(readFileSync(CANONICAL_STATE_PATH, "utf-8"));
+}
+
+function formatSeverity(sev: string): string {
+  const colors: Record<string, string> = {
+    debug: "\x1b[90m",
+    info: "\x1b[32m",
+    warn: "\x1b[33m",
+    error: "\x1b[31m",
+    critical: "\x1b[35m",
+  };
+  const reset = "\x1b[0m";
+  return `${colors[sev] || ""}[${sev.toUpperCase()}]${reset}`;
+}
+
+export function runDiagnostics(filters: DiagnosticFilters = {}): {
+  summary: string;
+  details: string;
+  failures: Array<{ source: string; event: GovernanceEvent | TelemetryEvent }>;
+  reportPath: string;
+} {
+  const lines: string[] = [];
+  const failures: Array<{ source: string; event: GovernanceEvent | TelemetryEvent }> = [];
+
+  lines.push("╔══════════════════════════════════════════════════════════════╗");
+  lines.push("║           VINTRACK RUNTIME DIAGNOSTIC CONSOLE                ║");
+  lines.push("╚══════════════════════════════════════════════════════════════╝");
+  lines.push("");
+
+  // ── Canonical State ──
+  const state = loadCanonicalState();
+  lines.push("─── Canonical State ───");
+  if (state) {
+    const exec = state.execution as Record<string, unknown> | null;
+    if (exec) {
+      lines.push(`Active Execution: ${exec.execution_id} (${exec.status})`);
+      lines.push(`Task: ${exec.task_id} | Milestone: ${exec.milestone_id}`);
+    } else {
+      lines.push("No active execution");
+    }
+    const drift = state.drift as Record<string, unknown>;
+    lines.push(`Drift Level: ${drift.level} — ${drift.reason}`);
+  } else {
+    lines.push("Canonical state not found");
+  }
+  lines.push("");
+
+  // ── Governance Events ──
+  lines.push("─── Governance Events ───");
+  const govStreams = ["default", "errors", "validation"];
+  let govTotal = 0;
+  for (const stream of govStreams) {
+    const events = loadGovEvents(stream);
+    const filtered = events.filter(e => {
+      if (filters.severity && e.severity !== filters.severity) return false;
+      if (filters.category && e.category !== filters.category) return false;
+      if (filters.execution_id && e.execution_id !== filters.execution_id) return false;
+      if (filters.since && e.timestamp < filters.since) return false;
+      return true;
+    });
+    govTotal += filtered.length;
+    for (const e of filtered.slice(-5)) {
+      const sev = formatSeverity(e.severity);
+      const execId = e.execution_id ? ` | ${e.execution_id}` : "";
+      lines.push(`  ${sev} ${e.timestamp} | ${e.event_type} | ${e.category}${execId}`);
+      if (e.severity === "error" || e.severity === "critical") {
+        failures.push({ source: `governance:${stream}`, event: e });
+      }
+    }
+  }
+  lines.push(`  Total events (filtered): ${govTotal}`);
+  lines.push("");
+
+  // ── Telemetry ──
+  lines.push("─── Telemetry ───");
+  const telStreams = ["default", "traces"];
+  let telTotal = 0;
+  for (const stream of telStreams) {
+    const events = loadTelemetry(stream);
+    const filtered = events.filter(e => {
+      if (filters.severity && e.severity !== filters.severity) return false;
+      if (filters.category && e.category !== filters.category) return false;
+      if (filters.execution_id && e.execution_id !== filters.execution_id) return false;
+      if (filters.since && e.timestamp < filters.since) return false;
+      return true;
+    });
+    telTotal += filtered.length;
+    for (const e of filtered.slice(-5)) {
+      const sev = formatSeverity(e.severity);
+      const execId = e.execution_id ? ` | ${e.execution_id}` : "";
+      lines.push(`  ${sev} ${e.timestamp} | ${e.name}=${e.value} | ${e.category}${execId}`);
+      if (e.severity === "error" || e.severity === "critical") {
+        failures.push({ source: `telemetry:${stream}`, event: e });
+      }
+    }
+  }
+  lines.push(`  Total events (filtered): ${telTotal}`);
+  lines.push("");
+
+  // ── Drift Detection ──
+  lines.push("─── Drift Detection ───");
+  const now = new Date().toISOString();
+  const lastEventTime = [...loadGovEvents("default"), ...loadTelemetry("default")]
+    .map(e => e.timestamp)
+    .sort()
+    .pop();
+  if (lastEventTime) {
+    const ageMinutes = (new Date(now).getTime() - new Date(lastEventTime).getTime()) / 60000;
+    if (ageMinutes > 5) {
+      lines.push(`⚠️  DRIFT: Last event ${ageMinutes.toFixed(1)} minutes ago (threshold: 5 min)`);
+      failures.push({ source: "drift", event: { timestamp: now, event_type: "drift.detected", severity: "warn", category: "diagnostics" } });
+    } else {
+      lines.push(`✅ Last event ${ageMinutes.toFixed(1)} minutes ago`);
+    }
+  } else {
+    lines.push("ℹ️  No events in streams");
+  }
+  lines.push("");
+
+  // ── Failure Summary ──
+  lines.push("─── Failure Summary ───");
+  if (failures.length === 0) {
+    lines.push("✅ No failures detected");
+  } else {
+    const bySeverity: Record<string, number> = {};
+    for (const f of failures) {
+      bySeverity[f.event.severity] = (bySeverity[f.event.severity] || 0) + 1;
+    }
+    for (const [sev, count] of Object.entries(bySeverity)) {
+      lines.push(`  ${formatSeverity(sev)} ${count} occurrence(s)`);
+    }
+  }
+  lines.push("");
+  lines.push("──────────────────────────────────────────────────────────────");
+
+  const summary = lines.join("\n");
+  const details = summary;
+
+  ensureDir(DIAGNOSTICS_DIR);
+  const reportPath = join(DIAGNOSTICS_DIR, `diagnostic-report-${new Date().toISOString().replace(/[:.]/g, "-")}.txt`);
+  writeFileSync(reportPath, summary);
+
+  return { summary, details, failures, reportPath };
+}
+
+function ensureDir(dir: string): void {
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+}
+
+export { loadGovEvents, loadTelemetry, loadCanonicalState };
+
+// CLI
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const args = process.argv.slice(2);
+  const filters: DiagnosticFilters = {};
+  for (let i = 0; i < args.length; i += 2) {
+    switch (args[i]) {
+      case "--severity": filters.severity = args[i + 1]; break;
+      case "--category": filters.category = args[i + 1]; break;
+      case "--execution": filters.execution_id = args[i + 1]; break;
+      case "--since": filters.since = args[i + 1]; break;
+    }
+  }
+  const result = runDiagnostics(filters);
+  console.log(result.summary);
+  console.log(`\nReport saved: ${result.reportPath}`);
+  process.exit(result.failures.length > 0 ? 1 : 0);
+}
