@@ -1,0 +1,67 @@
+{
+  "id": "T23.1",
+  "milestone_id": "M23",
+  "title": "Execution State Machine",
+  "domain": "Shared",
+  "capability": "Governance Orchestration",
+  "purpose": "Implement deterministic execution state machine to formalize execution transitions, eliminate invalid runtime states, and support deterministic orchestration.",
+  "dependencies": ["T22.2", "T22.3"],
+  "architectural_constraints": [
+    "9 states defined with valid transitions only",
+    "No direct state mutation outside the state machine",
+    "All transitions logged to governance event bus"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/governance/protocols/execution-state-machine.json",
+      "description": "State machine protocol definition",
+      "type": "file"
+    },
+    {
+      "path": "scripts/execution-state.ts",
+      "description": "State machine runtime",
+      "type": "script"
+    },
+    {
+      "path": "scripts/validators/protocol-execution-state-machine.ts",
+      "description": "State machine protocol validator",
+      "type": "script"
+    }
+  ],
+  "acceptance_criteria": [
+    "9 states with valid transitions defined: idle, planning, validating, executing, blocked, recovering, consolidating, deploying, archived",
+    "Transition guards block invalid transitions",
+    "Failure transitions defined for all non-terminal states",
+    "Recovery transitions defined for blocked and recovering states",
+    "All state mutations emit governance events",
+    "No runtime state mutation outside canonical transitions"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": ["state_transition_count", "invalid_transition_blocks", "state_machine_liveness"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "State machine too rigid for edge cases",
+      "mitigation": "Emergency transitions with mandatory audit, recovery paths for all states",
+      "severity": "high"
+    },
+    {
+      "scenario": "State mutation bypasses state machine",
+      "mitigation": "Enforcement engine validates all mutations, CI gates detect direct mutations",
+      "severity": "critical"
+    }
+  ],
+  "estimated_hours": 6,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-20T09:00:00Z",
+    "updated_at": "2026-05-20T09:00:00Z",
+    "version": 1,
+    "governance_risk_classification": "CRITICAL",
+    "blocks_scaling": true
+  }
+}

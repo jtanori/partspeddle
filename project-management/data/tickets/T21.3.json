@@ -1,0 +1,67 @@
+{
+  "id": "T21.3",
+  "milestone_id": "M21",
+  "title": "Runtime Diagnostic Console",
+  "domain": "Shared",
+  "capability": "Governance Runtime",
+  "purpose": "Implement governance runtime diagnostics console to expose runtime state visibility, surface operational anomalies, reduce debugging friction, and support governance operators.",
+  "dependencies": ["T21.1", "T21.2"],
+  "architectural_constraints": [
+    "CLI-first implementation with no advanced UI",
+    "Must operate using structured telemetry only",
+    "Must not bypass governance event bus"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/diagnostics-console.ts",
+      "description": "CLI diagnostic interface",
+      "type": "script"
+    },
+    {
+      "path": "scripts/diagnostics-health.ts",
+      "description": "Health check runner",
+      "type": "script"
+    },
+    {
+      "path": "project-governance/runtime/diagnostics/",
+      "description": "Diagnostic output directory",
+      "type": "directory"
+    }
+  ],
+  "acceptance_criteria": [
+    "Displays active execution state",
+    "Surfaces validation failures with severity",
+    "Shows checkpoint state and stale locks",
+    "Detects runtime drift when heartbeat timeout exceeds 5 minutes",
+    "Filters by severity, category, and execution_id",
+    "Generates failure summary reports"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": ["diagnostic_query_latency_ms", "anomalies_detected_per_day"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Diagnostics console reads stale data",
+      "mitigation": "Timestamp validation on all queried streams, freshness warnings",
+      "severity": "medium"
+    },
+    {
+      "scenario": "Console becomes write bottleneck",
+      "mitigation": "Read-only queries, no locks held during display",
+      "severity": "low"
+    }
+  ],
+  "estimated_hours": 4,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-20T09:00:00Z",
+    "updated_at": "2026-05-20T09:00:00Z",
+    "version": 1,
+    "governance_risk_classification": "MEDIUM",
+    "blocks_scaling": false
+  }
+}

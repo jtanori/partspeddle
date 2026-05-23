@@ -718,5 +718,289 @@
       "priority": "infrastructure_critical",
       "blocks_scaling": true
     }
+  },
+  {
+    "id": "M21",
+    "phase": 21,
+    "title": "Runtime Observability and Diagnostics",
+    "purpose": "Operationalize visibility. Without observability, debugging remains fragile, governance remains opaque, suggestions remain weak, and runtime continuity remains unreliable.",
+    "trust_principle": "A system that cannot observe itself cannot debug itself.",
+    "scope": {
+      "in": [
+        "Structured telemetry infrastructure",
+        "Runtime replay system",
+        "Diagnostic console"
+      ],
+      "out": [
+        "Visualization dashboards",
+        "External observability integrations",
+        "ML-based anomaly detection"
+      ]
+    },
+    "exit_criteria": [
+      "All 7 telemetry categories emit structured events",
+      "Replay reconstructs any execution from event stream plus checkpoints",
+      "Diagnostic console displays active execution state and surfaces anomalies",
+      "npm run telemetry:validate passes"
+    ],
+    "tickets": [
+      "T21.1",
+      "T21.2",
+      "T21.3"
+    ],
+    "dependencies": [
+      "M20"
+    ],
+    "downstream_impact": "Enables M22 (Governance Intelligence). Blocks any system that requires runtime visibility.",
+    "estimated_duration_days": 5,
+    "status": "planned",
+    "ticket_paths": {
+      "T21.1": {
+        "path": "project-management/data/tickets/T21.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T21.2": {
+        "path": "project-management/data/tickets/T21.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T21.3": {
+        "path": "project-management/data/tickets/T21.3.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "metadata": {
+      "created_at": "2026-05-20T09:00:00Z",
+      "updated_at": "2026-05-20T09:00:00Z",
+      "version": 1,
+      "lane": "governance",
+      "priority": "infrastructure_critical",
+      "blocks_scaling": true
+    }
+  },
+  {
+    "id": "M22",
+    "phase": 22,
+    "title": "Governance Intelligence and Suggestions",
+    "purpose": "Introduce adaptive operational intelligence. The system becomes context-aware, proactive, and operator-assistive.",
+    "trust_principle": "Intelligence without observability is hallucination.",
+    "scope": {
+      "in": [
+        "Suggestion engine core",
+        "Recipe execution framework",
+        "Workflow pattern intelligence"
+      ],
+      "out": [
+        "ML systems",
+        "Autonomous decision-making",
+        "Unsupervised AI execution"
+      ]
+    },
+    "exit_criteria": [
+      "Suggestion engine generates deterministic recommendations with rationale",
+      "Recipe framework supports 7 categories with prerequisites and rollback",
+      "Pattern intelligence detects recurring operational sequences",
+      "No harmful suggestions during degraded states"
+    ],
+    "tickets": [
+      "T22.1",
+      "T22.2",
+      "T22.3"
+    ],
+    "dependencies": [
+      "M21"
+    ],
+    "downstream_impact": "Enables M23 (Deterministic Execution Engine). Provides intelligence substrate for orchestration.",
+    "estimated_duration_days": 5,
+    "status": "planned",
+    "ticket_paths": {
+      "T22.1": {
+        "path": "project-management/data/tickets/T22.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T22.2": {
+        "path": "project-management/data/tickets/T22.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T22.3": {
+        "path": "project-management/data/tickets/T22.3.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "metadata": {
+      "created_at": "2026-05-20T09:00:00Z",
+      "updated_at": "2026-05-20T09:00:00Z",
+      "version": 1,
+      "lane": "governance",
+      "priority": "infrastructure_critical",
+      "blocks_scaling": true
+    }
+  },
+  {
+    "id": "M23",
+    "phase": 23,
+    "title": "Deterministic Execution Engine",
+    "purpose": "Evolve governance into runtime orchestration. Formalize execution transitions, eliminate invalid runtime states.",
+    "trust_principle": "Orchestration without state machines is chaos.",
+    "scope": {
+      "in": [
+        "Execution state machine",
+        "Execution locking and concurrency",
+        "Governance enforcement engine"
+      ],
+      "out": [
+        "Distributed orchestration",
+        "Multi-cluster coordination",
+        "Workflow automation"
+      ]
+    },
+    "exit_criteria": [
+      "9 execution states with valid transitions enforced",
+      "Locking prevents overlapping mutations with stale detection",
+      "Enforcement engine blocks invalid transitions and emits violations",
+      "All state mutations logged to governance event bus"
+    ],
+    "tickets": [
+      "T23.1",
+      "T23.2",
+      "T23.3"
+    ],
+    "dependencies": [
+      "M22"
+    ],
+    "downstream_impact": "Enables M24 (Autonomous Governance Operations). Provides orchestration substrate for autonomy.",
+    "estimated_duration_days": 5,
+    "status": "planned",
+    "ticket_paths": {
+      "T23.1": {
+        "path": "project-management/data/tickets/T23.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T23.2": {
+        "path": "project-management/data/tickets/T23.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T23.3": {
+        "path": "project-management/data/tickets/T23.3.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "metadata": {
+      "created_at": "2026-05-20T09:00:00Z",
+      "updated_at": "2026-05-20T09:00:00Z",
+      "version": 1,
+      "lane": "governance",
+      "priority": "infrastructure_critical",
+      "blocks_scaling": true
+    }
+  },
+  {
+    "id": "M24",
+    "phase": 24,
+    "title": "Autonomous Governance Operations",
+    "purpose": "The system becomes semi-autonomous. Self-healing mechanisms and scheduled audits reduce manual remediation.",
+    "trust_principle": "Autonomy without auditability is liability.",
+    "scope": {
+      "in": [
+        "Governance self-healing",
+        "Autonomous runtime audits"
+      ],
+      "out": [
+        "Full autonomy",
+        "Unsupervised AI execution",
+        "Autonomous policy mutation"
+      ]
+    },
+    "exit_criteria": [
+      "Self-healing repairs predictable inconsistencies with audit trails",
+      "Autonomous audits detect drift and integrity violations",
+      "All healing actions reversible with snapshots",
+      "Audit reports include severity scores and remediation"
+    ],
+    "tickets": [
+      "T24.1",
+      "T24.2"
+    ],
+    "dependencies": [
+      "M23"
+    ],
+    "downstream_impact": "Enables M25 (Deployment Governance). Provides health substrate for deployment readiness.",
+    "estimated_duration_days": 4,
+    "status": "planned",
+    "ticket_paths": {
+      "T24.1": {
+        "path": "project-management/data/tickets/T24.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T24.2": {
+        "path": "project-management/data/tickets/T24.2.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "metadata": {
+      "created_at": "2026-05-20T09:00:00Z",
+      "updated_at": "2026-05-20T09:00:00Z",
+      "version": 1,
+      "lane": "governance",
+      "priority": "infrastructure_critical",
+      "blocks_scaling": true
+    }
+  },
+  {
+    "id": "M25",
+    "phase": 25,
+    "title": "Deployment Governance",
+    "purpose": "Prevent deployment chaos. Enforce operational readiness before release.",
+    "trust_principle": "Deployment without governance is surrender.",
+    "scope": {
+      "in": [
+        "Deployment readiness engine"
+      ],
+      "out": [
+        "CI/CD pipeline changes",
+        "Infrastructure provisioning",
+        "Release automation"
+      ]
+    },
+    "exit_criteria": [
+      "Deployment readiness validates all blockers before release",
+      "Readiness report is deterministic and human-readable",
+      "Emergency bypass available with mandatory audit",
+      "Release manifest generated on readiness"
+    ],
+    "tickets": [
+      "T25.1"
+    ],
+    "dependencies": [
+      "M24"
+    ],
+    "downstream_impact": "Feature milestones resume after M25. Governance wave complete.",
+    "estimated_duration_days": 2,
+    "status": "planned",
+    "ticket_paths": {
+      "T25.1": {
+        "path": "project-management/data/tickets/T25.1.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "metadata": {
+      "created_at": "2026-05-20T09:00:00Z",
+      "updated_at": "2026-05-20T09:00:00Z",
+      "version": 1,
+      "lane": "governance",
+      "priority": "infrastructure_critical",
+      "blocks_scaling": true
+    }
   }
 ]

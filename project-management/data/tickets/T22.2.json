@@ -1,0 +1,77 @@
+{
+  "id": "T22.2",
+  "milestone_id": "M22",
+  "title": "Recipe Execution Framework",
+  "domain": "Shared",
+  "capability": "Governance Intelligence",
+  "purpose": "Implement executable governance recipe framework to standardize operational workflows, reduce procedural ambiguity, support deterministic recovery, and enable guided execution.",
+  "dependencies": ["T22.1"],
+  "architectural_constraints": [
+    "Machine-readable first: JSON is canonical source",
+    "Markdown documentation generated from canonical recipe definitions",
+    "Recipes must support prerequisites, validation, steps, recovery, and rollback"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/governance/recipes/schema/recipe.schema.json",
+      "description": "Recipe schema definition",
+      "type": "schema"
+    },
+    {
+      "path": "meta/governance/recipes/",
+      "description": "Canonical recipe definitions in JSON",
+      "type": "directory"
+    },
+    {
+      "path": "scripts/execute-recipe.ts",
+      "description": "Recipe executor CLI",
+      "type": "script"
+    },
+    {
+      "path": "scripts/generate-recipe-md.ts",
+      "description": "Markdown reflection generator from JSON recipes",
+      "type": "script"
+    },
+    {
+      "path": "project-governance/recipes/",
+      "description": "Generated markdown reflections",
+      "type": "directory"
+    }
+  ],
+  "acceptance_criteria": [
+    "7 recipe categories defined: planning, implementation, recovery, investigations, runtime health, governance repair, deployment readiness",
+    "Recipe schema validates all recipes",
+    "Markdown reflections generated deterministically from JSON",
+    "Recipe executor validates prerequisites before execution",
+    "Recovery paths defined for all non-trivial recipes",
+    "Rollback guidance included for state-mutating recipes"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": ["recipes_executed", "recipe_success_rate", "recipe_validation_failures"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Recipe execution mutates state without rollback",
+      "mitigation": "Mandatory rollback guidance for state-mutating recipes, snapshot before execution",
+      "severity": "high"
+    },
+    {
+      "scenario": "Recipe schema drift breaks executor",
+      "mitigation": "Schema versioning, backward compatibility checks, validator CI gate",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 6,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-20T09:00:00Z",
+    "updated_at": "2026-05-20T09:00:00Z",
+    "version": 1,
+    "governance_risk_classification": "HIGH",
+    "blocks_scaling": true
+  }
+}

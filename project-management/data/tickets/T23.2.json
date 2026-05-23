@@ -1,0 +1,67 @@
+{
+  "id": "T23.2",
+  "milestone_id": "M23",
+  "title": "Execution Locking and Concurrency",
+  "domain": "Shared",
+  "capability": "Governance Orchestration",
+  "purpose": "Implement deterministic execution locking infrastructure to prevent runtime corruption, prevent overlapping mutations, and support multi-agent governance safety.",
+  "dependencies": ["T23.1"],
+  "architectural_constraints": [
+    "Append-only lock events",
+    "Stale lock detection with heartbeat under 10 minutes",
+    "Lock recovery requires audit trail"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/execution-lock.ts",
+      "description": "Lock manager CLI",
+      "type": "script"
+    },
+    {
+      "path": "project-governance/runtime/locks/",
+      "description": "Lock event logs directory",
+      "type": "directory"
+    },
+    {
+      "path": "scripts/detect-stale-locks.ts",
+      "description": "Stale lock detector",
+      "type": "script"
+    }
+  ],
+  "acceptance_criteria": [
+    "Deterministic lock acquisition using first-requester-wins",
+    "Lease expiration with configurable TTL",
+    "Stale lock detection within 1 minute of expiry",
+    "Lock recovery creates audit trail",
+    "Interrupted session locks recoverable",
+    "Lock history append-only and queryable"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": ["locks_held", "stale_locks_detected", "lock_recovery_count"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Lock system becomes single point of failure",
+      "mitigation": "Append-only logs recoverable from filesystem, no external dependencies",
+      "severity": "medium"
+    },
+    {
+      "scenario": "Race condition in lock acquisition",
+      "mitigation": "Atomic filesystem operations, deterministic ordering by timestamp",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 5,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-20T09:00:00Z",
+    "updated_at": "2026-05-20T09:00:00Z",
+    "version": 1,
+    "governance_risk_classification": "HIGH",
+    "blocks_scaling": true
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "id": "T25.1",
+  "milestone_id": "M25",
+  "title": "Deployment Readiness Engine",
+  "domain": "Shared",
+  "capability": "Governance Deployment",
+  "purpose": "Implement deployment governance validation system to prevent unsafe deployments, enforce operational readiness, and validate governance integrity before release.",
+  "dependencies": ["T24.2"],
+  "architectural_constraints": [
+    "Deployment readiness is a governed state transition",
+    "Must not block hotfixes: emergency bypass with audit",
+    "Readiness report must be deterministic"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/check-deployment-readiness.ts",
+      "description": "Readiness checker CLI",
+      "type": "script"
+    },
+    {
+      "path": "meta/governance/protocols/deployment-readiness.json",
+      "description": "Deployment readiness protocol definition",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/runtime/deployment/",
+      "description": "Readiness reports and manifests directory",
+      "type": "directory"
+    }
+  ],
+  "acceptance_criteria": [
+    "Milestone exhaustion checked",
+    "Unresolved blockers surfaced",
+    "Validation health verified",
+    "Runtime integrity confirmed",
+    "Governance consistency validated",
+    "Audit cleanliness verified",
+    "Deployment readiness report generated",
+    "Deployment blockers listed with remediation guidance",
+    "Release manifest generated on readiness"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": ["readiness_checks_run", "deployments_blocked", "readiness_score"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Deployment readiness blocks legitimate hotfixes",
+      "mitigation": "Emergency bypass with mandatory audit trail, expedited review path",
+      "severity": "high"
+    },
+    {
+      "scenario": "Readiness criteria drift from operational reality",
+      "mitigation": "Criteria versioned with protocols, regular review of blocker thresholds",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 4,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-20T09:00:00Z",
+    "updated_at": "2026-05-20T09:00:00Z",
+    "version": 1,
+    "governance_risk_classification": "HIGH",
+    "blocks_scaling": true
+  }
+}

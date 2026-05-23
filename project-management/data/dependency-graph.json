@@ -160,6 +160,46 @@
       "rationale": "Governance enforcement requires stabilized governance root (M11) and runtime foundations (M1)",
       "title": "Governance Enforcement Stabilization",
       "critical_path": true
+    },
+    {
+      "id": "M21",
+      "depends_on": ["M20"],
+      "relationship": "sequential",
+      "rationale": "Observability requires stabilized governance enforcement substrate",
+      "title": "Runtime Observability and Diagnostics",
+      "critical_path": true
+    },
+    {
+      "id": "M22",
+      "depends_on": ["M21"],
+      "relationship": "sequential",
+      "rationale": "Intelligence requires telemetry and diagnostics substrate",
+      "title": "Governance Intelligence and Suggestions",
+      "critical_path": true
+    },
+    {
+      "id": "M23",
+      "depends_on": ["M22"],
+      "relationship": "sequential",
+      "rationale": "Orchestration requires intelligence and suggestion substrate",
+      "title": "Deterministic Execution Engine",
+      "critical_path": true
+    },
+    {
+      "id": "M24",
+      "depends_on": ["M23"],
+      "relationship": "sequential",
+      "rationale": "Autonomy requires deterministic orchestration substrate",
+      "title": "Autonomous Governance Operations",
+      "critical_path": true
+    },
+    {
+      "id": "M25",
+      "depends_on": ["M24"],
+      "relationship": "sequential",
+      "rationale": "Deployment governance requires autonomous operations substrate",
+      "title": "Deployment Governance",
+      "critical_path": true
     }
   ],
   "domain_events": [
@@ -612,6 +652,78 @@
       "depends_on": [
         "T20.2"
       ],
+      "status": "planned"
+    },
+    {
+      "ticket_id": "T21.1",
+      "milestone_id": "M21",
+      "depends_on": ["T20.3"],
+      "status": "planned"
+    },
+    {
+      "ticket_id": "T21.2",
+      "milestone_id": "M21",
+      "depends_on": ["T21.1"],
+      "status": "planned"
+    },
+    {
+      "ticket_id": "T21.3",
+      "milestone_id": "M21",
+      "depends_on": ["T21.1", "T21.2"],
+      "status": "planned"
+    },
+    {
+      "ticket_id": "T22.1",
+      "milestone_id": "M22",
+      "depends_on": ["T21.3"],
+      "status": "planned"
+    },
+    {
+      "ticket_id": "T22.2",
+      "milestone_id": "M22",
+      "depends_on": ["T22.1"],
+      "status": "planned"
+    },
+    {
+      "ticket_id": "T22.3",
+      "milestone_id": "M22",
+      "depends_on": ["T22.1"],
+      "status": "planned"
+    },
+    {
+      "ticket_id": "T23.1",
+      "milestone_id": "M23",
+      "depends_on": ["T22.2", "T22.3"],
+      "status": "planned"
+    },
+    {
+      "ticket_id": "T23.2",
+      "milestone_id": "M23",
+      "depends_on": ["T23.1"],
+      "status": "planned"
+    },
+    {
+      "ticket_id": "T23.3",
+      "milestone_id": "M23",
+      "depends_on": ["T23.1", "T23.2"],
+      "status": "planned"
+    },
+    {
+      "ticket_id": "T24.1",
+      "milestone_id": "M24",
+      "depends_on": ["T23.3"],
+      "status": "planned"
+    },
+    {
+      "ticket_id": "T24.2",
+      "milestone_id": "M24",
+      "depends_on": ["T24.1"],
+      "status": "planned"
+    },
+    {
+      "ticket_id": "T25.1",
+      "milestone_id": "M25",
+      "depends_on": ["T24.2"],
       "status": "planned"
     }
   ]

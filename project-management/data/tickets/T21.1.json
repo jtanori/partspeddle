@@ -1,0 +1,83 @@
+{
+  "id": "T21.1",
+  "milestone_id": "M21",
+  "title": "Structured Runtime Telemetry",
+  "domain": "Shared",
+  "capability": "Governance Runtime",
+  "purpose": "Implement deterministic runtime telemetry infrastructure to eliminate invisible execution failures, establish structured operational diagnostics, and support runtime replay and execution tracing.",
+  "dependencies": ["T20.3"],
+  "architectural_constraints": [
+    "Telemetry uses NDJSON append-only format consistent with T20.3 event bus",
+    "All runtime operations must emit telemetry",
+    "Deterministic timestamp handling using ISO-8601 UTC",
+    "No visualization dashboards in this ticket"
+  ],
+  "deliverables": [
+    {
+      "path": "project-governance/runtime/telemetry/schema/",
+      "description": "Telemetry event schemas",
+      "type": "directory"
+    },
+    {
+      "path": "project-governance/runtime/telemetry/logs/",
+      "description": "Structured NDJSON log streams",
+      "type": "directory"
+    },
+    {
+      "path": "project-governance/runtime/telemetry/errors/",
+      "description": "Structured error serialization output",
+      "type": "directory"
+    },
+    {
+      "path": "project-governance/runtime/telemetry/traces/",
+      "description": "Execution trace snapshots",
+      "type": "directory"
+    },
+    {
+      "path": "scripts/emit-telemetry.ts",
+      "description": "Telemetry emitter CLI",
+      "type": "script"
+    },
+    {
+      "path": "scripts/validate-telemetry.ts",
+      "description": "Telemetry validation runner",
+      "type": "script"
+    }
+  ],
+  "acceptance_criteria": [
+    "All 7 telemetry categories emit structured events",
+    "Correlation IDs propagate across execution boundaries",
+    "Retention policy enforces 90-day info, 1-year warn/error, indefinite critical",
+    "Deterministic timestamps with no local time or DST ambiguity",
+    "npm run telemetry:validate passes",
+    "Telemetry does not duplicate governance event bus events"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": ["telemetry_events_per_minute", "telemetry_stream_sizes", "correlation_id_coverage_percent"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Telemetry volume overwhelms disk",
+      "mitigation": "Stream rotation, compression, retention enforcement",
+      "severity": "high"
+    },
+    {
+      "scenario": "Telemetry duplicates governance event bus events",
+      "mitigation": "Telemetry focuses on operational metrics; governance events focus on governance actions",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 6,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-20T09:00:00Z",
+    "updated_at": "2026-05-20T09:00:00Z",
+    "version": 1,
+    "governance_risk_classification": "HIGH",
+    "blocks_scaling": true
+  }
+}

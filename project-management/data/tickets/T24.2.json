@@ -1,0 +1,68 @@
+{
+  "id": "T24.2",
+  "milestone_id": "M24",
+  "title": "Autonomous Runtime Audits",
+  "domain": "Shared",
+  "capability": "Governance Autonomy",
+  "purpose": "Implement scheduled runtime governance audits to continuously verify runtime health, detect governance drift, and detect integrity violations.",
+  "dependencies": ["T24.1"],
+  "architectural_constraints": [
+    "Audits must not impact runtime performance above 5 percent CPU",
+    "Audit reports must be human-readable",
+    "Severity scores must be deterministic"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/audit-runtime.ts",
+      "description": "Audit runner CLI",
+      "type": "script"
+    },
+    {
+      "path": "project-governance/runtime/audits/",
+      "description": "Audit reports directory",
+      "type": "directory"
+    },
+    {
+      "path": "meta/governance/protocols/audit-policy.json",
+      "description": "Audit protocol definition",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "6 audit categories run on schedule: schema integrity, dependency integrity, milestone consistency, runtime continuity, projection validity, event consistency",
+    "Schema integrity validated against canonical schemas",
+    "Dependency integrity checks catch missing references",
+    "Milestone consistency validated",
+    "Projection validity checked",
+    "Event consistency verified with no gaps",
+    "Audit reports include severity scores and remediation suggestions"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": ["audits_run_per_day", "violations_detected", "audit_execution_time_ms"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Audit performance degrades runtime",
+      "mitigation": "Resource limits, background execution, throttling during peak load",
+      "severity": "medium"
+    },
+    {
+      "scenario": "Audit false positives overwhelm operators",
+      "mitigation": "Severity thresholds, deduplication, trend-based alerting only",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 4,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-20T09:00:00Z",
+    "updated_at": "2026-05-20T09:00:00Z",
+    "version": 1,
+    "governance_risk_classification": "MEDIUM",
+    "blocks_scaling": false
+  }
+}

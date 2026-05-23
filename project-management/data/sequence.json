@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generated_at": "2026-05-19T03:36:13.382Z",
-  "timeline_days": 20,
+  "timeline_days": 42,
   "sprints": [
     {
       "id": "S1",
@@ -261,8 +261,125 @@
           "Architecture Gate"
         ]
       }
+    },
+  {
+    "id": "S7",
+    "name": "Observability + Intelligence",
+    "days": {
+      "start": 21,
+      "end": 28
+    },
+    "batches": [
+      {
+        "id": "G",
+        "scope": "M21 Telemetry + Replay + Diagnostics",
+        "execution_mode": "sequential",
+        "agents": 1,
+        "review_gate": "Architecture Gate",
+        "tickets": [
+          "T21.1",
+          "T21.2",
+          "T21.3"
+        ]
+      },
+      {
+        "id": "H",
+        "scope": "M22 Suggestions + Recipes + Patterns",
+        "execution_mode": "sequential",
+        "agents": 1,
+        "review_gate": "Architecture Gate",
+        "tickets": [
+          "T22.1",
+          "T22.2",
+          "T22.3"
+        ]
+      }
+    ],
+    "checkpoint": {
+      "criteria": [
+        "Telemetry validates against schema",
+        "Replay reconstructs last execution",
+        "Suggestions generate deterministically"
+      ],
+      "gates": [
+        "Architecture Gate"
+      ]
     }
-  ],
+  },
+  {
+    "id": "S8",
+    "name": "Orchestration",
+    "days": {
+      "start": 29,
+      "end": 35
+    },
+    "batches": [
+      {
+        "id": "I",
+        "scope": "M23 State Machine + Locking + Enforcement",
+        "execution_mode": "sequential",
+        "agents": 1,
+        "review_gate": "Trust Gate",
+        "tickets": [
+          "T23.1",
+          "T23.2",
+          "T23.3"
+        ]
+      }
+    ],
+    "checkpoint": {
+      "criteria": [
+        "State machine blocks invalid transitions",
+        "Locks prevent overlapping mutations",
+        "Enforcement catches violations"
+      ],
+      "gates": [
+        "Trust Gate"
+      ]
+    }
+  },
+  {
+    "id": "S9",
+    "name": "Autonomy + Deployment",
+    "days": {
+      "start": 36,
+      "end": 42
+    },
+    "batches": [
+      {
+        "id": "J",
+        "scope": "M24 Self-Healing + Audits",
+        "execution_mode": "sequential",
+        "agents": 1,
+        "review_gate": "Trust Gate",
+        "tickets": [
+          "T24.1",
+          "T24.2"
+        ]
+      },
+      {
+        "id": "K",
+        "scope": "M25 Deployment Readiness",
+        "execution_mode": "sequential",
+        "agents": 1,
+        "review_gate": "Trust Gate",
+        "tickets": [
+          "T25.1"
+        ]
+      }
+    ],
+    "checkpoint": {
+      "criteria": [
+        "Self-healing repairs stale locks",
+        "Audits detect drift",
+        "Deployment readiness blocks unsafe releases"
+      ],
+      "gates": [
+        "Trust Gate"
+      ]
+    }
+  }
+],
   "parallelization_rules": [
     {
       "parallel": "M1 + M2 schema",

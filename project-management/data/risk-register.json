@@ -286,6 +286,120 @@
         "accept": "Descope plan"
       },
       "status": "open"
+    },
+    {
+      "id": "R16",
+      "category": "Operations",
+      "description": "Telemetry volume overwhelms storage",
+      "scenario": "High-frequency telemetry emits exceed disk capacity or IOPS limits",
+      "likelihood": "Medium",
+      "impact": "High",
+      "severity": "P2",
+      "mitigation": "Retention policies, stream rotation, compression, severity-based sampling",
+      "owner": "Operations",
+      "trigger": "Telemetry disk usage exceeds 80 percent",
+      "response": {
+        "avoid": "Size limits per stream",
+        "mitigate": "Rotation + compression",
+        "transfer": "",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R17",
+      "category": "Architecture",
+      "description": "Replay system becomes source of truth drift",
+      "scenario": "Replay interpretation diverges from actual execution semantics",
+      "likelihood": "Medium",
+      "impact": "Critical",
+      "severity": "P1",
+      "mitigation": "Replay is strictly read-only; integrity checksums on all source data; never mutative",
+      "owner": "Architecture",
+      "trigger": "Replay reconstruction produces different outcomes",
+      "response": {
+        "avoid": "Read-only guarantee",
+        "mitigate": "Integrity checksums",
+        "transfer": "",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R18",
+      "category": "Implementation",
+      "description": "Suggestion engine produces harmful recommendations",
+      "scenario": "Suggestions guide operators toward destructive actions during degraded states",
+      "likelihood": "Medium",
+      "impact": "High",
+      "severity": "P2",
+      "mitigation": "Degraded-state suppression, confidence thresholds, human review gate for high-impact suggestions",
+      "owner": "Architecture",
+      "trigger": "Suggestion with confidence below threshold or during degraded state",
+      "response": {
+        "avoid": "State-aware suppression",
+        "mitigate": "Confidence thresholds",
+        "transfer": "Human review gate",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R19",
+      "category": "Architecture",
+      "description": "State machine too rigid for edge cases",
+      "scenario": "Valid emergency recovery blocked by strict transition guards",
+      "likelihood": "High",
+      "impact": "Medium",
+      "severity": "P2",
+      "mitigation": "Emergency transitions with mandatory audit, recovery paths for all states",
+      "owner": "Architecture",
+      "trigger": "Emergency recovery attempt fails due to transition guard",
+      "response": {
+        "avoid": "Recovery path whitelist",
+        "mitigate": "Emergency transitions with audit",
+        "transfer": "",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R20",
+      "category": "Operations",
+      "description": "Self-healing creates cascading failures",
+      "scenario": "Automated repair triggers secondary failures in dependent subsystems",
+      "likelihood": "Low",
+      "impact": "Critical",
+      "severity": "P1",
+      "mitigation": "Reversibility requirement, snapshot before healing, human approval for destructive actions",
+      "owner": "Operations",
+      "trigger": "Healing action causes new anomalies within 5 minutes",
+      "response": {
+        "avoid": "Snapshot before healing",
+        "mitigate": "Reversibility enforcement",
+        "transfer": "Human approval",
+        "accept": ""
+      },
+      "status": "open"
+    },
+    {
+      "id": "R21",
+      "category": "Operations",
+      "description": "Deployment readiness blocks legitimate hotfixes",
+      "scenario": "Critical production issue cannot be patched because readiness gate is not met",
+      "likelihood": "Medium",
+      "impact": "High",
+      "severity": "P2",
+      "mitigation": "Emergency bypass with mandatory audit trail, expedited review path",
+      "owner": "Operations",
+      "trigger": "Hotfix required while readiness gate is red",
+      "response": {
+        "avoid": "Clear emergency criteria",
+        "mitigate": "Bypass with audit",
+        "transfer": "Human approval",
+        "accept": ""
+      },
+      "status": "open"
     }
   ]
 }
