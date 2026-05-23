@@ -1,8 +1,8 @@
 {
   "id": "T0.5.1",
-  "milestone_id": "M0.5",
+  "milestone_id": "M0",
   "title": "Missing External Dependency Orchestration",
-  "domain": "Infrastructure",
+  "domain": "Shared",
   "capability": "Test Runtime",
   "purpose": "Identify and resolve the root cause of test execution failures. Initial perception was 'Vitest hangs on ALL execution.' Diagnostic investigation revealed three distinct root causes: (1) npx vitest hangs due to npm update checks, (2) vmThreads pool deadlocks on Node 24 + macOS, (3) Redis-dependent tests timeout when Docker offline.",
   "dependencies": ["T1.1"],
@@ -16,12 +16,12 @@
     {
       "path": "project-governance/diagnostics/T0.5.1-failure-reproduction-matrix.md",
       "description": "Documented reproduction matrix: commands, hang timing, CPU behavior, worker behavior",
-      "type": "document"
+      "type": "doc"
     },
     {
       "path": "project-governance/diagnostics/T0.5.1-runtime-surface-audit.md",
       "description": "Audit of Vitest, Vite, Next.js, React, Node versions and config interactions",
-      "type": "document"
+      "type": "doc"
     },
     {
       "path": "tests/lib/infra-preflight.ts",

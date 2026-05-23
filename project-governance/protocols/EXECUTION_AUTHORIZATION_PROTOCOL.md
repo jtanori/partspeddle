@@ -1,6 +1,21 @@
+---
+authority:
+  level: protocol
+  layer: 2
+  canonical: true
+  supersedes:
+    -
+  derives_from:
+    - ../CANONICAL_AUTHORITY_HIERARCHY.md
+    - ../runtime/runtime-governance-kernel.md
+  scope: authorization
+  status: active
+  version: "1.0.0"
+---
+
 # Execution Authorization Protocol
 
-> **Authority:** `runtime-governance-kernel.md`  
+> **Authority:** `CANONICAL_AUTHORITY_HIERARCHY.md` Layer 2 → `runtime-governance-kernel.md`  
 > **Purpose:** Prevent unauthorized execution. Distinguish informational interaction from execution authorization.  
 > **Version:** 1.0.0  
 > **Status:** Active

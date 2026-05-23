@@ -1,3 +1,18 @@
+---
+authority:
+  level: protocol
+  layer: 2
+  canonical: true
+  supersedes:
+    -
+  derives_from:
+    - ../CANONICAL_AUTHORITY_HIERARCHY.md
+    - ../runtime/runtime-governance-kernel.md
+  scope: recovery
+  status: active
+  version: "1.0.0"
+---
+
 # Checkpoint / Resume Protocol
 
 > **Authority:** `EXECUTION_LIFECYCLE_PROTOCOL.md` Section 5, `runtime-governance-kernel.md` Section 3  

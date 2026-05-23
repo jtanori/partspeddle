@@ -1,3 +1,17 @@
+---
+authority:
+  level: protocol
+  layer: 2
+  canonical: true
+  supersedes:
+    -
+  derives_from:
+    - runtime-governance-kernel.md
+  scope: governance
+  status: active
+  version: "1.0.0"
+---
+
 # Token Efficiency Protocol
 
 > **Authority:** `runtime-governance-kernel.md`  

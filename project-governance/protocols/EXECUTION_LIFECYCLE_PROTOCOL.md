@@ -1,6 +1,21 @@
+---
+authority:
+  level: protocol
+  layer: 2
+  canonical: true
+  supersedes:
+    -
+  derives_from:
+    - ../CANONICAL_AUTHORITY_HIERARCHY.md
+    - ../runtime/runtime-governance-kernel.md
+  scope: execution
+  status: active
+  version: "1.0.0"
+---
+
 # Execution Lifecycle Protocol
 
-> **Authority:** `runtime-governance-kernel.md` Section 3  
+> **Authority:** `CANONICAL_AUTHORITY_HIERARCHY.md` Layer 2 → `runtime-governance-kernel.md` Section 3  
 > **Scope:** Universal execution wrapper for all agent work. **Nothing executes outside this lifecycle.**  
 > **Version:** 1.0.0  
 > **Status:** Active

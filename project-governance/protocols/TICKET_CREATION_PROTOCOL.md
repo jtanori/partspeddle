@@ -1,3 +1,17 @@
+---
+authority:
+  level: protocol
+  layer: 2
+  canonical: true
+  supersedes:
+    -
+  derives_from:
+    - runtime-governance-kernel.md
+  scope: planning
+  status: active
+  version: "1.0.0"
+---
+
 # Ticket Creation Protocol
 
 > **Authority:** `meta/state/canonical-state.json`  

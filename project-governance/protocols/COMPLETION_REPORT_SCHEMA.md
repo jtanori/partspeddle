@@ -1,3 +1,17 @@
+---
+authority:
+  level: protocol
+  layer: 2
+  canonical: true
+  supersedes:
+    -
+  derives_from:
+    - runtime-governance-kernel.md
+  scope: governance
+  status: active
+  version: "1.0.0"
+---
+
 # Completion Report Schema
 
 > **Authority:** `EXECUTION_LIFECYCLE_PROTOCOL.md` Section 4  

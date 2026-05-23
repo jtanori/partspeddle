@@ -1,3 +1,18 @@
+---
+authority:
+  level: protocol
+  layer: 2
+  canonical: true
+  supersedes:
+    -
+  derives_from:
+    - ../CANONICAL_AUTHORITY_HIERARCHY.md
+    - ../runtime/runtime-governance-kernel.md
+  scope: state
+  status: active
+  version: "1.0.0"
+---
+
 # State Mutation Rules
 
 > **Authority:** `EXECUTION_LIFECYCLE_PROTOCOL.md`, `runtime-governance-kernel.md` Section 3  

@@ -1,6 +1,34 @@
+---
+authority:
+  level: kernel
+  layer: 1
+  canonical: false
+  supersedes:
+    -
+  derives_from:
+    -
+  scope: execution
+  status: deprecated
+  version: "1.0.0"
+  superseded_by:
+    - ../protocols/EXECUTION_AUTHORIZATION_PROTOCOL.md
+    - ../protocols/EXECUTION_LIFECYCLE_PROTOCOL.md
+---
+
 # continuation-policy.md
 
-## Autonomous Continuation Rules
+> **DEPRECATED** — This document is superseded by `EXECUTION_AUTHORIZATION_PROTOCOL.md` and `EXECUTION_LIFECYCLE_PROTOCOL.md` as of 2026-05-22.
+>
+> **Reason:** The auto-continuation semantics in this document contradicted `EXECUTION_AUTHORIZATION_PROTOCOL.md`, which requires explicit execution authorization. The canonical authority hierarchy (see `CANONICAL_AUTHORITY_HIERARCHY.md`) resolves this conflict in favor of explicit authorization.
+>
+> **Migration:**
+> - For authorization gates → `EXECUTION_AUTHORIZATION_PROTOCOL.md`
+> - For phase transitions and completion rules → `EXECUTION_LIFECYCLE_PROTOCOL.md`
+> - For checkpoint/resume → `CHECKPOINT_PROTOCOL.md` + `SAFE_EXIT_PROTOCOL.md`
+
+---
+
+## Autonomous Continuation Rules (DEPRECATED — DO NOT USE)
 
 When a ticket reaches acceptance criteria completion:
 
@@ -22,7 +50,7 @@ When a ticket reaches acceptance criteria completion:
 
 ---
 
-## Incidental Failure Policy
+## Incidental Failure Policy (DEPRECATED — DO NOT USE)
 
 The following are NON-BLOCKING unless explicitly declared blocking in dependency-graph.json:
 
@@ -40,7 +68,7 @@ Instead:
 
 ---
 
-## Autonomous Ticket Routing
+## Autonomous Ticket Routing (DEPRECATED — DO NOT USE)
 
 After ticket completion:
 
@@ -54,7 +82,7 @@ No human intervention required unless governance escalation triggers.
 
 ---
 
-## Scope Expansion Policy
+## Scope Expansion Policy (DEPRECATED — DO NOT USE)
 
 Agents are prohibited from:
 
@@ -71,7 +99,7 @@ Unless:
 
 ---
 
-## Governance Escalation Triggers
+## Governance Escalation Triggers (DEPRECATED — DO NOT USE)
 
 Pause execution ONLY if:
 
@@ -87,7 +115,7 @@ Otherwise continue autonomously.
 
 ---
 
-## Completion Output Requirements
+## Completion Output Requirements (DEPRECATED — DO NOT USE)
 
 After every ticket:
 
@@ -100,4 +128,3 @@ Required outputs:
 * deferred remediation manifest (if applicable)
 
 Then continue automatically.
-

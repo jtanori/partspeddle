@@ -1,3 +1,18 @@
+---
+authority:
+  level: protocol
+  layer: 2
+  canonical: true
+  supersedes:
+    -
+  derives_from:
+    - ../CANONICAL_AUTHORITY_HIERARCHY.md
+    - ../runtime/runtime-governance-kernel.md
+  scope: recovery
+  status: active
+  version: "1.0.0"
+---
+
 # Drift Recovery Protocol
 
 > **Authority:** `HEARTBEAT_POLICY.md` Section 4.2, `EXECUTION_LIFECYCLE_PROTOCOL.md` Section 6.1  

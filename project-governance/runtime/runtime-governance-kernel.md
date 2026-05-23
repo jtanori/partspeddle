@@ -1,8 +1,24 @@
+---
+authority:
+  level: kernel
+  layer: 1
+  canonical: true
+  supersedes:
+    -
+  derives_from:
+    -
+  scope: execution
+  status: active
+  version: "1.0.0"
+---
+
 # VINTRACK Runtime Governance Kernel
 
 > **The Constitution**  
+> **Authority:** `CANONICAL_AUTHORITY_HIERARCHY.md` Layer 1  
 > Location: `project-governance/runtime/runtime-governance-kernel.md`  
-> Purpose: immutable governance rules, startup sequence, operational invariants, orchestration doctrine.
+> Purpose: immutable governance rules, startup sequence, operational invariants, orchestration doctrine.  
+> **Role:** Principles and escalation paths only. Operational specifics live in Layer 2 protocols.
 
 ---
 
@@ -128,74 +144,21 @@ If a cycle is detected:
 
 ## 3B. Contract Lock Governance
 
+> **Delegated:** See `STATE_MUTATION_RULES.md` for lock mechanics and `REPOSITORY_GOVERNANCE_PROTOCOL.md` for contract ownership.
+
 ### Purpose
 Once downstream milestones depend on shared contracts, those contracts become **immutable without escalation**. This prevents later milestone drift from destabilizing already-completed orchestration phases.
 
-### CONTRACT_LOCK States
+### Invariant
+Contract mutations require traceability updates. The kernel prohibits breaking changes without governance escalation; the state mutation protocol defines the lock mechanics.
 
-| State | Meaning |
-|-------|---------|
-| `inactive` | No downstream dependents yet; contracts may evolve freely |
-| `active` | Downstream milestones are consuming contracts; mutations restricted |
-| `frozen` | All downstream milestones completed; contracts immutable |
-
-### Lock Activation
-CONTRACT_LOCK activates automatically when:
-- A contract ticket (M4.5.x) completes
-- `contracts-manifest.json` is emitted
-- At least one downstream milestone imports the contract
-
-### Mutation Rules Under Active Lock
-
-**Allowed without escalation:**
-- Additive fields
-- New exports
-- Documentation updates
-- Non-breaking type widenings
-
-**Requires escalation (milestone review):**
-- Field renames
-- Field removals
-- Type narrowings
-- Schema constraint tightening
-- Default value changes
-
-**Prohibited:**
-- Breaking changes without migration path
-- Deletion of downstream-consumed types
-- Semantic changes to filter operators
-- Index schema attribute removals
-
-### Contract Manifest
-
-Every completed contract ticket MUST emit:
-
-```json
-{
-  "version": "1.0.0",
-  "contracts": [],
-  "owners": {},
-  "downstream_dependents": {},
-  "breaking_change_policy": {},
-  "contract_lock": { "status": "active" }
-}
-```
-
-Location: `project-governance/runtime/contracts-manifest.json`
-
-### Traceability Requirement
-
-All contract mutations MUST update:
-1. `contracts-manifest.json` version
-2. Downstream impact analysis
-3. Migration notes (if breaking)
-4. Ticket traceability in consuming milestones
-
-### First Contract Lock (Active)
-
-| Contract | Locked | Downstream |
-|----------|--------|------------|
-| `src/shared/contracts/search/*` | 2026-05-20 | T3.5 (frontend), T5.1 (backend) |
+### Reference
+| Topic | Canonical Protocol |
+|-------|-------------------|
+| Lock states & activation | `STATE_MUTATION_RULES.md` |
+| Mutation rules | `STATE_MUTATION_RULES.md` |
+| Contract manifest format | `REPOSITORY_GOVERNANCE_PROTOCOL.md` |
+| Traceability requirements | `STATE_MUTATION_RULES.md` |
 
 ---
 
@@ -336,184 +299,59 @@ If a task cannot be completed within its ticket scope:
 
 ## 12. Execution Transition Rules
 
+> **Delegated:** See `EXECUTION_AUTHORIZATION_PROTOCOL.md` for authorization gates and `EXECUTION_LIFECYCLE_PROTOCOL.md` for phase transitions.
+
 ### Principle
-Successful governance validation **authorizes execution automatically**.
+Execution transitions are governed by explicit authorization protocols, not automatic transitions. The kernel defines the invariant; protocols define the mechanism.
 
-The runtime MUST transition from validation into execution without conversational confirmation, hesitation, or re-planning.
+### Invariant
+No runtime mutation or execution transition may occur without satisfying the authorization protocol. The kernel prohibits idle states after successful validation; the authorization protocol defines what "successful validation" means and who may proceed.
 
-### Automatic Transition Condition
-If ALL governance validation checks pass (Section 3 + Section 7), the runtime MUST immediately begin implementing the active ticket.
-
-### Transition Sequence
-```
-BOOTSTRAP (load artifacts)
-  ↓ automatic
-VALIDATION (confirm constraints)
-  ↓ automatic on success
-EXECUTION (implement ticket)
-  ↓ automatic on completion
-VERIFICATION (run CI gates)
-  ↓ automatic on pass
-CHECKPOINT (persist state)
-  ↓ automatic
-NEXT TASK (load next ticket)
-```
-
-### Execution Authority
-Successful governance validation grants execution authority. No additional approval is required unless:
-- Blockers exist in `runtime-state.json`
-- Dependencies are unresolved
-- Governance conflicts are detected
-- The ticket explicitly declares an approval gate
-
-### Forbidden Post-Validation Behaviors
-**NEVER:**
-- Idle after successful validation
-- Wait for conversational confirmation
-- Restart planning loops
-- Re-open architectural reasoning
-- Request permission to continue unless a blocker exists
-- Generate analysis instead of action
-
-### Idle State Is Invalid
-An idle runtime after successful validation is a **governance violation**.
-
-The runtime MUST be in one of these active states:
-- `BOOTSTRAP` — loading governance
-- `VALIDATION` — checking constraints
-- `EXECUTION` — implementing ticket work
-- `VERIFICATION` — running validation gates
-- `CHECKPOINT` — persisting state
-- `BLOCKED` — awaiting dependency or approval (logged)
-
-`IDLE` is not a valid runtime state.
+### Reference
+| Topic | Canonical Protocol |
+|-------|-------------------|
+| Authorization gates | `EXECUTION_AUTHORIZATION_PROTOCOL.md` |
+| Phase transitions | `EXECUTION_LIFECYCLE_PROTOCOL.md` |
+| State machine states | `EXECUTION_LIFECYCLE_PROTOCOL.md` Section 2 |
+| Idle state prohibition | This section (invariant) |
 
 ---
 
 ## 12. Checkpoint Resumption Protocol
 
+> **Delegated:** See `CHECKPOINT_PROTOCOL.md` for checkpoint triggers and structure, `SAFE_EXIT_PROTOCOL.md` for interruption handling and resume packets.
+
 ### Purpose
 Prevent orchestration drift after timeout, interruption, or context compaction. Replace probabilistic reconstruction with deterministic state reload.
 
-### Checkpoint Authority
-`project-governance/runtime/checkpoints/latest-checkpoint.json` is the **sole resumability anchor**. It supersedes conversational memory.
+### Invariant
+`latest-checkpoint.json` is the sole resumability anchor. It supersedes conversational memory.
 
-### Checkpoint Structure
-- `latest-checkpoint.json` — active execution snapshot
-- `active-execution.md` — human-readable decision journal and interruption narrative
-- `checkpoint-schema.json` — validation schema for checkpoint integrity
-- `{ticket}-checkpoint.json` — archived checkpoint on ticket completion
-
-### Mandatory Checkpoint Emission
-At the end of every major response (segment boundary), emit:
-
-```
-CHECKPOINT UPDATE:
-- completed: [list]
-- remaining: [list]
-- blockers: [list]
-- next step: [single action]
-```
-
-Then persist into `latest-checkpoint.json`.
-
-### Atomic Execution Segments
-Split long-running tickets into resumable segments (e.g., `T3.1A`, `T3.1B`). Checkpoint after each segment. Interruptions become harmless reloads.
-
-### Execution Scope Lock
-Every checkpoint carries an `execution_scope_lock`:
-
-```json
-{
-  "execution_scope_lock": {
-    "allowed_domains": ["Shared"],
-    "forbidden_actions": [
-      "Redesign architecture",
-      "Revisit governance",
-      "Expand milestone scope"
-    ],
-    "scope_note": "T3.1 only. No domain logic changes."
-  }
-}
-```
-
-### Resume Prompt Template
-```
-Resume execution from latest-checkpoint.json.
-
-Load:
-- runtime-governance-kernel.md
-- runtime-state.json
-- dependency-graph.json
-- surface-map.json
-- checkpoints/latest-checkpoint.json
-- checkpoints/active-execution.md
-- project-management/data/tickets/{ticket}.json
-
-Validate:
-- active milestone
-- active ticket
-- completed steps
-- remaining steps
-- constraints
-- acceptance criteria
-- execution scope lock
-
-Then continue execution deterministically.
-```
-
-### Forbidden Resume Behaviors
-**NEVER:**
-- Resume from "continue" or conversational memory
-- Reconstruct progress heuristically
-- Re-plan completed work
-- Revisit solved architectural decisions
-- Expand scope beyond checkpoint boundaries
-- Idle after successful checkpoint load
+### Reference
+| Topic | Canonical Protocol |
+|-------|-------------------|
+| Checkpoint triggers & structure | `CHECKPOINT_PROTOCOL.md` |
+| Resume packets & interruption | `SAFE_EXIT_PROTOCOL.md` |
+| Execution scope locks | `STATE_MUTATION_RULES.md` |
 
 ---
 
 ## 13. Runtime Phase Semantics
 
+> **Delegated:** See `EXECUTION_LIFECYCLE_PROTOCOL.md` for the canonical execution state machine.
+
 ### Purpose
-The runtime operates in deterministic phases with automatic transitions. Phase boundaries remove execution ambiguity.
+The runtime operates in deterministic phases with explicit transitions. Phase boundaries remove execution ambiguity.
 
-### Phase Definitions
+### Invariant
+Phase transitions are deterministic, not conversational. Only blockers can pause the transition chain.
 
-| Phase | Activity | Entry Trigger | Exit Trigger |
-|-------|----------|---------------|--------------|
-| `BOOTSTRAP` | Load governance artifacts, runtime state, dependency graph, surface map, contract registry | Session start | All artifacts loaded |
-| `VALIDATION` | Confirm milestone, ticket, constraints, surface, mode | BOOTSTRAP complete | All checks pass |
-| `EXECUTION` | Implement ticket tasks, modify files, satisfy acceptance criteria | VALIDATION success | Deliverables complete |
-| `VERIFICATION` | Run CI gates: lint, typecheck, tests, build | EXECUTION complete | All gates pass |
-| `CHECKPOINT` | Persist execution state, update traceability, emit checkpoint | VERIFICATION success | State persisted |
-| `TRANSITION` | Load next ticket, update runtime state, reset phase | CHECKPOINT complete | Next ticket ready |
-
-### Automatic Transition Rule
-**If a phase completes successfully, transition to the next phase automatically.**
-
-No conversational confirmation required between phases.
-
-### Blocking Conditions
-Automatic transitions are HALTED only when:
-- Governance artifacts are missing
-- Validation checks fail
-- Dependencies are unresolved
-- CI gates fail
-- Explicit approval gates are declared
-- Scope lock violation detected
-
-When blocked, the runtime MUST:
-1. Log the blocker in `runtime-state.json`
-2. Update the ticket status to `blocked`
-3. Emit a checkpoint with the blocker documented
-4. Request explicit human intervention
-
-### Phase Invariants
-- The runtime MUST know its current phase at all times
-- The runtime MUST not remain in a completed phase
-- Phase transitions are deterministic, not conversational
-- Only blockers can pause the transition chain
+### Reference
+| Topic | Canonical Protocol |
+|-------|-------------------|
+| State machine & transitions | `EXECUTION_LIFECYCLE_PROTOCOL.md` Section 2 |
+| Blocking conditions | `EXECUTION_LIFECYCLE_PROTOCOL.md` Section 2.1 |
+| Phase invariants | `EXECUTION_LIFECYCLE_PROTOCOL.md` Section 2 |
 
 ---
 
@@ -715,29 +553,12 @@ Actual execution is serialized. Claims of parallelism are planning rhetoric.
 
 ### 15.8 Resume Packet
 
-On ANY interruption, produce:
+> **Delegated:** See `SAFE_EXIT_PROTOCOL.md` for resume packet format and interruption handling.
 
-```
-## RESUME PACKET
-
-**Current Ticket:** {id}
-**Completed:** {list}
-**In Progress:** {description}
-**Pending:** {list}
-**Modified Files:** {list with last change description}
-**Last Successful Validation:** {command + result}
-**Known Issues:** {list}
-**Recommended Resume Prompt:** {one sentence}
-```
-
-This is the agent's "save state." Without it: anchorless drift, re-analysis loops, architecture re-invention.
+On ANY interruption, produce a resume packet. This is the agent's "save state." Without it: anchorless drift, re-analysis loops, architecture re-invention.
 
 ### 15.9 Context Compaction Protocol
 
-When context compaction occurs:
-1. STOP all implementation
-2. Emit resume packet immediately
-3. Load latest-checkpoint.json as sole truth
-4. Discard all conversational memory
-5. Re-validate from governance artifacts only
-6. Continue from checkpoint, not from memory
+> **Delegated:** See `SAFE_EXIT_PROTOCOL.md` for context compaction procedures.
+
+When context compaction occurs: STOP, emit resume packet, load checkpoint as sole truth, discard conversational memory, re-validate from governance artifacts only, continue from checkpoint.

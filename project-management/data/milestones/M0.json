@@ -1,6 +1,6 @@
 {
-  "id": "M0.5",
-  "phase": 0,
+  "id": "M0",
+  "phase": 1,
   "title": "Toolchain Stabilization",
   "purpose": "Establish deterministic, non-flaky test execution before any feature milestone declares completion. Test infrastructure integrity is a prerequisite for all governance guarantees.",
   "trust_principle": "A milestone without passing tests is a milestone without proof. A test runner that hangs is a test runner that lies.",

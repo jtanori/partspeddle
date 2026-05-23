@@ -1,3 +1,17 @@
+---
+authority:
+  level: kernel
+  layer: 1
+  canonical: true
+  supersedes:
+    -
+  derives_from:
+    - runtime-governance-kernel.md
+  scope: execution
+  status: active
+  version: "1.0.0"
+---
+
 # Execution Modes
 
 > **Behavioral Constraints**  

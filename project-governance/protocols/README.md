@@ -1,3 +1,17 @@
+---
+authority:
+  level: guide
+  layer: 2
+  canonical: true
+  supersedes:
+    -
+  derives_from:
+    -
+  scope: governance
+  status: active
+  version: "1.0.0"
+---
+
 # Runtime Governance Protocols
 
 > **Purpose:** The operational control-plane for autonomous AI execution.  

@@ -40,7 +40,7 @@
       "depends_on": [
         "M1",
         "M2",
-        "M4.5"
+        "M5"
       ],
       "blocks": [
         "M4",
@@ -51,7 +51,7 @@
       "parallelizable": false
     },
     {
-      "id": "M4.5",
+      "id": "M5",
       "title": "Shared Runtime Contracts",
       "depends_on": [],
       "blocks": [

@@ -1,6 +1,21 @@
+---
+authority:
+  level: protocol
+  layer: 2
+  canonical: true
+  supersedes:
+    -
+  derives_from:
+    - ../CANONICAL_AUTHORITY_HIERARCHY.md
+    - ../runtime/runtime-governance-kernel.md
+  scope: execution
+  status: active
+  version: "1.0.0"
+---
+
 # Work Continuation Protocol
 
-> **Authority:** `runtime-governance-kernel.md`  
+> **Authority:** `CANONICAL_AUTHORITY_HIERARCHY.md` Layer 2 → `runtime-governance-kernel.md`  
 > **Purpose:** Deterministic execution scheduling — the system decides what happens next without conversational improvisation.  
 > **Principle:** Prefer deterministic continuation over opportunistic task switching.  
 > **Version:** 1.0.0  

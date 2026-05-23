@@ -1,3 +1,18 @@
+---
+authority:
+  level: protocol
+  layer: 2
+  canonical: true
+  supersedes:
+    -
+  derives_from:
+    - runtime-governance-kernel.md
+    - ../adr/003-planning-orchestration.md
+  scope: planning
+  status: active
+  version: "1.0.0"
+---
+
 # Planning Protocol
 
 > **Authority:** ADR-003  
