@@ -1,0 +1,232 @@
+#!/usr/bin/env tsx
+/**
+ * replay-execution.ts
+ * Deterministic runtime replay infrastructure.
+ * Reconstructs executions from event streams + checkpoints.
+ * Strictly read-only — never mutates runtime state.
+ */
+import { readFileSync, existsSync, mkdirSync, writeFileSync } from "fs";
+import { resolve, join } from "path";
+
+const GOV_STREAMS_DIR = resolve("project-governance/runtime/events/streams");
+const TELEMETRY_STREAMS_DIR = resolve("project-governance/runtime/telemetry/logs");
+const REPLAY_MANIFESTS_DIR = resolve("project-governance/runtime/replay/manifests");
+const REPLAY_TIMELINES_DIR = resolve("project-governance/runtime/replay/timelines");
+
+interface TimelineEvent {
+  timestamp: string;
+  source: "governance" | "telemetry";
+  event_type?: string;
+  name?: string;
+  category: string;
+  severity: string;
+  payload?: Record<string, unknown>;
+  value?: unknown;
+}
+
+interface ReplayManifest {
+  execution_id: string;
+  reconstructed_at: string;
+  event_count: number;
+  timeline_start: string;
+  timeline_end: string;
+  sources: string[];
+  integrity_hash: string;
+  status: "complete" | "interrupted" | "failed" | "unknown";
+}
+
+function ensureDir(dir: string): void {
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+}
+
+function readNdjson(path: string): Record<string, unknown>[] {
+  if (!existsSync(path)) return [];
+  const text = readFileSync(path, "utf-8");
+  return text
+    .split("\n")
+    .filter(l => l.trim() !== "")
+    .map(line => {
+      try {
+        return JSON.parse(line);
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean) as Record<string, unknown>[];
+}
+
+function collectEventsForExecution(executionId: string): TimelineEvent[] {
+  const events: TimelineEvent[] = [];
+
+  // Read governance event streams
+  const govStreams = ["default", "execution", "errors"];
+  for (const streamName of govStreams) {
+    const streamPath = join(GOV_STREAMS_DIR, `${streamName}.ndjson`);
+    const lines = readNdjson(streamPath);
+    for (const line of lines) {
+      if (line.execution_id === executionId) {
+        events.push({
+          timestamp: line.timestamp as string,
+          source: "governance",
+          event_type: line.event_type as string,
+          category: line.category as string,
+          severity: line.severity as string,
+          payload: line.payload as Record<string, unknown>,
+        });
+      }
+    }
+  }
+
+  // Read telemetry streams
+  const telStreams = ["default", "traces"];
+  for (const streamName of telStreams) {
+    const streamPath = join(TELEMETRY_STREAMS_DIR, `${streamName}.ndjson`);
+    const lines = readNdjson(streamPath);
+    for (const line of lines) {
+      if (line.execution_id === executionId) {
+        events.push({
+          timestamp: line.timestamp as string,
+          source: "telemetry",
+          name: line.name as string,
+          category: line.category as string,
+          severity: line.severity as string,
+          value: line.value,
+        });
+      }
+    }
+  }
+
+  // Sort by timestamp
+  events.sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+  return events;
+}
+
+function inferStatus(events: TimelineEvent[]): ReplayManifest["status"] {
+  const govEvents = events.filter(e => e.source === "governance");
+  if (govEvents.length === 0) return "unknown";
+  const last = govEvents[govEvents.length - 1];
+  if (last.event_type === "execution.completed") return "complete";
+  if (last.event_type === "execution.failed") return "failed";
+  if (last.event_type === "execution.started") return "interrupted";
+  return "unknown";
+}
+
+function computeIntegrityHash(events: TimelineEvent[]): string {
+  const payload = events.map(e => `${e.timestamp}:${e.source}:${e.event_type || e.name}`).join("|");
+  // Simple hash for determinism
+  let hash = 0;
+  for (let i = 0; i < payload.length; i++) {
+    const char = payload.charCodeAt(i);
+    hash = ((hash << 5) - hash + char) | 0;
+  }
+  return `hash-${Math.abs(hash).toString(16).padStart(8, "0")}`;
+}
+
+function generateTimelineMarkdown(executionId: string, events: TimelineEvent[]): string {
+  const lines: string[] = [
+    `# Execution Replay: ${executionId}`,
+    "",
+    `**Reconstructed:** ${new Date().toISOString()}`,
+    `**Events:** ${events.length}`,
+    `**Status:** ${inferStatus(events)}`,
+    "",
+    "## Timeline",
+    "",
+    "| Time | Source | Type/Name | Category | Severity | Details |",
+    "|------|--------|-----------|----------|----------|---------|",
+  ];
+
+  for (const e of events) {
+    const details = e.payload
+      ? JSON.stringify(e.payload).slice(0, 60)
+      : e.value !== undefined
+        ? String(e.value).slice(0, 60)
+        : "";
+    lines.push(
+      `| ${e.timestamp} | ${e.source} | ${e.event_type || e.name || ""} | ${e.category} | ${e.severity} | ${details} |`
+    );
+  }
+
+  lines.push("");
+  lines.push("---");
+  lines.push("*Generated by replay-execution.ts*");
+  lines.push("*This is a read-only reconstruction. No runtime state was mutated.*");
+  return lines.join("\n");
+}
+
+export function replay(executionId: string): {
+  manifest: ReplayManifest;
+  timelinePath: string;
+  events: TimelineEvent[];
+} {
+  ensureDir(REPLAY_MANIFESTS_DIR);
+  ensureDir(REPLAY_TIMELINES_DIR);
+
+  const events = collectEventsForExecution(executionId);
+  const status = inferStatus(events);
+  const integrityHash = computeIntegrityHash(events);
+
+  const manifest: ReplayManifest = {
+    execution_id: executionId,
+    reconstructed_at: new Date().toISOString(),
+    event_count: events.length,
+    timeline_start: events.length > 0 ? events[0].timestamp : "",
+    timeline_end: events.length > 0 ? events[events.length - 1].timestamp : "",
+    sources: ["governance/events", "telemetry/logs"],
+    integrity_hash: integrityHash,
+    status,
+  };
+
+  const manifestPath = join(REPLAY_MANIFESTS_DIR, `${executionId}.json`);
+  writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+
+  const timelineMd = generateTimelineMarkdown(executionId, events);
+  const timelinePath = join(REPLAY_TIMELINES_DIR, `${executionId}.md`);
+  writeFileSync(timelinePath, timelineMd);
+
+  return { manifest, timelinePath, events };
+}
+
+export function replayFromCheckpoint(
+  executionId: string,
+  checkpointTimestamp: string
+): { manifest: ReplayManifest; timelinePath: string; events: TimelineEvent[] } {
+  const full = replay(executionId);
+  const filtered = full.events.filter(e => e.timestamp >= checkpointTimestamp);
+  const manifest: ReplayManifest = {
+    ...full.manifest,
+    event_count: filtered.length,
+    timeline_start: filtered.length > 0 ? filtered[0].timestamp : "",
+    timeline_end: filtered.length > 0 ? filtered[filtered.length - 1].timestamp : "",
+  };
+  const manifestPath = join(REPLAY_MANIFESTS_DIR, `${executionId}-from-${checkpointTimestamp}.json`);
+  writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+
+  const timelineMd = generateTimelineMarkdown(executionId, filtered);
+  const timelinePath = join(REPLAY_TIMELINES_DIR, `${executionId}-from-${checkpointTimestamp}.md`);
+  writeFileSync(timelinePath, timelineMd);
+
+  return { manifest, timelinePath, events: filtered };
+}
+
+export { collectEventsForExecution, inferStatus, computeIntegrityHash };
+
+// CLI
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const args = process.argv.slice(2);
+  if (args.length < 1) {
+    console.error("Usage: tsx scripts/replay-execution.ts <execution_id> [--from-checkpoint ISO_TIMESTAMP]");
+    process.exit(1);
+  }
+  const executionId = args[0];
+  const checkpointIdx = args.indexOf("--from-checkpoint");
+  const checkpointTs = checkpointIdx >= 0 ? args[checkpointIdx + 1] : null;
+
+  const result = checkpointTs ? replayFromCheckpoint(executionId, checkpointTs) : replay(executionId);
+  console.log(`Replayed: ${executionId}`);
+  console.log(`Events: ${result.manifest.event_count}`);
+  console.log(`Status: ${result.manifest.status}`);
+  console.log(`Integrity: ${result.manifest.integrity_hash}`);
+  console.log(`Manifest: ${REPLAY_MANIFESTS_DIR}/${executionId}.json`);
+  console.log(`Timeline: ${result.timelinePath}`);
+}
