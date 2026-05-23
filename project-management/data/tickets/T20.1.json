@@ -1,0 +1,81 @@
+{
+  "id": "T20.1",
+  "milestone_id": "M20",
+  "title": "Governance Authority Hierarchy",
+  "domain": "Shared",
+  "capability": "Governance Runtime",
+  "purpose": "Implement a canonical governance authority hierarchy system that eliminates duplicated governance semantics, eliminates contradictory authority, establishes canonical ownership rules, defines governance precedence, and reduces governance entropy.",
+  "dependencies": ["T11.8"],
+  "architectural_constraints": [
+    "Layer 0 schemas are machine authority and cannot be overridden",
+    "Lower layers override higher layers on specificity",
+    "Projections (Layer 4) are read-only and never mutative",
+    "Human guides (Layer 5) are lossy and must not contradict layers 0-3",
+    "Every document must declare explicit authority metadata"
+  ],
+  "deliverables": [
+    {
+      "path": "project-governance/CANONICAL_AUTHORITY_HIERARCHY.md",
+      "description": "Layered authority model (Layer 0-5) with precedence rules, cross-silo supremacy, conflict resolution procedure",
+      "type": "doc"
+    },
+    {
+      "path": "meta/governance/schemas/authority-declaration.schema.json",
+      "description": "JSON Schema for authority frontmatter validation",
+      "type": "schema"
+    },
+    {
+      "path": "project-governance/runtime/runtime-governance-kernel.md",
+      "description": "Reduced to principles-only; delegates operational specifics to protocols",
+      "type": "doc"
+    },
+    {
+      "path": "project-governance/runtime/continuation-policy.md",
+      "description": "Marked deprecated with supersession notice",
+      "type": "doc"
+    },
+    {
+      "path": "scripts/validate-authority.js",
+      "description": "Validator that checks all governance docs have authority frontmatter",
+      "type": "script"
+    }
+  ],
+  "acceptance_criteria": [
+    "All 20+ governance documents have YAML authority frontmatter",
+    "CANONICAL_AUTHORITY_HIERARCHY.md defines 6 layers with precedence rules",
+    "Kernel is reduced to <600 lines (was 743)",
+    "continuation-policy.md is marked deprecated",
+    "No auto-authorization contradiction remains in kernel",
+    "npm run pm:validate passes with 0 errors",
+    "Authority validator script exits 0 for all docs"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": ["governance_doc_count", "authority_frontmatter_coverage_percent"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Authority frontmatter conflicts with schema",
+      "mitigation": "Run validate-authority.js in CI pre-commit hook",
+      "severity": "high"
+    },
+    {
+      "scenario": "New governance doc added without frontmatter",
+      "mitigation": "CI gate blocks merge on missing frontmatter",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 4,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-23T01:50:00Z",
+    "updated_at": "2026-05-23T01:50:00Z",
+    "version": 1,
+    "governance_risk_classification": "CRITICAL",
+    "operational_rationale": "Without explicit authority hierarchy, governance documents drift into contradiction. This was observed in the auto-authorization conflict between kernel and EXECUTION_AUTHORIZATION_PROTOCOL.md.",
+    "blocks_scaling": true
+  }
+}

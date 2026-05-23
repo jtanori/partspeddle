@@ -149,6 +149,17 @@
       "blocks": [],
       "critical_path": true,
       "parallelizable": false
+    },
+    {
+      "id": "M20",
+      "depends_on": [
+        "M11",
+        "M1"
+      ],
+      "relationship": "sequential",
+      "rationale": "Governance enforcement requires stabilized governance root (M11) and runtime foundations (M1)",
+      "title": "Governance Enforcement Stabilization",
+      "critical_path": true
     }
   ],
   "domain_events": [
@@ -576,6 +587,32 @@
       "component": "Notifications",
       "impact": "No alerts → Commerce continues",
       "severity": "degraded"
+    }
+  ],
+  "ticket_dependencies": [
+    {
+      "ticket_id": "T20.1",
+      "milestone_id": "M20",
+      "depends_on": [
+        "T11.8"
+      ],
+      "status": "planned"
+    },
+    {
+      "ticket_id": "T20.2",
+      "milestone_id": "M20",
+      "depends_on": [
+        "T20.1"
+      ],
+      "status": "planned"
+    },
+    {
+      "ticket_id": "T20.3",
+      "milestone_id": "M20",
+      "depends_on": [
+        "T20.2"
+      ],
+      "status": "planned"
     }
   ]
 }

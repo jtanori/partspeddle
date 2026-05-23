@@ -1,0 +1,97 @@
+{
+  "id": "T20.2",
+  "milestone_id": "M20",
+  "title": "Machine-Readable Governance Definitions",
+  "domain": "Shared",
+  "capability": "Governance Runtime",
+  "purpose": "Introduce a Governance Definition Layer in JSON with machine-readable semantics. Markdown becomes a generated reflection of canonical JSON, not the source of truth. This makes governance enforceable, composable, evolvable, and validatable.",
+  "dependencies": ["T20.1"],
+  "architectural_constraints": [
+    "JSON definitions are canonical; markdown is generated",
+    "Protocol definitions validate against protocol-definition.schema.json",
+    "Narrative content (rationale, philosophy) is stored separately from operational semantics",
+    "Generation pipeline must produce deterministic output",
+    "CI must block merge if generated artifacts are stale"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/governance/schemas/protocol-definition.schema.json",
+      "description": "JSON Schema for protocol definitions (states, transitions, rules, invariants, triggers)",
+      "type": "schema"
+    },
+    {
+      "path": "meta/governance/protocols/execution-lifecycle.json",
+      "description": "Canonical state machine definition for execution lifecycle",
+      "type": "file"
+    },
+    {
+      "path": "meta/governance/protocols/checkpoint.json",
+      "description": "Canonical trigger catalog and payload schema for checkpoints",
+      "type": "file"
+    },
+    {
+      "path": "meta/governance/protocols/state-mutation.json",
+      "description": "Canonical lock rules and permitted mutation events",
+      "type": "file"
+    },
+    {
+      "path": "scripts/generate-governance.ts",
+      "description": "Generation script: JSON defs → markdown reflections + runtime validators",
+      "type": "script"
+    },
+    {
+      "path": "scripts/validators/protocol-execution-lifecycle.ts",
+      "description": "Generated TypeScript validator for execution lifecycle transitions",
+      "type": "file"
+    },
+    {
+      "path": "scripts/validators/protocol-checkpoint.ts",
+      "description": "Generated TypeScript validator for checkpoint rules",
+      "type": "file"
+    },
+    {
+      "path": "scripts/validators/protocol-state-mutation.ts",
+      "description": "Generated TypeScript validator for state mutation rules",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "meta/governance/ directory has protocols/, schemas/, narratives/, recipes/, templates/",
+    "3 JSON protocol definitions validate against protocol-definition.schema.json",
+    "generate-governance.ts produces 3 markdown reflections",
+    "generate-governance.ts produces 3 TypeScript validators",
+    "npm run governance:validate passes",
+    "npm run governance:generate produces deterministic output",
+    "npm run governance:diff exits 0 (no stale generated files)",
+    "Generated markdown contains auto-generated footer citing canonical JSON source"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": ["json_protocol_def_count", "generated_artifact_count", "validator_coverage_percent"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "JSON schema is too rigid and cannot express new protocol concepts",
+      "mitigation": "Iterate schema with backward-compatible versioning",
+      "severity": "medium"
+    },
+    {
+      "scenario": "Generation script produces non-deterministic output",
+      "mitigation": "Sort keys, pin timestamps, validate in CI",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 6,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-23T01:50:00Z",
+    "updated_at": "2026-05-23T01:50:00Z",
+    "version": 1,
+    "governance_risk_classification": "CRITICAL",
+    "operational_rationale": "Markdown-only governance is unenforceable. Without machine-readable semantics, protocols cannot be validated, composed, or evolved safely. This was observed when multiple documents defined overlapping recovery behavior with no resolution mechanism.",
+    "blocks_scaling": true
+  }
+}

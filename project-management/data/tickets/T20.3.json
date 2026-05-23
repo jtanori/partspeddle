@@ -1,0 +1,97 @@
+{
+  "id": "T20.3",
+  "milestone_id": "M20",
+  "title": "Governance Event Bus Foundation",
+  "domain": "Shared",
+  "capability": "Governance Runtime",
+  "purpose": "Create a unified governance event bus that captures runtime actions as an append-only event stream. This provides the observability substrate, debugging substrate, telemetry substrate, and future orchestration substrate for the governance runtime.",
+  "dependencies": ["T20.2"],
+  "architectural_constraints": [
+    "Governance events are separate from application domain events",
+    "Event bus uses append-only JSONL logs (not a queue system)",
+    "Events must validate against governance-event.schema.json before emit",
+    "Retention policy: 90 days info, 1 year warn/error, indefinite critical",
+    "Event emitter must resolve correlation_id from active execution context"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/governance/events/schemas/governance-event.schema.json",
+      "description": "JSON Schema for governance events (event_id, timestamp, type, severity, category, payload)",
+      "type": "schema"
+    },
+    {
+      "path": "meta/governance/events/event-catalog.json",
+      "description": "Registry of all governance event types with categories, severities, descriptions",
+      "type": "file"
+    },
+    {
+      "path": "meta/governance/events/event-stream-policy.json",
+      "description": "Retention, sampling, and severity rules for event streams",
+      "type": "file"
+    },
+    {
+      "path": "scripts/emit-governance-event.ts",
+      "description": "CLI emitter: validates event, appends to daily JSONL, updates index",
+      "type": "script"
+    },
+    {
+      "path": "scripts/query-governance-events.ts",
+      "description": "CLI query tool: filter by time, category, severity, ticket, milestone",
+      "type": "script"
+    },
+    {
+      "path": "scripts/validators/governance-event.ts",
+      "description": "Event validation module used by emitter",
+      "type": "script"
+    },
+    {
+      "path": "project-governance/runtime/events/",
+      "description": "Daily append-only JSONL logs with filtered streams subdirectory",
+      "type": "directory"
+    }
+  ],
+  "acceptance_criteria": [
+    "governance-event.schema.json validates all critical event types",
+    "event-catalog.json defines 11+ event types across 8 categories",
+    "emit-governance-event.ts appends valid events to daily JSONL",
+    "query-governance-events.ts filters by category, severity, ticket",
+    "Event stream policy defines retention and sampling rules",
+    "Existing JSON protocols (lifecycle, checkpoint, state-mutation) declare event emissions",
+    "npm run governance:event:validate passes",
+    "No duplicate event types between governance and application event buses"
+  ],
+  "traceability": [],
+  "observability": {
+    "metrics": ["events_emitted_per_day", "events_by_category", "events_by_severity"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Event bus becomes write bottleneck during high-frequency operations",
+      "mitigation": "Batch emits, async append, throttle non-critical events",
+      "severity": "medium"
+    },
+    {
+      "scenario": "Event log grows unbounded without retention",
+      "mitigation": "Enforce retention policy with automated cleanup",
+      "severity": "high"
+    },
+    {
+      "scenario": "Governance events leak application-sensitive data",
+      "mitigation": "Payload schema restricts fields; no aggregate IDs in governance events",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 6,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-23T01:50:00Z",
+    "updated_at": "2026-05-23T01:50:00Z",
+    "version": 1,
+    "governance_risk_classification": "HIGH",
+    "operational_rationale": "Runtime state, audits, and checkpoints exist but there is no unified event stream. This explains silent failures, invisible runtime faults, poor observability, weak debugging ergonomics, and difficult recovery analysis.",
+    "blocks_scaling": true
+  }
+}

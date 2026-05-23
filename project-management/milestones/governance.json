@@ -649,5 +649,74 @@
       }
     },
     "trust_principle": "Governance integrity ensures all downstream systems operate on reliable foundations."
+  },
+  {
+    "id": "M20",
+    "phase": 20,
+    "title": "Governance Enforcement Stabilization",
+    "purpose": "Stabilize and normalize the governance substrate before additional feature expansion. Eliminate authority fragmentation, introduce machine-readable governance definitions, and establish a unified event bus for runtime observability. This milestone is infrastructure-critical and governance-priority.",
+    "trust_principle": "A governance system that cannot observe itself cannot correct itself. A governance system with contradictory authorities cannot be trusted.",
+    "scope": {
+      "in": [
+        "Canonical authority hierarchy with layered precedence",
+        "Machine-readable JSON protocol definitions",
+        "Governance event bus with append-only event stream",
+        "Generated markdown reflections from canonical JSON",
+        "Runtime validators generated from protocol definitions",
+        "Event query and telemetry tools"
+      ],
+      "out": [
+        "Application-level domain event changes",
+        "Feature code implementation",
+        "Business logic modifications",
+        "UI/UX changes"
+      ]
+    },
+    "exit_criteria": [
+      "All governance documents declare explicit authority metadata",
+      "JSON protocol definitions exist for all critical protocols",
+      "Governance event bus emits events for all major runtime actions",
+      "Generated artifacts validate against canonical schemas",
+      "npm run governance:validate passes",
+      "npm run governance:generate produces deterministic output",
+      "Event query tool can filter by category, severity, ticket, milestone"
+    ],
+    "tickets": [
+      "T20.1",
+      "T20.2",
+      "T20.3"
+    ],
+    "dependencies": [
+      "M11",
+      "M1"
+    ],
+    "downstream_impact": "Blocks all feature milestones that depend on governance correctness. Unblocks M12-M19 governance milestones by providing stable substrate.",
+    "estimated_duration_days": 3,
+    "status": "planned",
+    "ticket_paths": {
+      "T20.1": {
+        "path": "project-management/data/tickets/T20.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T20.2": {
+        "path": "project-management/data/tickets/T20.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T20.3": {
+        "path": "project-management/data/tickets/T20.3.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "metadata": {
+      "created_at": "2026-05-23T01:50:00Z",
+      "updated_at": "2026-05-23T01:50:00Z",
+      "version": 1,
+      "lane": "governance",
+      "priority": "infrastructure_critical",
+      "blocks_scaling": true
+    }
   }
 ]
