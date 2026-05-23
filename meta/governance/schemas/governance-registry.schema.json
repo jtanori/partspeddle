@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/governance-registry.schema.json",
+  "title": "VINTRACK Governance Registry",
+  "description": "Canonical registry for all machine-readable governance definitions.",
+  "type": "object",
+  "required": ["version", "protocols", "schemas", "rules", "reflections"],
+  "properties": {
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "protocols": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "path", "version", "scope", "canonical"],
+        "properties": {
+          "id": { "type": "string" },
+          "path": { "type": "string" },
+          "version": { "type": "string" },
+          "scope": { "type": "string" },
+          "canonical": { "type": "boolean" },
+          "supersedes": { "type": "array", "items": { "type": "string" } },
+          "reflection_path": { "type": "string" },
+          "validator_path": { "type": "string" }
+        }
+      }
+    },
+    "schemas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "path", "version"],
+        "properties": {
+          "id": { "type": "string" },
+          "path": { "type": "string" },
+          "version": { "type": "string" }
+        }
+      }
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "path", "protocol_id"],
+        "properties": {
+          "id": { "type": "string" },
+          "path": { "type": "string" },
+          "protocol_id": { "type": "string" }
+        }
+      }
+    },
+    "reflections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "source_protocol", "generated_path"],
+        "properties": {
+          "id": { "type": "string" },
+          "source_protocol": { "type": "string" },
+          "generated_path": { "type": "string" },
+          "last_generated_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

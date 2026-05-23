@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/recovery-policy.schema.json",
+  "title": "VINTRACK Recovery Policy",
+  "description": "Schema for drift recovery and failure recovery policies.",
+  "type": "object",
+  "required": ["policy_id", "version", "drift_types"],
+  "properties": {
+    "policy_id": { "type": "string", "pattern": "^[a-z][a-z0-9-_.]+$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "drift_types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "severity", "recovery_sequence"],
+        "properties": {
+          "type": { "type": "string", "enum": ["scope", "architecture", "dependency", "state", "authorization"] },
+          "severity": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+          "detection": { "type": "string", "description": "How this drift type is detected" },
+          "recovery_sequence": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Ordered recovery steps"
+          },
+          "auto_recoverable": { "type": "boolean" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

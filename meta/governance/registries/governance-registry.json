@@ -1,0 +1,104 @@
+{
+  "version": "1.0.0",
+  "protocols": [
+    {
+      "id": "execution-lifecycle",
+      "path": "meta/governance/protocols/execution-lifecycle.json",
+      "version": "1.0.0",
+      "scope": "execution",
+      "canonical": true,
+      "reflection_path": "project-governance/protocols/execution-lifecycle.protocol.md",
+      "validator_path": "scripts/validators/protocol-execution-lifecycle.ts"
+    },
+    {
+      "id": "checkpoint",
+      "path": "meta/governance/protocols/checkpoint.json",
+      "version": "1.0.0",
+      "scope": "recovery",
+      "canonical": true,
+      "reflection_path": "project-governance/protocols/checkpoint.protocol.md",
+      "validator_path": "scripts/validators/protocol-checkpoint.ts"
+    },
+    {
+      "id": "state-mutation",
+      "path": "meta/governance/protocols/state-mutation.json",
+      "version": "1.0.0",
+      "scope": "state",
+      "canonical": true,
+      "reflection_path": "project-governance/protocols/state-mutation.protocol.md",
+      "validator_path": "scripts/validators/protocol-state-mutation.ts"
+    },
+    {
+      "id": "drift-recovery",
+      "path": "meta/governance/protocols/drift-recovery.json",
+      "version": "1.0.0",
+      "scope": "recovery",
+      "canonical": false
+    },
+    {
+      "id": "execution-authorization",
+      "path": "meta/governance/protocols/execution-authorization.json",
+      "version": "1.0.0",
+      "scope": "authorization",
+      "canonical": true
+    }
+  ],
+  "schemas": [
+    {
+      "id": "protocol-definition",
+      "path": "meta/governance/schemas/protocol-definition.schema.json",
+      "version": "1.0.0"
+    },
+    {
+      "id": "authority-declaration",
+      "path": "meta/governance/schemas/authority-declaration.schema.json",
+      "version": "1.0.0"
+    },
+    {
+      "id": "governance-rule",
+      "path": "meta/governance/schemas/governance-rule.schema.json",
+      "version": "1.0.0"
+    },
+    {
+      "id": "enforcement-policy",
+      "path": "meta/governance/schemas/enforcement-policy.schema.json",
+      "version": "1.0.0"
+    },
+    {
+      "id": "recovery-policy",
+      "path": "meta/governance/schemas/recovery-policy.schema.json",
+      "version": "1.0.0"
+    },
+    {
+      "id": "runtime-transition",
+      "path": "meta/governance/schemas/runtime-transition.schema.json",
+      "version": "1.0.0"
+    },
+    {
+      "id": "governance-registry",
+      "path": "meta/governance/schemas/governance-registry.schema.json",
+      "version": "1.0.0"
+    }
+  ],
+  "rules": [],
+  "reflections": [
+    {
+      "id": "execution-lifecycle-reflection",
+      "source_protocol": "execution-lifecycle",
+      "generated_path": "project-governance/protocols/execution-lifecycle.protocol.md",
+      "last_generated_at": "2026-05-23T00:45:00Z"
+    },
+    {
+      "id": "checkpoint-reflection",
+      "source_protocol": "checkpoint",
+      "generated_path": "project-governance/protocols/checkpoint.protocol.md",
+      "last_generated_at": "2026-05-23T00:45:00Z"
+    },
+    {
+      "id": "state-mutation-reflection",
+      "source_protocol": "state-mutation",
+      "generated_path": "project-governance/protocols/state-mutation.protocol.md",
+      "last_generated_at": "2026-05-23T00:45:00Z"
+    }
+  ]
+}

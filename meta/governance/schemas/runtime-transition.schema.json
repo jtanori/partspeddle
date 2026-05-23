@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/runtime-transition.schema.json",
+  "title": "VINTRACK Runtime Transition",
+  "description": "Schema for validated runtime state transitions.",
+  "type": "object",
+  "required": ["transition_id", "from_state", "to_state", "trigger"],
+  "properties": {
+    "transition_id": { "type": "string", "pattern": "^[a-z][a-z0-9-_.]+$" },
+    "from_state": { "type": "string" },
+    "to_state": { "type": "string" },
+    "trigger": { "type": "string", "description": "Event or condition that triggers transition" },
+    "guard": { "type": ["string", "null"], "description": "Optional guard condition" },
+    "validation_rules": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Rule IDs that must pass before transition"
+    },
+    "telemetry_hooks": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Event types to emit on transition"
+    },
+    "forbidden": { "type": "boolean", "default": false }
+  },
+  "additionalProperties": false
+}

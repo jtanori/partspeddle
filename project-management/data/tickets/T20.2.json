@@ -5,7 +5,9 @@
   "domain": "Shared",
   "capability": "Governance Runtime",
   "purpose": "Introduce a Governance Definition Layer in JSON with machine-readable semantics. Markdown becomes a generated reflection of canonical JSON, not the source of truth. This makes governance enforceable, composable, evolvable, and validatable.",
-  "dependencies": ["T20.1"],
+  "dependencies": [
+    "T20.1"
+  ],
   "architectural_constraints": [
     "JSON definitions are canonical; markdown is generated",
     "Protocol definitions validate against protocol-definition.schema.json",
@@ -65,9 +67,33 @@
     "npm run governance:diff exits 0 (no stale generated files)",
     "Generated markdown contains auto-generated footer citing canonical JSON source"
   ],
-  "traceability": [],
+  "traceability": [
+    {
+      "commit_hash": "TODO",
+      "files_changed": [
+        "meta/governance/schemas/protocol-definition.schema.json",
+        "meta/governance/schemas/governance-rule.schema.json",
+        "meta/governance/schemas/enforcement-policy.schema.json",
+        "meta/governance/schemas/recovery-policy.schema.json",
+        "meta/governance/schemas/runtime-transition.schema.json",
+        "meta/governance/schemas/governance-registry.schema.json",
+        "meta/governance/registries/governance-registry.json",
+        "meta/governance/protocols/drift-recovery.json",
+        "meta/governance/protocols/execution-authorization.json",
+        "scripts/generate-governance.ts",
+        "scripts/migrate-governance-md-to-json.ts",
+        "meta/governance/tests/run-compatibility-tests.cjs"
+      ],
+      "description": "Implemented machine-readable governance: 7 schemas, 5 JSON protocols, registry, migration utility, compatibility tests, reflection generator",
+      "timestamp": "2026-05-23T02:05:00Z"
+    }
+  ],
   "observability": {
-    "metrics": ["json_protocol_def_count", "generated_artifact_count", "validator_coverage_percent"],
+    "metrics": [
+      "json_protocol_def_count",
+      "generated_artifact_count",
+      "validator_coverage_percent"
+    ],
     "logs": [],
     "traces": []
   },
@@ -84,7 +110,7 @@
     }
   ],
   "estimated_hours": 6,
-  "status": "planned",
+  "status": "completed",
   "assignee": null,
   "metadata": {
     "created_at": "2026-05-23T01:50:00Z",

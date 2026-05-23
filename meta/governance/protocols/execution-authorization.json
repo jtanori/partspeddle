@@ -1,0 +1,59 @@
+{
+  "id": "execution-authorization",
+  "version": "1.0.0",
+  "layer": 2,
+  "scope": "authorization",
+  "canonical": true,
+  "status": "active",
+  "derives_from": [
+    "runtime-governance-kernel",
+    "CANONICAL_AUTHORITY_HIERARCHY"
+  ],
+  "narrative_ref": "",
+  "purpose": "Prevent unauthorized execution. Distinguish informational interaction from execution authorization.",
+  "intent_classifications": [
+    {
+      "category": "status_query",
+      "behavior": "NON_EXECUTIONAL",
+      "examples": [
+        "status",
+        "explain",
+        "why",
+        "show"
+      ],
+      "description": "Queries that do not request state mutation"
+    },
+    {
+      "category": "execution_request",
+      "behavior": "EXECUTIONAL",
+      "examples": [
+        "implement",
+        "fix",
+        "refactor",
+        "deploy"
+      ],
+      "description": "Requests that require state mutation"
+    }
+  ],
+  "rules": [
+    {
+      "id": "no_execution_without_auth",
+      "condition": "intent = EXECUTIONAL",
+      "action": "require explicit execution authorization",
+      "severity": "CRITICAL",
+      "description": "No runtime mutation without explicit authorization."
+    },
+    {
+      "id": "informational_never_mutates",
+      "condition": "intent = NON_EXECUTIONAL",
+      "action": "prohibit state mutation",
+      "severity": "HIGH",
+      "description": "Informational inputs must never mutate state."
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-05-23T02:00:00Z",
+    "updated_at": "2026-05-23T02:00:00Z",
+    "author": "governance-system"
+  }
+}

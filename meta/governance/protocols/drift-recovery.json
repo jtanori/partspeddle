@@ -1,0 +1,50 @@
+{
+  "id": "drift-recovery",
+  "version": "1.0.0",
+  "layer": 2,
+  "scope": "recovery",
+  "canonical": false,
+  "status": "active",
+  "derives_from": [
+    "runtime-governance-kernel",
+    "CANONICAL_AUTHORITY_HIERARCHY"
+  ],
+  "narrative_ref": "",
+  "purpose": "Detection, classification, and recovery from all forms of agent drift.",
+  "rules": [
+    {
+      "id": "scope_drift_detected",
+      "condition": "files modified in unrelated domains",
+      "action": "halt execution, invoke recovery protocol",
+      "severity": "HIGH",
+      "description": "Scope drift: agent solves problems outside ticket scope"
+    },
+    {
+      "id": "architecture_drift_detected",
+      "condition": "cross-domain imports or surface violations",
+      "action": "halt execution, invoke recovery protocol",
+      "severity": "HIGH",
+      "description": "Architecture drift: violates planned system design"
+    },
+    {
+      "id": "dependency_drift_detected",
+      "condition": "dependencies added/removed without planning",
+      "action": "log drift event, require validation",
+      "severity": "MEDIUM",
+      "description": "Dependency drift: unauthorized dependency changes"
+    }
+  ],
+  "invariants": [
+    {
+      "id": "drift_must_be_classified",
+      "expression": "drift_detected → drift_type ∈ {scope, architecture, dependency, state, authorization}",
+      "severity": "CRITICAL",
+      "description": "All drift events must be classified into exactly one type."
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-05-23T02:00:00Z",
+    "updated_at": "2026-05-23T02:00:00Z",
+    "author": "governance-system"
+  }
+}
