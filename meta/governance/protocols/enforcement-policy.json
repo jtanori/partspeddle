@@ -1,0 +1,78 @@
+{
+  "id": "enforcement-policy",
+  "version": "1.0.0",
+  "layer": 3,
+  "scope": "governance",
+  "canonical": true,
+  "derives_from": ["execution-state-machine", "execution-lifecycle"],
+  "purpose": "Active governance enforcement engine preventing invalid execution behavior, enforcing protocol compliance, and preventing governance bypasses.",
+  "status": "active",
+  "rules": [
+    {
+      "id": "schema-validation",
+      "condition": "governance JSON artifact does not validate against its declared schema",
+      "action": "block_execution_and_emit_critical_event",
+      "severity": "CRITICAL",
+      "description": "All canonical JSON artifacts must validate against their governing schemas."
+    },
+    {
+      "id": "runtime-validation",
+      "condition": "runtime state file is malformed, unparsable, or missing required fields",
+      "action": "block_execution_and_emit_critical_event",
+      "severity": "CRITICAL",
+      "description": "Runtime state files must be valid JSON with expected structure."
+    },
+    {
+      "id": "protocol-validation",
+      "condition": "protocol definition does not validate against protocol-definition.schema.json",
+      "action": "block_execution_and_emit_critical_event",
+      "severity": "HIGH",
+      "description": "All protocol definitions must conform to the protocol definition schema."
+    },
+    {
+      "id": "milestone-integrity",
+      "condition": "milestone has invalid status, missing tickets, or orphaned references",
+      "action": "warn_and_emit_event",
+      "severity": "HIGH",
+      "description": "Milestone definitions must reference existing tickets and use valid statuses."
+    },
+    {
+      "id": "dependency-integrity",
+      "condition": "ticket dependency references non-existent ticket or creates a cycle",
+      "action": "block_execution_and_emit_critical_event",
+      "severity": "CRITICAL",
+      "description": "Dependency graph must be acyclic and reference only existing entities."
+    },
+    {
+      "id": "execution-state-integrity",
+      "condition": "execution state violates state machine invariants such as invalid transitions or terminal state exit",
+      "action": "block_execution_and_emit_critical_event",
+      "severity": "CRITICAL",
+      "description": "Execution state must always conform to the canonical state machine protocol."
+    }
+  ],
+  "invariants": [
+    {
+      "id": "no-bypass-without-audit",
+      "expression": "emergency bypass requires mandatory audit event with human authorization",
+      "severity": "CRITICAL",
+      "description": "No governance rule may be bypassed without an append-only audit record."
+    },
+    {
+      "id": "deterministic-enforcement",
+      "expression": "same inputs always produce identical enforcement outcomes",
+      "severity": "HIGH",
+      "description": "Enforcement results must be deterministic and reproducible."
+    },
+    {
+      "id": "violation-audit-trail",
+      "expression": "every violation produces an append-only audit record with recovery guidance",
+      "severity": "HIGH",
+      "description": "All detected violations must be logged for audit and remediation."
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-05-20T01:50:00Z",
+    "updated_at": "2026-05-20T01:50:00Z"
+  }
+}
