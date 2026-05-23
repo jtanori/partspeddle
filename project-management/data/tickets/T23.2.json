@@ -36,7 +36,19 @@
     "Interrupted session locks recoverable",
     "Lock history append-only and queryable"
   ],
-  "traceability": [],
+  "traceability": [
+    {
+      "commit_hash": "TBD",
+      "files_changed": [
+        "scripts/execution-lock.ts",
+        "scripts/detect-stale-locks.ts",
+        "project-governance/runtime/locks/tests/run-lock-tests.ts",
+        "package.json"
+      ],
+      "description": "Implemented execution locking with first-requester-wins, TTL expiry, auto-expiry, stale detection, recovery, and 14 integration tests",
+      "timestamp": "2026-05-20T11:15:00Z"
+    }
+  ],
   "observability": {
     "metrics": ["locks_held", "stale_locks_detected", "lock_recovery_count"],
     "logs": [],
@@ -55,8 +67,8 @@
     }
   ],
   "estimated_hours": 5,
-  "status": "planned",
-  "assignee": null,
+  "status": "completed",
+  "assignee": "agent",
   "metadata": {
     "created_at": "2026-05-20T09:00:00Z",
     "updated_at": "2026-05-20T09:00:00Z",
