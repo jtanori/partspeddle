@@ -1,0 +1,74 @@
+{
+  "$schema": "../schemas/protocol-definition.schema.json",
+  "id": "execution-state-machine",
+  "version": "1.0.0",
+  "title": "Execution State Machine",
+  "description": "Deterministic execution state machine defining all valid states, transitions, guards, and failure/recovery paths.",
+  "state_machine": {
+    "states": [
+      { "id": "idle", "terminal": false, "description": "No active execution" },
+      { "id": "planning", "terminal": false, "description": "Planning next execution" },
+      { "id": "validating", "terminal": false, "description": "Validating prerequisites and schema" },
+      { "id": "executing", "terminal": false, "description": "Active execution in progress" },
+      { "id": "blocked", "terminal": false, "description": "Execution blocked awaiting resolution" },
+      { "id": "recovering", "terminal": false, "description": "Recovery workflow in progress" },
+      { "id": "consolidating", "terminal": false, "description": "Consolidating results and state" },
+      { "id": "deploying", "terminal": false, "description": "Deployment in progress" },
+      { "id": "archived", "terminal": true, "description": "Execution archived" }
+    ],
+    "transitions": [
+      { "from": "idle", "to": "planning", "guard": "execution_authorized", "description": "Begin planning new execution" },
+      { "from": "planning", "to": "validating", "guard": "plan_complete", "description": "Plan complete, begin validation" },
+      { "from": "planning", "to": "idle", "guard": "always", "description": "Cancel planning" },
+      { "from": "validating", "to": "executing", "guard": "validation_passed", "description": "Validation passed, begin execution" },
+      { "from": "validating", "to": "blocked", "guard": "validation_failed", "description": "Validation failed, block execution" },
+      { "from": "executing", "to": "consolidating", "guard": "execution_complete", "description": "Execution complete, consolidate" },
+      { "from": "executing", "to": "blocked", "guard": "execution_interrupted", "description": "Execution interrupted" },
+      { "from": "blocked", "to": "recovering", "guard": "recovery_initiated", "description": "Begin recovery workflow" },
+      { "from": "blocked", "to": "planning", "guard": "replan_authorized", "description": "Replan from blocked state" },
+      { "from": "recovering", "to": "validating", "guard": "recovery_complete", "description": "Recovery complete, re-validate" },
+      { "from": "recovering", "to": "idle", "guard": "recovery_abandoned", "description": "Abandon recovery" },
+      { "from": "consolidating", "to": "deploying", "guard": "consolidation_complete", "description": "Consolidation complete, deploy" },
+      { "from": "consolidating", "to": "archived", "guard": "no_deployment", "description": "Archive without deployment" },
+      { "from": "deploying", "to": "archived", "guard": "deployment_complete", "description": "Deployment complete, archive" },
+      { "from": "deploying", "to": "recovering", "guard": "deployment_failed", "description": "Deployment failed, recover" }
+    ],
+    "failure_transitions": [
+      { "from": "planning", "to": "idle", "trigger": "plan_rejected", "description": "Plan rejected, return to idle" },
+      { "from": "validating", "to": "blocked", "trigger": "schema_violation", "description": "Schema violation blocks execution" },
+      { "from": "executing", "to": "blocked", "trigger": "runtime_error", "description": "Runtime error interrupts execution" },
+      { "from": "consolidating", "to": "recovering", "trigger": "consolidation_error", "description": "Consolidation error triggers recovery" },
+      { "from": "deploying", "to": "recovering", "trigger": "deploy_rejected", "description": "Deployment rejected, recover" }
+    ],
+    "recovery_transitions": [
+      { "from": "blocked", "to": "recovering", "trigger": "auto_recover", "description": "Auto-recovery from blocked" },
+      { "from": "blocked", "to": "idle", "trigger": "manual_abort", "description": "Manual abort to idle" },
+      { "from": "recovering", "to": "validating", "trigger": "fix_applied", "description": "Fix applied, re-validate" }
+    ]
+  },
+  "emissions": {
+    "on_state_enter": "execution.state_entered",
+    "on_state_exit": "execution.state_exited",
+    "on_transition": "execution.transitioned",
+    "on_guard_reject": "execution.transition_blocked",
+    "on_failure": "execution.failed",
+    "on_recovery": "recovery.initiated"
+  },
+  "invariants": [
+    {
+      "id": "no_direct_mutation",
+      "expression": "state may only change via canonical transition",
+      "severity": "critical"
+    },
+    {
+      "id": "terminal_no_exit",
+      "expression": "archived state has no outgoing transitions",
+      "severity": "high"
+    },
+    {
+      "id": "event_emission",
+      "expression": "every state mutation emits governance event",
+      "severity": "high"
+    }
+  ]
+}
