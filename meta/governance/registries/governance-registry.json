@@ -81,6 +81,15 @@
     }
   ],
   "rules": [],
+  "events": {
+    "schema": "meta/governance/events/schemas/governance-event.schema.json",
+    "catalog": "meta/governance/events/event-catalog.json",
+    "policy": "meta/governance/events/event-stream-policy.json",
+    "emitter": "scripts/emit-governance-event.ts",
+    "query": "scripts/query-governance-events.ts",
+    "validator": "scripts/validators/governance/governance-event.ts",
+    "streams_dir": "project-governance/runtime/events/streams"
+  },
   "reflections": [
     {
       "id": "execution-lifecycle-reflection",

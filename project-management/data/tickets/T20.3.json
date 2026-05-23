@@ -60,7 +60,25 @@
     "npm run governance:event:validate passes",
     "No duplicate event types between governance and application event buses"
   ],
-  "traceability": [],
+  "traceability": [
+    {
+      "commit_hash": "ef97e05",
+      "files_changed": [
+        "meta/governance/events/schemas/governance-event.schema.json",
+        "meta/governance/events/event-catalog.json",
+        "meta/governance/events/event-stream-policy.json",
+        "scripts/emit-governance-event.ts",
+        "scripts/query-governance-events.ts",
+        "scripts/validators/governance/governance-event.ts",
+        "meta/governance/tests/run-governance-event-tests.ts",
+        "meta/governance/registries/governance-registry.json",
+        "meta/governance/schemas/governance-registry.schema.json",
+        "package.json"
+      ],
+      "description": "Implemented governance event bus with NDJSON append-only streams, schema validation, 12 event types, 5 streams, emitter, query tool, and 22 integration tests",
+      "timestamp": "2026-05-20T08:50:00Z"
+    }
+  ],
   "observability": {
     "metrics": ["events_emitted_per_day", "events_by_category", "events_by_severity"],
     "logs": [],
@@ -84,11 +102,11 @@
     }
   ],
   "estimated_hours": 6,
-  "status": "planned",
-  "assignee": null,
+  "status": "completed",
+  "assignee": "agent",
   "metadata": {
     "created_at": "2026-05-23T01:50:00Z",
-    "updated_at": "2026-05-23T01:50:00Z",
+    "updated_at": "2026-05-20T08:50:00Z",
     "version": 1,
     "governance_risk_classification": "HIGH",
     "operational_rationale": "Runtime state, audits, and checkpoints exist but there is no unified event stream. This explains silent failures, invisible runtime faults, poor observability, weak debugging ergonomics, and difficult recovery analysis.",

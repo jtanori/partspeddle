@@ -60,6 +60,19 @@
           "last_generated_at": { "type": "string", "format": "date-time" }
         }
       }
+    },
+    "events": {
+      "type": "object",
+      "required": ["schema", "catalog", "policy", "emitter", "query", "validator", "streams_dir"],
+      "properties": {
+        "schema": { "type": "string" },
+        "catalog": { "type": "string" },
+        "policy": { "type": "string" },
+        "emitter": { "type": "string" },
+        "query": { "type": "string" },
+        "validator": { "type": "string" },
+        "streams_dir": { "type": "string" }
+      }
     }
   },
   "additionalProperties": false

@@ -1,0 +1,71 @@
+{
+  "version": "1.0.0",
+  "description": "Governance event stream policy — append-only, NDJSON, deterministic",
+  "format": "ndjson",
+  "encoding": "utf-8",
+  "line_ending": "\n",
+  "compression": null,
+  "retention": {
+    "strategy": "append_only",
+    "immutable": true,
+    "max_age_days": 90,
+    "max_size_mb": 100,
+    "archive_after_days": 30,
+    "archive_format": "gz"
+  },
+  "ordering": {
+    "guarantee": "causal",
+    "sequence_field": "event_id",
+    "timestamp_field": "timestamp",
+    "replay_compatible": true
+  },
+  "validation": {
+    "schema": "./schemas/governance-event.schema.json",
+    "reject_on_invalid": true,
+    "max_payload_size_bytes": 65536
+  },
+  "streams": [
+    {
+      "name": "default",
+      "path": "project-governance/runtime/events/streams/default.ndjson",
+      "severity_filter": ["info", "warn", "error", "critical"],
+      "categories": ["*"]
+    },
+    {
+      "name": "errors",
+      "path": "project-governance/runtime/events/streams/errors.ndjson",
+      "severity_filter": ["error", "critical"],
+      "categories": ["*"]
+    },
+    {
+      "name": "execution",
+      "path": "project-governance/runtime/events/streams/execution.ndjson",
+      "severity_filter": ["debug", "info", "warn", "error", "critical"],
+      "categories": ["execution", "planning"]
+    },
+    {
+      "name": "validation",
+      "path": "project-governance/runtime/events/streams/validation.ndjson",
+      "severity_filter": ["info", "warn", "error", "critical"],
+      "categories": ["validation", "governance"]
+    },
+    {
+      "name": "diagnostics",
+      "path": "project-governance/runtime/events/streams/diagnostics.ndjson",
+      "severity_filter": ["debug", "info"],
+      "categories": ["diagnostics", "runtime"]
+    }
+  ],
+  "integration_hooks": {
+    "on_event": [
+      "scripts/validators/governance/governance-event.ts"
+    ],
+    "on_stream_rotate": [
+      "scripts/archive-governance-stream.ts"
+    ],
+    "on_severity": {
+      "critical": ["scripts/notify-critical.ts"],
+      "error": []
+    }
+  }
+}

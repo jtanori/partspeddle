@@ -692,7 +692,7 @@
     ],
     "downstream_impact": "Blocks all feature milestones that depend on governance correctness. Unblocks M12-M19 governance milestones by providing stable substrate.",
     "estimated_duration_days": 3,
-    "status": "planned",
+    "status": "completed",
     "ticket_paths": {
       "T20.1": {
         "path": "project-management/data/tickets/T20.1.json",

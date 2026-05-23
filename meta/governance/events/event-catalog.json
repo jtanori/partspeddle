@@ -1,0 +1,83 @@
+{
+  "$schema": "./schemas/governance-event.schema.json",
+  "description": "Catalog of governance event types supported by the runtime",
+  "version": "1.0.0",
+  "events": [
+    {
+      "event_type": "execution.started",
+      "severity": "info",
+      "category": "execution",
+      "description": "An execution began",
+      "payload_schema": {
+        "execution_id": "string",
+        "command": "string"
+      }
+    },
+    {
+      "event_type": "execution.completed",
+      "severity": "info",
+      "category": "execution",
+      "description": "An execution finished successfully"
+    },
+    {
+      "event_type": "execution.failed",
+      "severity": "error",
+      "category": "execution",
+      "description": "An execution terminated with error"
+    },
+    {
+      "event_type": "validation.passed",
+      "severity": "info",
+      "category": "validation",
+      "description": "A governance validation succeeded"
+    },
+    {
+      "event_type": "validation.failed",
+      "severity": "warn",
+      "category": "validation",
+      "description": "A governance validation failed"
+    },
+    {
+      "event_type": "governance.migrated",
+      "severity": "info",
+      "category": "governance",
+      "description": "A governance protocol was migrated to JSON"
+    },
+    {
+      "event_type": "governance.registry.updated",
+      "severity": "info",
+      "category": "governance",
+      "description": "The governance registry was updated"
+    },
+    {
+      "event_type": "runtime.ping",
+      "severity": "debug",
+      "category": "runtime",
+      "description": "Periodic heartbeat"
+    },
+    {
+      "event_type": "recovery.initiated",
+      "severity": "warn",
+      "category": "recovery",
+      "description": "An automated recovery was started"
+    },
+    {
+      "event_type": "planning.checkpoint",
+      "severity": "info",
+      "category": "planning",
+      "description": "A planning checkpoint was reached"
+    },
+    {
+      "event_type": "diagnostics.health_check",
+      "severity": "debug",
+      "category": "diagnostics",
+      "description": "Health check result"
+    },
+    {
+      "event_type": "recovery.escalated",
+      "severity": "critical",
+      "category": "recovery",
+      "description": "Recovery failed and was escalated to human"
+    }
+  ]
+}
