@@ -1,0 +1,57 @@
+{
+  "$schema": "./schema/recipe.schema.json",
+  "id": "validate-governance-health",
+  "version": "1.0.0",
+  "category": "governance-repair",
+  "title": "Validate Governance Health",
+  "purpose": "Run comprehensive governance validation to detect drift, schema violations, and authority inconsistencies.",
+  "prerequisites": [
+    "All governance schemas are present",
+    "npm run pm:validate is configured"
+  ],
+  "steps": [
+    {
+      "id": "run-pm-validate",
+      "description": "Validate all project management artifacts",
+      "command": "npm run pm:validate",
+      "validation": "Exit code 0"
+    },
+    {
+      "id": "run-governance-validate",
+      "description": "Validate governance protocols and reflections",
+      "command": "npm run governance:validate",
+      "validation": "Exit code 0"
+    },
+    {
+      "id": "run-event-validate",
+      "description": "Validate governance event bus",
+      "command": "npm run governance:event:validate",
+      "validation": "Exit code 0"
+    },
+    {
+      "id": "run-diagnostics",
+      "description": "Run diagnostic health checks",
+      "command": "npm run diagnostics:health",
+      "validation": "All checks pass"
+    }
+  ],
+  "recovery": {
+    "auto_recoverable": true,
+    "steps": [
+      "Run npm run governance:generate to regenerate artifacts",
+      "Fix individual schema violations"
+    ]
+  },
+  "rollback": {
+    "required": false,
+    "snapshot_before": false,
+    "steps": []
+  },
+  "validation": [
+    "npm run pm:validate passes",
+    "npm run governance:validate passes",
+    "npm run diagnostics:health passes"
+  ],
+  "estimated_duration_minutes": 5,
+  "risk_level": "low"
+}

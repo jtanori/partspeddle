@@ -46,7 +46,21 @@
     "Recovery paths defined for all non-trivial recipes",
     "Rollback guidance included for state-mutating recipes"
   ],
-  "traceability": [],
+  "traceability": [
+    {
+      "commit_hash": "TBD",
+      "files_changed": [
+        "meta/governance/recipes/schema/recipe.schema.json",
+        "meta/governance/recipes/*.json",
+        "scripts/execute-recipe.ts",
+        "scripts/generate-recipe-md.ts",
+        "project-governance/recipes/tests/run-recipe-tests.ts",
+        "package.json"
+      ],
+      "description": "Implemented recipe execution framework with 7 categories, schema validation, prerequisite checks, markdown reflections, and 14 integration tests",
+      "timestamp": "2026-05-20T10:15:00Z"
+    }
+  ],
   "observability": {
     "metrics": ["recipes_executed", "recipe_success_rate", "recipe_validation_failures"],
     "logs": [],
@@ -65,8 +79,8 @@
     }
   ],
   "estimated_hours": 6,
-  "status": "planned",
-  "assignee": null,
+  "status": "completed",
+  "assignee": "agent",
   "metadata": {
     "created_at": "2026-05-20T09:00:00Z",
     "updated_at": "2026-05-20T09:00:00Z",

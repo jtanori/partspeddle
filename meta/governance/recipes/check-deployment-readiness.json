@@ -1,0 +1,60 @@
+{
+  "$schema": "./schema/recipe.schema.json",
+  "id": "check-deployment-readiness",
+  "version": "1.0.0",
+  "category": "deployment-readiness",
+  "title": "Check Deployment Readiness",
+  "purpose": "Validate operational readiness before deployment by checking milestones, blockers, and governance consistency.",
+  "prerequisites": [
+    "M25 (Deployment Governance) is complete or waived",
+    "All prior milestones are complete",
+    "No unresolved critical risks"
+  ],
+  "steps": [
+    {
+      "id": "check-milestones",
+      "description": "Verify all required milestones are complete",
+      "command": "npm run pm:status",
+      "validation": "No incomplete critical milestones"
+    },
+    {
+      "id": "check-blockers",
+      "description": "Identify unresolved blockers",
+      "validation": "Blocker count is 0"
+    },
+    {
+      "id": "check-validation",
+      "description": "Run full validation suite",
+      "command": "npm run pm:validate && npm run test:ci",
+      "validation": "All pass"
+    },
+    {
+      "id": "generate-manifest",
+      "description": "Generate release manifest",
+      "validation": "Manifest includes version, changes, and sign-offs"
+    }
+  ],
+  "recovery": {
+    "auto_recoverable": false,
+    "steps": [
+      "Address blockers",
+      "Re-run readiness check"
+    ]
+  },
+  "rollback": {
+    "required": true,
+    "snapshot_before": true,
+    "steps": [
+      "git tag pre-deployment-<version>",
+      "Document rollback procedure"
+    ]
+  },
+  "validation": [
+    "All milestones complete",
+    "Zero blockers",
+    "Validation suite passes",
+    "Release manifest generated"
+  ],
+  "estimated_duration_minutes": 15,
+  "risk_level": "high"
+}

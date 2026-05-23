@@ -1,0 +1,60 @@
+{
+  "$schema": "./schema/recipe.schema.json",
+  "id": "plan-next-milestone",
+  "version": "1.0.0",
+  "category": "planning",
+  "title": "Plan Next Milestone",
+  "purpose": "Transition from completed milestone to next milestone by updating canonical state, tickets, and execution context.",
+  "prerequisites": [
+    "Current milestone has 0 pending tickets",
+    "All current milestone tickets are completed",
+    "npm run pm:validate passes",
+    "Worktree is clean or changes are committed"
+  ],
+  "steps": [
+    {
+      "id": "validate-completion",
+      "description": "Verify current milestone is truly complete",
+      "command": "npm run pm:validate",
+      "validation": "Exit code 0"
+    },
+    {
+      "id": "identify-next",
+      "description": "Read dependency graph to identify next milestone",
+      "command": "cat project-management/data/dependency-graph.json | grep -A2 \"depends_on\":",
+      "validation": "Next milestone ID confirmed"
+    },
+    {
+      "id": "update-canonical",
+      "description": "Update canonical state to reflect new milestone",
+      "validation": "meta/state/canonical-state.json shows new milestone"
+    },
+    {
+      "id": "update-tickets",
+      "description": "Set first ticket of new milestone to in_progress",
+      "validation": "Ticket status updated in project-management/data/tickets/"
+    }
+  ],
+  "recovery": {
+    "auto_recoverable": true,
+    "steps": [
+      "Revert canonical state to previous milestone",
+      "Reset ticket statuses to planned"
+    ]
+  },
+  "rollback": {
+    "required": true,
+    "snapshot_before": true,
+    "steps": [
+      "git stash or git checkout -- meta/state/canonical-state.json",
+      "Revert ticket JSON files"
+    ]
+  },
+  "validation": [
+    "Canonical state shows new milestone as in_progress",
+    "First ticket of new milestone shows in_progress",
+    "npm run pm:validate passes"
+  ],
+  "estimated_duration_minutes": 10,
+  "risk_level": "medium"
+}

@@ -1,0 +1,71 @@
+{
+  "$schema": "./schema/recipe.schema.json",
+  "id": "implement-ticket",
+  "version": "1.0.0",
+  "category": "implementation",
+  "title": "Implement a Ticket",
+  "purpose": "Standardized workflow for implementing a governance or feature ticket with validation gates.",
+  "prerequisites": [
+    "Ticket is in_progress status",
+    "Dependencies are complete",
+    "Acceptance criteria are clear"
+  ],
+  "steps": [
+    {
+      "id": "read-spec",
+      "description": "Read ticket JSON and understand requirements",
+      "validation": "Can articulate acceptance criteria"
+    },
+    {
+      "id": "plan-changes",
+      "description": "Identify files to modify and create plan",
+      "validation": "Plan documented in commit message draft"
+    },
+    {
+      "id": "implement",
+      "description": "Write code per acceptance criteria",
+      "validation": "All deliverables exist"
+    },
+    {
+      "id": "run-tests",
+      "description": "Run relevant test suites",
+      "command": "npm run test:unit",
+      "validation": "All tests pass"
+    },
+    {
+      "id": "run-validation",
+      "description": "Run PM and governance validation",
+      "command": "npm run pm:validate",
+      "validation": "Exit code 0"
+    },
+    {
+      "id": "commit",
+      "description": "Commit with atomic, descriptive message",
+      "command": "git commit -m 'feat(domain): description (Txx.x)'",
+      "validation": "Commit includes ticket reference"
+    }
+  ],
+  "recovery": {
+    "auto_recoverable": true,
+    "steps": [
+      "git reset --soft HEAD~1",
+      "Fix issues and re-commit"
+    ]
+  },
+  "rollback": {
+    "required": true,
+    "snapshot_before": true,
+    "steps": [
+      "git stash",
+      "git checkout -- ."
+    ]
+  },
+  "validation": [
+    "All acceptance criteria checked",
+    "Tests pass",
+    "PM validation passes",
+    "Commit includes ticket traceability"
+  ],
+  "estimated_duration_minutes": 60,
+  "risk_level": "medium"
+}

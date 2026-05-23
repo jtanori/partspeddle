@@ -1,0 +1,56 @@
+{
+  "$schema": "./schema/recipe.schema.json",
+  "id": "check-runtime-health",
+  "version": "1.0.0",
+  "category": "runtime-health",
+  "title": "Check Runtime Health",
+  "purpose": "Quick operational health check for governance runtime systems.",
+  "prerequisites": [
+    "Diagnostics console is operational",
+    "Telemetry streams are writable"
+  ],
+  "steps": [
+    {
+      "id": "heartbeat",
+      "description": "Emit heartbeat telemetry",
+      "command": "tsx scripts/emit-telemetry.ts runtime heartbeat 1 info",
+      "validation": "Event appears in telemetry stream"
+    },
+    {
+      "id": "check-state",
+      "description": "Verify canonical state is valid JSON",
+      "validation": "JSON parses successfully"
+    },
+    {
+      "id": "check-streams",
+      "description": "Verify event and telemetry streams are writable",
+      "validation": "Test events append successfully"
+    },
+    {
+      "id": "run-diagnostics",
+      "description": "Run diagnostic health checks",
+      "command": "npm run diagnostics:health",
+      "validation": "All checks pass"
+    }
+  ],
+  "recovery": {
+    "auto_recoverable": true,
+    "steps": [
+      "Restart stream directories if corrupted",
+      "Regenerate canonical state from last checkpoint"
+    ]
+  },
+  "rollback": {
+    "required": false,
+    "snapshot_before": false,
+    "steps": []
+  },
+  "validation": [
+    "Heartbeat emitted",
+    "Canonical state valid",
+    "Streams writable",
+    "Health checks pass"
+  ],
+  "estimated_duration_minutes": 3,
+  "risk_level": "low"
+}

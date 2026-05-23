@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/recipe.schema.json",
+  "title": "VINTRACK Governance Recipe",
+  "description": "Schema for executable governance recipes. Machine-readable canonical definitions.",
+  "type": "object",
+  "required": ["id", "version", "category", "title", "purpose", "prerequisites", "steps", "validation"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z]+(-[a-z]+)*$",
+      "description": "Recipe identifier, e.g. plan-next-milestone"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Semver version"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["planning", "implementation", "recovery", "investigations", "runtime-health", "governance-repair", "deployment-readiness"],
+      "description": "Recipe category"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 10
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Conditions that must be true before execution"
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "description"],
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+          "command": { "type": "string", "description": "Optional shell command" },
+          "validation": { "type": "string", "description": "How to verify this step" }
+        }
+      }
+    },
+    "recovery": {
+      "type": "object",
+      "description": "Recovery path if recipe fails mid-execution",
+      "properties": {
+        "auto_recoverable": { "type": "boolean" },
+        "steps": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "rollback": {
+      "type": "object",
+      "description": "Rollback guidance for state-mutating recipes",
+      "properties": {
+        "required": { "type": "boolean" },
+        "steps": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "snapshot_before": { "type": "boolean" }
+      }
+    },
+    "validation": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "How to verify the recipe was applied correctly"
+    },
+    "estimated_duration_minutes": {
+      "type": "number",
+      "minimum": 1
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "critical"]
+    }
+  },
+  "additionalProperties": false
+}

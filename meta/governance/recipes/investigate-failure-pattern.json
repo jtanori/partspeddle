@@ -1,0 +1,56 @@
+{
+  "$schema": "./schema/recipe.schema.json",
+  "id": "investigate-failure-pattern",
+  "version": "1.0.0",
+  "category": "investigations",
+  "title": "Investigate Failure Pattern",
+  "purpose": "Systematically investigate recurring failures by analyzing event streams, telemetry, and change history.",
+  "prerequisites": [
+    "At least 2 similar failures in recent history",
+    "Event streams are accessible",
+    "Git history is available"
+  ],
+  "steps": [
+    {
+      "id": "collect-events",
+      "description": "Gather all events related to failures",
+      "command": "tsx scripts/query-governance-events.ts default --severity error",
+      "validation": "Events collected and filtered"
+    },
+    {
+      "id": "identify-pattern",
+      "description": "Look for commonalities across failures",
+      "validation": "Pattern hypothesis documented"
+    },
+    {
+      "id": "check-recent-changes",
+      "description": "Review git history for correlated changes",
+      "command": "git log --oneline -20",
+      "validation": "Changes mapped to failure timeline"
+    },
+    {
+      "id": "generate-report",
+      "description": "Create investigation report with findings",
+      "validation": "Report includes root cause hypothesis and recommendations"
+    }
+  ],
+  "recovery": {
+    "auto_recoverable": false,
+    "steps": [
+      "Escalate to senior operator",
+      "Create incident ticket"
+    ]
+  },
+  "rollback": {
+    "required": false,
+    "snapshot_before": false,
+    "steps": []
+  },
+  "validation": [
+    "Pattern identified with evidence",
+    "Report generated",
+    "Recommendations include actionable next steps"
+  ],
+  "estimated_duration_minutes": 45,
+  "risk_level": "medium"
+}
