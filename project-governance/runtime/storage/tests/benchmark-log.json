@@ -1,0 +1,11 @@
+{
+  "runs": [
+    {
+      "overhead": -3.022194722151303,
+      "adapter_ms": 1272.47091,
+      "direct_ms": 1312.1259099999997,
+      "timestamp": "2026-05-24T23:37:26.799Z",
+      "classification": "PASS"
+    }
+  ]
+}
