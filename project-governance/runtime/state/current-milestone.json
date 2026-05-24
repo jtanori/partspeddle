@@ -1,12 +1,13 @@
 {
   "protocol_version": "1.0.0",
   "active_milestone": {
-    "id": "M28",
+    "id": "M32",
     "status": "in_progress"
   },
   "previous_milestone": {
     "id": "M27",
-    "status": "completed"
+    "status": "completed",
+    "completed_at": "2026-05-24T13:03:44.668Z"
   },
-  "updated_at": "2026-05-24T13:50:42.127Z"
+  "updated_at": "2026-05-24T18:09:59.425Z"
 }

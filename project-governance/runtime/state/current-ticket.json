@@ -2,13 +2,14 @@
   "protocol_version": "1.0.0",
   "active": true,
   "ticket": {
-    "id": "T28.3",
+    "id": "T32.5",
+    "title": "P0 Integration & Validation",
     "status": "in_progress"
   },
   "last_ticket": {
     "id": "T28.2",
     "status": "completed",
-    "completed_at": "2026-05-24T13:50:42Z"
+    "completed_at": "2026-05-24T14:33:17.502Z"
   },
-  "updated_at": "2026-05-24T14:38:05.751Z"
+  "updated_at": "2026-05-24T18:09:59.427Z"
 }

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://vintrack.io/schemas/projection-registry.schema.json",
+  "version": "1.0.0",
+  "authority": "meta/state/canonical-state.json",
+  "updated_at": "2026-05-24T18:00:00Z",
+  "projections": [
+    {
+      "id": "runtime-state",
+      "output_path": "project-governance/runtime/runtime-state.json",
+      "generator": "scripts/sync-projections.ts",
+      "refresh_trigger": "canonical_state_change",
+      "max_staleness_ms": 60000,
+      "description": "Derived runtime state including active milestone, ticket, execution mode, and constraints"
+    },
+    {
+      "id": "active-execution",
+      "output_path": "project-governance/runtime/state/active-execution.json",
+      "generator": "scripts/sync-projections.ts",
+      "refresh_trigger": "canonical_state_change",
+      "max_staleness_ms": 60000,
+      "description": "Current execution context including execution_id, ticket, milestone, and safe_exit status"
+    },
+    {
+      "id": "current-milestone",
+      "output_path": "project-governance/runtime/state/current-milestone.json",
+      "generator": "scripts/sync-projections.ts",
+      "refresh_trigger": "canonical_state_change",
+      "max_staleness_ms": 60000,
+      "description": "Current active milestone with previous milestone reference"
+    },
+    {
+      "id": "current-ticket",
+      "output_path": "project-governance/runtime/state/current-ticket.json",
+      "generator": "scripts/sync-projections.ts",
+      "refresh_trigger": "canonical_state_change",
+      "max_staleness_ms": 60000,
+      "description": "Current active ticket with last ticket reference"
+    },
+    {
+      "id": "execution-lock",
+      "output_path": "project-governance/runtime/state/execution-lock.json",
+      "generator": "scripts/sync-projections.ts",
+      "refresh_trigger": "canonical_state_change",
+      "max_staleness_ms": 60000,
+      "description": "Execution lock state including locked status, execution_id, expiry, and release info"
+    },
+    {
+      "id": "runtime-bootstrap",
+      "output_path": "project-governance/runtime/bootstrap/runtime-bootstrap.json",
+      "generator": "scripts/bootstrap.ts",
+      "refresh_trigger": "canonical_state_change",
+      "max_staleness_ms": 300000,
+      "description": "Bootstrap configuration generated from canonical-state and milestone registry"
+    }
+  ]
+}
