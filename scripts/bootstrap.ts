@@ -1,246 +1,240 @@
 #!/usr/bin/env tsx
 /**
- * VINTRACK Bootstrap Script
+ * VINTRACK Bootstrap Script — T32.1 deliverable
  *
- * Reads current git branch, infers active ticket,
- * loads governance files, and generates runtime-state.json.
+ * Reads canonical-state as the sole authoritative source and generates
+ * runtime-bootstrap.json for session initialization.
  *
- * Usage:
- *   npm run bootstrap
- *   npx tsx scripts/bootstrap.ts
+ * NEVER reads deprecated project-management/data/milestones.json.
  */
 
-import { execSync } from 'child_process';
-import { readFileSync, writeFileSync, existsSync } from 'fs';
-import { join } from 'path';
+import { readFileSync, writeFileSync, existsSync } from "fs";
+import { resolve } from "path";
+import { execSync } from "child_process";
 
-const GOVERNANCE_DIR = join(process.cwd(), 'project-governance', 'runtime');
-const TICKETS_DIR = join(process.cwd(), 'project-management', 'data', 'tickets');
-const MILESTONES_FILE = join(process.cwd(), 'project-management', 'data', 'milestones.json');
+const CANONICAL_STATE_PATH = resolve("meta/state/canonical-state.json");
+const MILESTONES_REGISTRY_PATH = resolve("project-management/data/milestones.registry.json");
+const GOVERNANCE_MILESTONES_PATH = resolve("project-management/milestones/governance.json");
+const CORE_MILESTONES_PATH = resolve("project-management/milestones/core.json");
+const LATEST_CHECKPOINT_PATH = resolve("project-governance/runtime/checkpoints/latest-checkpoint.json");
+const BOOTSTRAP_OUTPUT_PATH = resolve("project-governance/runtime/bootstrap/runtime-bootstrap.json");
 
-interface RuntimeState {
-  system: string;
-  version: string;
-  active_phase: number;
-  active_milestone: {
-    id: string;
-    title: string;
-    status: string;
+interface CanonicalState {
+  execution?: {
+    execution_id?: string;
+    task_id?: string;
+    milestone_id?: string;
+    status?: string;
+    started_at?: string;
+    completed_at?: string | null;
+  } | null;
+  last_execution?: {
+    execution_id?: string;
+    task_id?: string;
+    milestone_id?: string;
+    status?: string;
+    started_at?: string;
+    completed_at?: string;
   };
-  previous_milestone?: {
-    id: string;
-    title: string;
-    status: string;
+  milestone?: { id?: string; status?: string };
+  ticket?: { id?: string; title?: string; status?: string } | null;
+  lock?: {
+    locked?: boolean;
+    execution_id?: string;
+    locked_at?: string;
+    locked_by?: string;
+    expires_at?: string;
+    released_at?: string | null;
+    release_reason?: string | null;
   };
-  active_ticket: {
-    id: string;
-    title: string;
-    status: string;
+  repository?: {
+    branch?: string;
+    base_branch?: string;
+    worktree_clean?: boolean;
+    head_commit?: string | null;
+    promotion_status?: string;
   };
-  execution_surface: string;
-  current_branch: string;
-  blocked_tickets: string[];
-  completed_tickets: string[];
-  required_governance_documents: string[];
-  active_constraints: string[];
-  ci_requirements: string[];
-  emergency_notes?: string[];
-  updated_at: string;
+  governance?: {
+    heartbeat_policy?: string;
+    checkpoint_protocol?: string;
+    drift_detection?: string;
+    enforcement_gates?: string;
+    safe_exit_protocol?: string;
+    state_mutation_rules?: string;
+    token_efficiency?: string;
+    work_continuation?: string;
+    tool_capability?: string;
+    repository_governance?: string;
+  };
+  last_milestone?: { id?: string; status?: string; completed_at?: string };
+  updated_at?: string;
+}
+
+interface MilestoneRegistry {
+  files: string[];
+  active_collections: string[];
+}
+
+interface Milestone {
+  id: string;
+  phase: number;
+  title: string;
+  status: string;
+  tickets: string[];
+}
+
+function loadJson<T>(path: string): T | null {
+  if (!existsSync(path)) return null;
+  return JSON.parse(readFileSync(path, "utf-8")) as T;
 }
 
 function getGitBranch(): string {
   try {
-    return execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf-8' }).trim();
+    return execSync("git rev-parse --abbrev-ref HEAD", { encoding: "utf-8" }).trim();
   } catch {
-    return 'unknown';
+    return "unknown";
   }
 }
 
-function inferTicketFromBranch(branch: string): string | null {
-  // Match ticket patterns like T3.1, T2.8, T3.2A
-  // Require a dot + number to distinguish from milestone IDs like M2, M3
-  const match = branch.match(/\b(T\d+\.\d+[A-Z]?)\b/);
-  return match?.[1] ?? null;
+function loadMilestones(): Milestone[] {
+  const governance = loadJson<Milestone[]>(GOVERNANCE_MILESTONES_PATH) || [];
+  const core = loadJson<Milestone[]>(CORE_MILESTONES_PATH) || [];
+  return [...governance, ...core];
 }
 
-function loadJson<T>(path: string): T {
-  return JSON.parse(readFileSync(path, 'utf-8')) as T;
+function findMilestone(id: string): Milestone | null {
+  return loadMilestones().find((m) => m.id === id) || null;
 }
 
-function findTicketFile(ticketId: string): string | null {
-  const candidates = [
-    join(TICKETS_DIR, `${ticketId}.json`),
-  ];
-  for (const candidate of candidates) {
-    if (existsSync(candidate)) return candidate;
-  }
-  return null;
-}
-
-function findMilestoneForTicket(ticketId: string): { id: string; title: string; status: string } | null {
-  const milestones = loadJson<Array<{ id: string; title: string; status: string; tickets: string[] }>>(MILESTONES_FILE);
-  for (const m of milestones) {
-    if (m.tickets.includes(ticketId)) {
-      return { id: m.id, title: m.title, status: m.status };
-    }
-  }
-  return null;
-}
-
-function findPreviousMilestone(currentId: string): { id: string; title: string; status: string } | null {
-  const milestones = loadJson<Array<{ id: string; title: string; status: string; phase: number }>>(MILESTONES_FILE);
+function findPreviousMilestone(currentId: string): Milestone | null {
+  const milestones = loadMilestones();
   const current = milestones.find((m) => m.id === currentId);
   if (!current) return null;
-  const previous = milestones
-    .filter((m) => m.phase < current.phase && m.status === 'completed')
-    .sort((a, b) => b.phase - a.phase)[0];
-  return previous ? { id: previous.id, title: previous.title, status: previous.status } : null;
+  return milestones
+    .filter((m) => m.phase < current.phase && m.status === "completed")
+    .sort((a, b) => b.phase - a.phase)[0] || null;
+}
+
+function loadLatestCheckpoint(): Record<string, unknown> | null {
+  return loadJson<Record<string, unknown>>(LATEST_CHECKPOINT_PATH);
 }
 
 function gatherCompletedTickets(): string[] {
-  const tickets = loadJson<Array<{ id: string; status: string }>>(MILESTONES_FILE);
   const completed: string[] = [];
-  for (const m of tickets) {
-    if (m.status === 'completed' && Array.isArray((m as unknown as Record<string, unknown>).tickets)) {
-      completed.push(...((m as unknown as Record<string, string[]>).tickets));
+  for (const m of loadMilestones()) {
+    if (m.status === "completed" && Array.isArray(m.tickets)) {
+      completed.push(...m.tickets);
     }
   }
   return completed;
 }
 
-function inferSurfaceFromTicket(ticket: { domain?: string; deliverables?: Array<{ path?: string }> }): string {
-  const domain = ticket.domain?.toLowerCase() ?? '';
-  const paths = ticket.deliverables?.map((d) => d.path?.toLowerCase() ?? '') ?? [];
+function inferTicketFromBranch(branch: string): string | null {
+  const match = branch.match(/\b(T\d+\.\d+[A-Z]?)\b/);
+  return match?.[1] ?? null;
+}
 
-  const hasFrontend = paths.some((p) => p.includes('frontend') || p.includes('ui') || p.includes('page'));
-  const hasBackend = paths.some((p) => p.includes('api') || p.includes('domain') || p.includes('infrastructure'));
-  const hasShared = paths.some((p) => p.includes('shared'));
+function generateBootstrap(): Record<string, unknown> {
+  const canonical = loadJson<CanonicalState>(CANONICAL_STATE_PATH);
+  if (!canonical) {
+    throw new Error("Canonical state not found. Cannot bootstrap.");
+  }
 
-  if (domain.includes('frontend') || hasFrontend) return 'frontend';
-  if (hasShared && hasFrontend) return 'fullstack';
-  if (hasShared && hasBackend) return 'fullstack';
-  if (hasShared) return 'shared';
-  if (domain.includes('infrastructure') || domain.includes('ci')) return 'infrastructure';
-  return 'backend';
+  const registry = loadJson<MilestoneRegistry>(MILESTONES_REGISTRY_PATH);
+  const milestones = loadMilestones();
+  const latestCheckpoint = loadLatestCheckpoint();
+  const branch = getGitBranch();
+  const branchTicket = inferTicketFromBranch(branch);
+
+  const currentMilestoneId = canonical.milestone?.id;
+  const currentMilestone = currentMilestoneId ? findMilestone(currentMilestoneId) : null;
+  const previousMilestone = currentMilestoneId ? findPreviousMilestone(currentMilestoneId) : null;
+
+  const currentTicketId = canonical.ticket?.id || branchTicket;
+  const completedTickets = gatherCompletedTickets();
+
+  return {
+    protocol_version: "1.0.0",
+    bootstrap_type: "CANONICAL_STATE_FIRST",
+    generated_at: new Date().toISOString(),
+    authority: "meta/state/canonical-state.json",
+    latest_checkpoint: latestCheckpoint,
+    current_milestone: currentMilestone
+      ? {
+          id: currentMilestone.id,
+          title: currentMilestone.title,
+          status: canonical.milestone?.status || currentMilestone.status,
+          phase: currentMilestone.phase
+        }
+      : null,
+    previous_milestone: previousMilestone
+      ? {
+          id: previousMilestone.id,
+          title: previousMilestone.title,
+          status: previousMilestone.status
+        }
+      : null,
+    current_ticket: currentTicketId
+      ? {
+          id: currentTicketId,
+          status: canonical.ticket?.status || "unknown"
+        }
+      : null,
+    current_branch: branch,
+    execution: canonical.execution || null,
+    lock: canonical.lock || null,
+    completed_tickets_count: completedTickets.length,
+    completed_tickets: completedTickets,
+    milestone_registry: registry?.files || [],
+    safe_resume_point: canonical.execution?.status === "EXECUTING" ? "execution-continuation" : "idle",
+    resume_phase: canonical.execution?.status === "EXECUTING" ? "ticket-execution" : "awaiting-ticket",
+    active_constraints: [
+      "frontend cannot import backend infrastructure",
+      "shared contracts are canonical",
+      "single package.json governance remains active",
+      "fileParallelism: false enforced for integration tests",
+      "correlation_id stored as TEXT in outbox"
+    ],
+    required_governance_documents: [
+      "project-governance/runtime/runtime-governance-kernel.md",
+      "project-governance/runtime/execution-modes.md",
+      "project-knowledge/repository-structure.md",
+      "project-knowledge/runtime-operations-architecture.md"
+    ],
+    ci_requirements: [
+      "backend tests pass",
+      "frontend build passes",
+      "lint passes",
+      "typecheck passes",
+      "integration tests pass against Postgres + Redis"
+    ]
+  };
+}
+
+function saveBootstrap(data: Record<string, unknown>): void {
+  writeFileSync(BOOTSTRAP_OUTPUT_PATH, JSON.stringify(data, null, 2) + "\n", "utf-8");
 }
 
 function main(): void {
-  const branch = getGitBranch();
-  const inferredTicketId = inferTicketFromBranch(branch);
+  console.log("VINTRACK Bootstrap");
+  console.log("==================\n");
+  console.log("Authority: meta/state/canonical-state.json");
+  console.log("Output:    project-governance/runtime/bootstrap/runtime-bootstrap.json\n");
 
-  let ticketId = inferredTicketId;
-  let ticketTitle = 'Unknown';
-  let ticketStatus = 'planned';
-  let executionSurface = 'backend';
+  try {
+    const bootstrap = generateBootstrap();
+    saveBootstrap(bootstrap);
 
-  // Try to load existing runtime state as baseline
-  const statePath = join(GOVERNANCE_DIR, 'runtime-state.json');
-  let existingState: Partial<RuntimeState> = {};
-  if (existsSync(statePath)) {
-    existingState = loadJson<RuntimeState>(statePath);
-  }
-
-  if (ticketId) {
-    const ticketFile = findTicketFile(ticketId);
-    if (ticketFile) {
-      const ticket = loadJson<{
-        id: string;
-        title: string;
-        status: string;
-        domain?: string;
-        deliverables?: Array<{ path?: string }>;
-      }>(ticketFile);
-      ticketTitle = ticket.title;
-      ticketStatus = ticket.status;
-      executionSurface = inferSurfaceFromTicket(ticket);
-    }
-  } else if (existingState.active_ticket) {
-    // Fall back to existing state if branch doesn't infer a ticket
-    ticketId = existingState.active_ticket.id;
-    ticketTitle = existingState.active_ticket.title;
-    ticketStatus = existingState.active_ticket.status;
-    executionSurface = existingState.execution_surface ?? 'backend';
-  }
-
-  if (!ticketId) {
-    console.error('ERROR: No active ticket inferred from branch and no existing runtime state.');
-    console.error(`Branch: ${branch}`);
+    console.log(`Current Milestone: ${(bootstrap.current_milestone as Record<string, string>)?.id || "—"}`);
+    console.log(`Current Ticket:    ${(bootstrap.current_ticket as Record<string, string>)?.id || "—"}`);
+    console.log(`Execution Status:  ${(bootstrap.execution as Record<string, string>)?.status || "—"}`);
+    console.log(`Lock Status:       ${(bootstrap.lock as Record<string, boolean>)?.locked ? "LOCKED" : "FREE"}`);
+    console.log(`Completed Tickets: ${bootstrap.completed_tickets_count}`);
+    console.log(`\n✅ Bootstrap complete.`);
+  } catch (err) {
+    console.error(`\n❌ Bootstrap failed: ${err}`);
     process.exit(1);
   }
-
-  const milestone = findMilestoneForTicket(ticketId);
-  if (!milestone) {
-    console.error(`ERROR: Could not find milestone for ticket ${ticketId}`);
-    process.exit(1);
-  }
-
-  const previousMilestone = findPreviousMilestone(milestone.id);
-  const completedTickets = gatherCompletedTickets();
-
-  const state: RuntimeState = {
-    system: 'VINTRACK',
-    version: existingState.version ?? '0.1.0',
-    active_phase: milestone.id === 'M3' ? 3 : parseInt(milestone.id.replace('M', ''), 10),
-    active_milestone: milestone,
-    ...(previousMilestone ? { previous_milestone: previousMilestone } : {}),
-    active_ticket: {
-      id: ticketId,
-      title: ticketTitle,
-      status: ticketStatus,
-    },
-    execution_surface: executionSurface,
-    current_branch: branch,
-    blocked_tickets: existingState.blocked_tickets ?? [],
-    completed_tickets: completedTickets,
-    required_governance_documents: [
-      'project-governance/runtime/runtime-governance-kernel.md',
-      'project-governance/runtime/execution-modes.md',
-      'project-knowledge/repository-structure.md',
-      'project-knowledge/fullstack-orchestration-model.md',
-    ],
-    active_constraints: existingState.active_constraints ?? [
-      'frontend cannot import backend infrastructure',
-      'shared contracts are canonical',
-      'single package.json governance remains active',
-    ],
-    ci_requirements: existingState.ci_requirements ?? [
-      'backend tests pass',
-      'frontend build passes',
-      'lint passes',
-      'typecheck passes',
-    ],
-    updated_at: new Date().toISOString(),
-  };
-
-  writeFileSync(statePath, JSON.stringify(state, null, 2) + '\n');
-
-  // Write to runtime/state/ projection files
-  const stateDir = join(process.cwd(), 'project-governance', 'runtime', 'state');
-  writeFileSync(join(stateDir, 'current-milestone.json'), JSON.stringify({
-    protocol_version: '1.0.0',
-    active_milestone: state.active_milestone,
-    previous_milestone: state.previous_milestone,
-    updated_at: state.updated_at,
-  }, null, 2) + '\n');
-  writeFileSync(join(stateDir, 'current-ticket.json'), JSON.stringify({
-    protocol_version: '1.0.0',
-    active: true,
-    ticket: state.active_ticket,
-    updated_at: state.updated_at,
-  }, null, 2) + '\n');
-
-  console.log('\n╔══════════════════════════════════════════════════════════════╗');
-  console.log('║          VINTRACK BOOTSTRAP COMPLETE                          ║');
-  console.log('╚══════════════════════════════════════════════════════════════╝\n');
-  console.log(`Branch:          ${branch}`);
-  console.log(`Active Milestone: ${milestone.id} — ${milestone.title} (${milestone.status})`);
-  if (previousMilestone) {
-    console.log(`Previous:         ${previousMilestone.id} — ${previousMilestone.title} (${previousMilestone.status})`);
-  }
-  console.log(`Active Ticket:    ${ticketId} — ${ticketTitle} (${ticketStatus})`);
-  console.log(`Execution Surface: ${executionSurface}`);
-  console.log(`Completed Tickets: ${completedTickets.length}`);
-  console.log(`\nRuntime state written to: ${statePath}\n`);
 }
 
 main();
