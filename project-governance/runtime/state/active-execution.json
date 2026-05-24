@@ -5,11 +5,13 @@
   "safe_to_resume": false,
   "execution": {
     "execution_id": "EXEC-2026-05-24-010",
-    "task_id": "T29.2",
+    "task_id": "T29.3",
     "milestone_id": "M29",
     "status": "EXECUTING",
     "started_at": "2026-05-24T19:09:53.000Z",
-    "completed_at": null
+    "completed_at": null,
+    "lock_expires_at": "2026-05-25T03:00:00.000Z",
+    "updated_at": "2026-05-24T23:05:57.631Z"
   },
   "safe_exit": null,
   "last_execution": {
@@ -47,27 +49,27 @@
   "drift_risk": {
     "level": "NONE",
     "reason": "P0 stabilization active. Projections synchronized.",
-    "last_assessed_at": "2026-05-24T20:15:09.622Z"
+    "last_assessed_at": "2026-05-24T23:06:53.827Z"
   },
   "repository_context": {
     "branch": "main",
     "base_branch": "main",
     "worktree_clean": false,
-    "head_commit": "45eba645dba0c322a570753cd4bd2abba20e760f",
+    "head_commit": "5dfb7e159169f7243a3c993e1918914ae11ef590",
     "promotion_status": "pending",
-    "last_validated_at": "2026-05-24T20:11:59.906Z"
+    "last_validated_at": "2026-05-24T23:04:35.075Z"
   },
   "safe_exit_verification": {
     "lock_released": false,
     "checkpoint_persisted": true,
     "projections_synchronized": true,
     "no_active_mutations": false,
-    "last_verified_at": "2026-05-24T20:15:09.622Z"
+    "last_verified_at": "2026-05-24T23:06:53.828Z"
   },
   "system": {
     "name": "VINTRACK",
     "version": "0.1.0",
-    "updated_at": "2026-05-24T20:15:09.622Z"
+    "updated_at": "2026-05-24T23:06:53.828Z"
   },
-  "updated_at": "2026-05-24T20:15:09.622Z"
+  "updated_at": "2026-05-24T23:06:53.828Z"
 }

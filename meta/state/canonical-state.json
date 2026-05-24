@@ -3,14 +3,16 @@
   "protocol_version": "1.0.0",
   "authority": "meta/state/canonical-state.json",
   "principle": "This file is the ONLY mutable runtime state. All other state files are derived projections.",
-  "updated_at": "2026-05-24T20:15:25.103Z",
+  "updated_at": "2026-05-24T23:04:35.082Z",
   "execution": {
     "execution_id": "EXEC-2026-05-24-010",
-    "task_id": "T29.2",
+    "task_id": "T29.3",
     "milestone_id": "M29",
     "status": "EXECUTING",
     "started_at": "2026-05-24T19:09:53.000Z",
-    "completed_at": null
+    "completed_at": null,
+    "lock_expires_at": "2026-05-25T03:00:00.000Z",
+    "updated_at": "2026-05-24T23:05:57.631Z"
   },
   "last_execution": {
     "execution_id": "EXEC-2026-05-24-010",
@@ -25,8 +27,8 @@
     "status": "in_progress"
   },
   "ticket": {
-    "id": "T29.2",
-    "title": "Causality Chain Implementation",
+    "id": "T29.3",
+    "title": "Replay Integrity Validator",
     "status": "in_progress"
   },
   "lock": {
@@ -34,7 +36,7 @@
     "execution_id": "EXEC-2026-05-24-010",
     "locked_at": "2026-05-24T18:59:31.000Z",
     "locked_by": "agent",
-    "expires_at": "2026-05-24T22:59:31.000Z",
+    "expires_at": "2026-05-25T03:00:00.000Z",
     "released_at": null,
     "release_reason": null
   },
@@ -42,9 +44,9 @@
     "branch": "main",
     "base_branch": "main",
     "worktree_clean": false,
-    "head_commit": "45eba645dba0c322a570753cd4bd2abba20e760f",
+    "head_commit": "5dfb7e159169f7243a3c993e1918914ae11ef590",
     "promotion_status": "pending",
-    "last_validated_at": "2026-05-24T20:15:25.098Z"
+    "last_validated_at": "2026-05-24T23:04:35.075Z"
   },
   "governance": {
     "heartbeat_policy": "ACTIVE",

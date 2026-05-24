@@ -1,7 +1,7 @@
 {
   "protocol_version": "1.0.0",
   "bootstrap_type": "CANONICAL_STATE_FIRST",
-  "generated_at": "2026-05-24T20:15:34.505Z",
+  "generated_at": "2026-05-24T23:04:44.168Z",
   "authority": "meta/state/canonical-state.json",
   "latest_checkpoint": {
     "checkpoint_id": "cp_T29.1_20260524_190953_complete",
@@ -33,14 +33,16 @@
     "milestone_id": "M29",
     "status": "EXECUTING",
     "started_at": "2026-05-24T19:09:53.000Z",
-    "completed_at": null
+    "completed_at": null,
+    "lock_expires_at": "2026-05-25T03:00:00.000Z",
+    "updated_at": "2026-05-24T23:01:49.138Z"
   },
   "lock": {
     "locked": true,
     "execution_id": "EXEC-2026-05-24-010",
     "locked_at": "2026-05-24T18:59:31.000Z",
     "locked_by": "agent",
-    "expires_at": "2026-05-24T22:59:31.000Z",
+    "expires_at": "2026-05-25T03:00:00.000Z",
     "released_at": null,
     "release_reason": null
   },

@@ -555,13 +555,139 @@
         "author": "agent",
         "invariant_code": "CI-010"
       }
+    },
+    {
+      "id": "replay-causal-breaks",
+      "category": "replay",
+      "description": "All ancestor events in a causality chain must be traversable from streams or store without broken prefixes.",
+      "expression": "∀ancestor ∈ causality_chain: traversable(ancestor) ∧ prefix_valid(ancestor)",
+      "validation_method": "replay_integrity",
+      "severity": "CRITICAL",
+      "remediation": "Rebuild event streams from checkpoint. Verify causality store integrity.",
+      "protocols_protected": [
+        "replay-determinism",
+        "causality-chain"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T21:00:00Z",
+        "author": "agent",
+        "invariant_code": "RI-001"
+      }
+    },
+    {
+      "id": "replay-ordering-ambiguity",
+      "category": "replay",
+      "description": "No two events may share the same global_sequence, and timestamps must be monotonic with respect to sequence order.",
+      "expression": "∀i≠j: global_sequence[i] ≠ global_sequence[j] ∧ (timestamp[i] < timestamp[j] → global_sequence[i] ≤ global_sequence[j])",
+      "validation_method": "replay_integrity",
+      "severity": "CRITICAL",
+      "remediation": "Investigate sequence assignment or clock synchronization. Rebuild sequence store.",
+      "protocols_protected": [
+        "replay-determinism",
+        "event-stream-policy"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T21:00:00Z",
+        "author": "agent",
+        "invariant_code": "RI-002"
+      }
+    },
+    {
+      "id": "replay-orphaned-events",
+      "category": "replay",
+      "description": "Every event with a parent_event_id must have that parent exist in streams or causality store.",
+      "expression": "parent_event_id ≠ null → ∃parent(parent_event_id)",
+      "validation_method": "replay_integrity",
+      "severity": "HIGH",
+      "remediation": "Backfill missing parent events or prune orphaned references.",
+      "protocols_protected": [
+        "replay-determinism",
+        "causality-chain"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T21:00:00Z",
+        "author": "agent",
+        "invariant_code": "RI-003"
+      }
+    },
+    {
+      "id": "replay-duplicate-lineage",
+      "category": "replay",
+      "description": "No event may appear more than once within the same stream file.",
+      "expression": "∀stream: COUNT(event_id) = 1",
+      "validation_method": "replay_integrity",
+      "severity": "MEDIUM",
+      "remediation": "Deduplicate stream file. Verify emitter append logic.",
+      "protocols_protected": [
+        "replay-determinism",
+        "event-stream-policy"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T21:00:00Z",
+        "author": "agent",
+        "invariant_code": "RI-004"
+      }
+    },
+    {
+      "id": "replay-clock-drift",
+      "category": "replay",
+      "description": "Event timestamps must not drift into the future or distant past, and must be monotonic within each execution.",
+      "expression": "timestamp ∈ [now-1yr, now+5min] ∧ execution_monotonicity",
+      "validation_method": "replay_integrity",
+      "severity": "HIGH",
+      "remediation": "Synchronize clocks. Validate NTP configuration. Review event emission timing.",
+      "protocols_protected": [
+        "replay-determinism",
+        "audit-policy"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T21:00:00Z",
+        "author": "agent",
+        "invariant_code": "RI-005"
+      }
+    },
+    {
+      "id": "replay-determinism-gaps",
+      "category": "replay",
+      "description": "Gaps in global_sequence prevent deterministic replay and must be anchored by checkpoints.",
+      "expression": "global_sequence_continuous ∨ gap_anchored(checkpoint)",
+      "validation_method": "replay_integrity",
+      "severity": "HIGH",
+      "remediation": "Anchor gaps in checkpoint metadata. Backfill missing events if possible.",
+      "protocols_protected": [
+        "replay-determinism",
+        "checkpoint"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T21:00:00Z",
+        "author": "agent",
+        "invariant_code": "RI-006"
+      }
+    },
+    {
+      "id": "replay-stream-completeness",
+      "category": "replay",
+      "description": "Every checkpoint sequence anchor must correspond to an event present in the streams.",
+      "expression": "checkpoint.global_sequence → ∃event(global_sequence)",
+      "validation_method": "replay_integrity",
+      "severity": "HIGH",
+      "remediation": "Ensure checkpoint creation follows event emission. Verify stream retention policy.",
+      "protocols_protected": [
+        "replay-determinism",
+        "checkpoint"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T21:00:00Z",
+        "author": "agent",
+        "invariant_code": "RI-007"
+      }
     }
   ],
   "coverage": {
-    "total_invariants": 32,
+    "total_invariants": 39,
     "by_category": {
       "execution": 7,
-      "replay": 1,
+      "replay": 8,
       "lock": 1,
       "event": 1,
       "transition": 1,
@@ -570,10 +696,10 @@
       "causality": 10
     },
     "by_severity": {
-      "CRITICAL": 20,
-      "HIGH": 10,
-      "MEDIUM": 4
+      "CRITICAL": 22,
+      "HIGH": 14,
+      "MEDIUM": 9
     },
-    "protocols_protected": 17
+    "protocols_protected": 18
   }
 }

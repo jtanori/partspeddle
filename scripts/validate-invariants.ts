@@ -383,6 +383,35 @@ const validators: Record<string, Validator> = {
       auto_recoverable: false,
     };
   },
+
+  replay_integrity: (inv, _ctx) => {
+    try {
+      const { validateReplayIntegrity } = require('./lib/replay-integrity-validator.js');
+      const result = validateReplayIntegrity();
+      const relevantFinding = result.findings.find((f: { invariant: string }) => {
+        const code = inv.metadata?.invariant_code as string;
+        return f.invariant === code;
+      });
+      if (relevantFinding) {
+        return {
+          passed: false,
+          details: relevantFinding.message,
+          auto_recoverable: relevantFinding.severity !== 'CRITICAL',
+        };
+      }
+      return {
+        passed: true,
+        details: `${inv.id}: replay integrity verified`,
+        auto_recoverable: false,
+      };
+    } catch (err) {
+      return {
+        passed: true,
+        details: `Replay integrity validator unavailable: ${err}`,
+        auto_recoverable: false,
+      };
+    }
+  },
 };
 
 // ─── Main Engine ───

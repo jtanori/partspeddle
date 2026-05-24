@@ -2,8 +2,8 @@
   "protocol_version": "1.0.0",
   "active": true,
   "ticket": {
-    "id": "T29.2",
-    "title": "Causality Chain Implementation",
+    "id": "T29.3",
+    "title": "Replay Integrity Validator",
     "status": "in_progress"
   },
   "last_ticket": {
@@ -11,5 +11,5 @@
     "status": "completed",
     "completed_at": "2026-05-24T19:09:53.000Z"
   },
-  "updated_at": "2026-05-24T20:15:09.627Z"
+  "updated_at": "2026-05-24T23:06:53.831Z"
 }

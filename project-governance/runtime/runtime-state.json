@@ -12,8 +12,8 @@
     "completed_at": "2026-05-24T13:03:44.668Z"
   },
   "active_ticket": {
-    "id": "T29.2",
-    "title": "Causality Chain Implementation",
+    "id": "T29.3",
+    "title": "Replay Integrity Validator",
     "status": "in_progress"
   },
   "execution_mode": "EXECUTION",
@@ -65,5 +65,5 @@
     "typecheck passes",
     "integration tests pass against Postgres + Redis"
   ],
-  "updated_at": "2026-05-24T20:15:09.613Z"
+  "updated_at": "2026-05-24T23:06:53.820Z"
 }

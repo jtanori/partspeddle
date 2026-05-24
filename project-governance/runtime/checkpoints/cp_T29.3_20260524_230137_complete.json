@@ -1,0 +1,21 @@
+{
+  "checkpoint_id": "cp_T29.3_20260524_230137_complete",
+  "ticket_id": "T29.3",
+  "milestone_id": "M29",
+  "execution_id": "EXEC-2026-05-24-010",
+  "status": "complete",
+  "created_at": "2026-05-24T23:01:37.000Z",
+  "completed_at": "2026-05-24T23:01:37.000Z",
+  "global_sequence": 5,
+  "execution_sequence": 5,
+  "validation_summary": {
+    "replay_invariants_passed": 7,
+    "replay_invariants_failed": 0,
+    "total_invariants_passed": 39,
+    "total_invariants_failed": 0,
+    "unit_tests_passed": 16,
+    "unit_tests_failed": 0,
+    "status": "PASS"
+  },
+  "preceding_checkpoint": "cp_T29.2_20260524_201637_complete"
+}

@@ -62,7 +62,7 @@
   ],
   "traceability": [
     {
-      "commit_hash": "TBD",
+      "commit_hash": "5dfb7e1",
       "files_changed": [
         "scripts/validate-causality.ts",
         "scripts/lib/causality-validator.ts",
