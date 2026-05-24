@@ -47,27 +47,27 @@
   "drift_risk": {
     "level": "NONE",
     "reason": "P0 stabilization active. Projections synchronized.",
-    "last_assessed_at": "2026-05-24T18:09:59.422Z"
+    "last_assessed_at": "2026-05-24T18:21:15.200Z"
   },
   "repository_context": {
     "branch": "main",
     "base_branch": "main",
-    "worktree_clean": true,
-    "head_commit": "e133c9c756b9cab46b5728a3ea1dc7030c296230",
+    "worktree_clean": false,
+    "head_commit": "a9ba037120d9a7efa9f5e669acabedef8eb4f449",
     "promotion_status": "pending",
-    "last_validated_at": "2026-05-24T18:05:02.600Z"
+    "last_validated_at": "2026-05-24T18:19:02.193Z"
   },
   "safe_exit_verification": {
     "lock_released": false,
     "checkpoint_persisted": true,
     "projections_synchronized": true,
     "no_active_mutations": false,
-    "last_verified_at": "2026-05-24T18:09:59.422Z"
+    "last_verified_at": "2026-05-24T18:21:15.200Z"
   },
   "system": {
     "name": "VINTRACK",
     "version": "0.1.0",
-    "updated_at": "2026-05-24T18:09:59.422Z"
+    "updated_at": "2026-05-24T18:21:15.200Z"
   },
-  "updated_at": "2026-05-24T18:09:59.422Z"
+  "updated_at": "2026-05-24T18:21:15.200Z"
 }

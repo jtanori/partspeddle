@@ -98,7 +98,14 @@
     "storage:migrate-plan": "./node_modules/.bin/tsx scripts/runtime-storage.ts migrate-plan",
     "storage:validate": "./node_modules/.bin/tsx scripts/runtime-storage.ts health && npm run invariant:validate",
     "storage:test": "./node_modules/.bin/tsx project-governance/runtime/storage/tests/run-storage-tests.ts",
-    "storage:migrate-check": "./node_modules/.bin/tsx scripts/migrate-to-storage-adapter.ts"
+    "storage:migrate-check": "./node_modules/.bin/tsx scripts/migrate-to-storage-adapter.ts",
+    "projection:sync": "./node_modules/.bin/tsx scripts/sync-projections.ts",
+    "projection:validate": "./node_modules/.bin/tsx scripts/validate-projections.ts",
+    "bootstrap:validate": "./node_modules/.bin/tsx scripts/validate-bootstrap.ts",
+    "repository:sync": "./node_modules/.bin/tsx scripts/sync-repository-status.ts sync",
+    "repository:validate": "./node_modules/.bin/tsx scripts/sync-repository-status.ts validate",
+    "hygiene:validate": "./node_modules/.bin/tsx scripts/validate-repository-hygiene.ts",
+    "p0:validate": "npm run projection:sync && npm run repository:sync && npm run bootstrap && npm run invariant:validate && npm run storage:test && npm run projection:validate && npm run bootstrap:validate && npm run repository:validate && npm run hygiene:validate"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.53.1",

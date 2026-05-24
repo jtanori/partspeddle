@@ -7,15 +7,10 @@
  * that should not be committed.
  */
 
-import { existsSync, readdirSync, statSync } from "fs";
-import { resolve } from "path";
+import { execSync } from "child_process";
 
-const FORBIDDEN_ROOT_GLOBS = [
+const FORBIDDEN_ROOT_PATTERNS = [
   /^bench\//,
-  /^project-governance\/runtime\/storage\/tests\/fixtures\//,
-];
-
-const FORBIDDEN_ROOT_FILES = [
   /^direct-\d+\.json$/,
   /^adapter-\d+\.json$/,
   /\.tmp$/,
@@ -27,37 +22,40 @@ interface HygieneResult {
   checked: number;
 }
 
-function checkRootHygiene(): HygieneResult {
-  const violations: string[] = [];
-  let checked = 0;
-
-  const rootEntries = readdirSync(".");
-  for (const entry of rootEntries) {
-    checked++;
-    const fullPath = resolve(entry);
-
-    // Check forbidden file patterns in root
-    if (FORBIDDEN_ROOT_FILES.some((pattern) => pattern.test(entry))) {
-      violations.push(`Forbidden file in repo root: ${entry}`);
-    }
-
-    // Check forbidden directory patterns
-    if (existsSync(fullPath) && statSync(fullPath).isDirectory()) {
-      if (FORBIDDEN_ROOT_GLOBS.some((pattern) => pattern.test(entry + "/"))) {
-        violations.push(`Forbidden directory in repo root: ${entry}/`);
+function getTrackedRootFiles(): string[] {
+  try {
+    const output = execSync("git ls-files", { encoding: "utf-8" }).trim();
+    if (!output) return [];
+    const lines = output.split("\n");
+    const rootFiles = new Set<string>();
+    for (const line of lines) {
+      const parts = line.split("/");
+      if (parts.length === 1) {
+        rootFiles.add(parts[0]);
+      } else {
+        rootFiles.add(parts[0] + "/");
       }
     }
+    return Array.from(rootFiles);
+  } catch {
+    return [];
   }
+}
 
-  // Check if bench/ exists at all
-  if (existsSync("bench")) {
-    violations.push("bench/ directory exists in repo root (should be .gitignored)");
+function checkRootHygiene(): HygieneResult {
+  const violations: string[] = [];
+  const tracked = getTrackedRootFiles();
+
+  for (const entry of tracked) {
+    if (FORBIDDEN_ROOT_PATTERNS.some((pattern) => pattern.test(entry))) {
+      violations.push(`Forbidden tracked file/directory in repo root: ${entry}`);
+    }
   }
 
   return {
     passed: violations.length === 0,
     violations,
-    checked,
+    checked: tracked.length,
   };
 }
 

@@ -268,7 +268,7 @@ async function runBenchmarks(adapter: any): Promise<void> {
   console.log('\nPerformance Benchmarks');
   console.log('======================\n');
 
-  const iterations = 100;
+  const iterations = 500;
   const payload = JSON.stringify({ test: true, data: 'x'.repeat(1000) });
 
   // Adapter write benchmark
