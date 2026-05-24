@@ -43,7 +43,9 @@ function getGitHeadCommit(): string | null {
 
 function isWorktreeClean(): boolean {
   try {
-    const status = execSync("git status --short", { encoding: "utf-8" }).trim();
+    // Exclude canonical-state.json from worktree check since it's mutated
+    // by the governance runtime and committed separately
+    const status = execSync("git status --short -- ':!meta/state/canonical-state.json'", { encoding: "utf-8" }).trim();
     return status === "";
   } catch {
     return false;
