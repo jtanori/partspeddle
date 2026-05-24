@@ -30,13 +30,13 @@
     "status": "completed"
   },
   "lock": {
-    "locked": true,
+    "locked": false,
     "execution_id": "EXEC-2026-05-24-008",
     "locked_at": "2026-05-24T14:38:05.751Z",
     "locked_by": "agent",
     "expires_at": "2026-05-24T16:38:05.826Z",
-    "released_at": null,
-    "release_reason": null
+    "released_at": "2026-05-24T16:41:51.000Z",
+    "release_reason": "T28.3 complete"
   },
   "repository": {
     "branch": "main",

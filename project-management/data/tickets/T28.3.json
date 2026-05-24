@@ -29,7 +29,7 @@
   ],
   "traceability": [
     {
-      "commit_hash": "PENDING_COMMIT",
+      "commit_hash": "e27c527",
       "files_changed": [
         "scripts/runtime-storage.ts",
         "scripts/migrate-to-storage-adapter.ts",
