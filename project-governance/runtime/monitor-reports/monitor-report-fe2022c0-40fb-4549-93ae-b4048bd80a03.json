@@ -1,0 +1,20 @@
+{
+  "report_id": "fe2022c0-40fb-4549-93ae-b4048bd80a03",
+  "timestamp": "2026-05-24T13:00:51.687Z",
+  "run_number": 1,
+  "duration_ms": 10248,
+  "invariant_result": {
+    "total": 0,
+    "passed": 0,
+    "failed": 0,
+    "critical": 0,
+    "high": 0,
+    "medium": 0,
+    "low": 0,
+    "status": "UNKNOWN"
+  },
+  "violations": [],
+  "bypass_applied": false,
+  "bypass_reason": null,
+  "actor": "system"
+}

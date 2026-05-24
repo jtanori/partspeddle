@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/operational-mode.schema.json",
+  "title": "VINTRACK Operational Mode",
+  "description": "Schema for operational mode definitions within the governance runtime.",
+  "type": "object",
+  "required": ["mode_id", "mode_category", "authority_level", "purpose", "allowed", "forbidden", "entry_conditions", "exit_conditions"],
+  "properties": {
+    "mode_id": {
+      "type": "string",
+      "enum": ["GOVERNANCE", "IMPLEMENTATION", "REVIEW", "REFACTOR", "INCIDENT", "MIGRATION", "RECONCILE", "GOVERNANCE_REPAIR", "STATE_RECOVERY", "PROJECTION_REBUILD"]
+    },
+    "mode_category": {
+      "type": "string",
+      "enum": ["NORMAL", "RECOVERY"]
+    },
+    "authority_level": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Higher values indicate higher authority. RECOVERY modes have authority >= 8."
+    },
+    "purpose": { "type": "string" },
+    "allowed": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "forbidden": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "entry_conditions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "exit_conditions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "behavior": { "type": "string" },
+    "is_canonical_recovery_entrypoint": { "type": "boolean", "default": false }
+  }
+}

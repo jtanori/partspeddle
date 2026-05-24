@@ -1,0 +1,114 @@
+{
+  "report_id": "baefbb63-1187-43e9-8c93-917c792cfc57",
+  "timestamp": "2026-05-24T05:48:16.242Z",
+  "ticket_id": "T25.1",
+  "milestone_id": "M25",
+  "readiness_score": 88,
+  "ready": false,
+  "checks": [
+    {
+      "name": "milestone_exhaustion",
+      "category": "milestones",
+      "passed": true,
+      "severity": "info",
+      "message": "Milestone M25 is active with 50 completed tickets",
+      "details": [
+        "Active milestone M25 (Deployment Governance) is in_progress",
+        "50 tickets marked completed"
+      ]
+    },
+    {
+      "name": "unresolved_blockers",
+      "category": "blockers",
+      "passed": true,
+      "severity": "info",
+      "message": "No blocked tickets",
+      "details": []
+    },
+    {
+      "name": "runtime_integrity",
+      "category": "integrity",
+      "passed": true,
+      "severity": "info",
+      "message": "All runtime state files are synchronized",
+      "details": [
+        "Milestone synced: M25",
+        "Ticket synced: T25.1",
+        "Phase synced: 25"
+      ]
+    },
+    {
+      "name": "governance_consistency",
+      "category": "governance",
+      "passed": true,
+      "severity": "info",
+      "message": "Governance graph is consistent (25 milestones, 91 tickets)",
+      "details": [
+        "Milestone graph acyclic (25 milestones)",
+        "Active milestone M25 present in graph",
+        "Active ticket T25.1 present in graph"
+      ]
+    },
+    {
+      "name": "checkpoint_infrastructure",
+      "category": "infrastructure",
+      "passed": true,
+      "severity": "info",
+      "message": "Checkpoint infrastructure is operational",
+      "details": [
+        "checkpoints/ directory exists",
+        "latest-checkpoint.json valid (ticket: T25.1)"
+      ]
+    },
+    {
+      "name": "execution_lock",
+      "category": "locks",
+      "passed": false,
+      "severity": "error",
+      "message": "Execution lock is invalid or expired",
+      "details": [
+        "Lock is acquired",
+        "Lock expired at 2026-05-23T23:16:37Z",
+        "Lock held for execution EXEC-2026-05-23-001"
+      ],
+      "remediation": "Acquire a fresh execution lock"
+    },
+    {
+      "name": "audit_cleanliness",
+      "category": "audit",
+      "passed": true,
+      "severity": "info",
+      "message": "Audit cleanliness verified",
+      "details": [
+        "Unable to check git status"
+      ]
+    },
+    {
+      "name": "validation_health",
+      "category": "validation",
+      "passed": true,
+      "severity": "info",
+      "message": "All runtime state files are valid JSON",
+      "details": [
+        "project-governance/runtime/runtime-state.json - valid JSON",
+        "project-governance/runtime/state/current-milestone.json - valid JSON",
+        "project-governance/runtime/state/current-ticket.json - valid JSON",
+        "project-governance/runtime/state/execution-lock.json - valid JSON",
+        "project-governance/runtime/dependency-graph.json - valid JSON"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 8,
+    "passed": 7,
+    "failed": 1,
+    "critical": 0,
+    "error": 1,
+    "warn": 0,
+    "info": 7
+  },
+  "blockers": [
+    "[ERROR] execution_lock: Execution lock is invalid or expired"
+  ],
+  "duration_ms": 47
+}

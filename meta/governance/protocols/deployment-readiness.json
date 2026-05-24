@@ -1,0 +1,119 @@
+{
+  "id": "deployment-readiness",
+  "version": "1.0.0",
+  "layer": 3,
+  "scope": "governance",
+  "canonical": true,
+  "derives_from": [],
+  "status": "active",
+  "title": "Deployment Readiness Protocol",
+  "description": "Deterministic criteria for validating operational readiness before release. Prevents unsafe deployments and enforces governance integrity.",
+  "rules": [
+    {
+      "id": "milestone_exhaustion",
+      "condition": "active milestone status is not in_progress or prerequisite milestones incomplete",
+      "action": "block_deployment_and_report",
+      "severity": "HIGH",
+      "description": "Active milestone must be in_progress and all prerequisite milestones must be completed."
+    },
+    {
+      "id": "unresolved_blockers",
+      "condition": "blocked_tickets array is non-empty",
+      "action": "block_deployment_and_report",
+      "severity": "CRITICAL",
+      "description": "No tickets may be in blocked state."
+    },
+    {
+      "id": "runtime_integrity",
+      "condition": "runtime state files reference different active milestone, ticket, or phase",
+      "action": "block_deployment_and_report",
+      "severity": "CRITICAL",
+      "description": "All runtime state files must reference the same active milestone, ticket, and phase."
+    },
+    {
+      "id": "governance_consistency",
+      "condition": "dependency graph contains cycle or missing active milestone/ticket",
+      "action": "block_deployment_and_report",
+      "severity": "CRITICAL",
+      "description": "Dependency graph must be acyclic and contain the active milestone and ticket."
+    },
+    {
+      "id": "checkpoint_infrastructure",
+      "condition": "checkpoint directory or latest-checkpoint.json missing or invalid",
+      "action": "block_deployment_and_report",
+      "severity": "HIGH",
+      "description": "Checkpoint directory and latest-checkpoint.json must exist and be valid."
+    },
+    {
+      "id": "execution_lock",
+      "condition": "execution lock not acquired or expired",
+      "action": "block_deployment_and_report",
+      "severity": "HIGH",
+      "description": "Execution lock must be acquired and not expired."
+    },
+    {
+      "id": "audit_cleanliness",
+      "condition": "uncommitted governance file changes exist",
+      "action": "warn_and_report",
+      "severity": "MEDIUM",
+      "description": "No uncommitted governance file changes may exist."
+    },
+    {
+      "id": "validation_health",
+      "condition": "any runtime state file is invalid JSON",
+      "action": "block_deployment_and_report",
+      "severity": "CRITICAL",
+      "description": "All runtime state files must be valid JSON."
+    }
+  ],
+  "invariants": [
+    {
+      "id": "ready_requires_all_checks",
+      "expression": "ready_score = 100 → all 8 checks passed",
+      "severity": "CRITICAL",
+      "description": "Deployment readiness requires all checks to pass."
+    },
+    {
+      "id": "bypass_requires_audit",
+      "expression": "bypass.enabled → bypass.requires_audit_trail",
+      "severity": "HIGH",
+      "description": "Any deployment bypass must leave an audit trail."
+    }
+  ],
+  "schemas": {
+    "scoring": {
+      "type": "object",
+      "properties": {
+        "max_score": { "type": "number", "default": 100 },
+        "per_check_weight": { "type": "number", "default": 12.5 },
+        "critical_penalty": { "type": "number", "default": 25 },
+        "error_penalty": { "type": "number", "default": 15 },
+        "warn_penalty": { "type": "number", "default": 5 },
+        "ready_threshold": { "type": "number", "default": 100 }
+      }
+    },
+    "bypass": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "requires_audit_trail": { "type": "boolean" },
+        "requires_human_approval": { "type": "boolean" },
+        "valid_scenarios": { "type": "array", "items": { "type": "string" } },
+        "max_bypass_duration_hours": { "type": "number" }
+      }
+    },
+    "reporting": {
+      "type": "object",
+      "properties": {
+        "output_formats": { "type": "array", "items": { "type": "string" } },
+        "save_directory": { "type": "string" },
+        "retention_count": { "type": "number" }
+      }
+    }
+  },
+  "metadata": {
+    "created_at": "2026-05-23T21:16:37Z",
+    "updated_at": "2026-05-24T07:22:00Z",
+    "author": "agent"
+  }
+}

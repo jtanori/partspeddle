@@ -3,38 +3,47 @@
   "protocol_version": "1.0.0",
   "authority": "meta/state/canonical-state.json",
   "principle": "This file is the ONLY mutable runtime state. All other state files are derived projections.",
-  "updated_at": "2026-05-20T10:30:00Z",
-  "execution": null,
-  "last_execution": {
-    "execution_id": "EXEC-2026-05-20-004",
-    "task_id": "T22.3",
-    "milestone_id": "M22",
+  "updated_at": "2026-05-24T16:36:29.000Z",
+  "execution": {
+    "execution_id": "EXEC-2026-05-24-008",
+    "task_id": "T28.3",
+    "milestone_id": "M28",
     "status": "COMPLETE",
-    "started_at": "2026-05-20T10:00:00Z",
-    "completed_at": "2026-05-20T10:30:00Z"
+    "started_at": "2026-05-24T14:38:05.751Z",
+    "completed_at": "2026-05-24T16:36:29.000Z"
+  },
+  "last_execution": {
+    "execution_id": "EXEC-2026-05-24-007",
+    "task_id": "T28.2",
+    "milestone_id": "M28",
+    "status": "COMPLETE",
+    "started_at": "2026-05-24T13:50:42Z",
+    "completed_at": "2026-05-24T14:33:17.502Z"
   },
   "milestone": {
-    "id": "M22",
-    "title": "Governance Intelligence and Suggestions",
-    "status": "completed",
-    "phase": 22,
-    "completed_tickets": ["T22.1", "T22.2", "T22.3"],
-    "pending_tickets": []
+    "id": "M28",
+    "status": "completed"
   },
-  "ticket": null,
+  "ticket": {
+    "id": "T28.3",
+    "title": "Storage Adapter Integration & Validation",
+    "status": "completed"
+  },
   "lock": {
-    "locked": false,
-    "execution_id": null,
-    "locked_at": null,
-    "locked_by": null,
-    "expires_at": null
+    "locked": true,
+    "execution_id": "EXEC-2026-05-24-008",
+    "locked_at": "2026-05-24T14:38:05.751Z",
+    "locked_by": "agent",
+    "expires_at": "2026-05-24T16:38:05.826Z",
+    "released_at": null,
+    "release_reason": null
   },
   "repository": {
     "branch": "main",
     "base_branch": "main",
     "worktree_clean": false,
-    "head_commit": "ed3087e",
-    "promotion_status": "clean"
+    "head_commit": null,
+    "promotion_status": "pending"
   },
   "governance": {
     "heartbeat_policy": "ACTIVE",
@@ -46,27 +55,30 @@
     "token_efficiency": "ACTIVE",
     "work_continuation": "ACTIVE",
     "tool_capability": "ACTIVE",
-    "repository_governance": "ACTIVE"
-  },
-  "confidence": {
-    "score": 0.99,
-    "factors": {
-      "checkpoint_freshness": 1.0,
-      "validation_coverage": 1.0,
-      "drift_state": 1.0,
-      "unresolved_blockers": 1.0,
-      "heartbeat_age": 1.0,
-      "projection_freshness": 0.98
+    "repository_governance": "ACTIVE",
+    "last_reconciliation": {
+      "incident_id": "INCIDENT-2026-05-24-001",
+      "completed_at": "2026-05-24T10:57:55.102Z",
+      "drifts_repaired": 8,
+      "critical_drifts": 5
     }
   },
-  "drift": {
-    "level": "NONE",
-    "reason": "M22 complete. M23 next. 123 tickets, 26 milestones, 0 validation errors."
+  "confidence": {
+    "score": 1,
+    "factors": {
+      "checkpoint_freshness": 1,
+      "validation_coverage": 1,
+      "drift_state": 1,
+      "unresolved_blockers": 1,
+      "heartbeat_age": 1,
+      "projection_freshness": 1
+    }
   },
-  "safe_exit": {
-    "exit_reason": "milestone_complete",
-    "exited_at": "2026-05-20T10:30:00Z",
-    "exit_checkpoint_id": "cp_M22_20260520_103000_complete",
-    "lock_released": true
+  "drift": null,
+  "safe_exit": null,
+  "last_milestone": {
+    "id": "M27",
+    "status": "completed",
+    "completed_at": "2026-05-24T13:03:44.668Z"
   }
 }

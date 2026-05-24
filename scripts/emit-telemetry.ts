@@ -4,9 +4,10 @@
  * Runtime telemetry emitter. Emits structured operational telemetry
  * to NDJSON streams. Distinct from governance event bus.
  */
-import { readFileSync, appendFileSync, existsSync, mkdirSync } from "fs";
+import { readFileSync, existsSync } from "fs";
 import { randomUUID } from "crypto";
-import { resolve, dirname } from "path";
+import { resolve } from "path";
+import { appendToStream, selectStreams, validatePayloadSize } from "./lib/stream-emitter.js";
 
 const POLICY_PATH = resolve("project-governance/runtime/telemetry/schema/telemetry-policy.json");
 
@@ -57,34 +58,13 @@ function validateEvent(event: TelemetryEvent, policy: Policy): string[] {
   if (event.value === undefined) errors.push("Missing value");
   const validSeverities: Severity[] = ["debug", "info", "warn", "error", "critical"];
   if (!validSeverities.includes(event.severity)) errors.push(`Invalid severity: ${event.severity}`);
-  const payloadSize = JSON.stringify(event).length;
-  if (payloadSize > policy.validation.max_payload_size_bytes) {
-    errors.push(`Payload size ${payloadSize} exceeds max ${policy.validation.max_payload_size_bytes}`);
-  }
+  const sizeErrors = validatePayloadSize(event, policy.validation.max_payload_size_bytes);
+  errors.push(...sizeErrors);
   return errors;
 }
 
-function selectStreams(event: TelemetryEvent, policy: Policy): Array<{ name: string; path: string }> {
-  const matched: Array<{ name: string; path: string }> = [];
-  for (const stream of policy.streams) {
-    const severityMatch = stream.severity_filter.includes("*") || stream.severity_filter.includes(event.severity);
-    const categoryMatch = stream.categories.includes("*") || stream.categories.includes(event.category);
-    if (severityMatch && categoryMatch) {
-      matched.push({ name: stream.name, path: resolve(stream.path) });
-    }
-  }
-  if (matched.length === 0) {
-    const defaultStream = policy.streams.find(s => s.name === "default");
-    if (defaultStream) matched.push({ name: defaultStream.name, path: resolve(defaultStream.path) });
-  }
-  return matched;
-}
-
-function appendToStream(event: TelemetryEvent, streamPath: string, policy: Policy): void {
-  const dir = dirname(streamPath);
-  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-  const line = JSON.stringify(event) + policy.line_ending;
-  appendFileSync(streamPath, line, { encoding: policy.encoding as BufferEncoding });
+function selectTelStreams(event: TelemetryEvent, policy: Policy): Array<{ name: string; path: string }> {
+  return selectStreams(event, policy).map(s => ({ name: s.name, path: resolve(s.path) }));
 }
 
 function buildEvent(
@@ -116,14 +96,14 @@ export function emit(event: TelemetryEvent): { ok: boolean; streams: string[]; e
   if (errors.length > 0 && policy.validation.reject_on_invalid) {
     return { ok: false, streams: [], errors };
   }
-  const streams = selectStreams(event, policy);
+  const streams = selectTelStreams(event, policy);
   for (const s of streams) {
     appendToStream(event, s.path, policy);
   }
   return { ok: true, streams: streams.map(s => s.name), errors };
 }
 
-export { buildEvent, loadPolicy, validateEvent, selectStreams };
+export { buildEvent, loadPolicy, validateEvent, selectTelStreams as selectStreams };
 
 // CLI
 if (import.meta.url === `file://${process.argv[1]}`) {

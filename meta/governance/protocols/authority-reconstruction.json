@@ -1,0 +1,202 @@
+{
+  "$schema": "../schemas/protocol-definition.schema.json",
+  "id": "authority-reconstruction",
+  "version": "1.0.0",
+  "layer": 2,
+  "scope": "recovery",
+  "canonical": true,
+  "status": "active",
+  "derives_from": [
+    "runtime-governance-kernel",
+    "CANONICAL_AUTHORITY_HIERARCHY",
+    "checkpoint",
+    "execution-lifecycle"
+  ],
+  "supersedes": [],
+  "narrative_ref": "",
+  "title": "Authority Reconstruction Framework",
+  "description": "Defines the authoritative lineage ordering for state reconstruction during recovery. Specifies trust hierarchy, reconstruction procedure, conflict resolution, and replay guarantees.",
+  "purpose": "Enable deterministic reconstruction of runtime state from authoritative sources during recovery, eliminating ambiguity about which source of truth to trust.",
+  "invariants": [
+    {
+      "id": "authority_hierarchy_total_order",
+      "expression": "∀a,b ∈ sources: rank(a) < rank(b) → authority(a) > authority(b)",
+      "severity": "CRITICAL",
+      "description": "Trust hierarchy must form a strict total order with no ambiguous rankings."
+    },
+    {
+      "id": "journal_immutability",
+      "expression": "journal.events = append_only",
+      "severity": "CRITICAL",
+      "description": "Append-only journal must never be mutated, truncated, or reordered."
+    },
+    {
+      "id": "checkpoint_schema_validity",
+      "expression": "∀checkpoint: validate(checkpoint, checkpoint.schema.json)",
+      "severity": "HIGH",
+      "description": "All checkpoints must validate against checkpoint schema before use as reconstruction anchors."
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-05-24T21:20:00Z",
+    "updated_at": "2026-05-24T21:20:00Z",
+    "author": "governance-system"
+  },
+  "schemas": {
+    "trust_hierarchy": {
+      "description": "Ordered list of state sources from highest to lowest authority. Lower-authority sources are derived from higher-authority sources.",
+      "levels": [
+        {
+          "rank": 1,
+          "source": "append-only_journal",
+          "description": "Immutable append-only event streams. Every governance event is recorded with monotonic timestamps.",
+          "path": "project-governance/runtime/events/streams/*.ndjson",
+          "mutability": "immutable",
+          "confidence": "absolute"
+        },
+        {
+          "rank": 2,
+          "source": "immutable_checkpoints",
+          "description": "Checkpoint files created at known-good states. Form the recovery backbone.",
+          "path": "project-governance/runtime/checkpoints/*.json",
+          "mutability": "immutable_after_creation",
+          "confidence": "high"
+        },
+        {
+          "rank": 3,
+          "source": "transition_logs",
+          "description": "Execution transition logs recording every state mutation with before/after snapshots.",
+          "path": "project-governance/runtime/transitions/*.ndjson",
+          "mutability": "append-only",
+          "confidence": "high"
+        },
+        {
+          "rank": 4,
+          "source": "canonical_state",
+          "description": "The single mutable runtime state file. All other state files are derived from this.",
+          "path": "meta/state/canonical-state.json",
+          "mutability": "mutable",
+          "confidence": "medium"
+        },
+        {
+          "rank": 5,
+          "source": "runtime_memory",
+          "description": "Active execution context and runtime state files. Derived from canonical state.",
+          "path": "project-governance/runtime/state/*.json",
+          "mutability": "mutable",
+          "confidence": "low"
+        },
+        {
+          "rank": 6,
+          "source": "projections_cache",
+          "description": "Derived read models, indexes, and cached artifacts. Lowest authority.",
+          "path": "project-governance/runtime/projections/*",
+          "mutability": "mutable",
+          "confidence": "lowest"
+        }
+      ]
+    },
+    "reconstruction_procedure": {
+      "description": "Deterministic procedure for reconstructing runtime state from authoritative sources.",
+      "phases": [
+        {
+          "phase": 1,
+          "name": "journal_replay",
+          "description": "Replay all events from append-only journal in timestamp order. Build event-derived state.",
+          "authority": "append-only_journal",
+          "determinism": "strict: events replayed in exact order, no skipping, no reordering"
+        },
+        {
+          "phase": 2,
+          "name": "checkpoint_anchor",
+          "description": "Identify most recent valid checkpoint. Anchor reconstruction at this known-good state.",
+          "authority": "immutable_checkpoints",
+          "determinism": "strict: select latest checkpoint with valid schema and unbroken lineage"
+        },
+        {
+          "phase": 3,
+          "name": "transition_replay",
+          "description": "Replay transitions from checkpoint timestamp to present. Apply each transition's before/after delta.",
+          "authority": "transition_logs",
+          "determinism": "strict: transitions applied in sequence, gaps flagged for investigation"
+        },
+        {
+          "phase": 4,
+          "name": "canonical_reconcile",
+          "description": "Reconcile reconstructed state with canonical-state.json. Use canonical state only for values not derivable from higher authorities.",
+          "authority": "canonical_state",
+          "determinism": "deterministic: canonical values overridden by higher-authority sources"
+        },
+        {
+          "phase": 5,
+          "name": "runtime_derive",
+          "description": "Derive runtime memory state from canonical state. Rebuild active-execution, runtime-state, current-ticket.",
+          "authority": "runtime_memory",
+          "determinism": "deterministic: pure functions from canonical state to runtime surfaces"
+        },
+        {
+          "phase": 6,
+          "name": "projection_rebuild",
+          "description": "Recompute all projections from canonical and runtime state. Invalidate stale caches.",
+          "authority": "projections_cache",
+          "determinism": "deterministic: idempotent rebuild from higher-authority sources"
+        }
+      ]
+    },
+    "conflict_resolution": {
+      "description": "Rules for resolving conflicts between state sources at different authority levels.",
+      "rules": [
+        {
+          "id": "higher_authority_wins",
+          "description": "When two sources disagree, the higher-ranked source in the trust hierarchy is authoritative.",
+          "example": "If journal shows T27.1 completed but canonical-state shows T27.1 executing, journal wins."
+        },
+        {
+          "id": "journal_trumps_all",
+          "description": "The append-only journal is the ultimate source of truth. Any state not consistent with the journal is considered drift.",
+          "exception": "Journal corruption requires manual intervention with explicit --destructive flag."
+        },
+        {
+          "id": "checkpoint_anchor_validity",
+          "description": "Checkpoints are valid anchors only if they validate against checkpoint.schema.json and have unbroken lineage.",
+          "invalid_action": "Invalid checkpoints are skipped; reconstruction continues from next valid checkpoint."
+        },
+        {
+          "id": "gap_detection",
+          "description": "Gaps in transition logs or journal streams are flagged as HIGH severity drift. Reconstruction may proceed but must emit gap events.",
+          "action": "Emit governance event: recovery.gap_detected. Log missing sequence numbers."
+        },
+        {
+          "id": "canonical_state_derived",
+          "description": "canonical-state.json is a derived projection of the journal + checkpoints + transitions. It may be rebuilt from higher authorities.",
+          "action": "If canonical state conflicts with journal, rebuild canonical state from journal replay."
+        }
+      ]
+    },
+    "replay_guarantees": {
+      "description": "Guarantees that reconstruction replay must satisfy.",
+      "guarantees": [
+        {
+          "id": "deterministic_replay",
+          "description": "Same inputs (journal + checkpoints + transitions) must always produce identical reconstructed state.",
+          "verification": "hash(reconstructed_state) is deterministic across replays"
+        },
+        {
+          "id": "monotonic_lineage",
+          "description": "Checkpoint lineage must be monotonic. No checkpoint may reference a future state.",
+          "verification": "∀i: checkpoint[i].timestamp ≤ checkpoint[i+1].timestamp"
+        },
+        {
+          "id": "event_order_preservation",
+          "description": "Events replay in exact timestamp order. Concurrent events at identical timestamps use sequence numbers.",
+          "verification": "events sorted by (timestamp, sequence_number)"
+        },
+        {
+          "id": "idempotent_projection",
+          "description": "Projection rebuild is idempotent. Rebuilding from same canonical state produces identical projections.",
+          "verification": "hash(projections) stable across rebuilds"
+        }
+      ]
+    }
+  }
+}

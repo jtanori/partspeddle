@@ -1,0 +1,8 @@
+{
+  "projection_type": "enforcement-status",
+  "generated_at": "2026-05-24T13:44:45.616Z",
+  "gates": "ACTIVE",
+  "safe_exit": "ACTIVE",
+  "invariants": 22,
+  "validated": true
+}

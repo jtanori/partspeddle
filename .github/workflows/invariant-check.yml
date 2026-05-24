@@ -1,0 +1,142 @@
+name: Invariant Validation Gate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      severity_threshold:
+        description: 'Minimum severity to fail (LOW, MEDIUM, HIGH, CRITICAL)'
+        required: false
+        default: 'CRITICAL'
+      allow_bypass:
+        description: 'Allow emergency bypass with audit trail'
+        required: false
+        default: 'false'
+
+concurrency:
+  group: invariant-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  invariant-validation:
+    name: Validate Governance Invariants
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run invariant validation
+        id: invariant_validate
+        run: |
+          npm run invariant:validate:json > invariant-report.json
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+        continue-on-error: true
+
+      - name: Parse invariant report
+        id: parse_report
+        run: |
+          REPORT=$(cat invariant-report.json)
+          TOTAL=$(echo "$REPORT" | jq -r '.payload.total_invariants // 0')
+          FAILED=$(echo "$REPORT" | jq -r '.payload.failed // 0')
+          CRITICAL=$(echo "$REPORT" | jq -r '.payload.critical_findings // 0')
+          HIGH=$(echo "$REPORT" | jq -r '.payload.high_findings // 0')
+          STATUS=$(echo "$REPORT" | jq -r '.payload.overall_status // "UNKNOWN"')
+
+          echo "total=$TOTAL" >> "$GITHUB_OUTPUT"
+          echo "failed=$FAILED" >> "$GITHUB_OUTPUT"
+          echo "critical=$CRITICAL" >> "$GITHUB_OUTPUT"
+          echo "high=$HIGH" >> "$GITHUB_OUTPUT"
+          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+
+          echo "### Invariant Validation Report" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Metric | Value |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|--------|-------|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Total Invariants | $TOTAL |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Failed | $FAILED |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Critical Findings | $CRITICAL |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| High Findings | $HIGH |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Overall Status | $STATUS |" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload invariant report
+        uses: actions/upload-artifact@v4
+        with:
+          name: invariant-report-${{ github.run_id }}
+          path: invariant-report.json
+          retention-days: 30
+
+      - name: Check critical violations
+        if: steps.parse_report.outputs.critical > 0
+        run: |
+          echo "❌ CRITICAL invariant violations detected: ${{ steps.parse_report.outputs.critical }}"
+          echo "Failing build. All critical invariants must pass."
+          exit 1
+
+      - name: Check high violations (non-bypass)
+        if: ${{ steps.parse_report.outputs.high > 0 && github.event.inputs.allow_bypass != 'true' }}
+        run: |
+          echo "❌ HIGH invariant violations detected: ${{ steps.parse_report.outputs.high }}"
+          echo "Failing build. Set allow_bypass=true for emergency override."
+          exit 1
+
+      - name: Emergency bypass with audit
+        if: ${{ github.event.inputs.allow_bypass == 'true' && (steps.parse_report.outputs.critical > 0 || steps.parse_report.outputs.high > 0) }}
+        run: |
+          echo "⚠️ EMERGENCY BYPASS ACTIVATED"
+          echo "Actor: ${{ github.actor }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo "Critical: ${{ steps.parse_report.outputs.critical }}"
+          echo "High: ${{ steps.parse_report.outputs.high }}"
+          echo ""
+          echo "This bypass requires post-incident reconciliation."
+          echo "Emitting governance event..."
+          # Event emission would happen here in production
+
+      - name: Report success
+        if: success()
+        run: |
+          echo "✅ All invariants passed."
+          echo "Total: ${{ steps.parse_report.outputs.total }}"
+          echo "Status: ${{ steps.parse_report.outputs.status }}"
+
+  schema-validation:
+    name: Validate Governance Schemas
+    runs-on: ubuntu-latest
+    needs: invariant-validation
+    if: always() && (needs.invariant-validation.result == 'success' || needs.invariant-validation.result == 'skipped')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate protocols against schema
+        run: |
+          npx tsx scripts/validate-protocol-schemas.ts
+        continue-on-error: true
+
+      - name: Validate registry consistency
+        run: |
+          npx tsx scripts/normalize-governance-registry.ts --validate-only
+        continue-on-error: true

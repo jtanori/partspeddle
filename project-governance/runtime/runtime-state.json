@@ -1,28 +1,29 @@
 {
   "system": "VINTRACK",
   "version": "0.1.0",
-  "active_phase": 3,
+  "active_phase": 28,
   "active_milestone": {
-    "id": "M3",
-    "title": "Frontend Foundation",
+    "id": "M28",
+    "title": "Runtime Storage Abstraction",
     "status": "in_progress"
   },
   "frozen_milestones": [],
   "previous_milestone": {
-    "id": "M2",
-    "title": "Identity Domain",
+    "id": "M27",
+    "title": "Formal Invariant System",
     "status": "completed"
   },
   "active_ticket": {
-    "id": null,
-    "title": null,
-    "status": null
+    "id": "T28.3",
+    "title": "Storage Adapter Integration & Validation",
+    "status": "in_progress"
   },
   "execution_mode": "EXECUTION",
   "execution_surface": "fullstack",
-  "current_branch": "feature/T2.x-m2-planning-revision",
+  "current_branch": "main",
   "blocked_tickets": [],
   "completed_tickets": [
+    "T0.5.1",
     "T1.1",
     "T1.2",
     "T1.3",
@@ -48,27 +49,55 @@
     "T2.8",
     "T3.1",
     "T3.2",
+    "T3.2A",
     "T3.3",
     "T3.3A",
     "T3.4",
-    "T3.6",
-    "T3.2A",
-    "T4.5.1",
     "T3.5",
-    "T0.5.1",
-    "T3.7"
+    "T3.6",
+    "T3.7",
+    "T4.5.1",
+    "T11.1",
+    "T11.2",
+    "T11.3",
+    "T11.4",
+    "T11.5",
+    "T11.6",
+    "T11.7",
+    "T11.8",
+    "T20.1",
+    "T20.2",
+    "T20.3",
+    "T23.1",
+    "T23.2",
+    "T23.3",
+    "T24.1",
+    "T24.2",
+    "T25.1",
+    "T26.1",
+    "T26.2",
+    "T26.3",
+    "T26.4",
+    "T26.5",
+    "T26.6",
+    "T26.7",
+    "T27.1"
   ],
-  "blocked_tickets": [],
   "contract_lock": {
     "status": "active",
-    "locked_contracts": ["src/shared/contracts/search/*"],
-    "downstream_dependents": ["T3.5", "T5.1"],
+    "locked_contracts": [
+      "src/shared/contracts/search/*"
+    ],
+    "downstream_dependents": [
+      "T3.5",
+      "T5.1"
+    ],
     "breaking_change_policy": "escalation_required",
     "version": "1.0.0"
   },
   "cycle_resolution": {
     "detected": "2026-05-20T08:45:00Z",
-    "cycle": "M3 → T3.5 → T5.1 → M5 → M3",
+    "cycle": "M3 -> T3.5 -> T5.1 -> M5 -> M3",
     "resolution": "Extracted T5.1 contract surface into M4.5 (T4.5.1)",
     "new_milestone": "M4.5",
     "new_ticket": "T4.5.1",
@@ -85,7 +114,11 @@
     "shared contracts are canonical",
     "single package.json governance remains active",
     "fileParallelism: false enforced for integration tests",
-    "correlation_id stored as TEXT in outbox"
+    "correlation_id stored as TEXT in outbox",
+    "M31 blocked until M26 registry normalization complete",
+    "M31 blocked until M27 invariant system complete",
+    "M31 blocked until M30 architecture mapping complete",
+    "Cleanup work (M36) must remain blocked until invariant system exists"
   ],
   "ci_requirements": [
     "backend tests pass",
@@ -94,5 +127,5 @@
     "typecheck passes",
     "integration tests pass against Postgres + Redis"
   ],
-  "updated_at": "2026-05-20T13:30:00Z"
+  "updated_at": "2026-05-24T14:38:05.751Z"
 }

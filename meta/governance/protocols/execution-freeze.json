@@ -1,0 +1,232 @@
+{
+  "$schema": "../schemas/protocol-definition.schema.json",
+  "id": "execution-freeze",
+  "version": "1.0.0",
+  "layer": 2,
+  "scope": "execution",
+  "canonical": true,
+  "status": "active",
+  "derives_from": [
+    "runtime-governance-kernel",
+    "operational-mode",
+    "execution-lifecycle"
+  ],
+  "supersedes": [],
+  "narrative_ref": "",
+  "title": "Execution Freeze Protocol",
+  "description": "Formal protocol for suspending execution authority during recovery operations. Defines freeze states, transition rules, mandatory guarantees, and the thaw procedure.",
+  "purpose": "Ensure recovery modes operate on a quiescent runtime by definitively suspending all execution authority before any repair action.",
+  "state_machine": {
+    "states": [
+      {
+        "id": "UNFROZEN",
+        "terminal": false,
+        "description": "Normal operations. Execution authority is active. Tickets may advance."
+      },
+      {
+        "id": "FREEZE_INITIATED",
+        "terminal": false,
+        "description": "Freeze signal emitted. Runtime is transitioning to frozen state. Guarantees not yet confirmed."
+      },
+      {
+        "id": "FROZEN",
+        "terminal": false,
+        "description": "All execution authority suspended. Recovery operations may proceed. No ticket advancement permitted."
+      },
+      {
+        "id": "THAW_INITIATED",
+        "terminal": false,
+        "description": "Recovery complete. Thaw signal emitted. Integrity validation in progress."
+      },
+      {
+        "id": "THAWED",
+        "terminal": false,
+        "description": "Integrity validation passed. Runtime ready to resume normal operations."
+      }
+    ],
+    "transitions": [
+      {
+        "from": "UNFROZEN",
+        "to": "FREEZE_INITIATED",
+        "trigger": "freeze_requested",
+        "guard": "recovery_mode_entry_requested",
+        "description": "Recovery mode entry requested. Freeze signal emitted to all runtime surfaces."
+      },
+      {
+        "from": "FREEZE_INITIATED",
+        "to": "FROZEN",
+        "trigger": "freeze_confirmed",
+        "guard": "all_guarantees_active",
+        "description": "All freeze guarantees confirmed. Runtime is quiescent."
+      },
+      {
+        "from": "FREEZE_INITIATED",
+        "to": "UNFROZEN",
+        "trigger": "freeze_aborted",
+        "guard": "freeze_conditions_not_met",
+        "description": "Freeze conditions not met. Return to normal operations."
+      },
+      {
+        "from": "FROZEN",
+        "to": "THAW_INITIATED",
+        "trigger": "recovery_complete",
+        "guard": "all_repairs_complete",
+        "description": "Recovery operations complete. Begin integrity validation."
+      },
+      {
+        "from": "THAW_INITIATED",
+        "to": "THAWED",
+        "trigger": "integrity_validated",
+        "guard": "integrity_validation_passed",
+        "description": "Integrity validation passed. Runtime ready for normal mode transition."
+      },
+      {
+        "from": "THAW_INITIATED",
+        "to": "FROZEN",
+        "trigger": "integrity_failed",
+        "guard": "integrity_validation_failed",
+        "description": "Integrity validation failed. Return to frozen state for additional repair."
+      },
+      {
+        "from": "THAWED",
+        "to": "UNFROZEN",
+        "trigger": "mode_transition_complete",
+        "guard": "normal_mode_entered",
+        "description": "Normal operations resumed. Execution authority restored."
+      }
+    ],
+    "forbidden_transitions": [
+      {
+        "from": "UNFROZEN",
+        "to": "FROZEN",
+        "reason": "Must pass through FREEZE_INITIATED and confirm guarantees."
+      },
+      {
+        "from": "FROZEN",
+        "to": "UNFROZEN",
+        "reason": "Must pass through THAW_INITIATED, integrity validation, and THAWED."
+      },
+      {
+        "from": "FROZEN",
+        "to": "THAWED",
+        "reason": "Must pass through integrity validation in THAW_INITIATED."
+      }
+    ]
+  },
+  "invariants": [
+    {
+      "id": "freeze_before_recovery",
+      "expression": "mode_category = RECOVERY → freeze_state ∈ {FREEZE_INITIATED, FROZEN, THAW_INITIATED}",
+      "severity": "CRITICAL",
+      "description": "Recovery modes may only operate when freeze has been initiated."
+    },
+    {
+      "id": "no_execution_during_frozen",
+      "expression": "freeze_state = FROZEN → active_execution = null",
+      "severity": "CRITICAL",
+      "description": "No execution may be active while runtime is frozen."
+    },
+    {
+      "id": "thaw_requires_integrity",
+      "expression": "freeze_state = THAWED → integrity_validation_passed = true",
+      "severity": "CRITICAL",
+      "description": "Thaw may only complete after integrity validation passes."
+    }
+  ],
+  "emissions": {
+    "on_freeze_initiated": "freeze.initiated",
+    "on_freeze_confirmed": "freeze.confirmed",
+    "on_freeze_aborted": "freeze.aborted",
+    "on_thaw_initiated": "thaw.initiated",
+    "on_thaw_complete": "thaw.complete",
+    "on_integrity_failed": "integrity.failed"
+  },
+  "metadata": {
+    "created_at": "2026-05-24T21:20:00Z",
+    "updated_at": "2026-05-24T21:20:00Z",
+    "author": "governance-system"
+  },
+  "schemas": {
+    "freeze_guarantees": {
+      "description": "Mandatory guarantees that must be active before FROZEN state is confirmed.",
+      "guarantees": [
+        {
+          "id": "no_ticket_advancement",
+          "description": "No ticket may transition from planned to ready, ready to executing, or executing to complete during freeze.",
+          "verification": "all ticket JSONs have stable status",
+          "severity": "CRITICAL"
+        },
+        {
+          "id": "no_autonomous_execution",
+          "description": "No autonomous execution scripts may run. Scheduled tasks, self-healing, and enforcement must be suspended.",
+          "verification": "autonomous_execution_flag = false in runtime-state",
+          "severity": "CRITICAL"
+        },
+        {
+          "id": "no_lock_acquisition",
+          "description": "No new execution locks may be acquired. Existing locks may be released but not created.",
+          "verification": "lock.acquisition_blocked = true",
+          "severity": "CRITICAL"
+        },
+        {
+          "id": "checkpoint_mutation_requires_audit",
+          "description": "Any checkpoint mutation during freeze requires explicit audit trail with incident_id and repair_id.",
+          "verification": "checkpoint.audit_required = true",
+          "severity": "HIGH"
+        },
+        {
+          "id": "no_runtime_progression",
+          "description": "Milestone and ticket runtime state may not advance. Projections may be refreshed but not advanced.",
+          "verification": "runtime_state.progression_blocked = true",
+          "severity": "CRITICAL"
+        },
+        {
+          "id": "event_stream_append_only",
+          "description": "Governance event streams remain append-only. Recovery events may be emitted. No events may be deleted or mutated.",
+          "verification": "event_streams.mutation_blocked = true",
+          "severity": "HIGH"
+        }
+      ]
+    },
+    "thaw_procedure": {
+      "description": "Mandatory steps to restore execution authority after recovery.",
+      "steps": [
+        {
+          "step": 1,
+          "action": "integrity validation suite executed",
+          "blocking": true
+        },
+        {
+          "step": 2,
+          "action": "all recovery exit criteria satisfied",
+          "blocking": true
+        },
+        {
+          "step": 3,
+          "action": "recovery audit finalized and appended to event stream",
+          "blocking": true
+        },
+        {
+          "step": 4,
+          "action": "thaw authorization emitted by reconciliation authority",
+          "blocking": true
+        },
+        {
+          "step": 5,
+          "action": "freeze guarantees released in reverse order",
+          "blocking": false
+        },
+        {
+          "step": 6,
+          "action": "mode transition to NORMAL mode emitted",
+          "blocking": true
+        },
+        {
+          "step": 7,
+          "action": "checkpoint emitted post-thaw",
+          "blocking": true
+        }
+      ]
+    }
+  }
+}

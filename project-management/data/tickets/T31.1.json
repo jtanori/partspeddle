@@ -1,0 +1,44 @@
+{
+  "id": "T31.1",
+  "milestone_id": "M31",
+  "title": "Unified Runtime Dashboard Design",
+  "domain": "Shared",
+  "capability": "Governance Operability",
+  "purpose": "Design the unified runtime control plane dashboard that exposes active execution, event streams, lock status, replay sessions, audit status, healing actions, enforcement violations, and invariant violations.",
+  "dependencies": ["T30.3"],
+  "architectural_constraints": [
+    "CLI-first implementation (no advanced UI)",
+    "Read-only queries, no locks held during display",
+    "Must operate using structured telemetry only",
+    "Real-time or near-real-time data freshness"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/governance/schemas/dashboard.schema.json",
+      "description": "Dashboard data schema",
+      "type": "schema"
+    },
+    {
+      "path": "scripts/dashboard-design.md",
+      "description": "Dashboard design specification",
+      "type": "doc"
+    }
+  ],
+  "acceptance_criteria": [
+    "Dashboard schema defines all 8 required views: execution, events, locks, replay, audits, healing, enforcement, invariants",
+    "Design supports CLI rendering with severity color coding",
+    "Data freshness requirements defined (< 30s for critical metrics)",
+    "Query patterns documented for each view"
+  ],
+  "traceability": [],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "HIGH",
+    "blocks_scaling": true
+  }
+}

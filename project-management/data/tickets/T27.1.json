@@ -1,0 +1,53 @@
+{
+  "id": "T27.1",
+  "milestone_id": "M27",
+  "title": "Invariant Registry Design",
+  "domain": "Shared",
+  "capability": "Governance Stabilization",
+  "purpose": "Design and populate a canonical invariant registry defining machine-verifiable global invariants for the governance runtime.",
+  "dependencies": ["T26.7"],
+  "architectural_constraints": [
+    "Invariants must be declarative, not procedural",
+    "Every invariant must have severity, validation method, and auto-remediation recommendation",
+    "Registry must validate against a schema"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/governance/invariants/invariant.schema.json",
+      "description": "Schema for invariant definitions",
+      "type": "schema"
+    },
+    {
+      "path": "meta/governance/invariants/invariants.json",
+      "description": "Canonical invariant registry",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "7 invariant categories defined: execution, replay, lock, event, transition, healing, audit",
+    "Each invariant has id, description, validation_method, severity, remediation",
+    "Registry validates against invariant.schema.json",
+    "Invariants are cross-referenced to protocols they protect"
+  ],
+  "traceability": [
+    {
+      "commit_hash": "T27.1-complete",
+      "files_changed": [
+        "meta/governance/invariants/invariant.schema.json",
+        "meta/governance/invariants/invariants.json"
+      ],
+      "description": "Created canonical invariant registry with 10 invariants across 7 categories (execution:2, replay:1, lock:1, event:1, transition:1, healing:1, audit:3). All invariants validate against invariant.schema.json. 4 CRITICAL, 5 HIGH severity. Cross-referenced to 10 protocols.",
+      "timestamp": "2026-05-24T10:00:00Z"
+    }
+  ],
+  "estimated_hours": 4,
+  "status": "completed",
+  "assignee": "agent",
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "CRITICAL",
+    "blocks_scaling": true
+  }
+}

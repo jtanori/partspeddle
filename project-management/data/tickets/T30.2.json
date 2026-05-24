@@ -1,0 +1,54 @@
+{
+  "id": "T30.2",
+  "milestone_id": "M30",
+  "title": "Authority Hierarchy & Lifecycle Diagrams",
+  "domain": "Shared",
+  "capability": "Governance Comprehensibility",
+  "purpose": "Generate authority hierarchy maps, runtime lifecycle diagrams, replay flow diagrams, enforcement flow diagrams, and healing flow diagrams.",
+  "dependencies": ["T30.1"],
+  "architectural_constraints": [
+    "All diagrams generated from canonical protocol definitions",
+    "Mermaid for markdown embedding, DOT for advanced rendering",
+    "Lifecycle diagrams must show all 9 states and valid transitions"
+  ],
+  "deliverables": [
+    {
+      "path": "project-governance/maps/authority-hierarchy.md",
+      "description": "Generated authority hierarchy map",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/maps/runtime-lifecycle.md",
+      "description": "Generated runtime lifecycle diagram",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/maps/replay-flow.md",
+      "description": "Generated replay flow diagram",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/maps/enforcement-flow.md",
+      "description": "Generated enforcement flow diagram",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Authority hierarchy shows Layer 0-5 with precedence rules",
+    "Runtime lifecycle diagram shows all 9 states and transitions",
+    "Replay flow diagram shows event stream → reconstruction → validation",
+    "Enforcement flow diagram shows violation detection → blocking → reporting",
+    "All diagrams are deterministic and reproducible"
+  ],
+  "traceability": [],
+  "estimated_hours": 4,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "MEDIUM",
+    "blocks_scaling": false
+  }
+}

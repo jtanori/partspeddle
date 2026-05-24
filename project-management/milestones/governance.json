@@ -449,7 +449,7 @@
     "scope": {
       "in": [
         "Automated metadata generation for tickets/milestones",
-        "Automated projection generation (JSON→Markdown)",
+        "Automated projection generation (JSON\u2192Markdown)",
         "Automated repository audits",
         "Automated schema validation"
       ],
@@ -957,6 +957,99 @@
     }
   },
   {
+    "id": "M26",
+    "phase": 26,
+    "title": "Governance Kernel Stabilization",
+    "purpose": "Reduce semantic fragmentation and normalize governance infrastructure before further expansion.",
+    "trust_principle": "A governance system with contradictory authorities cannot be trusted. A governance system with split sources of truth cannot be maintained.",
+    "scope": {
+      "in": [
+        "Registry normalization",
+        "Protocol authority consolidation",
+        "Schema deduplication",
+        "Script redundancy elimination",
+        "Runtime directory normalization",
+        "Stale artifact cleanup",
+        "Reflection regeneration and validation"
+      ],
+      "out": [
+        "New governance capabilities",
+        "Feature code changes",
+        "Business logic modifications",
+        "UI/UX changes"
+      ]
+    },
+    "exit_criteria": [
+      "All governance registries normalized with 100% protocol coverage",
+      "No dual-loading inconsistencies",
+      "Reflection drift impossible via deterministic generation",
+      "Registry loading deterministic",
+      "pm-summary.js class of failures eliminated",
+      "All post-cleanup invariants enforced"
+    ],
+    "tickets": [
+      "T26.1",
+      "T26.2",
+      "T26.3",
+      "T26.4",
+      "T26.5",
+      "T26.6",
+      "T26.7"
+    ],
+    "dependencies": [
+      "M20",
+      "M25"
+    ],
+    "downstream_impact": "Enables M27\u2013M35 stabilization wave. Without this, all subsequent milestones fight registry fragmentation.",
+    "estimated_duration_days": 4,
+    "status": "completed",
+    "ticket_paths": {
+      "T26.1": {
+        "path": "project-management/data/tickets/T26.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T26.2": {
+        "path": "project-management/data/tickets/T26.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T26.3": {
+        "path": "project-management/data/tickets/T26.3.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T26.4": {
+        "path": "project-management/data/tickets/T26.4.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T26.5": {
+        "path": "project-management/data/tickets/T26.5.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T26.6": {
+        "path": "project-management/data/tickets/T26.6.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T26.7": {
+        "path": "project-management/data/tickets/T26.7.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "metadata": {
+      "created_at": "2026-05-24T05:50:46Z",
+      "updated_at": "2026-05-24T05:50:46Z",
+      "version": 1,
+      "lane": "governance",
+      "priority": "infrastructure_critical",
+      "blocks_scaling": true
+    }
+  },
+  {
     "id": "M25",
     "phase": 25,
     "title": "Deployment Governance",
@@ -986,7 +1079,7 @@
     ],
     "downstream_impact": "Feature milestones resume after M25. Governance wave complete.",
     "estimated_duration_days": 2,
-    "status": "planned",
+    "status": "completed",
     "ticket_paths": {
       "T25.1": {
         "path": "project-management/data/tickets/T25.1.json",
@@ -1000,6 +1093,601 @@
       "version": 1,
       "lane": "governance",
       "priority": "infrastructure_critical",
+      "blocks_scaling": true
+    }
+  },
+  {
+    "id": "M27",
+    "phase": 27,
+    "title": "Formal Invariant System",
+    "purpose": "Define machine-verifiable global invariants for the governance runtime.",
+    "trust_principle": "A system without invariants is a system without guarantees.",
+    "scope": {
+      "in": [
+        "Invariant registry design",
+        "Invariant engine implementation",
+        "CI integration for invariant validation"
+      ],
+      "out": [
+        "Business logic changes",
+        "Feature code",
+        "UI modifications"
+      ]
+    },
+    "exit_criteria": [
+      "7 invariant categories operational",
+      "Invariant engine validates cross-system consistency",
+      "CI blocks PRs with critical invariant violations",
+      "All violations emit governance events"
+    ],
+    "tickets": [
+      "T27.1",
+      "T27.2",
+      "T27.3"
+    ],
+    "dependencies": [
+      "M26"
+    ],
+    "downstream_impact": "Enables M28\u2013M35 by providing runtime safety guarantees.",
+    "estimated_duration_days": 3,
+    "status": "completed",
+    "ticket_paths": {
+      "T27.1": {
+        "path": "project-management/data/tickets/T27.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T27.2": {
+        "path": "project-management/data/tickets/T27.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T27.3": {
+        "path": "project-management/data/tickets/T27.3.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "metadata": {
+      "created_at": "2026-05-24T05:50:46Z",
+      "updated_at": "2026-05-24T13:03:44.668Z",
+      "version": 1,
+      "lane": "governance",
+      "priority": "infrastructure_critical",
+      "blocks_scaling": true
+    }
+  },
+  {
+    "id": "M28",
+    "phase": 28,
+    "title": "Runtime Storage Abstraction",
+    "purpose": "Prepare the system for future distributed/runtime scaling by abstracting all storage mutations.",
+    "trust_principle": "Direct filesystem mutation is a liability.",
+    "scope": {
+      "in": [
+        "Storage adapter interface design",
+        "Filesystem adapter implementation",
+        "Storage adapter integration"
+      ],
+      "out": [
+        "SQLite adapter",
+        "Postgres adapter",
+        "Distributed storage"
+      ]
+    },
+    "exit_criteria": [
+      "All runtime mutations pass through storage adapters",
+      "Filesystem adapter operational",
+      "No direct fs mutations in runtime scripts",
+      "Atomic writes verified"
+    ],
+    "tickets": [
+      "T28.1",
+      "T28.2",
+      "T28.3"
+    ],
+    "dependencies": [
+      "M27"
+    ],
+    "downstream_impact": "Enables distributed execution and database-backed storage in future phases.",
+    "estimated_duration_days": 3,
+    "status": "completed",
+    "ticket_paths": {
+      "T28.1": {
+        "path": "project-management/data/tickets/T28.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T28.2": {
+        "path": "project-management/data/tickets/T28.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T28.3": {
+        "path": "project-management/data/tickets/T28.3.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "metadata": {
+      "created_at": "2026-05-24T05:50:46Z",
+      "updated_at": "2026-05-24T16:36:29.000Z",
+      "version": 1,
+      "lane": "governance",
+      "priority": "infrastructure_critical",
+      "blocks_scaling": true
+    },
+    "completion_notes": {
+      "adapter_implementation": "complete",
+      "filesystem_adapter_operational": true,
+      "atomic_writes_verified": true,
+      "migration_debt": {
+        "description": "Direct fs mutations remain in runtime scripts",
+        "files_affected": 49,
+        "calls_remaining": 215,
+        "scanner": "scripts/migrate-to-storage-adapter.ts",
+        "deferred_from": "T28.2",
+        "recommended_follow_on": "M28-post-migration-cleanup"
+      }
+    }
+  },
+  {
+    "id": "M29",
+    "phase": 29,
+    "title": "Event Causality & Replay Integrity",
+    "purpose": "Guarantee deterministic replay under concurrency via global event sequence IDs and causality chains.",
+    "trust_principle": "Timestamps are not deterministic ordering.",
+    "scope": {
+      "in": [
+        "Global event sequence IDs",
+        "Causality chain implementation",
+        "Replay integrity validator"
+      ],
+      "out": [
+        "Distributed consensus",
+        "Blockchain verification"
+      ]
+    },
+    "exit_criteria": [
+      "Every event has global_sequence, execution_sequence, parent_event_id, causality_chain",
+      "Causal breaks detectable",
+      "Replay integrity validator passes",
+      "Deterministic replay under concurrency"
+    ],
+    "tickets": [
+      "T29.1",
+      "T29.2",
+      "T29.3"
+    ],
+    "dependencies": [
+      "M28"
+    ],
+    "downstream_impact": "Enables reliable debugging, auditing, and forensics under concurrent execution.",
+    "estimated_duration_days": 3,
+    "status": "planned",
+    "ticket_paths": {
+      "T29.1": {
+        "path": "project-management/data/tickets/T29.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T29.2": {
+        "path": "project-management/data/tickets/T29.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T29.3": {
+        "path": "project-management/data/tickets/T29.3.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "metadata": {
+      "created_at": "2026-05-24T05:50:46Z",
+      "updated_at": "2026-05-24T05:50:46Z",
+      "version": 1,
+      "lane": "governance",
+      "priority": "infrastructure_critical",
+      "blocks_scaling": true
+    }
+  },
+  {
+    "id": "M30",
+    "phase": 30,
+    "title": "Governance Architecture Mapping",
+    "purpose": "Make the system understandable again via generated architecture maps and diagrams.",
+    "trust_principle": "A system that cannot be visualized cannot be reasoned about.",
+    "scope": {
+      "in": [
+        "Subsystem and event flow maps",
+        "Authority hierarchy and lifecycle diagrams",
+        "Machine-readable graph representations"
+      ],
+      "out": [
+        "Hand-drawn diagrams",
+        "Static documentation",
+        "Non-deterministic visualizations"
+      ]
+    },
+    "exit_criteria": [
+      "All governance components mapped",
+      "Event flows traceable",
+      "Authority hierarchy visualized",
+      "Machine-readable graphs available",
+      "Deterministic generation from canonical definitions"
+    ],
+    "tickets": [
+      "T30.1",
+      "T30.2",
+      "T30.3"
+    ],
+    "dependencies": [
+      "M29"
+    ],
+    "downstream_impact": "Enables onboarding, debugging, and architectural reasoning.",
+    "estimated_duration_days": 3,
+    "status": "planned",
+    "ticket_paths": {
+      "T30.1": {
+        "path": "project-management/data/tickets/T30.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T30.2": {
+        "path": "project-management/data/tickets/T30.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T30.3": {
+        "path": "project-management/data/tickets/T30.3.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "metadata": {
+      "created_at": "2026-05-24T05:50:46Z",
+      "updated_at": "2026-05-24T05:50:46Z",
+      "version": 1,
+      "lane": "governance",
+      "priority": "medium",
+      "blocks_scaling": false
+    }
+  },
+  {
+    "id": "M31",
+    "phase": 31,
+    "title": "Operational Control Plane",
+    "purpose": "Govern operational ergonomics as a first-class runtime surface. CLI-first, JSON-native, projection-driven. Consumes canonical registries without duplicating semantics.",
+    "trust_principle": "Operational ergonomics must emerge from stable semantics, not precede them.",
+    "scope": {
+      "in": [
+        "Canonical recipe registries",
+        "Operator command discovery",
+        "Milestone/ticket reporting",
+        "Runtime inspection surfaces",
+        "Governance query interfaces",
+        "Markdown/HTML projection generation",
+        "Lightweight operational console",
+        "Protocol/artifact discovery",
+        "Execution recipes (machine-readable, composable, queryable, executable, projectable)",
+        "Segmented report serialization (deterministic, resumable, chunk-addressable)"
+      ],
+      "out": [
+        "Web UI / frontend-heavy infrastructure",
+        "External integrations",
+        "Real-time alerting",
+        "Duplication of canonical registry semantics"
+      ]
+    },
+    "exit_criteria": [
+      "Recipe registry is machine-readable, composable, queryable, executable, and projectable",
+      "Operator can discover all commands via governance query interface",
+      "Milestone and ticket reports are deterministically serializable with continuation markers",
+      "Runtime inspection surfaces consume canonical registries directly",
+      "Markdown projections are generated from canonical JSON, never authoritative",
+      "Segmented report serialization supports PART N/M markers and deterministic resume",
+      "All control plane actions emit governance events",
+      "No registry semantics duplicated in control plane code"
+    ],
+    "tickets": [
+      "T31.1",
+      "T31.2",
+      "T31.3"
+    ],
+    "dependencies": [
+      "M26",
+      "M27",
+      "M30"
+    ],
+    "downstream_impact": "Enables day-to-day governance runtime operation at scale.",
+    "estimated_duration_days": 3,
+    "status": "planned",
+    "ticket_paths": {
+      "T31.1": {
+        "path": "project-management/data/tickets/T31.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T31.2": {
+        "path": "project-management/data/tickets/T31.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T31.3": {
+        "path": "project-management/data/tickets/T31.3.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "metadata": {
+      "created_at": "2026-05-24T05:50:46Z",
+      "updated_at": "2026-05-24T05:50:46Z",
+      "version": 1,
+      "lane": "governance",
+      "priority": "high",
+      "blocks_scaling": true
+    }
+  },
+  {
+    "id": "M32",
+    "phase": 32,
+    "title": "Scalability & Performance Characterization",
+    "purpose": "Understand operational limits BEFORE failure.",
+    "trust_principle": "You cannot scale what you cannot measure.",
+    "scope": {
+      "in": [
+        "Load test framework",
+        "Performance benchmarking",
+        "Scalability recommendations"
+      ],
+      "out": [
+        "Auto-scaling",
+        "Production optimization",
+        "Capacity planning"
+      ]
+    },
+    "exit_criteria": [
+      "Load tests simulate large event streams, replay storms, concurrent locks",
+      "Performance baselined for all critical operations",
+      "Operational limits documented",
+      "Degradation thresholds defined",
+      "Automated alerts for approaching limits"
+    ],
+    "tickets": [
+      "T32.1",
+      "T32.2",
+      "T32.3"
+    ],
+    "dependencies": [
+      "M31"
+    ],
+    "downstream_impact": "Prevents operational surprises and enables informed scaling decisions.",
+    "estimated_duration_days": 3,
+    "status": "planned",
+    "ticket_paths": {
+      "T32.1": {
+        "path": "project-management/data/tickets/T32.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T32.2": {
+        "path": "project-management/data/tickets/T32.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T32.3": {
+        "path": "project-management/data/tickets/T32.3.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "metadata": {
+      "created_at": "2026-05-24T05:50:46Z",
+      "updated_at": "2026-05-24T05:50:46Z",
+      "version": 1,
+      "lane": "governance",
+      "priority": "medium",
+      "blocks_scaling": false
+    }
+  },
+  {
+    "id": "M33",
+    "phase": 33,
+    "title": "Adversarial Governance Testing",
+    "purpose": "Attack the governance system intentionally to verify resilience.",
+    "trust_principle": "A system that has never been attacked has never been tested.",
+    "scope": {
+      "in": [
+        "Failure simulation framework",
+        "Adversarial test suite",
+        "Forensic traceability validation"
+      ],
+      "out": [
+        "Chaos engineering",
+        "Red team exercises",
+        "Penetration testing"
+      ]
+    },
+    "exit_criteria": [
+      "9 failure scenarios simulated",
+      "Graceful degradation verified",
+      "Deterministic failure confirmed",
+      "Forensic traceability verified",
+      "No silent corruption"
+    ],
+    "tickets": [
+      "T33.1",
+      "T33.2",
+      "T33.3"
+    ],
+    "dependencies": [
+      "M32"
+    ],
+    "downstream_impact": "Builds confidence in governance runtime resilience under failure.",
+    "estimated_duration_days": 3,
+    "status": "planned",
+    "ticket_paths": {
+      "T33.1": {
+        "path": "project-management/data/tickets/T33.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T33.2": {
+        "path": "project-management/data/tickets/T33.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T33.3": {
+        "path": "project-management/data/tickets/T33.3.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "metadata": {
+      "created_at": "2026-05-24T05:50:46Z",
+      "updated_at": "2026-05-24T05:50:46Z",
+      "version": 1,
+      "lane": "governance",
+      "priority": "medium",
+      "blocks_scaling": false
+    }
+  },
+  {
+    "id": "M34",
+    "phase": 34,
+    "title": "Protocol Lifecycle & Evolution Governance",
+    "purpose": "Prevent protocol evolution chaos.",
+    "trust_principle": "Without lifecycle governance, protocol drift becomes catastrophic.",
+    "scope": {
+      "in": [
+        "Protocol semver system",
+        "Compatibility rules and migration paths",
+        "Deprecation lifecycle enforcement"
+      ],
+      "out": [
+        "Auto-migration",
+        "Protocol marketplace",
+        "External protocol consumption"
+      ]
+    },
+    "exit_criteria": [
+      "All protocols declare semver",
+      "Backward compatibility rules enforced",
+      "Migration paths documented",
+      "Supersession policy enforced",
+      "Deprecation lifecycle automated"
+    ],
+    "tickets": [
+      "T34.1",
+      "T34.2",
+      "T34.3"
+    ],
+    "dependencies": [
+      "M33"
+    ],
+    "downstream_impact": "Enables safe long-term evolution of governance protocols.",
+    "estimated_duration_days": 3,
+    "status": "planned",
+    "ticket_paths": {
+      "T34.1": {
+        "path": "project-management/data/tickets/T34.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T34.2": {
+        "path": "project-management/data/tickets/T34.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T34.3": {
+        "path": "project-management/data/tickets/T34.3.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "metadata": {
+      "created_at": "2026-05-24T05:50:46Z",
+      "updated_at": "2026-05-24T05:50:46Z",
+      "version": 1,
+      "lane": "governance",
+      "priority": "high",
+      "blocks_scaling": true
+    }
+  },
+  {
+    "id": "M35",
+    "phase": 35,
+    "title": "System Documentation & User Manual Platform",
+    "purpose": "Create a complete, canonical, maintainable documentation ecosystem for the governance runtime.",
+    "trust_principle": "The system is now too sophisticated for implicit understanding.",
+    "scope": {
+      "in": [
+        "Documentation registry and architecture",
+        "Documentation generator",
+        "Runtime walkthrough generator",
+        "Role-oriented manual generation",
+        "Interactive examples and onboarding"
+      ],
+      "out": [
+        "Random markdown notes",
+        "Passive documentation",
+        "Disconnected guides"
+      ]
+    },
+    "exit_criteria": [
+      "Documentation registry operational",
+      "10 documentation categories generated",
+      "All manuals cross-linked and validated",
+      "No drift from runtime truth",
+      "Walkthroughs replay-compatible",
+      "Onboarding path documented"
+    ],
+    "tickets": [
+      "T35.1",
+      "T35.2",
+      "T35.3",
+      "T35.4",
+      "T35.5"
+    ],
+    "dependencies": [
+      "M34"
+    ],
+    "downstream_impact": "Enables onboarding, operational learning, and long-term maintainability.",
+    "estimated_duration_days": 4,
+    "status": "planned",
+    "ticket_paths": {
+      "T35.1": {
+        "path": "project-management/data/tickets/T35.1.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T35.2": {
+        "path": "project-management/data/tickets/T35.2.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T35.3": {
+        "path": "project-management/data/tickets/T35.3.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T35.4": {
+        "path": "project-management/data/tickets/T35.4.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T35.5": {
+        "path": "project-management/data/tickets/T35.5.json",
+        "exists": true,
+        "isValid": true
+      }
+    },
+    "metadata": {
+      "created_at": "2026-05-24T05:50:46Z",
+      "updated_at": "2026-05-24T05:50:46Z",
+      "version": 1,
+      "lane": "governance",
+      "priority": "high",
       "blocks_scaling": true
     }
   }

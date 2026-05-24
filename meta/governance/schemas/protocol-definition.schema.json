@@ -6,6 +6,7 @@
   "type": "object",
   "required": ["id", "version", "layer", "scope", "derives_from", "canonical"],
   "properties": {
+    "$schema": { "type": "string", "description": "Self-referencing JSON Schema URI" },
     "id": {
       "type": "string",
       "pattern": "^[a-z][a-z0-9-]+$",
@@ -14,6 +15,14 @@
     "version": {
       "type": "string",
       "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "title": {
+      "type": "string",
+      "description": "Human-readable protocol title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed protocol description"
     },
     "layer": {
       "type": "integer",
@@ -173,6 +182,11 @@
           "description": { "type": "string" }
         }
       }
+    },
+    "emissions": {
+      "type": "object",
+      "description": "Event emission mappings for state machine protocols",
+      "additionalProperties": { "type": "string" }
     },
     "schemas": {
       "type": "object",

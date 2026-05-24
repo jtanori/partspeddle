@@ -1,0 +1,26 @@
+{
+  "checkpoint_id": "cp_T28.3_20260524_163629_complete",
+  "ticket_id": "T28.3",
+  "milestone_id": "M28",
+  "execution_id": "EXEC-2026-05-24-008",
+  "status": "complete",
+  "created_at": "2026-05-24T14:38:05.751Z",
+  "completed_at": "2026-05-24T16:36:29.000Z",
+  "validation_summary": {
+    "storage_tests_passed": 34,
+    "storage_tests_failed": 0,
+    "benchmark_overhead_percent": -5.4,
+    "invariants_passed": 22,
+    "invariants_failed": 0,
+    "status": "PASS"
+  },
+  "artifacts": [
+    "scripts/runtime-storage.ts",
+    "scripts/migrate-to-storage-adapter.ts",
+    "project-governance/runtime/storage/tests/run-storage-tests.ts",
+    "project-governance/runtime/storage/ROLLBACK.md",
+    "meta/state/canonical-state.json",
+    "project-management/data/tickets/T28.3.json"
+  ],
+  "preceding_checkpoint": "cp_T28.2_20260524_143317_complete"
+}

@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/integrity-validation.schema.json",
+  "title": "VINTRACK Integrity Validation",
+  "description": "Schema for integrity validation results and recovery exit criteria.",
+  "type": "object",
+  "required": ["incident_id", "validated_at", "criteria_results", "overall_status"],
+  "properties": {
+    "incident_id": { "type": "string" },
+    "validated_at": { "type": "string", "format": "date-time" },
+    "criteria_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["criterion_id", "passed"],
+        "properties": {
+          "criterion_id": { "type": "string" },
+          "passed": { "type": "boolean" },
+          "details": { "type": "string" },
+          "validated_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "overall_status": {
+      "type": "string",
+      "enum": ["PASS", "FAIL", "PARTIAL"]
+    },
+    "phase_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["phase", "name", "passed"],
+        "properties": {
+          "phase": { "type": "integer" },
+          "name": { "type": "string" },
+          "passed": { "type": "boolean" },
+          "details": { "type": "string" }
+        }
+      }
+    },
+    "readiness_gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["gate", "passed"],
+        "properties": {
+          "gate": { "type": "string" },
+          "passed": { "type": "boolean" },
+          "authorized_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

@@ -5,7 +5,12 @@
   "domain": "Shared",
   "capability": "Testing",
   "purpose": "Set up Playwright E2E tests and MSW-based component tests. Validate critical user journeys end-to-end.",
-  "dependencies": ["T3.4", "T3.5", "T3.6", "T0.5.1"],
+  "dependencies": [
+    "T3.4",
+    "T3.5",
+    "T3.6",
+    "T0.5.1"
+  ],
   "architectural_constraints": [
     "Playwright for E2E critical journeys",
     "MSW for API mocking in component tests",
@@ -89,7 +94,7 @@
     }
   ],
   "estimated_hours": 5,
-  "status": "in_progress",
+  "status": "completed",
   "assignee": null,
   "metadata": {
     "created_at": "2026-05-19T10:00:00.000Z",

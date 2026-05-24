@@ -1,0 +1,16 @@
+{
+  "checkpoint_id": "cp_T27.1_20260524_105624_complete",
+  "ticket_id": "T27.1",
+  "milestone_id": "M27",
+  "status": "complete",
+  "created_at": "2026-05-24T10:56:24.531Z",
+  "reason": "RECONCILIATION: synthetic checkpoint for T27.1 completion (INCIDENT-2026-05-24-001)",
+  "incident_id": "INCIDENT-2026-05-24-001",
+  "surfaces_validated": [
+    "canonical-state.json",
+    "runtime-state.json",
+    "execution-lock.json",
+    "active-execution.json",
+    "current-ticket.json"
+  ]
+}

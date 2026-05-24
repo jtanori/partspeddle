@@ -1,0 +1,9 @@
+{
+  "checkpoint_id": "cp_T27.2_20260524_123033_active",
+  "ticket_id": "T27.2",
+  "milestone_id": "M27",
+  "status": "active",
+  "created_at": "2026-05-24T12:30:33.548Z",
+  "reason": "T27.2 activation — execution header emitted",
+  "execution_id": "EXEC-2026-05-24-004"
+}

@@ -1,0 +1,74 @@
+{
+  "id": "T26.3",
+  "milestone_id": "M26",
+  "title": "Schema Deduplication",
+  "domain": "Shared",
+  "capability": "Governance Stabilization",
+  "purpose": "Eliminate duplicate milestone/ticket schemas between meta/schemas/ and project-management/schemas/. Migrate checkpoint schema divergence. Establish single canonical schema per concept.",
+  "dependencies": ["T26.1"],
+  "architectural_constraints": [
+    "project-management/schemas/ owns milestone and ticket schemas",
+    "meta/governance/schemas/ owns governance runtime schemas",
+    "No concept may have two canonical schemas",
+    "Schema changes require version bump + compatibility check"
+  ],
+  "deliverables": [
+    {
+      "path": "project-management/schemas/milestone.schema.json",
+      "description": "Canonical milestone schema (absorbed from meta/schemas/)",
+      "type": "file"
+    },
+    {
+      "path": "project-management/schemas/ticket.schema.json",
+      "description": "Canonical ticket schema (absorbed from meta/schemas/)",
+      "type": "file"
+    },
+    {
+      "path": "meta/governance/schemas/checkpoint.schema.json",
+      "description": "Reconciled checkpoint schema (merged with inline protocol)",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "meta/schemas/milestone.schema.json and meta/schemas/ticket.schema.json deprecated or removed",
+    "project-management/schemas/ schemas validate all existing data",
+    "Checkpoint schema divergence resolved (inline vs standalone)",
+    "npm run pm:validate passes with 0 errors",
+    "No schema references broken in scripts or protocols",
+    "Schema registry updated with correct canonical paths"
+  ],
+  "traceability": [
+    {
+      "commit_hash": "T26.3-in-progress",
+      "files_changed": [
+        "meta/schemas/ (removed)",
+        "meta/governance/schemas/checkpoint.schema.json",
+        "meta/governance/schemas/governance-state.schema.json"
+      ],
+      "description": "Eliminated duplicate schemas: removed meta/schemas/milestone.schema.json and ticket.schema.json. Merged checkpoint.schema.json and governance-state.schema.json into meta/governance/schemas/.",
+      "timestamp": "2026-05-24T07:22:00Z"
+    }
+  ],
+  "observability": {
+    "metrics": ["schema_duplicates_remaining", "schema_validation_errors"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Deprecating meta/schemas/ breaks scripts that import from there",
+      "mitigation": "Update all imports before deletion; use registry loader",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "completed",
+  "assignee": "agent",
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "HIGH",
+    "blocks_scaling": true
+  }
+}

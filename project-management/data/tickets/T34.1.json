@@ -1,0 +1,43 @@
+{
+  "id": "T34.1",
+  "milestone_id": "M34",
+  "title": "Protocol Semver System",
+  "domain": "Shared",
+  "capability": "Governance Evolution",
+  "purpose": "Implement semantic versioning for all governance protocols to prevent protocol drift and enable safe evolution.",
+  "dependencies": ["T33.3"],
+  "architectural_constraints": [
+    "Every protocol must declare major.minor.patch",
+    "Breaking changes require major version bump",
+    "Backward compatibility must be verifiable"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/governance/schemas/protocol-version.schema.json",
+      "description": "Protocol versioning schema",
+      "type": "schema"
+    },
+    {
+      "path": "scripts/validate-protocol-versions.ts",
+      "description": "Protocol version validator",
+      "type": "script"
+    }
+  ],
+  "acceptance_criteria": [
+    "All 10 protocols declare semver",
+    "Schema enforces version format",
+    "Breaking change detection automated",
+    "Version history tracked per protocol"
+  ],
+  "traceability": [],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "HIGH",
+    "blocks_scaling": true
+  }
+}

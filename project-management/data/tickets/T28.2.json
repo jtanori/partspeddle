@@ -1,0 +1,59 @@
+{
+  "id": "T28.2",
+  "milestone_id": "M28",
+  "title": "Filesystem Adapter Implementation",
+  "domain": "Shared",
+  "capability": "Governance Stabilization",
+  "purpose": "Implement the Phase 1 filesystem adapter that replaces direct file mutations across all governance runtime scripts.",
+  "dependencies": [
+    "T28.1"
+  ],
+  "architectural_constraints": [
+    "Atomic writes via temp-file + rename",
+    "Append-only for event streams",
+    "Directory creation implicit",
+    "Error handling with retry and governance event emission"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/runtime-storage.ts",
+      "description": "Filesystem adapter implementation",
+      "type": "script"
+    },
+    {
+      "path": "scripts/migrate-to-storage-adapter.ts",
+      "description": "Migration script for existing direct mutations",
+      "type": "script"
+    }
+  ],
+  "acceptance_criteria": [
+    "All runtime scripts use storage adapter (grep for direct fs.writeFileSync → 0 hits in runtime)",
+    "Atomic writes verified (no partial writes under crash)",
+    "Event streams append-only via adapter",
+    "Migration script converts all existing mutations",
+    "npm run storage:test passes"
+  ],
+  "traceability": [
+    {
+      "commit_hash": "T28.2_EXECUTION",
+      "files_changed": [
+        "scripts/runtime-storage.ts",
+        "scripts/migrate-to-storage-adapter.ts",
+        "project-governance/runtime/storage/tests/run-storage-tests.ts",
+        "package.json"
+      ],
+      "description": "Hardened filesystem adapter with atomic writes, retry, governance events; created migration scanner and test suite",
+      "timestamp": "2026-05-24T14:33:17.502Z"
+    }
+  ],
+  "estimated_hours": 6,
+  "status": "completed",
+  "assignee": "agent",
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T14:33:17.502Z",
+    "version": 1,
+    "governance_risk_classification": "HIGH",
+    "blocks_scaling": true
+  }
+}

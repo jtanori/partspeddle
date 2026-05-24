@@ -1,0 +1,81 @@
+{
+  "id": "retention-policy",
+  "version": "1.0.0",
+  "layer": 3,
+  "scope": "governance",
+  "canonical": true,
+  "derives_from": ["execution-lifecycle"],
+  "status": "active",
+  "title": "Runtime Retention Policy",
+  "description": "Deterministic rotation and retention rules for all append-only runtime streams, audit logs, heartbeats, and checkpoints.",
+  "rules": [
+    {
+      "id": "audit_retention",
+      "condition": "audit file age > 30 days",
+      "action": "archive_and_compress",
+      "severity": "MEDIUM",
+      "description": "Audit reports retained for 30 days then archived to cold storage."
+    },
+    {
+      "id": "heartbeat_retention",
+      "condition": "heartbeat file age > 7 days OR heartbeat count > 1000 per stream",
+      "action": "rotate_stream",
+      "severity": "MEDIUM",
+      "description": "Heartbeats rotate weekly or at 1000 entries per stream."
+    },
+    {
+      "id": "checkpoint_retention",
+      "condition": "checkpoint is not the latest AND age > 90 days",
+      "action": "archive_to_cold_storage",
+      "severity": "LOW",
+      "description": "Non-latest checkpoints archived after 90 days. Latest checkpoint always preserved."
+    },
+    {
+      "id": "event_stream_retention",
+      "condition": "event stream size > 10MB OR age > 30 days",
+      "action": "rotate_and_archive",
+      "severity": "MEDIUM",
+      "description": "Event streams rotate at 10MB or 30 days."
+    },
+    {
+      "id": "telemetry_retention",
+      "condition": "telemetry log age > 30 days",
+      "action": "archive_and_compress",
+      "severity": "LOW",
+      "description": "Telemetry logs retained for 30 days then archived."
+    },
+    {
+      "id": "diagnostic_retention",
+      "condition": "diagnostic report age > 14 days",
+      "action": "archive_and_compress",
+      "severity": "LOW",
+      "description": "Diagnostic reports retained for 14 days then archived."
+    },
+    {
+      "id": "healing_log_retention",
+      "condition": "healing log age > 30 days",
+      "action": "archive_and_compress",
+      "severity": "LOW",
+      "description": "Healing logs retained for 30 days then archived."
+    }
+  ],
+  "invariants": [
+    {
+      "id": "latest_checkpoint_preserved",
+      "expression": "latest-checkpoint.json must never be deleted",
+      "severity": "CRITICAL",
+      "description": "The latest checkpoint is the canonical resume point and must be immutable."
+    },
+    {
+      "id": "no_silent_deletion",
+      "expression": "every retention action emits governance event",
+      "severity": "HIGH",
+      "description": "Retention rotation must leave an audit trail."
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-05-24T07:22:00Z",
+    "updated_at": "2026-05-24T07:22:00Z",
+    "author": "agent"
+  }
+}

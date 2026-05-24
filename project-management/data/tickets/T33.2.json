@@ -1,0 +1,45 @@
+{
+  "id": "T33.2",
+  "milestone_id": "M33",
+  "title": "Adversarial Test Suite",
+  "domain": "Shared",
+  "capability": "Governance Resilience",
+  "purpose": "Execute adversarial tests against all governance subsystems and document failure modes, recovery paths, and forensic capabilities.",
+  "dependencies": ["T33.1"],
+  "architectural_constraints": [
+    "Tests must be deterministic",
+    "Failure modes must be reproducible",
+    "Forensic traces must be complete"
+  ],
+  "deliverables": [
+    {
+      "path": "project-governance/adversarial/test-report.md",
+      "description": "Adversarial test report",
+      "type": "file"
+    },
+    {
+      "path": "scripts/run-adversarial-tests.ts",
+      "description": "Adversarial test runner",
+      "type": "script"
+    }
+  ],
+  "acceptance_criteria": [
+    "All 9 failure scenarios tested",
+    "Graceful degradation verified for each",
+    "Deterministic failure confirmed",
+    "Forensic traceability verified",
+    "No silent corruption detected",
+    "npm run adversarial:test passes"
+  ],
+  "traceability": [],
+  "estimated_hours": 5,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "HIGH",
+    "blocks_scaling": false
+  }
+}

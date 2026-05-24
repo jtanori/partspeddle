@@ -1,0 +1,205 @@
+{
+  "$schema": "../schemas/protocol-definition.schema.json",
+  "id": "repair-contract",
+  "version": "1.0.0",
+  "layer": 2,
+  "scope": "recovery",
+  "canonical": true,
+  "status": "active",
+  "derives_from": [
+    "runtime-governance-kernel",
+    "authority-reconstruction",
+    "drift-classification",
+    "execution-freeze"
+  ],
+  "supersedes": [],
+  "narrative_ref": "",
+  "title": "Deterministic Repair Contracts",
+  "description": "Specifies the structure, constraints, and audit requirements for all recovery repair operations. Ensures every repair is auditable, replayable, deterministic, and lineage-preserving.",
+  "purpose": "Eliminate untracked, ad hoc, or silent state repair by mandating formal repair contracts for every recovery mutation.",
+  "invariants": [
+    {
+      "id": "repair_requires_contract",
+      "expression": "mutation_during_recovery → ∃repair_contract(repair_id, mutation_log, audit_event)",
+      "severity": "CRITICAL",
+      "description": "Every mutation during recovery must have a corresponding repair contract."
+    },
+    {
+      "id": "repair_idempotency",
+      "expression": "repair_executed_twice → state_unchanged_on_second_execution",
+      "severity": "HIGH",
+      "description": "Repairs must be idempotent."
+    },
+    {
+      "id": "no_forbidden_operations",
+      "expression": "∀op ∈ repair: op ∉ forbidden_operations",
+      "severity": "CRITICAL",
+      "description": "No repair may contain a forbidden operation."
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-05-24T21:20:00Z",
+    "updated_at": "2026-05-24T21:20:00Z",
+    "author": "governance-system"
+  },
+  "schemas": {
+    "repair_contract_structure": {
+      "description": "Every repair operation must be documented as a repair contract with these mandatory fields.",
+      "required_fields": [
+        {
+          "field": "repair_id",
+          "type": "string",
+          "pattern": "^REPAIR-[0-9]{3}$",
+          "description": "Unique repair identifier within incident scope."
+        },
+        {
+          "field": "incident_id",
+          "type": "string",
+          "description": "Reference to the incident that triggered this repair."
+        },
+        {
+          "field": "drift_reference",
+          "type": "string",
+          "description": "Reference to the drift classification that this repair addresses."
+        },
+        {
+          "field": "authority_source",
+          "type": "string",
+          "description": "The authoritative source that determines the correct state (e.g., ticket JSON, journal, checkpoint)."
+        },
+        {
+          "field": "pre_condition",
+          "type": "object",
+          "description": "State that must be true before repair executes."
+        },
+        {
+          "field": "post_condition",
+          "type": "object",
+          "description": "State that must be true after repair executes."
+        },
+        {
+          "field": "mutation_log",
+          "type": "array",
+          "description": "Exact sequence of mutations applied. Each entry must specify file, path, old_value, new_value."
+        },
+        {
+          "field": "rollback_capability",
+          "type": "boolean",
+          "description": "Whether this repair can be rolled back using the mutation_log."
+        },
+        {
+          "field": "audit_event",
+          "type": "object",
+          "description": "Governance event appended to journal recording this repair."
+        },
+        {
+          "field": "executed_at",
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when repair was executed."
+        },
+        {
+          "field": "executed_by",
+          "type": "string",
+          "description": "Identifier of the agent or operator that executed the repair."
+        }
+      ]
+    },
+    "forbidden_operations": {
+      "description": "Operations that are strictly forbidden during recovery repair.",
+      "operations": [
+        {
+          "id": "silent_overwrite",
+          "description": "Mutating a file without recording the exact old and new values in the mutation_log.",
+          "severity": "CRITICAL",
+          "rationale": "Silent overwrites destroy auditability and prevent rollback."
+        },
+        {
+          "id": "ad_hoc_json_patching",
+          "description": "Applying unstructured JSON patches without a formal contract, schema validation, or mutation_log.",
+          "severity": "CRITICAL",
+          "rationale": "Ad hoc patching is non-deterministic and non-replayable."
+        },
+        {
+          "id": "direct_lock_mutation",
+          "description": "Directly modifying execution-lock.json outside the formal lock acquisition/release protocol.",
+          "severity": "CRITICAL",
+          "rationale": "Lock state must always be consistent with active execution. Direct mutation bypasses guards."
+        },
+        {
+          "id": "untracked_repair_actions",
+          "description": "Any repair action that does not generate a repair_id, mutation_log, and audit_event.",
+          "severity": "CRITICAL",
+          "rationale": "Untracked actions are invisible to replay, audit, and forensic analysis."
+        },
+        {
+          "id": "destructive_restore_without_snapshot",
+          "description": "Performing a destructive restore operation without first creating a recoverable snapshot.",
+          "severity": "CRITICAL",
+          "rationale": "Destructive operations must always be reversible."
+        },
+        {
+          "id": "checkpoint_mutation_without_audit",
+          "description": "Modifying or deleting a checkpoint without explicit audit trail and incident_id.",
+          "severity": "HIGH",
+          "rationale": "Checkpoints are immutable recovery anchors. Mutation corrupts replay lineage."
+        }
+      ]
+    },
+    "audit_lineage_requirements": {
+      "description": "Every repair must produce a complete audit lineage.",
+      "requirements": [
+        {
+          "id": "pre_state_snapshot",
+          "description": "Snapshot of all affected files before repair execution.",
+          "method": "JSON stringify and hash of pre-repair file contents"
+        },
+        {
+          "id": "mutation_sequence",
+          "description": "Ordered list of every mutation with file path, JSON pointer, old value, new value.",
+          "method": "RFC 6902 JSON Patch or equivalent structured diff"
+        },
+        {
+          "id": "post_state_snapshot",
+          "description": "Snapshot of all affected files after repair execution.",
+          "method": "JSON stringify and hash of post-repair file contents"
+        },
+        {
+          "id": "governance_event",
+          "description": "Append-only event to governance journal with repair_id, incident_id, drift_reference, timestamp.",
+          "method": "emit-governance-event.ts with event type recovery.repair_executed"
+        },
+        {
+          "id": "integrity_assertion",
+          "description": "Post-repair assertion that post_condition is satisfied.",
+          "method": "automated validation script against post_condition schema"
+        }
+      ]
+    },
+    "determinism_rules": {
+      "description": "Rules ensuring repair operations are deterministic.",
+      "rules": [
+        {
+          "id": "authority_driven",
+          "description": "Repair must derive target state exclusively from the declared authority_source. No improvised values."
+        },
+        {
+          "id": "ordered_execution",
+          "description": "Multiple repairs within an incident must execute in repair_id order. No parallel repair execution."
+        },
+        {
+          "id": "idempotent_design",
+          "description": "Each repair must be idempotent. Re-executing the same repair on already-repaired state must be a no-op."
+        },
+        {
+          "id": "schema_validated",
+          "description": "All mutated files must validate against their schemas after repair."
+        },
+        {
+          "id": "no_external_dependencies",
+          "description": "Repair execution must not depend on external state (network, time-of-day, randomness). Clock is allowed for timestamps only."
+        }
+      ]
+    }
+  }
+}

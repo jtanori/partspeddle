@@ -2,6 +2,11 @@
   "$schema": "../schemas/protocol-definition.schema.json",
   "id": "execution-state-machine",
   "version": "1.0.0",
+  "layer": 2,
+  "scope": "execution",
+  "canonical": true,
+  "derives_from": [],
+  "status": "active",
   "title": "Execution State Machine",
   "description": "Deterministic execution state machine defining all valid states, transitions, guards, and failure/recovery paths.",
   "state_machine": {
@@ -17,21 +22,21 @@
       { "id": "archived", "terminal": true, "description": "Execution archived" }
     ],
     "transitions": [
-      { "from": "idle", "to": "planning", "guard": "execution_authorized", "description": "Begin planning new execution" },
-      { "from": "planning", "to": "validating", "guard": "plan_complete", "description": "Plan complete, begin validation" },
-      { "from": "planning", "to": "idle", "guard": "always", "description": "Cancel planning" },
-      { "from": "validating", "to": "executing", "guard": "validation_passed", "description": "Validation passed, begin execution" },
-      { "from": "validating", "to": "blocked", "guard": "validation_failed", "description": "Validation failed, block execution" },
-      { "from": "executing", "to": "consolidating", "guard": "execution_complete", "description": "Execution complete, consolidate" },
-      { "from": "executing", "to": "blocked", "guard": "execution_interrupted", "description": "Execution interrupted" },
-      { "from": "blocked", "to": "recovering", "guard": "recovery_initiated", "description": "Begin recovery workflow" },
-      { "from": "blocked", "to": "planning", "guard": "replan_authorized", "description": "Replan from blocked state" },
-      { "from": "recovering", "to": "validating", "guard": "recovery_complete", "description": "Recovery complete, re-validate" },
-      { "from": "recovering", "to": "idle", "guard": "recovery_abandoned", "description": "Abandon recovery" },
-      { "from": "consolidating", "to": "deploying", "guard": "consolidation_complete", "description": "Consolidation complete, deploy" },
-      { "from": "consolidating", "to": "archived", "guard": "no_deployment", "description": "Archive without deployment" },
-      { "from": "deploying", "to": "archived", "guard": "deployment_complete", "description": "Deployment complete, archive" },
-      { "from": "deploying", "to": "recovering", "guard": "deployment_failed", "description": "Deployment failed, recover" }
+      { "from": "idle", "to": "planning", "trigger": "begin_planning", "guard": "execution_authorized", "description": "Begin planning new execution" },
+      { "from": "planning", "to": "validating", "trigger": "plan_complete", "guard": "plan_complete", "description": "Plan complete, begin validation" },
+      { "from": "planning", "to": "idle", "trigger": "cancel_planning", "guard": "always", "description": "Cancel planning" },
+      { "from": "validating", "to": "executing", "trigger": "validation_passed", "guard": "validation_passed", "description": "Validation passed, begin execution" },
+      { "from": "validating", "to": "blocked", "trigger": "validation_failed", "guard": "validation_failed", "description": "Validation failed, block execution" },
+      { "from": "executing", "to": "consolidating", "trigger": "execution_complete", "guard": "execution_complete", "description": "Execution complete, consolidate" },
+      { "from": "executing", "to": "blocked", "trigger": "execution_interrupted", "guard": "execution_interrupted", "description": "Execution interrupted" },
+      { "from": "blocked", "to": "recovering", "trigger": "begin_recovery", "guard": "recovery_initiated", "description": "Begin recovery workflow" },
+      { "from": "blocked", "to": "planning", "trigger": "replan", "guard": "replan_authorized", "description": "Replan from blocked state" },
+      { "from": "recovering", "to": "validating", "trigger": "recovery_complete", "guard": "recovery_complete", "description": "Recovery complete, re-validate" },
+      { "from": "recovering", "to": "idle", "trigger": "abandon_recovery", "guard": "recovery_abandoned", "description": "Abandon recovery" },
+      { "from": "consolidating", "to": "deploying", "trigger": "consolidation_complete", "guard": "consolidation_complete", "description": "Consolidation complete, deploy" },
+      { "from": "consolidating", "to": "archived", "trigger": "no_deployment", "guard": "no_deployment", "description": "Archive without deployment" },
+      { "from": "deploying", "to": "archived", "trigger": "deployment_complete", "guard": "deployment_complete", "description": "Deployment complete, archive" },
+      { "from": "deploying", "to": "recovering", "trigger": "deployment_failed", "guard": "deployment_failed", "description": "Deployment failed, recover" }
     ],
     "failure_transitions": [
       { "from": "planning", "to": "idle", "trigger": "plan_rejected", "description": "Plan rejected, return to idle" },
@@ -58,17 +63,17 @@
     {
       "id": "no_direct_mutation",
       "expression": "state may only change via canonical transition",
-      "severity": "critical"
+      "severity": "CRITICAL"
     },
     {
       "id": "terminal_no_exit",
       "expression": "archived state has no outgoing transitions",
-      "severity": "high"
+      "severity": "HIGH"
     },
     {
       "id": "event_emission",
       "expression": "every state mutation emits governance event",
-      "severity": "high"
+      "severity": "HIGH"
     }
   ]
 }

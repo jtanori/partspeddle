@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/drift-classification.schema.json",
+  "title": "VINTRACK Drift Classification",
+  "description": "Schema for drift classification entries and drift reports.",
+  "type": "object",
+  "required": ["drift_id", "category", "severity", "detected_at"],
+  "definitions": {
+    "drift_report": {
+      "type": "object",
+      "required": ["drift_id", "incident_id", "category", "severity", "detected_at", "affected_surfaces", "description", "actual_state", "expected_state", "root_cause", "detection_method"],
+      "properties": {
+        "drift_id": { "type": "string" },
+        "incident_id": { "type": "string" },
+        "category": {
+          "type": "string",
+          "enum": ["lock_drift", "execution_drift", "checkpoint_drift", "projection_drift", "lineage_divergence", "orphaned_transition", "runtime_divergence", "scope_drift", "architecture_drift", "dependency_drift", "state_drift", "authorization_drift"]
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
+        },
+        "detected_at": { "type": "string", "format": "date-time" },
+        "affected_surfaces": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "description": { "type": "string" },
+        "actual_state": { "type": "string" },
+        "expected_state": { "type": "string" },
+        "root_cause": { "type": "string" },
+        "detection_method": { "type": "string" },
+        "auto_remediation": { "type": "string" },
+        "requires_human_approval": { "type": "boolean" },
+        "repair_plan_reference": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["OPEN", "INVESTIGATING", "REPAIRING", "RESOLVED"],
+          "default": "OPEN"
+        }
+      }
+    }
+  },
+  "properties": {
+    "drift_id": { "type": "string" },
+    "category": {
+      "type": "string",
+      "enum": ["lock_drift", "execution_drift", "checkpoint_drift", "projection_drift", "lineage_divergence", "orphaned_transition", "runtime_divergence", "scope_drift", "architecture_drift", "dependency_drift", "state_drift", "authorization_drift"]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
+    },
+    "detected_at": { "type": "string", "format": "date-time" },
+    "affected_surfaces": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "description": { "type": "string" },
+    "auto_remediation": { "type": "string" },
+    "requires_human_approval": { "type": "boolean" }
+  }
+}

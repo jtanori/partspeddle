@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/repair-contract.schema.json",
+  "title": "VINTRACK Repair Contract",
+  "description": "Schema for deterministic repair contracts in recovery operations.",
+  "type": "object",
+  "required": ["repair_id", "incident_id", "drift_reference", "authority_source", "pre_condition", "post_condition", "mutation_log", "rollback_capability", "audit_event", "executed_at", "executed_by"],
+  "properties": {
+    "repair_id": {
+      "type": "string",
+      "pattern": "^REPAIR-[0-9]{3}$"
+    },
+    "incident_id": { "type": "string" },
+    "drift_reference": { "type": "string" },
+    "authority_source": { "type": "string" },
+    "pre_condition": { "type": "object" },
+    "post_condition": { "type": "object" },
+    "mutation_log": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["file", "path", "old_value", "new_value"],
+        "properties": {
+          "file": { "type": "string" },
+          "path": { "type": "string" },
+          "old_value": {},
+          "new_value": {}
+        }
+      }
+    },
+    "rollback_capability": { "type": "boolean" },
+    "audit_event": {
+      "type": "object",
+      "required": ["event_type", "timestamp"],
+      "properties": {
+        "event_type": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "repair_id": { "type": "string" },
+        "incident_id": { "type": "string" }
+      }
+    },
+    "executed_at": { "type": "string", "format": "date-time" },
+    "executed_by": { "type": "string" }
+  }
+}

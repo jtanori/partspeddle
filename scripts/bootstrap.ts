@@ -214,6 +214,21 @@ function main(): void {
 
   writeFileSync(statePath, JSON.stringify(state, null, 2) + '\n');
 
+  // Write to runtime/state/ projection files
+  const stateDir = join(process.cwd(), 'project-governance', 'runtime', 'state');
+  writeFileSync(join(stateDir, 'current-milestone.json'), JSON.stringify({
+    protocol_version: '1.0.0',
+    active_milestone: state.active_milestone,
+    previous_milestone: state.previous_milestone,
+    updated_at: state.updated_at,
+  }, null, 2) + '\n');
+  writeFileSync(join(stateDir, 'current-ticket.json'), JSON.stringify({
+    protocol_version: '1.0.0',
+    active: true,
+    ticket: state.active_ticket,
+    updated_at: state.updated_at,
+  }, null, 2) + '\n');
+
   console.log('\n╔══════════════════════════════════════════════════════════════╗');
   console.log('║          VINTRACK BOOTSTRAP COMPLETE                          ║');
   console.log('╚══════════════════════════════════════════════════════════════╝\n');

@@ -1,0 +1,249 @@
+{
+  "$schema": "../schemas/protocol-definition.schema.json",
+  "id": "integrity-validation",
+  "version": "1.0.0",
+  "layer": 2,
+  "scope": "recovery",
+  "canonical": true,
+  "status": "active",
+  "derives_from": [
+    "runtime-governance-kernel",
+    "authority-reconstruction",
+    "repair-contract",
+    "execution-freeze"
+  ],
+  "supersedes": [],
+  "narrative_ref": "",
+  "title": "Integrity Validation Layer",
+  "description": "Defines the mandatory integrity assertions, recovery exit criteria, and readiness gating that must pass before recovery completes and execution authority is restored.",
+  "purpose": "Ensure recovery operations never declare completion without formal proof that all integrity invariants are satisfied and the runtime is safe to resume.",
+  "invariants": [
+    {
+      "id": "recovery_exit_requires_all_criteria",
+      "expression": "recovery_complete → ∀criterion ∈ exit_criteria: criterion.passed = true",
+      "severity": "CRITICAL",
+      "description": "Recovery may not be marked complete until all exit criteria pass."
+    },
+    {
+      "id": "thaw_blocked_on_failure",
+      "expression": "integrity_validation_failed → freeze_state ≠ THAWED",
+      "severity": "CRITICAL",
+      "description": "Thaw is blocked if any integrity validation phase fails."
+    },
+    {
+      "id": "readiness_gate_order",
+      "expression": "integrity_gate.passed AND audit_gate.passed AND thaw_authorization_gate.passed AND mode_transition_gate.passed",
+      "severity": "CRITICAL",
+      "description": "All readiness gates must pass in sequence before execution resumes."
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-05-24T21:20:00Z",
+    "updated_at": "2026-05-24T21:20:00Z",
+    "author": "governance-system"
+  },
+  "schemas": {
+    "recovery_exit_criteria": {
+      "description": "Mandatory assertions that must all pass before recovery may exit. Any single failure blocks thaw.",
+      "criteria": [
+        {
+          "id": "single_execution_authority",
+          "assertion": "COUNT(active_executions) = 0 OR (COUNT(active_executions) = 1 AND execution_lock_matches_active)",
+          "description": "At most one execution may be active, and if active, it must hold a valid lock.",
+          "validation_method": "cross_reference_execution_surfaces",
+          "severity": "CRITICAL",
+          "blocking": true
+        },
+        {
+          "id": "monotonic_checkpoint_lineage",
+          "assertion": "∀i>0: checkpoint[i].timestamp ≥ checkpoint[i-1].timestamp AND checkpoint[i].sequence_number > checkpoint[i-1].sequence_number",
+          "description": "Checkpoints must form an unbroken, monotonically increasing chain.",
+          "validation_method": "checkpoint_lineage_validation",
+          "severity": "CRITICAL",
+          "blocking": true
+        },
+        {
+          "id": "projection_freshness",
+          "assertion": "∀projection: projection.generated_at ≥ recovery_start_time",
+          "description": "All projections must have been generated at or after the recovery start time.",
+          "validation_method": "timestamp_comparison",
+          "severity": "HIGH",
+          "blocking": true
+        },
+        {
+          "id": "lock_consistency",
+          "assertion": "execution-lock.json.locked = canonical-state.json.lock.locked AND (locked → execution_id matches)",
+          "description": "Lock state must be consistent across all surfaces that track it.",
+          "validation_method": "cross_reference_lock_surfaces",
+          "severity": "CRITICAL",
+          "blocking": true
+        },
+        {
+          "id": "replay_determinism",
+          "assertion": "hash(reconstructed_state_from_journal) = hash(reconstructed_state_from_checkpoints)",
+          "description": "Reconstruction from journal must produce identical state to reconstruction from checkpoints.",
+          "validation_method": "deterministic_replay_validation",
+          "severity": "HIGH",
+          "blocking": true
+        },
+        {
+          "id": "no_orphaned_transitions",
+          "assertion": "∀transition: transition.from ∈ valid_states AND transition.to ∈ valid_states AND transition.guard ∈ valid_guards",
+          "description": "All recorded transitions must reference valid states and guards.",
+          "validation_method": "transition_log_validation",
+          "severity": "HIGH",
+          "blocking": true
+        },
+        {
+          "id": "invariant_compliance",
+          "assertion": "∀invariant ∈ invariants.json: invariant.validation_method() = PASS",
+          "description": "All registered invariants must pass validation.",
+          "validation_method": "invariant_registry_validation",
+          "severity": "CRITICAL",
+          "blocking": true
+        },
+        {
+          "id": "schema_conformance",
+          "assertion": "∀file ∈ governed_files: validate(file, schema) = PASS",
+          "description": "All governed files must validate against their declared schemas.",
+          "validation_method": "schema_validation_suite",
+          "severity": "CRITICAL",
+          "blocking": true
+        },
+        {
+          "id": "audit_trail_completeness",
+          "assertion": "∀repair ∈ incident: ∃audit_event(recovery.repair_executed, repair_id)",
+          "description": "Every repair in the incident must have a corresponding audit event in the append-only journal.",
+          "validation_method": "journal_query",
+          "severity": "HIGH",
+          "blocking": true
+        },
+        {
+          "id": "drift_cleared",
+          "assertion": "∀drift ∈ incident: drift.status = RESOLVED",
+          "description": "All drifts detected during the incident must be marked resolved.",
+          "validation_method": "drift_registry_check",
+          "severity": "CRITICAL",
+          "blocking": true
+        },
+        {
+          "id": "mode_transition_validity",
+          "assertion": "proposed_next_mode ∈ transition_matrix.allowed(current_mode)",
+          "description": "The proposed mode transition after recovery must be valid per the operational mode transition matrix.",
+          "validation_method": "transition_matrix_lookup",
+          "severity": "CRITICAL",
+          "blocking": true
+        }
+      ]
+    },
+    "integrity_suite": {
+      "description": "The complete validation suite executed during integrity validation.",
+      "phases": [
+        {
+          "phase": 1,
+          "name": "surface_consistency_check",
+          "description": "Cross-reference all state surfaces for consistency.",
+          "surfaces": [
+            "canonical-state.json",
+            "runtime-state.json",
+            "active-execution.json",
+            "execution-lock.json",
+            "current-ticket.json",
+            "current-milestone.json"
+          ],
+          "blocking": true
+        },
+        {
+          "phase": 2,
+          "name": "checkpoint_lineage_validation",
+          "description": "Validate checkpoint chain monotonicity and schema conformance.",
+          "surfaces": [
+            "latest-checkpoint.json",
+            "checkpoints/*.json"
+          ],
+          "blocking": true
+        },
+        {
+          "phase": 3,
+          "name": "authority_reconstruction_replay",
+          "description": "Reconstruct state from journal and checkpoints. Verify determinism.",
+          "surfaces": [
+            "event streams",
+            "checkpoints",
+            "transition logs"
+          ],
+          "blocking": true
+        },
+        {
+          "phase": 4,
+          "name": "invariant_validation",
+          "description": "Run all registered invariants against current state.",
+          "surfaces": [
+            "invariants.json",
+            "all state surfaces"
+          ],
+          "blocking": true
+        },
+        {
+          "phase": 5,
+          "name": "schema_validation",
+          "description": "Validate all governed files against their schemas.",
+          "surfaces": [
+            "meta/governance/protocols/*.json",
+            "meta/governance/schemas/*.json",
+            "meta/state/*.json"
+          ],
+          "blocking": true
+        },
+        {
+          "phase": 6,
+          "name": "projection_consistency",
+          "description": "Verify projections are fresh and consistent with canonical state.",
+          "surfaces": [
+            "project-governance/runtime/projections/*"
+          ],
+          "blocking": true
+        },
+        {
+          "phase": 7,
+          "name": "audit_trail_validation",
+          "description": "Verify all repairs have audit events and journal is append-only.",
+          "surfaces": [
+            "event streams",
+            "repair contracts"
+          ],
+          "blocking": true
+        }
+      ]
+    },
+    "readiness_gating": {
+      "description": "Gating mechanism that controls whether execution may resume after recovery.",
+      "gates": [
+        {
+          "gate": "integrity_gate",
+          "description": "All integrity suite phases must pass.",
+          "status": "blocking",
+          "auto_evaluate": true
+        },
+        {
+          "gate": "audit_gate",
+          "description": "Recovery audit must be finalized and emitted to journal.",
+          "status": "blocking",
+          "auto_evaluate": true
+        },
+        {
+          "gate": "thaw_authorization_gate",
+          "description": "Explicit thaw authorization must be emitted. This is the only gate requiring explicit authorization.",
+          "status": "blocking",
+          "auto_evaluate": false
+        },
+        {
+          "gate": "mode_transition_gate",
+          "description": "Proposed next mode must be valid per transition matrix.",
+          "status": "blocking",
+          "auto_evaluate": true
+        }
+      ]
+    }
+  }
+}

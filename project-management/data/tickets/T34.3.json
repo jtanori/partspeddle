@@ -1,0 +1,39 @@
+{
+  "id": "T34.3",
+  "milestone_id": "M34",
+  "title": "Deprecation Lifecycle Enforcement",
+  "domain": "Shared",
+  "capability": "Governance Evolution",
+  "purpose": "Implement automated enforcement of protocol deprecation lifecycle to prevent drift and catastrophic protocol evolution chaos.",
+  "dependencies": ["T34.2"],
+  "architectural_constraints": [
+    "Deprecated protocols still loadable but emit warnings",
+    "Removed protocols fail gracefully with migration guidance",
+    "All lifecycle transitions emit events"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/enforce-deprecation.ts",
+      "description": "Deprecation lifecycle enforcer",
+      "type": "script"
+    }
+  ],
+  "acceptance_criteria": [
+    "Deprecated protocols emit warnings on load",
+    "Removed protocols fail with migration guidance",
+    "Lifecycle transitions logged to event bus",
+    "CI blocks usage of removed protocols",
+    "npm run deprecation:check passes"
+  ],
+  "traceability": [],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "MEDIUM",
+    "blocks_scaling": false
+  }
+}

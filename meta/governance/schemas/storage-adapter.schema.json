@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/storage-adapter.schema.json",
+  "title": "VINTRACK Storage Adapter",
+  "description": "Schema for storage adapter interface definitions. All runtime state mutations must pass through an adapter conforming to this schema.",
+  "type": "object",
+  "required": ["adapter_id", "adapter_type", "version", "stores"],
+  "definitions": {
+    "store_operation": {
+      "type": "object",
+      "required": ["name", "operation_type", "parameters", "return_type"],
+      "properties": {
+        "name": { "type": "string" },
+        "operation_type": {
+          "type": "string",
+          "enum": ["read", "write", "append", "delete", "list", "exists", "atomic_swap"]
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "type"],
+            "properties": {
+              "name": { "type": "string" },
+              "type": { "type": "string" },
+              "required": { "type": "boolean", "default": true }
+            }
+          }
+        },
+        "return_type": { "type": "string" },
+        "atomic": { "type": "boolean", "default": false },
+        "append_only": { "type": "boolean", "default": false }
+      }
+    },
+    "store_definition": {
+      "type": "object",
+      "required": ["store_id", "store_type", "operations"],
+      "properties": {
+        "store_id": { "type": "string" },
+        "store_type": {
+          "type": "string",
+          "enum": ["event_store", "checkpoint_store", "state_store", "lock_store", "audit_store"]
+        },
+        "description": { "type": "string" },
+        "operations": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/store_operation" }
+        },
+        "constraints": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  },
+  "properties": {
+    "adapter_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]+$"
+    },
+    "adapter_type": {
+      "type": "string",
+      "enum": ["filesystem", "sqlite", "postgres", "memory", "redis"]
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "description": { "type": "string" },
+    "stores": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/store_definition" },
+      "minItems": 1
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "atomic_writes": { "type": "boolean", "default": false },
+        "append_only": { "type": "boolean", "default": false },
+        "transactions": { "type": "boolean", "default": false },
+        "batch_operations": { "type": "boolean", "default": false },
+        "streaming_reads": { "type": "boolean", "default": false }
+      }
+    },
+    "configuration": {
+      "type": "object",
+      "properties": {
+        "base_path": { "type": "string" },
+        "connection_string": { "type": "string" },
+        "options": { "type": "object" }
+      }
+    },
+    "migration_path": {
+      "type": "object",
+      "properties": {
+        "from_adapters": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "migration_script": { "type": "string" },
+        "rollback_supported": { "type": "boolean", "default": false }
+      }
+    }
+  }
+}

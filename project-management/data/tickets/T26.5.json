@@ -1,0 +1,71 @@
+{
+  "id": "T26.5",
+  "milestone_id": "M26",
+  "title": "Runtime Directory Normalization",
+  "domain": "Shared",
+  "capability": "Governance Stabilization",
+  "purpose": "Consolidate checkpoint locations, delete empty runtime directories, and implement rotation policies for append-only streams.",
+  "dependencies": ["T26.2", "T26.3", "T26.4"],
+  "architectural_constraints": [
+    "Single canonical checkpoint location",
+    "Empty directories deleted or declared as staging in registry",
+    "Append-only streams have enforced rotation",
+    "All destructive actions emit governance events"
+  ],
+  "deliverables": [
+    {
+      "path": "project-governance/runtime/checkpoints/",
+      "description": "Canonical checkpoint location (consolidated from dual locations)",
+      "type": "directory"
+    },
+    {
+      "path": "meta/governance/protocols/retention-policy.json",
+      "description": "Rotation policy for audits, heartbeats, checkpoints, events",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "project-governance/checkpoints/ merged into runtime/checkpoints/ or removed",
+    "19 empty/near-empty runtime directories deleted or populated",
+    "runtime/audits/ rotation policy enforced (<= 30 days retained)",
+    "runtime/heartbeats/ rotation policy enforced",
+    "Old per-ticket checkpoints (T3.x, T11.x) archived",
+    "Directory tree matches proposed canonical structure",
+    "No stale checkpoint duplicates with divergent content"
+  ],
+  "traceability": [
+    {
+      "commit_hash": "T26.5-in-progress",
+      "files_changed": [
+        "project-governance/checkpoints/ (removed, merged into runtime/checkpoints/)",
+        "project-governance/runtime/checkpoints/archive/",
+        "project-governance/runtime/*/ (added .gitkeep to 11 empty directories)",
+        "meta/governance/protocols/retention-policy.json"
+      ],
+      "description": "Normalized runtime directories: merged duplicate checkpoint location, archived 8 old per-ticket checkpoints, populated 11 empty directories with .gitkeep, created retention-policy.json with 7 rotation rules.",
+      "timestamp": "2026-05-24T07:22:00Z"
+    }
+  ],
+  "observability": {
+    "metrics": ["empty_directories_remaining", "stream_rotation_compliance"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Deleting empty directory breaks test runner that expects it",
+      "mitigation": "Update test setup to create directory if missing",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "completed",
+  "assignee": "agent",
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "MEDIUM",
+    "blocks_scaling": false
+  }
+}

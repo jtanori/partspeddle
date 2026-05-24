@@ -1,0 +1,83 @@
+{
+  "id": "T26.1",
+  "milestone_id": "M26",
+  "title": "Registry Normalization",
+  "domain": "Shared",
+  "capability": "Governance Stabilization",
+  "purpose": "Normalize the canonical governance registry to achieve 100% protocol coverage, eliminate registry fragmentation, and establish deterministic registry loading.",
+  "dependencies": ["T25.1"],
+  "architectural_constraints": [
+    "Registry must be the single source of truth for all governance definitions",
+    "All mutations must emit governance events",
+    "Registry schema must validate against governance-registry.schema.json",
+    "No protocol may exist in protocols/ without registry entry"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/governance/registries/governance-registry.json",
+      "description": "Normalized registry with all 10 protocols, 7+ schemas, rules, reflections",
+      "type": "file"
+    },
+    {
+      "path": "meta/governance/registries/schema-registry.json",
+      "description": "Dedicated schema registry with cross-references",
+      "type": "file"
+    },
+    {
+      "path": "meta/governance/registries/protocol-registry.json",
+      "description": "Dedicated protocol registry with lifecycle tracking",
+      "type": "file"
+    },
+    {
+      "path": "scripts/normalize-governance-registry.ts",
+      "description": "Registry normalization engine",
+      "type": "script"
+    }
+  ],
+  "acceptance_criteria": [
+    "All 10 protocols registered with id, version, authority, dependencies, superseded_by, lifecycle_status",
+    "All schemas registered with $id, version, authority, compatibility_version",
+    "All validators linked to their protocols via validator_path",
+    "Registry validates against governance-registry.schema.json",
+    "normalize-governance-registry.ts exits 0 on current state",
+    "No duplicate protocol IDs",
+    "No invalid dependency references",
+    "Supersession chains validate (no cycles)"
+  ],
+  "traceability": [
+    {
+      "commit_hash": "T26.1-in-progress",
+      "files_changed": [
+        "meta/governance/registries/governance-registry.json",
+        "meta/governance/registries/schema-registry.json",
+        "meta/governance/registries/protocol-registry.json",
+        "meta/governance/schemas/governance-registry.schema.json",
+        "scripts/normalize-governance-registry.ts"
+      ],
+      "description": "Normalized governance registry: 10/10 protocols, 7/7 schemas, 0 validation errors. Added dedicated schema and protocol registries with lifecycle tracking.",
+      "timestamp": "2026-05-24T07:22:00Z"
+    }
+  ],
+  "observability": {
+    "metrics": ["registry_coverage_percent", "registry_validation_errors"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Registry normalization breaks existing scripts that read registry",
+      "mitigation": "Backward-compatible schema evolution; scripts use registry loader abstraction",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 4,
+  "status": "completed",
+  "assignee": "agent",
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "CRITICAL",
+    "blocks_scaling": true
+  }
+}

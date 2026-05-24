@@ -1,0 +1,9 @@
+{
+  "checkpoint_id": "cp_T28.1_20260524_135806_complete",
+  "ticket_id": "T28.1",
+  "milestone_id": "M28",
+  "status": "complete",
+  "created_at": "2026-05-24T13:58:06.601Z",
+  "reason": "T28.1 completion — storage adapter interface designed",
+  "execution_id": "EXEC-2026-05-24-006"
+}

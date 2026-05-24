@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/invariant.schema.json",
+  "title": "VINTRACK Governance Invariant",
+  "description": "Canonical schema for machine-verifiable governance runtime invariants.",
+  "type": "object",
+  "required": ["id", "category", "description", "validation_method", "severity", "remediation"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]+$",
+      "description": "URL-safe invariant identifier"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["execution", "replay", "lock", "event", "transition", "healing", "audit"],
+      "description": "Invariant category"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Human-readable invariant description"
+    },
+    "expression": {
+      "type": "string",
+      "description": "Declarative predicate expression (documentation-only until predicate engine exists)"
+    },
+    "validation_method": {
+      "type": "string",
+      "enum": ["schema", "script", "cross_reference", "existence", "checksum", "temporal"],
+      "description": "How this invariant is validated"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+      "description": "Impact if invariant is violated"
+    },
+    "remediation": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Recommended action when invariant is violated"
+    },
+    "protocols_protected": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Protocol IDs this invariant protects"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" },
+        "author": { "type": "string" }
+      }
+    }
+  },
+  "additionalProperties": false
+}

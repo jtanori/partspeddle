@@ -1,0 +1,58 @@
+{
+  "id": "T28.1",
+  "milestone_id": "M28",
+  "title": "Storage Adapter Interface Design",
+  "domain": "Shared",
+  "capability": "Governance Stabilization",
+  "purpose": "Design the storage adapter abstraction layer that will eventually support filesystem, SQLite, and Postgres backends. All runtime state mutations must pass through adapters.",
+  "dependencies": [
+    "T27.3"
+  ],
+  "architectural_constraints": [
+    "Interface must support event_store, checkpoint_store, state_store, lock_store, audit_store",
+    "Append-only semantics preserved",
+    "Atomic operations where possible",
+    "No direct filesystem mutation from runtime scripts"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/governance/schemas/storage-adapter.schema.json",
+      "description": "Storage adapter interface schema",
+      "type": "schema"
+    },
+    {
+      "path": "scripts/runtime-storage.ts",
+      "description": "Storage adapter interface and factory",
+      "type": "script"
+    }
+  ],
+  "acceptance_criteria": [
+    "Interface supports all 5 store types",
+    "Filesystem adapter implements all operations",
+    "No runtime script directly mutates files",
+    "Adapter validates against storage-adapter.schema.json",
+    "Migration path documented for future SQLite/Postgres adapters"
+  ],
+  "traceability": [
+    {
+      "commit_hash": "T28.1_EXECUTION",
+      "files_changed": [
+        "meta/governance/schemas/storage-adapter.schema.json",
+        "scripts/runtime-storage.ts",
+        "package.json"
+      ],
+      "description": "Designed storage adapter interface with filesystem implementation and factory",
+      "timestamp": "2026-05-24T13:58:06.601Z"
+    }
+  ],
+  "estimated_hours": 5,
+  "status": "completed",
+  "assignee": "agent",
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T13:58:06.601Z",
+    "version": 1,
+    "governance_risk_classification": "CRITICAL",
+    "blocks_scaling": true
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "id": "T35.4",
+  "milestone_id": "M35",
+  "title": "Role-Oriented Manual Generation",
+  "domain": "Shared",
+  "capability": "Governance Documentation",
+  "purpose": "Generate complete role-oriented operational manuals: Operator, Governance, Recovery, Architecture, Developer, API/Schema, Incident, Deployment, Contributor, and Quickstart guides.",
+  "dependencies": ["T35.3"],
+  "architectural_constraints": [
+    "Each manual targeted at specific audience",
+    "Generated from canonical definitions where possible",
+    "Cross-linked to runtime definitions",
+    "Versioned and lifecycle-tracked"
+  ],
+  "deliverables": [
+    {
+      "path": "project-governance/docs/manuals/operator-manual.md",
+      "description": "Operator manual",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/docs/manuals/governance-manual.md",
+      "description": "Governance manual",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/docs/manuals/recovery-manual.md",
+      "description": "Recovery manual",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/docs/manuals/architecture-manual.md",
+      "description": "Architecture manual",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/docs/manuals/developer-manual.md",
+      "description": "Developer manual",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/docs/manuals/api-schema-manual.md",
+      "description": "API/Schema manual",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/docs/manuals/incident-manual.md",
+      "description": "Incident manual",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/docs/manuals/deployment-manual.md",
+      "description": "Deployment manual",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/docs/manuals/contributor-manual.md",
+      "description": "Contributor manual",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/docs/manuals/quickstart-guide.md",
+      "description": "Quickstart guide",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "All 10 manuals generated",
+    "Each manual validates against documentation schema",
+    "Cross-links resolved and valid",
+    "No drift from runtime truth (validated against canonical definitions)",
+    "Version and authority metadata present on all manuals"
+  ],
+  "traceability": [],
+  "estimated_hours": 5,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "HIGH",
+    "blocks_scaling": true
+  }
+}

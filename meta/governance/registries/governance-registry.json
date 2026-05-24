@@ -1,86 +1,528 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "protocols": [
     {
-      "id": "execution-lifecycle",
-      "path": "meta/governance/protocols/execution-lifecycle.json",
+      "id": "audit-policy",
+      "path": "meta/governance/protocols/audit-policy.json",
+      "authority": "meta/governance/protocols/audit-policy.json",
       "version": "1.0.0",
-      "scope": "execution",
+      "layer": 3,
+      "scope": "governance",
       "canonical": true,
-      "reflection_path": "project-governance/protocols/execution-lifecycle.protocol.md",
-      "validator_path": "scripts/validators/protocol-execution-lifecycle.ts"
+      "lifecycle_status": "active",
+      "dependencies": [
+        "execution-lifecycle",
+        "self-healing"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null
     },
     {
       "id": "checkpoint",
       "path": "meta/governance/protocols/checkpoint.json",
+      "authority": "meta/governance/protocols/checkpoint.json",
       "version": "1.0.0",
+      "layer": 2,
       "scope": "recovery",
       "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "CANONICAL_AUTHORITY_HIERARCHY",
+        "execution-lifecycle"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
       "reflection_path": "project-governance/protocols/checkpoint.protocol.md",
       "validator_path": "scripts/validators/protocol-checkpoint.ts"
     },
     {
-      "id": "state-mutation",
-      "path": "meta/governance/protocols/state-mutation.json",
+      "id": "deployment-readiness",
+      "path": "meta/governance/protocols/deployment-readiness.json",
+      "authority": "meta/governance/protocols/deployment-readiness.json",
       "version": "1.0.0",
-      "scope": "state",
+      "layer": 3,
+      "scope": "governance",
       "canonical": true,
-      "reflection_path": "project-governance/protocols/state-mutation.protocol.md",
-      "validator_path": "scripts/validators/protocol-state-mutation.ts"
+      "lifecycle_status": "active",
+      "dependencies": [],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null
     },
     {
       "id": "drift-recovery",
       "path": "meta/governance/protocols/drift-recovery.json",
+      "authority": "meta/governance/protocols/drift-recovery.json",
       "version": "1.0.0",
+      "layer": 2,
       "scope": "recovery",
-      "canonical": false
+      "canonical": false,
+      "lifecycle_status": "superseded",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "CANONICAL_AUTHORITY_HIERARCHY"
+      ],
+      "supersedes": [],
+      "superseded_by": "drift-classification",
+      "reflection_path": null,
+      "validator_path": null
+    },
+    {
+      "id": "enforcement-policy",
+      "path": "meta/governance/protocols/enforcement-policy.json",
+      "authority": "meta/governance/protocols/enforcement-policy.json",
+      "version": "1.0.0",
+      "layer": 3,
+      "scope": "governance",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "execution-state-machine",
+        "execution-lifecycle"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": "scripts/validators/protocol-enforcement-policy.ts"
     },
     {
       "id": "execution-authorization",
       "path": "meta/governance/protocols/execution-authorization.json",
+      "authority": "meta/governance/protocols/execution-authorization.json",
       "version": "1.0.0",
+      "layer": 2,
       "scope": "authorization",
-      "canonical": true
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "CANONICAL_AUTHORITY_HIERARCHY"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null
+    },
+    {
+      "id": "execution-lifecycle",
+      "path": "meta/governance/protocols/execution-lifecycle.json",
+      "authority": "meta/governance/protocols/execution-lifecycle.json",
+      "version": "1.0.0",
+      "layer": 2,
+      "scope": "execution",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "CANONICAL_AUTHORITY_HIERARCHY"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": "project-governance/protocols/execution-lifecycle.protocol.md",
+      "validator_path": "scripts/validators/protocol-execution-lifecycle.ts"
+    },
+    {
+      "id": "execution-state-machine",
+      "path": "meta/governance/protocols/execution-state-machine.json",
+      "authority": "meta/governance/protocols/execution-state-machine.json",
+      "version": "1.0.0",
+      "layer": 2,
+      "scope": "execution",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": "scripts/validators/protocol-execution-state-machine.ts"
+    },
+    {
+      "id": "retention-policy",
+      "path": "meta/governance/protocols/retention-policy.json",
+      "authority": "meta/governance/protocols/retention-policy.json",
+      "version": "1.0.0",
+      "layer": 3,
+      "scope": "governance",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "execution-lifecycle"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null
+    },
+    {
+      "id": "self-healing",
+      "path": "meta/governance/protocols/self-healing.json",
+      "authority": "meta/governance/protocols/self-healing.json",
+      "version": "1.0.0",
+      "layer": 3,
+      "scope": "recovery",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "execution-lifecycle",
+        "drift-recovery"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null
+    },
+    {
+      "id": "state-mutation",
+      "path": "meta/governance/protocols/state-mutation.json",
+      "authority": "meta/governance/protocols/state-mutation.json",
+      "version": "1.0.0",
+      "layer": 2,
+      "scope": "state",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "CANONICAL_AUTHORITY_HIERARCHY",
+        "execution-lifecycle"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": "project-governance/protocols/state-mutation.protocol.md",
+      "validator_path": "scripts/validators/protocol-state-mutation.ts"
+    },
+    {
+      "id": "operational-mode",
+      "path": "meta/governance/protocols/operational-mode.json",
+      "authority": "meta/governance/protocols/operational-mode.json",
+      "version": "1.0.0",
+      "layer": 2,
+      "scope": "execution",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "CANONICAL_AUTHORITY_HIERARCHY"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null
+    },
+    {
+      "id": "execution-freeze",
+      "path": "meta/governance/protocols/execution-freeze.json",
+      "authority": "meta/governance/protocols/execution-freeze.json",
+      "version": "1.0.0",
+      "layer": 2,
+      "scope": "execution",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "operational-mode",
+        "execution-lifecycle"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null
+    },
+    {
+      "id": "authority-reconstruction",
+      "path": "meta/governance/protocols/authority-reconstruction.json",
+      "authority": "meta/governance/protocols/authority-reconstruction.json",
+      "version": "1.0.0",
+      "layer": 2,
+      "scope": "recovery",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "checkpoint",
+        "execution-lifecycle"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null
+    },
+    {
+      "id": "drift-classification",
+      "path": "meta/governance/protocols/drift-classification.json",
+      "authority": "meta/governance/protocols/drift-classification.json",
+      "version": "1.0.0",
+      "layer": 2,
+      "scope": "recovery",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "authority-reconstruction",
+        "operational-mode"
+      ],
+      "supersedes": [
+        "drift-recovery"
+      ],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null
+    },
+    {
+      "id": "repair-contract",
+      "path": "meta/governance/protocols/repair-contract.json",
+      "authority": "meta/governance/protocols/repair-contract.json",
+      "version": "1.0.0",
+      "layer": 2,
+      "scope": "recovery",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "authority-reconstruction",
+        "drift-classification",
+        "execution-freeze"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null
+    },
+    {
+      "id": "integrity-validation",
+      "path": "meta/governance/protocols/integrity-validation.json",
+      "authority": "meta/governance/protocols/integrity-validation.json",
+      "version": "1.0.0",
+      "layer": 2,
+      "scope": "recovery",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "authority-reconstruction",
+        "repair-contract",
+        "execution-freeze"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null
+    },
+    {
+      "id": "invariant-policy",
+      "path": "meta/governance/protocols/invariant-policy.json",
+      "authority": "meta/governance/protocols/invariant-policy.json",
+      "version": "1.0.0",
+      "layer": 2,
+      "scope": "governance",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "execution-lifecycle",
+        "audit-policy"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null
     }
   ],
   "schemas": [
     {
-      "id": "protocol-definition",
-      "path": "meta/governance/schemas/protocol-definition.schema.json",
-      "version": "1.0.0"
-    },
-    {
       "id": "authority-declaration",
       "path": "meta/governance/schemas/authority-declaration.schema.json",
-      "version": "1.0.0"
+      "authority": "meta/governance/schemas/authority-declaration.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/authority-declaration.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
     },
     {
-      "id": "governance-rule",
-      "path": "meta/governance/schemas/governance-rule.schema.json",
-      "version": "1.0.0"
+      "id": "checkpoint",
+      "path": "meta/governance/schemas/checkpoint.schema.json",
+      "authority": "meta/governance/schemas/checkpoint.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/checkpoint.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
     },
     {
       "id": "enforcement-policy",
       "path": "meta/governance/schemas/enforcement-policy.schema.json",
-      "version": "1.0.0"
-    },
-    {
-      "id": "recovery-policy",
-      "path": "meta/governance/schemas/recovery-policy.schema.json",
-      "version": "1.0.0"
-    },
-    {
-      "id": "runtime-transition",
-      "path": "meta/governance/schemas/runtime-transition.schema.json",
-      "version": "1.0.0"
+      "authority": "meta/governance/schemas/enforcement-policy.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/enforcement-policy.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
     },
     {
       "id": "governance-registry",
       "path": "meta/governance/schemas/governance-registry.schema.json",
-      "version": "1.0.0"
+      "authority": "meta/governance/schemas/governance-registry.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/governance-registry.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
+    },
+    {
+      "id": "governance-rule",
+      "path": "meta/governance/schemas/governance-rule.schema.json",
+      "authority": "meta/governance/schemas/governance-rule.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/governance-rule.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
+    },
+    {
+      "id": "governance-state",
+      "path": "meta/governance/schemas/governance-state.schema.json",
+      "authority": "meta/governance/schemas/governance-state.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/governance-state.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
+    },
+    {
+      "id": "protocol-definition",
+      "path": "meta/governance/schemas/protocol-definition.schema.json",
+      "authority": "meta/governance/schemas/protocol-definition.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/protocol-definition.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [
+        "audit-policy",
+        "checkpoint",
+        "deployment-readiness",
+        "drift-recovery",
+        "enforcement-policy",
+        "execution-authorization",
+        "execution-lifecycle",
+        "execution-state-machine",
+        "retention-policy",
+        "self-healing",
+        "state-mutation",
+        "operational-mode",
+        "execution-freeze",
+        "authority-reconstruction",
+        "drift-classification",
+        "repair-contract",
+        "integrity-validation",
+        "invariant-policy"
+      ],
+      "last_validated_at": "2026-05-24T12:57:19.019Z"
+    },
+    {
+      "id": "recovery-policy",
+      "path": "meta/governance/schemas/recovery-policy.schema.json",
+      "authority": "meta/governance/schemas/recovery-policy.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/recovery-policy.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
+    },
+    {
+      "id": "runtime-transition",
+      "path": "meta/governance/schemas/runtime-transition.schema.json",
+      "authority": "meta/governance/schemas/runtime-transition.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/runtime-transition.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
+    },
+    {
+      "id": "operational-mode",
+      "path": "meta/governance/schemas/operational-mode.schema.json",
+      "authority": "meta/governance/schemas/operational-mode.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/operational-mode.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [
+        "operational-mode"
+      ],
+      "last_validated_at": "2026-05-24T12:08:08.156Z"
+    },
+    {
+      "id": "execution-freeze",
+      "path": "meta/governance/schemas/execution-freeze.schema.json",
+      "authority": "meta/governance/schemas/execution-freeze.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/execution-freeze.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [
+        "execution-freeze"
+      ],
+      "last_validated_at": "2026-05-24T12:08:08.156Z"
+    },
+    {
+      "id": "drift-classification",
+      "path": "meta/governance/schemas/drift-classification.schema.json",
+      "authority": "meta/governance/schemas/drift-classification.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/drift-classification.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [
+        "drift-classification"
+      ],
+      "last_validated_at": "2026-05-24T12:08:08.156Z"
+    },
+    {
+      "id": "repair-contract",
+      "path": "meta/governance/schemas/repair-contract.schema.json",
+      "authority": "meta/governance/schemas/repair-contract.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/repair-contract.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [
+        "repair-contract"
+      ],
+      "last_validated_at": "2026-05-24T12:08:08.156Z"
+    },
+    {
+      "id": "integrity-validation",
+      "path": "meta/governance/schemas/integrity-validation.schema.json",
+      "authority": "meta/governance/schemas/integrity-validation.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/integrity-validation.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [
+        "integrity-validation"
+      ],
+      "last_validated_at": "2026-05-24T12:08:08.156Z"
     }
   ],
   "rules": [],
+  "reflections": [
+    {
+      "id": "checkpoint-reflection",
+      "source_protocol": "checkpoint",
+      "generated_path": "project-governance/protocols/checkpoint.protocol.md",
+      "last_generated_at": "2026-05-23T02:25:13.967Z"
+    },
+    {
+      "id": "execution-lifecycle-reflection",
+      "source_protocol": "execution-lifecycle",
+      "generated_path": "project-governance/protocols/execution-lifecycle.protocol.md",
+      "last_generated_at": "2026-05-23T02:25:14.271Z"
+    },
+    {
+      "id": "state-mutation-reflection",
+      "source_protocol": "state-mutation",
+      "generated_path": "project-governance/protocols/state-mutation.protocol.md",
+      "last_generated_at": "2026-05-23T02:25:14.337Z"
+    }
+  ],
   "events": {
     "schema": "meta/governance/events/schemas/governance-event.schema.json",
     "catalog": "meta/governance/events/event-catalog.json",
@@ -89,25 +531,5 @@
     "query": "scripts/query-governance-events.ts",
     "validator": "scripts/validators/governance/governance-event.ts",
     "streams_dir": "project-governance/runtime/events/streams"
-  },
-  "reflections": [
-    {
-      "id": "execution-lifecycle-reflection",
-      "source_protocol": "execution-lifecycle",
-      "generated_path": "project-governance/protocols/execution-lifecycle.protocol.md",
-      "last_generated_at": "2026-05-23T00:45:00Z"
-    },
-    {
-      "id": "checkpoint-reflection",
-      "source_protocol": "checkpoint",
-      "generated_path": "project-governance/protocols/checkpoint.protocol.md",
-      "last_generated_at": "2026-05-23T00:45:00Z"
-    },
-    {
-      "id": "state-mutation-reflection",
-      "source_protocol": "state-mutation",
-      "generated_path": "project-governance/protocols/state-mutation.protocol.md",
-      "last_generated_at": "2026-05-23T00:45:00Z"
-    }
-  ]
+  }
 }

@@ -1,0 +1,311 @@
+{
+  "$schema": "../schemas/protocol-definition.schema.json",
+  "id": "drift-classification",
+  "version": "1.0.0",
+  "layer": 2,
+  "scope": "recovery",
+  "canonical": true,
+  "status": "active",
+  "derives_from": [
+    "runtime-governance-kernel",
+    "authority-reconstruction",
+    "operational-mode"
+  ],
+  "supersedes": [
+    "drift-recovery"
+  ],
+  "narrative_ref": "",
+  "title": "Drift Classification Framework",
+  "description": "Formal taxonomy for detecting, classifying, and reporting state drift across all runtime surfaces. Supersedes drift-recovery.json with expanded categories, severity model, and standardized drift reports.",
+  "purpose": "Eliminate undefined drift behavior by providing a complete, deterministic classification system for all forms of runtime divergence.",
+  "invariants": [
+    {
+      "id": "drift_must_be_classified",
+      "expression": "drift_detected → drift_category ∈ drift_taxonomy.categories",
+      "severity": "CRITICAL",
+      "description": "All drift events must be classified into exactly one category from the taxonomy."
+    },
+    {
+      "id": "drift_severity_valid",
+      "expression": "drift.severity ∈ {LOW, MEDIUM, HIGH, CRITICAL}",
+      "severity": "CRITICAL",
+      "description": "All drift events must have a valid severity level."
+    },
+    {
+      "id": "critical_drift_requires_freeze",
+      "expression": "drift.severity = CRITICAL → freeze_state = FROZEN",
+      "severity": "CRITICAL",
+      "description": "Critical drift must trigger execution freeze before any repair."
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-05-24T21:20:00Z",
+    "updated_at": "2026-05-24T21:20:00Z",
+    "author": "governance-system"
+  },
+  "schemas": {
+    "severity_model": {
+      "description": "Four-tier severity model for drift classification. Severity determines response urgency and escalation path.",
+      "levels": [
+        {
+          "level": "LOW",
+          "description": "Cosmetic or minor inconsistency. Does not affect execution correctness.",
+          "response": "Log and schedule repair during next maintenance window.",
+          "escalation": "none",
+          "examples": [
+            "stale projection timestamp",
+            "missing heartbeat update",
+            "non-critical metadata inconsistency"
+          ]
+        },
+        {
+          "level": "MEDIUM",
+          "description": "Detectable inconsistency that may indicate emerging issues. Does not block execution.",
+          "response": "Flag for investigation. Emit governance event. Repair within current milestone.",
+          "escalation": "milestone_lead",
+          "examples": [
+            "dependency drift",
+            "orphaned registry entry",
+            "minor schema deviation"
+          ]
+        },
+        {
+          "level": "HIGH",
+          "description": "Significant inconsistency that risks execution integrity or recoverability.",
+          "response": "Halt current execution segment. Initiate investigation. Require repair before continuation.",
+          "escalation": "governance_lead",
+          "examples": [
+            "checkpoint gap",
+            "projection staleness affecting decisions",
+            "event stream gap",
+            "runtime divergence"
+          ]
+        },
+        {
+          "level": "CRITICAL",
+          "description": "Severe inconsistency that corrupts execution authority, state integrity, or recovery capability.",
+          "response": "Immediate execution freeze. Enter RECONCILE mode. No execution until resolved.",
+          "escalation": "incident_response",
+          "examples": [
+            "split-brain state",
+            "lock desynchronization",
+            "execution authority conflict",
+            "checkpoint corruption",
+            "destructive healing without snapshot"
+          ]
+        }
+      ]
+    },
+    "drift_taxonomy": {
+      "description": "Complete taxonomy of drift categories. Each drift detected must be classified into exactly one category.",
+      "categories": [
+        {
+          "id": "lock_drift",
+          "description": "Lock state inconsistent across surfaces or held past expiry.",
+          "detection_methods": [
+            "cross_reference_lock_files",
+            "temporal_expiry_check"
+          ],
+          "affected_surfaces": [
+            "execution-lock.json",
+            "canonical-state.json"
+          ],
+          "typical_severity": "CRITICAL",
+          "auto_remediation": "release_stale_lock",
+          "requires_human_approval": false
+        },
+        {
+          "id": "execution_drift",
+          "description": "Execution state inconsistent across surfaces. Active execution references differ.",
+          "detection_methods": [
+            "cross_reference_execution_files",
+            "ticket_json_validation"
+          ],
+          "affected_surfaces": [
+            "canonical-state.json",
+            "active-execution.json",
+            "runtime-state.json",
+            "current-ticket.json"
+          ],
+          "typical_severity": "CRITICAL",
+          "auto_remediation": "none",
+          "requires_human_approval": true
+        },
+        {
+          "id": "checkpoint_drift",
+          "description": "Checkpoint corruption, gap, or stale reference. Breaks replay continuity.",
+          "detection_methods": [
+            "checkpoint_schema_validation",
+            "lineage_monotonicity_check",
+            "existence_check"
+          ],
+          "affected_surfaces": [
+            "latest-checkpoint.json",
+            "checkpoints/*.json"
+          ],
+          "typical_severity": "HIGH",
+          "auto_remediation": "none",
+          "requires_human_approval": true
+        },
+        {
+          "id": "projection_drift",
+          "description": "Derived projections stale, inconsistent, or corrupted.",
+          "detection_methods": [
+            "timestamp_freshness_check",
+            "deterministic_rebuild_comparison"
+          ],
+          "affected_surfaces": [
+            "project-governance/runtime/projections/*"
+          ],
+          "typical_severity": "HIGH",
+          "auto_remediation": "rebuild_projections",
+          "requires_human_approval": false
+        },
+        {
+          "id": "lineage_divergence",
+          "description": "Authority sources disagree on state. Higher-authority source contradicts lower.",
+          "detection_methods": [
+            "authority_hierarchy_reconciliation",
+            "journal_replay_comparison"
+          ],
+          "affected_surfaces": [
+            "all state surfaces"
+          ],
+          "typical_severity": "CRITICAL",
+          "auto_remediation": "none",
+          "requires_human_approval": true
+        },
+        {
+          "id": "orphaned_transition",
+          "description": "State transition with invalid from/to state, missing guard, or dangling reference.",
+          "detection_methods": [
+            "state_machine_validation",
+            "transition_log_integrity"
+          ],
+          "affected_surfaces": [
+            "execution-state-machine.json",
+            "transition logs",
+            "execution-lifecycle.json"
+          ],
+          "typical_severity": "HIGH",
+          "auto_remediation": "none",
+          "requires_human_approval": true
+        },
+        {
+          "id": "runtime_divergence",
+          "description": "Runtime state files disagree on active milestone, ticket, or phase.",
+          "detection_methods": [
+            "cross_reference_runtime_files",
+            "milestone_consistency_check"
+          ],
+          "affected_surfaces": [
+            "runtime-state.json",
+            "current-milestone.json",
+            "current-ticket.json"
+          ],
+          "typical_severity": "HIGH",
+          "auto_remediation": "none",
+          "requires_human_approval": false
+        },
+        {
+          "id": "scope_drift",
+          "description": "Files modified in unrelated domains or outside ticket scope.",
+          "detection_methods": [
+            "domain_boundary_check",
+            "ticket_scope_validation"
+          ],
+          "affected_surfaces": [
+            "source files",
+            "dependency graph"
+          ],
+          "typical_severity": "HIGH",
+          "auto_remediation": "none",
+          "requires_human_approval": true
+        },
+        {
+          "id": "architecture_drift",
+          "description": "Cross-domain imports or surface violations.",
+          "detection_methods": [
+            "surface_map_validation",
+            "import_direction_check"
+          ],
+          "affected_surfaces": [
+            "source files",
+            "surface-map.json"
+          ],
+          "typical_severity": "HIGH",
+          "auto_remediation": "none",
+          "requires_human_approval": true
+        },
+        {
+          "id": "dependency_drift",
+          "description": "Dependencies added/removed without planning.",
+          "detection_methods": [
+            "dependency_graph_validation",
+            "package_lock_audit"
+          ],
+          "affected_surfaces": [
+            "package.json",
+            "package-lock.json",
+            "dependency graph"
+          ],
+          "typical_severity": "MEDIUM",
+          "auto_remediation": "none",
+          "requires_human_approval": false
+        },
+        {
+          "id": "state_drift",
+          "description": "Canonical state file corrupted, missing required fields, or structurally invalid.",
+          "detection_methods": [
+            "schema_validation",
+            "required_field_check",
+            "structural_integrity"
+          ],
+          "affected_surfaces": [
+            "canonical-state.json",
+            "active-execution.json"
+          ],
+          "typical_severity": "CRITICAL",
+          "auto_remediation": "snapshot_then_reset",
+          "requires_human_approval": true
+        },
+        {
+          "id": "authorization_drift",
+          "description": "Permission inconsistencies or unauthorized state mutations.",
+          "detection_methods": [
+            "mutation_audit_trail",
+            "authorization_log_review"
+          ],
+          "affected_surfaces": [
+            "execution-authorization.json",
+            "state-mutation.json",
+            "event streams"
+          ],
+          "typical_severity": "CRITICAL",
+          "auto_remediation": "none",
+          "requires_human_approval": true
+        }
+      ]
+    },
+    "drift_report_format": {
+      "description": "Standardized format for drift reports emitted during detection.",
+      "required_fields": [
+        "drift_id",
+        "incident_id",
+        "category",
+        "severity",
+        "detected_at",
+        "affected_surfaces",
+        "description",
+        "actual_state",
+        "expected_state",
+        "root_cause",
+        "detection_method",
+        "auto_remediation",
+        "requires_human_approval",
+        "repair_plan_reference"
+      ],
+      "schema_reference": "drift-classification.schema.json#/definitions/drift_report"
+    }
+  }
+}

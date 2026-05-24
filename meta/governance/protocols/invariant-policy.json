@@ -1,0 +1,140 @@
+{
+  "$schema": "../schemas/protocol-definition.schema.json",
+  "id": "invariant-policy",
+  "version": "1.0.0",
+  "layer": 2,
+  "scope": "governance",
+  "canonical": true,
+  "status": "active",
+  "derives_from": ["runtime-governance-kernel", "execution-lifecycle", "audit-policy"],
+  "supersedes": [],
+  "narrative_ref": "",
+  "title": "Invariant Enforcement Policy",
+  "description": "Defines how invariants are enforced, validated, and remediated within the VINTRACK governance runtime. Specifies validation triggers, severity-based response, and auto-remediation boundaries.",
+  "purpose": "Ensure all registered invariants are actively validated with deterministic outcomes, proper event emission, and appropriate remediation paths.",
+  "rules": [
+    {
+      "id": "invariant_validation_mandatory",
+      "condition": "execution transition to COMPLETE or milestone completion",
+      "action": "run validate-invariants.ts before state transition",
+      "severity": "CRITICAL",
+      "description": "Invariant validation must pass before any execution may complete."
+    },
+    {
+      "id": "critical_invariant_blocks_execution",
+      "condition": "any CRITICAL invariant fails validation",
+      "action": "block execution completion, emit critical event, require reconciliation",
+      "severity": "CRITICAL",
+      "description": "Critical invariant failures are blocking. No execution may complete while critical invariants are violated."
+    },
+    {
+      "id": "high_invariant_warns",
+      "condition": "any HIGH invariant fails validation",
+      "action": "emit warning event, require remediation before next milestone",
+      "severity": "HIGH",
+      "description": "High invariant failures are non-blocking for single-ticket execution but must be resolved before milestone completion."
+    },
+    {
+      "id": "auto_remediation_boundary",
+      "condition": "invariant marked auto_recoverable and validation_method supports auto-remediation",
+      "action": "generate remediation recommendation, require explicit approval for destructive actions",
+      "severity": "HIGH",
+      "description": "Auto-remediation may only affect derived state (projections, stale locks). Canonical state requires explicit approval."
+    },
+    {
+      "id": "event_emission_mandatory",
+      "condition": "any invariant fails validation",
+      "action": "emit governance event with severity, invariant_id, details, and remediation",
+      "severity": "CRITICAL",
+      "description": "Every invariant violation must produce an append-only governance event."
+    },
+    {
+      "id": "validation_engine_read_only",
+      "condition": "validate-invariants.ts is executing",
+      "action": "engine must not mutate any runtime state during validation",
+      "severity": "CRITICAL",
+      "description": "The invariant validation engine is strictly read-only. State mutation is forbidden."
+    }
+  ],
+  "invariants": [
+    {
+      "id": "invariant_registry_complete",
+      "expression": "∀invariant ∈ invariants.json: invariant has id, category, severity, validation_method, remediation",
+      "severity": "CRITICAL",
+      "description": "All invariants in the registry must have complete metadata."
+    },
+    {
+      "id": "validation_method_registered",
+      "expression": "∀invariant: validation_method ∈ validator registry",
+      "severity": "CRITICAL",
+      "description": "Every invariant must have a registered validator implementation."
+    }
+  ],
+  "triggers": [
+    {
+      "id": "pre_completion_validation",
+      "category": "mandatory",
+      "condition": "execution reaches terminal state",
+      "description": "Run invariant validation before marking execution complete."
+    },
+    {
+      "id": "scheduled_validation",
+      "category": "optional",
+      "condition": "every 60 minutes",
+      "throttle": { "max_per_minute": 1, "cooldown_seconds": 3600 },
+      "description": "Optional scheduled invariant validation."
+    },
+    {
+      "id": "post_recovery_validation",
+      "category": "mandatory",
+      "condition": "recovery mode exits",
+      "description": "Run invariant validation after recovery completes."
+    }
+  ],
+  "emissions": {
+    "on_violation": "invariant.violation",
+    "on_validation_complete": "invariant.validation_complete",
+    "on_remediation_recommended": "invariant.remediation_recommended"
+  },
+  "schemas": {
+    "validation_report": {
+      "type": "object",
+      "required": ["report_id", "timestamp", "total_invariants", "passed", "failed", "overall_status"],
+      "properties": {
+        "report_id": { "type": "string", "format": "uuid" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "execution_id": { "type": ["string", "null"] },
+        "total_invariants": { "type": "integer" },
+        "passed": { "type": "integer" },
+        "failed": { "type": "integer" },
+        "skipped": { "type": "integer" },
+        "critical_findings": { "type": "integer" },
+        "high_findings": { "type": "integer" },
+        "medium_findings": { "type": "integer" },
+        "low_findings": { "type": "integer" },
+        "overall_status": { "type": "string", "enum": ["PASS", "FAIL", "DEGRADED"] },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["invariant_id", "passed", "severity", "details"],
+            "properties": {
+              "invariant_id": { "type": "string" },
+              "passed": { "type": "boolean" },
+              "severity": { "type": "string", "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"] },
+              "details": { "type": "string" },
+              "remediation_recommended": { "type": "string" },
+              "auto_recoverable": { "type": "boolean" },
+              "duration_ms": { "type": "integer" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "metadata": {
+    "created_at": "2026-05-24T12:30:00Z",
+    "updated_at": "2026-05-24T12:30:00Z",
+    "author": "agent"
+  }
+}

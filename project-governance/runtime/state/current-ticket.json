@@ -1,15 +1,14 @@
 {
   "protocol_version": "1.0.0",
-  "active": false,
-  "ticket": null,
-  "last_ticket": {
-    "id": "T11.4",
-    "milestone_id": "M11",
-    "title": "Governance Consolidation Phase",
-    "domain": "Shared",
-    "capability": "Governance Hardening",
-    "status": "completed",
-    "completed_at": "2026-05-22T07:55:00Z"
+  "active": true,
+  "ticket": {
+    "id": "T28.3",
+    "status": "in_progress"
   },
-  "updated_at": "2026-05-22T15:14:37.612Z"
+  "last_ticket": {
+    "id": "T28.2",
+    "status": "completed",
+    "completed_at": "2026-05-24T13:50:42Z"
+  },
+  "updated_at": "2026-05-24T14:38:05.751Z"
 }

@@ -1,0 +1,531 @@
+{
+  "$schema": "../schemas/protocol-definition.schema.json",
+  "id": "operational-mode",
+  "version": "1.0.0",
+  "layer": 2,
+  "scope": "execution",
+  "canonical": true,
+  "status": "active",
+  "derives_from": [
+    "runtime-governance-kernel",
+    "CANONICAL_AUTHORITY_HIERARCHY"
+  ],
+  "supersedes": [],
+  "narrative_ref": "",
+  "title": "Operational Mode Registry",
+  "description": "Canonical registry of all operational modes — both normal execution modes and recovery modes — defining their capabilities, constraints, authority levels, and valid transitions.",
+  "purpose": "Eliminate undefined mode behavior by formalizing every operational mode with explicit allowed/forbidden operations and transition rules.",
+  "invariants": [
+    {
+      "id": "mode_mutual_exclusivity",
+      "expression": "active_mode_count = 1",
+      "severity": "CRITICAL",
+      "description": "Exactly one operational mode may be active at any time."
+    },
+    {
+      "id": "recovery_mode_supremacy",
+      "expression": "mode_category = RECOVERY → execution_authority_suspended",
+      "severity": "CRITICAL",
+      "description": "Recovery modes automatically suspend all execution authority."
+    },
+    {
+      "id": "mode_transition_validity",
+      "expression": "transition ∈ transition_matrix.allowed",
+      "severity": "CRITICAL",
+      "description": "All mode transitions must be explicitly defined in the transition matrix."
+    },
+    {
+      "id": "freeze_required_for_recovery",
+      "expression": "from_category = NORMAL ∧ to_category = RECOVERY → freeze_state = FROZEN",
+      "severity": "CRITICAL",
+      "description": "Normal modes may not transition to recovery modes without confirmed execution freeze."
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-05-24T21:20:00Z",
+    "updated_at": "2026-05-24T21:20:00Z",
+    "author": "governance-system"
+  },
+  "schemas": {
+    "mode_hierarchy": {
+      "categories": [
+        "NORMAL",
+        "RECOVERY"
+      ],
+      "description": "NORMAL modes execute ticket work. RECOVERY modes suspend execution authority to perform deterministic repair. RECOVERY modes have higher authority than NORMAL modes.",
+      "authority_precedence": "RECOVERY > NORMAL"
+    },
+    "modes": {
+      "type": "array",
+      "items": [
+        {
+          "mode_id": "GOVERNANCE",
+          "mode_category": "NORMAL",
+          "authority_level": 1,
+          "purpose": "Planning, governance, architecture review",
+          "allowed": [
+            "review governance artifacts",
+            "plan milestones and tickets",
+            "validate architectural constraints",
+            "update runtime state and dependency graphs",
+            "transition to any NORMAL mode"
+          ],
+          "forbidden": [
+            "implementation of production code",
+            "test writing",
+            "direct file modification outside governance artifacts",
+            "code without planning",
+            "transition to RECOVERY modes (requires freeze initiation)"
+          ],
+          "entry_conditions": [
+            "no active execution",
+            "execution lock released or held by this session"
+          ],
+          "exit_conditions": [
+            "explicit mode transition emitted",
+            "checkpoint written if state modified"
+          ],
+          "behavior": "analytical, deliberate, risk-aware"
+        },
+        {
+          "mode_id": "IMPLEMENTATION",
+          "mode_category": "NORMAL",
+          "authority_level": 1,
+          "purpose": "Deterministic execution of ticket work",
+          "allowed": [
+            "implement scoped ticket work",
+            "satisfy acceptance criteria",
+            "update traceability",
+            "write tests for ticket scope",
+            "update ticket test plan",
+            "run ticket-relevant tests only"
+          ],
+          "forbidden": [
+            "architecture redesign",
+            "dependency expansion",
+            "methodology changes",
+            "ticket scope expansion",
+            "full test suite execution",
+            "transition to RECOVERY modes without freeze"
+          ],
+          "entry_conditions": [
+            "ticket status = READY",
+            "execution lock acquired",
+            "execution header emitted"
+          ],
+          "exit_conditions": [
+            "terminal state reached (COMPLETE, FAILED, ROLLED_BACK)",
+            "execution footer emitted"
+          ],
+          "behavior": "deterministic, concise, execution-oriented"
+        },
+        {
+          "mode_id": "REVIEW",
+          "mode_category": "NORMAL",
+          "authority_level": 1,
+          "purpose": "Validation and quality assurance",
+          "allowed": [
+            "review code against acceptance criteria",
+            "verify test coverage and test plan",
+            "check surface boundary compliance",
+            "validate contract usage",
+            "flag governance violations"
+          ],
+          "forbidden": [
+            "rewriting implementation",
+            "adding features",
+            "changing architecture"
+          ],
+          "entry_conditions": [
+            "ticket in terminal or checkpoint-pending state"
+          ],
+          "exit_conditions": [
+            "review report emitted",
+            "approval or rejection recorded"
+          ],
+          "behavior": "critical, precise, criterion-based"
+        },
+        {
+          "mode_id": "REFACTOR",
+          "mode_category": "NORMAL",
+          "authority_level": 1,
+          "purpose": "Constrained refactor within existing contracts",
+          "allowed": [
+            "rename internal symbols",
+            "extract functions",
+            "improve performance within existing interfaces",
+            "update tests to match refactored code"
+          ],
+          "forbidden": [
+            "change public APIs",
+            "add or remove contracts",
+            "cross-domain moves"
+          ],
+          "entry_conditions": [
+            "refactor scope defined",
+            "rollback point identified"
+          ],
+          "exit_conditions": [
+            "tests pass",
+            "no public API changes detected"
+          ],
+          "behavior": "conservative, interface-preserving"
+        },
+        {
+          "mode_id": "INCIDENT",
+          "mode_category": "NORMAL",
+          "authority_level": 2,
+          "purpose": "Debugging and failure recovery",
+          "allowed": [
+            "investigate logs and errors",
+            "reproduce failures",
+            "apply minimal fixes",
+            "add regression tests",
+            "save test failures to ticket observability"
+          ],
+          "forbidden": [
+            "scope expansion",
+            "architecture changes",
+            "skip test coverage",
+            "skip test plan"
+          ],
+          "entry_conditions": [
+            "execution in FAILED or BLOCKED state",
+            "incident trigger emitted"
+          ],
+          "exit_conditions": [
+            "root cause identified",
+            "fix applied and validated",
+            "regression test added"
+          ],
+          "behavior": "focused, root-cause-oriented"
+        },
+        {
+          "mode_id": "MIGRATION",
+          "mode_category": "NORMAL",
+          "authority_level": 1,
+          "purpose": "Structural change with governance oversight",
+          "allowed": [
+            "file and directory restructures",
+            "dependency upgrades",
+            "configuration migrations",
+            "cross-cutting refactors",
+            "checkpoint emission after each atomic segment"
+          ],
+          "forbidden": [
+            "unplanned structural changes",
+            "changes without dependency graph updates",
+            "execution without checkpoint persistence"
+          ],
+          "entry_conditions": [
+            "migration plan approved",
+            "dependency graph reviewed"
+          ],
+          "exit_conditions": [
+            "all segments checkpointed",
+            "validation passed",
+            "rollback verified"
+          ],
+          "behavior": "systematic, documented, reversible, checkpointed"
+        },
+        {
+          "mode_id": "RECONCILE",
+          "mode_category": "RECOVERY",
+          "authority_level": 10,
+          "purpose": "Canonical orchestration recovery entrypoint",
+          "allowed": [
+            "execution freeze",
+            "authority reconstruction",
+            "drift detection and classification",
+            "deterministic repair orchestration",
+            "integrity validation",
+            "execution reauthorization",
+            "read-only inspection of all state surfaces",
+            "emit recovery events to append-only journal"
+          ],
+          "forbidden": [
+            "ticket advancement",
+            "autonomous execution",
+            "lock acquisition",
+            "checkpoint mutation without audit trail",
+            "runtime progression",
+            "feature delivery work",
+            "silent state overwrite",
+            "ad hoc JSON patching",
+            "direct lock mutation",
+            "untracked repair actions"
+          ],
+          "entry_conditions": [
+            "drift detected or incident declared",
+            "execution freeze initiated",
+            "freeze guarantees confirmed",
+            "incident_id assigned"
+          ],
+          "exit_conditions": [
+            "all drifts classified and repaired",
+            "integrity validation passed",
+            "recovery audit finalized",
+            "thaw authorized",
+            "mode transition to NORMAL mode emitted"
+          ],
+          "behavior": "methodical, forensic, deterministic, auditable",
+          "is_canonical_recovery_entrypoint": true
+        },
+        {
+          "mode_id": "GOVERNANCE_REPAIR",
+          "mode_category": "RECOVERY",
+          "authority_level": 9,
+          "purpose": "Repair governance configuration and orchestration rules",
+          "allowed": [
+            "repair transition contracts",
+            "fix invalid workflow policies",
+            "resolve permission inconsistencies",
+            "remediate protocol divergence",
+            "update governance registries with audit trail"
+          ],
+          "forbidden": [
+            "ticket advancement",
+            "autonomous execution",
+            "silent protocol overwrite",
+            "untracked governance mutation"
+          ],
+          "entry_conditions": [
+            "RECONCILE mode active",
+            "governance drift classified",
+            "repair plan approved"
+          ],
+          "exit_conditions": [
+            "governance configuration validated",
+            "registry consistency confirmed",
+            "integrity validation passed"
+          ],
+          "behavior": "precise, contract-preserving, registry-aware"
+        },
+        {
+          "mode_id": "STATE_RECOVERY",
+          "mode_category": "RECOVERY",
+          "authority_level": 9,
+          "purpose": "Recover persistence-layer integrity",
+          "allowed": [
+            "restore from checkpoint",
+            "replay journal events",
+            "restore from snapshot",
+            "perform partial persistence rollback",
+            "reconstruct canonical state from authority hierarchy"
+          ],
+          "forbidden": [
+            "ticket advancement",
+            "autonomous execution",
+            "direct lock mutation",
+            "untracked state mutation",
+            "destructive restore without snapshot"
+          ],
+          "entry_conditions": [
+            "RECONCILE mode active",
+            "state drift classified",
+            "authority hierarchy established",
+            "repair plan approved"
+          ],
+          "exit_conditions": [
+            "canonical state consistent with authority sources",
+            "checkpoint lineage monotonic",
+            "integrity validation passed"
+          ],
+          "behavior": "careful, lineage-preserving, replayable"
+        },
+        {
+          "mode_id": "PROJECTION_REBUILD",
+          "mode_category": "RECOVERY",
+          "authority_level": 8,
+          "purpose": "Recompute derived state artifacts",
+          "allowed": [
+            "regenerate stale projections",
+            "rebuild invalid indexes",
+            "invalidate and refresh caches",
+            "rebuild read models from canonical state"
+          ],
+          "forbidden": [
+            "ticket advancement",
+            "autonomous execution",
+            "mutate canonical state",
+            "mutate checkpoints",
+            "untracked projection mutation"
+          ],
+          "entry_conditions": [
+            "RECONCILE mode active",
+            "projection drift classified",
+            "canonical state validated"
+          ],
+          "exit_conditions": [
+            "all projections timestamp >= recovery_start",
+            "projection consistency validated",
+            "integrity validation passed"
+          ],
+          "behavior": "deterministic, derived-state-only, idempotent"
+        }
+      ]
+    },
+    "transition_matrix": {
+      "description": "Valid transitions between operational modes. Rows = from, Columns = to. RECOVERY modes require freeze initiation from NORMAL modes.",
+      "rules": [
+        {
+          "from": "GOVERNANCE",
+          "to": "IMPLEMENTATION",
+          "requires": "plan_complete, lock_acquired"
+        },
+        {
+          "from": "GOVERNANCE",
+          "to": "REVIEW",
+          "requires": "review_trigger"
+        },
+        {
+          "from": "GOVERNANCE",
+          "to": "REFACTOR",
+          "requires": "refactor_plan_approved"
+        },
+        {
+          "from": "GOVERNANCE",
+          "to": "MIGRATION",
+          "requires": "migration_plan_approved"
+        },
+        {
+          "from": "GOVERNANCE",
+          "to": "RECONCILE",
+          "requires": "freeze_initiated, incident_declared"
+        },
+        {
+          "from": "IMPLEMENTATION",
+          "to": "GOVERNANCE",
+          "requires": "execution_terminal, lock_released"
+        },
+        {
+          "from": "IMPLEMENTATION",
+          "to": "REVIEW",
+          "requires": "execution_complete_or_checkpoint"
+        },
+        {
+          "from": "IMPLEMENTATION",
+          "to": "INCIDENT",
+          "requires": "execution_failed_or_blocked"
+        },
+        {
+          "from": "IMPLEMENTATION",
+          "to": "RECONCILE",
+          "requires": "freeze_initiated, drift_detected"
+        },
+        {
+          "from": "REVIEW",
+          "to": "GOVERNANCE",
+          "requires": "review_complete"
+        },
+        {
+          "from": "REVIEW",
+          "to": "IMPLEMENTATION",
+          "requires": "review_rejected, replan_required"
+        },
+        {
+          "from": "REFACTOR",
+          "to": "GOVERNANCE",
+          "requires": "refactor_complete"
+        },
+        {
+          "from": "REFACTOR",
+          "to": "IMPLEMENTATION",
+          "requires": "refactor_complete, tests_pass"
+        },
+        {
+          "from": "INCIDENT",
+          "to": "GOVERNANCE",
+          "requires": "incident_resolved"
+        },
+        {
+          "from": "INCIDENT",
+          "to": "IMPLEMENTATION",
+          "requires": "fix_applied, validation_passed"
+        },
+        {
+          "from": "INCIDENT",
+          "to": "RECONCILE",
+          "requires": "freeze_initiated, incident_escalated"
+        },
+        {
+          "from": "MIGRATION",
+          "to": "GOVERNANCE",
+          "requires": "migration_complete"
+        },
+        {
+          "from": "MIGRATION",
+          "to": "RECONCILE",
+          "requires": "freeze_initiated, migration_failure"
+        },
+        {
+          "from": "RECONCILE",
+          "to": "GOVERNANCE_REPAIR",
+          "requires": "governance_drift_classified"
+        },
+        {
+          "from": "RECONCILE",
+          "to": "STATE_RECOVERY",
+          "requires": "state_drift_classified"
+        },
+        {
+          "from": "RECONCILE",
+          "to": "PROJECTION_REBUILD",
+          "requires": "projection_drift_classified"
+        },
+        {
+          "from": "RECONCILE",
+          "to": "GOVERNANCE",
+          "requires": "recovery_complete, integrity_passed, thaw_authorized"
+        },
+        {
+          "from": "RECONCILE",
+          "to": "IMPLEMENTATION",
+          "requires": "recovery_complete, integrity_passed, ticket_ready"
+        },
+        {
+          "from": "GOVERNANCE_REPAIR",
+          "to": "RECONCILE",
+          "requires": "repair_complete, validation_passed"
+        },
+        {
+          "from": "STATE_RECOVERY",
+          "to": "RECONCILE",
+          "requires": "recovery_complete, validation_passed"
+        },
+        {
+          "from": "PROJECTION_REBUILD",
+          "to": "RECONCILE",
+          "requires": "rebuild_complete, validation_passed"
+        }
+      ],
+      "forbidden_transitions": [
+        {
+          "from": "*",
+          "to": "RECONCILE",
+          "reason": "Must pass through freeze initiation protocol"
+        },
+        {
+          "from": "*",
+          "to": "GOVERNANCE_REPAIR",
+          "reason": "Must enter via RECONCILE mode"
+        },
+        {
+          "from": "*",
+          "to": "STATE_RECOVERY",
+          "reason": "Must enter via RECONCILE mode"
+        },
+        {
+          "from": "*",
+          "to": "PROJECTION_REBUILD",
+          "reason": "Must enter via RECONCILE mode"
+        },
+        {
+          "from": "RECOVERY",
+          "to": "NORMAL",
+          "reason": "Must pass through integrity validation and thaw authorization"
+        }
+      ]
+    }
+  }
+}

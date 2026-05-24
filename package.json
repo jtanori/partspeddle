@@ -49,7 +49,7 @@
     "replay:validate": "./node_modules/.bin/tsx scripts/validate-replay.ts",
     "replay:test": "./node_modules/.bin/tsx project-governance/runtime/replay/tests/run-replay-tests.ts",
     "diagnostics:run": "./node_modules/.bin/tsx scripts/diagnostics-console.ts",
-    "diagnostics:health": "./node_modules/.bin/tsx scripts/diagnostics-health.ts",
+    "diagnostics:health": "./node_modules/.bin/tsx scripts/diagnostics-console.ts --quick",
     "diagnostics:test": "./node_modules/.bin/tsx project-governance/runtime/diagnostics/tests/run-diagnostics-tests.ts",
     "suggestions:generate": "./node_modules/.bin/tsx scripts/suggest-next-actions.ts",
     "suggestions:test": "./node_modules/.bin/tsx project-governance/intelligence/suggestions/tests/run-suggestion-tests.ts",
@@ -87,7 +87,18 @@
     "tool:checkpoints": "tools/runtime/checkpoint-list.sh",
     "tool:continuation": "tools/governance/continuation-resolve.sh",
     "tool:progress": "tools/governance/milestone-progress.sh",
-    "bootstrap": "tsx scripts/bootstrap.ts"
+    "bootstrap": "tsx scripts/bootstrap.ts",
+    "invariant:validate": "./node_modules/.bin/tsx scripts/validate-invariants.ts",
+    "invariant:validate:json": "./node_modules/.bin/tsx scripts/validate-invariants.ts --json",
+    "invariant:monitor": "./node_modules/.bin/tsx scripts/invariant-monitor.ts daemon",
+    "invariant:monitor:once": "./node_modules/.bin/tsx scripts/invariant-monitor.ts once",
+    "storage:health": "./node_modules/.bin/tsx scripts/runtime-storage.ts health",
+    "storage:read": "./node_modules/.bin/tsx scripts/runtime-storage.ts read",
+    "storage:list": "./node_modules/.bin/tsx scripts/runtime-storage.ts list",
+    "storage:migrate-plan": "./node_modules/.bin/tsx scripts/runtime-storage.ts migrate-plan",
+    "storage:validate": "./node_modules/.bin/tsx scripts/runtime-storage.ts health && npm run invariant:validate",
+    "storage:test": "./node_modules/.bin/tsx project-governance/runtime/storage/tests/run-storage-tests.ts",
+    "storage:migrate-check": "./node_modules/.bin/tsx scripts/migrate-to-storage-adapter.ts"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.53.1",

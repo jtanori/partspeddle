@@ -1,0 +1,56 @@
+{
+  "id": "T27.3",
+  "milestone_id": "M27",
+  "title": "Invariant Integration & Hardening",
+  "domain": "Shared",
+  "capability": "Governance Stabilization",
+  "purpose": "Integrate invariant validation into the governance runtime: CI gates, pre-commit hooks, and continuous monitoring.",
+  "dependencies": [
+    "T27.2"
+  ],
+  "architectural_constraints": [
+    "Invariant checks must not block emergency recovery",
+    "CI gate fails on critical invariant violations",
+    "Continuous monitoring emits periodic validation reports"
+  ],
+  "deliverables": [
+    {
+      "path": ".github/workflows/invariant-check.yml",
+      "description": "CI invariant validation gate",
+      "type": "file"
+    },
+    {
+      "path": "scripts/invariant-monitor.ts",
+      "description": "Continuous invariant monitor",
+      "type": "script"
+    }
+  ],
+  "acceptance_criteria": [
+    "CI blocks PRs with critical invariant violations",
+    "Monitor emits hourly validation reports",
+    "Emergency bypass available with audit trail",
+    "All M26 post-cleanup invariants automated"
+  ],
+  "traceability": [
+    {
+      "commit_hash": "T27.3_EXECUTION",
+      "files_changed": [
+        ".github/workflows/invariant-check.yml",
+        "scripts/invariant-monitor.ts",
+        "package.json"
+      ],
+      "description": "Implemented CI invariant gate and continuous invariant monitor",
+      "timestamp": "2026-05-24T13:03:44.668Z"
+    }
+  ],
+  "estimated_hours": 4,
+  "status": "completed",
+  "assignee": "agent",
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T13:03:44.668Z",
+    "version": 1,
+    "governance_risk_classification": "HIGH",
+    "blocks_scaling": true
+  }
+}

@@ -20,6 +20,8 @@ const REFLECTIONS_DIR = resolve("project-governance/protocols");
 const EVENT_STREAMS_DIR = resolve("project-governance/runtime/events/streams");
 const HEARTBEATS_DIR = resolve("project-governance/runtime/heartbeats");
 const GOV_REGISTRY_PATH = resolve("meta/governance/registries/governance-registry.json");
+const STATE_DIR = resolve("project-governance/runtime/state");
+const BOOTSTRAP_DIR = resolve("project-governance/runtime/bootstrap");
 
 // ── Types ──
 export interface AuditFinding {
@@ -399,6 +401,110 @@ function auditEventConsistency(): AuditFinding[] {
   return findings;
 }
 
+function auditLockConsistency(): AuditFinding[] {
+  const findings: AuditFinding[] = [];
+  const ae = safeParseJson(join(STATE_DIR, "active-execution.json"));
+  const lock = safeParseJson(join(STATE_DIR, "execution-lock.json"));
+
+  if (ae.ok && lock.ok) {
+    const aeData = ae.data as Record<string, unknown>;
+    const lockData = lock.data as Record<string, unknown>;
+
+    const lockHoldersMatch =
+      !lockData.locked ||
+      (lockData.execution_id === (aeData.execution as Record<string, unknown>)?.execution_id) ||
+      (!aeData.execution_active && !lockData.locked);
+
+    if (!lockHoldersMatch) {
+      findings.push({
+        category: "lock_consistency",
+        severity: "critical",
+        message: `Lock held by ${lockData.execution_id} but active-execution shows execution_active=${aeData.execution_active}`,
+        recommendation: "Release stale lock or reconcile execution state",
+        target: join(STATE_DIR, "execution-lock.json"),
+      });
+    }
+
+    if (lockData.locked && lockData.expires_at) {
+      const stale = (Date.now() - new Date(lockData.expires_at as string).getTime()) > 0;
+      if (stale) {
+        findings.push({
+          category: "lock_consistency",
+          severity: "error",
+          message: `Lock expired at ${lockData.expires_at}. Possible crashed session.`,
+          recommendation: "Perform stale lock recovery per SAFE_EXIT_PROTOCOL.md",
+          target: join(STATE_DIR, "execution-lock.json"),
+        });
+      }
+    }
+  }
+
+  return findings;
+}
+
+function auditCrossFileConsistency(): AuditFinding[] {
+  const findings: AuditFinding[] = [];
+  const ae = safeParseJson(join(STATE_DIR, "active-execution.json"));
+  const ct = safeParseJson(join(STATE_DIR, "current-ticket.json"));
+  const cm = safeParseJson(join(STATE_DIR, "current-milestone.json"));
+
+  if (ae.ok && ct.ok && cm.ok) {
+    const aeData = ae.data as Record<string, unknown>;
+    const ctData = ct.data as Record<string, unknown>;
+    const cmData = cm.data as Record<string, unknown>;
+
+    const currentExec = aeData.execution as Record<string, unknown> | undefined;
+    if (currentExec) {
+      const milestoneMatch = currentExec.milestone_id === (cmData.active_milestone as Record<string, unknown>)?.id;
+      if (!milestoneMatch) {
+        findings.push({
+          category: "cross_file_consistency",
+          severity: "error",
+          message: `Current execution milestone (${currentExec.milestone_id}) does not match current milestone (${(cmData.active_milestone as Record<string, unknown>)?.id})`,
+          recommendation: "Reconcile milestone transitions",
+          target: join(STATE_DIR, "current-milestone.json"),
+        });
+      }
+
+      const ticketMatch = currentExec.task_id === (ctData.ticket as Record<string, unknown>)?.id;
+      if (!ticketMatch) {
+        findings.push({
+          category: "cross_file_consistency",
+          severity: "error",
+          message: `Current execution task (${currentExec.task_id}) does not match current ticket state`,
+          recommendation: "Reconcile ticket transitions",
+          target: join(STATE_DIR, "current-ticket.json"),
+        });
+      }
+    }
+  }
+
+  return findings;
+}
+
+function auditBootstrapConsistency(): AuditFinding[] {
+  const findings: AuditFinding[] = [];
+  const bootstrap = safeParseJson(join(BOOTSTRAP_DIR, "runtime-bootstrap.json"));
+  const cm = safeParseJson(join(STATE_DIR, "current-milestone.json"));
+
+  if (bootstrap.ok && cm.ok) {
+    const bsData = bootstrap.data as Record<string, unknown>;
+    const cmData = cm.data as Record<string, unknown>;
+    const bootstrapMilestoneMatch = (bsData.current_milestone as Record<string, unknown>)?.id === (cmData.active_milestone as Record<string, unknown>)?.id;
+    if (!bootstrapMilestoneMatch) {
+      findings.push({
+        category: "bootstrap_consistency",
+        severity: "warn",
+        message: `Bootstrap milestone (${(bsData.current_milestone as Record<string, unknown>)?.id}) != current milestone (${(cmData.active_milestone as Record<string, unknown>)?.id})`,
+        recommendation: "Regenerate runtime-bootstrap.json",
+        target: join(BOOTSTRAP_DIR, "runtime-bootstrap.json"),
+      });
+    }
+  }
+
+  return findings;
+}
+
 // ── Main API ──
 
 export function runAudit(options: { categories?: string[] } = {}): AuditReport {
@@ -414,6 +520,9 @@ export function runAudit(options: { categories?: string[] } = {}): AuditReport {
     runtime_continuity: auditRuntimeContinuity,
     projection_validity: auditProjectionValidity,
     event_consistency: auditEventConsistency,
+    lock_consistency: auditLockConsistency,
+    cross_file_consistency: auditCrossFileConsistency,
+    bootstrap_consistency: auditBootstrapConsistency,
   };
 
   const categoriesToRun = options.categories || Object.keys(allCategories);

@@ -1,0 +1,78 @@
+{
+  "id": "T26.6",
+  "milestone_id": "M26",
+  "title": "Stale Artifact Cleanup",
+  "domain": "Shared",
+  "capability": "Governance Stabilization",
+  "purpose": "Remove or regenerate stale artifacts: projections, bootstrap files, deprecated policies, and orphaned generated files.",
+  "dependencies": ["T26.5"],
+  "architectural_constraints": [
+    "Stale artifacts archived before deletion",
+    "Deprecated policies marked with supersession notice",
+    "Projections regenerated from current runtime state",
+    "Bootstrap regenerated to reference current milestone/ticket"
+  ],
+  "deliverables": [
+    {
+      "path": "project-governance/runtime/projections/",
+      "description": "Regenerated projections from current M25/T25.1 state",
+      "type": "directory"
+    },
+    {
+      "path": "project-governance/runtime/bootstrap/runtime-bootstrap.json",
+      "description": "Regenerated bootstrap referencing M25/T25.1",
+      "type": "file"
+    },
+    {
+      "path": "archive/governance/",
+      "description": "Archived stale artifacts with manifest",
+      "type": "directory"
+    }
+  ],
+  "acceptance_criteria": [
+    "All 4 projection files regenerated and reference current state",
+    "runtime-bootstrap.json references M25/T25.1",
+    "continuation-policy.md archived with supersession notice",
+    "runtime/checkpoints/active-execution.md updated or removed",
+    "No artifacts reference M12/T11.4 or earlier obsolete states",
+    "Archive manifest lists all moved artifacts with reason"
+  ],
+  "traceability": [
+    {
+      "commit_hash": "T26.6-in-progress",
+      "files_changed": [
+        "project-governance/runtime/bootstrap/runtime-bootstrap.json",
+        "project-governance/runtime/projections/latest-status.md",
+        "project-governance/runtime/projections/current-context.md",
+        "project-governance/runtime/projections/resume-instruction.md",
+        "project-governance/runtime/archive/continuation-policy.md",
+        "project-governance/runtime/archive/active-execution.md",
+        "project-governance/runtime/archive/ARCHIVE_MANIFEST.md"
+      ],
+      "description": "Regenerated bootstrap to M26/T26.6, regenerated 3 projections, archived continuation-policy.md and active-execution.md, created archive manifest with 17 archived artifacts.",
+      "timestamp": "2026-05-24T07:22:00Z"
+    }
+  ],
+  "observability": {
+    "metrics": ["stale_artifacts_removed", "projections_regenerated"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Regenerating projections from current state produces incorrect data",
+      "mitigation": "Validate projection content against runtime-state.json before replacing",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 3,
+  "status": "completed",
+  "assignee": "agent",
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "MEDIUM",
+    "blocks_scaling": false
+  }
+}

@@ -70,7 +70,56 @@ function formatSeverity(sev: string): string {
   return `${colors[sev] || ""}[${sev.toUpperCase()}]${reset}`;
 }
 
-export function runDiagnostics(filters: DiagnosticFilters = {}): {
+function runQuickHealthChecks(): Array<{ name: string; status: "pass" | "warn" | "fail"; message: string }> {
+  const checks: Array<{ name: string; status: "pass" | "warn" | "fail"; message: string }> = [];
+
+  // Canonical state
+  if (!existsSync(CANONICAL_STATE_PATH)) {
+    checks.push({ name: "canonical_state", status: "fail", message: "Canonical state file missing" });
+  } else {
+    try {
+      const state = JSON.parse(readFileSync(CANONICAL_STATE_PATH, "utf-8"));
+      if (!state.milestone || !state.milestone.id) {
+        checks.push({ name: "canonical_state", status: "warn", message: "Canonical state missing milestone" });
+      } else {
+        checks.push({ name: "canonical_state", status: "pass", message: `Milestone ${state.milestone.id} (${state.milestone.status})` });
+      }
+    } catch {
+      checks.push({ name: "canonical_state", status: "fail", message: "Canonical state is invalid JSON" });
+    }
+  }
+
+  // Event streams
+  const requiredGov = ["default.ndjson"];
+  const missingGov = requiredGov.filter(f => !existsSync(resolve(GOV_STREAMS_DIR, f)));
+  checks.push({ name: "event_streams", status: missingGov.length > 0 ? "warn" : "pass", message: missingGov.length > 0 ? `Missing: ${missingGov.join(", ")}` : "Streams available" });
+
+  // Telemetry streams
+  const requiredTel = ["default.ndjson"];
+  const missingTel = requiredTel.filter(f => !existsSync(resolve(TELEMETRY_DIR, f)));
+  checks.push({ name: "telemetry_streams", status: missingTel.length > 0 ? "warn" : "pass", message: missingTel.length > 0 ? `Missing: ${missingTel.join(", ")}` : "Streams available" });
+
+  // Drift
+  const now = new Date().getTime();
+  let lastEventTime: number | null = null;
+  const govDefault = resolve(GOV_STREAMS_DIR, "default.ndjson");
+  if (existsSync(govDefault)) {
+    const lines = readFileSync(govDefault, "utf-8").split("\n").filter(l => l.trim());
+    if (lines.length > 0) {
+      try { lastEventTime = new Date(JSON.parse(lines[lines.length - 1]).timestamp).getTime(); } catch { /* ignore */ }
+    }
+  }
+  if (lastEventTime === null) {
+    checks.push({ name: "drift", status: "warn", message: "No events to measure drift" });
+  } else {
+    const ageMinutes = (now - lastEventTime) / 60000;
+    checks.push({ name: "drift", status: ageMinutes > 5 ? "fail" : "pass", message: `Last event ${ageMinutes.toFixed(1)} min ago` });
+  }
+
+  return checks;
+}
+
+export function runDiagnostics(filters: DiagnosticFilters = {}, quick = false): {
   summary: string;
   details: string;
   failures: Array<{ source: string; event: GovernanceEvent | TelemetryEvent }>;
@@ -83,6 +132,28 @@ export function runDiagnostics(filters: DiagnosticFilters = {}): {
   lines.push("║           VINTRACK RUNTIME DIAGNOSTIC CONSOLE                ║");
   lines.push("╚══════════════════════════════════════════════════════════════╝");
   lines.push("");
+
+  if (quick) {
+    lines.push("─── Quick Health Checks ───");
+    const checks = runQuickHealthChecks();
+    let failCount = 0;
+    let warnCount = 0;
+    for (const check of checks) {
+      const icon = check.status === "pass" ? "✅" : check.status === "warn" ? "⚠️" : "❌";
+      lines.push(`${icon} ${check.name}: ${check.message}`);
+      if (check.status === "fail") failCount++;
+      if (check.status === "warn") warnCount++;
+    }
+    lines.push(`\n${checks.length} checks, ${failCount} failed, ${warnCount} warnings`);
+    lines.push("");
+    lines.push("──────────────────────────────────────────────────────────────");
+
+    const summary = lines.join("\n");
+    ensureDir(DIAGNOSTICS_DIR);
+    const reportPath = join(DIAGNOSTICS_DIR, `quick-diagnostic-${new Date().toISOString().replace(/[:.]/g, "-")}.txt`);
+    writeFileSync(reportPath, summary);
+    return { summary, details: summary, failures, reportPath };
+  }
 
   // ── Canonical State ──
   const state = loadCanonicalState();
@@ -209,6 +280,7 @@ export { loadGovEvents, loadTelemetry, loadCanonicalState };
 // CLI
 if (import.meta.url === `file://${process.argv[1]}`) {
   const args = process.argv.slice(2);
+  const quick = args.includes("--quick");
   const filters: DiagnosticFilters = {};
   for (let i = 0; i < args.length; i += 2) {
     switch (args[i]) {
@@ -218,7 +290,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       case "--since": filters.since = args[i + 1]; break;
     }
   }
-  const result = runDiagnostics(filters);
+  const result = runDiagnostics(filters, quick);
   console.log(result.summary);
   console.log(`\nReport saved: ${result.reportPath}`);
   process.exit(result.failures.length > 0 ? 1 : 0);

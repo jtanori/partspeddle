@@ -1,0 +1,236 @@
+{
+  "version": "1.0.0",
+  "description": "Dedicated protocol registry with lifecycle tracking and coverage metrics.",
+  "protocols": [
+    {
+      "id": "audit-policy",
+      "path": "meta/governance/protocols/audit-policy.json",
+      "authority": "meta/governance/protocols/audit-policy.json",
+      "version": "1.0.0",
+      "layer": 3,
+      "scope": "governance",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "execution-lifecycle",
+        "self-healing"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null,
+      "registered_at": "2026-05-24T10:14:29.598Z",
+      "last_updated_at": "2026-05-24T10:14:29.598Z"
+    },
+    {
+      "id": "checkpoint",
+      "path": "meta/governance/protocols/checkpoint.json",
+      "authority": "meta/governance/protocols/checkpoint.json",
+      "version": "1.0.0",
+      "layer": 2,
+      "scope": "recovery",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "CANONICAL_AUTHORITY_HIERARCHY",
+        "execution-lifecycle"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": "project-governance/protocols/checkpoint.protocol.md",
+      "validator_path": "scripts/validators/protocol-checkpoint.ts",
+      "registered_at": "2026-05-24T10:14:29.598Z",
+      "last_updated_at": "2026-05-24T10:14:29.598Z"
+    },
+    {
+      "id": "deployment-readiness",
+      "path": "meta/governance/protocols/deployment-readiness.json",
+      "authority": "meta/governance/protocols/deployment-readiness.json",
+      "version": "1.0.0",
+      "layer": 3,
+      "scope": "governance",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null,
+      "registered_at": "2026-05-24T10:14:29.598Z",
+      "last_updated_at": "2026-05-24T10:14:29.598Z"
+    },
+    {
+      "id": "drift-recovery",
+      "path": "meta/governance/protocols/drift-recovery.json",
+      "authority": "meta/governance/protocols/drift-recovery.json",
+      "version": "1.0.0",
+      "layer": 2,
+      "scope": "recovery",
+      "canonical": false,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "CANONICAL_AUTHORITY_HIERARCHY"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null,
+      "registered_at": "2026-05-24T10:14:29.598Z",
+      "last_updated_at": "2026-05-24T10:14:29.598Z"
+    },
+    {
+      "id": "enforcement-policy",
+      "path": "meta/governance/protocols/enforcement-policy.json",
+      "authority": "meta/governance/protocols/enforcement-policy.json",
+      "version": "1.0.0",
+      "layer": 3,
+      "scope": "governance",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "execution-state-machine",
+        "execution-lifecycle"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": "scripts/validators/protocol-enforcement-policy.ts",
+      "registered_at": "2026-05-24T10:14:29.598Z",
+      "last_updated_at": "2026-05-24T10:14:29.598Z"
+    },
+    {
+      "id": "execution-authorization",
+      "path": "meta/governance/protocols/execution-authorization.json",
+      "authority": "meta/governance/protocols/execution-authorization.json",
+      "version": "1.0.0",
+      "layer": 2,
+      "scope": "authorization",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "CANONICAL_AUTHORITY_HIERARCHY"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null,
+      "registered_at": "2026-05-24T10:14:29.598Z",
+      "last_updated_at": "2026-05-24T10:14:29.598Z"
+    },
+    {
+      "id": "execution-lifecycle",
+      "path": "meta/governance/protocols/execution-lifecycle.json",
+      "authority": "meta/governance/protocols/execution-lifecycle.json",
+      "version": "1.0.0",
+      "layer": 2,
+      "scope": "execution",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "CANONICAL_AUTHORITY_HIERARCHY"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": "project-governance/protocols/execution-lifecycle.protocol.md",
+      "validator_path": "scripts/validators/protocol-execution-lifecycle.ts",
+      "registered_at": "2026-05-24T10:14:29.598Z",
+      "last_updated_at": "2026-05-24T10:14:29.598Z"
+    },
+    {
+      "id": "execution-state-machine",
+      "path": "meta/governance/protocols/execution-state-machine.json",
+      "authority": "meta/governance/protocols/execution-state-machine.json",
+      "version": "1.0.0",
+      "layer": 2,
+      "scope": "execution",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": "scripts/validators/protocol-execution-state-machine.ts",
+      "registered_at": "2026-05-24T10:14:29.598Z",
+      "last_updated_at": "2026-05-24T10:14:29.598Z"
+    },
+    {
+      "id": "retention-policy",
+      "path": "meta/governance/protocols/retention-policy.json",
+      "authority": "meta/governance/protocols/retention-policy.json",
+      "version": "1.0.0",
+      "layer": 3,
+      "scope": "governance",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "execution-lifecycle"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null,
+      "registered_at": "2026-05-24T10:14:29.598Z",
+      "last_updated_at": "2026-05-24T10:14:29.598Z"
+    },
+    {
+      "id": "self-healing",
+      "path": "meta/governance/protocols/self-healing.json",
+      "authority": "meta/governance/protocols/self-healing.json",
+      "version": "1.0.0",
+      "layer": 3,
+      "scope": "recovery",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "execution-lifecycle",
+        "drift-recovery"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": null,
+      "validator_path": null,
+      "registered_at": "2026-05-24T10:14:29.598Z",
+      "last_updated_at": "2026-05-24T10:14:29.598Z"
+    },
+    {
+      "id": "state-mutation",
+      "path": "meta/governance/protocols/state-mutation.json",
+      "authority": "meta/governance/protocols/state-mutation.json",
+      "version": "1.0.0",
+      "layer": 2,
+      "scope": "state",
+      "canonical": true,
+      "lifecycle_status": "active",
+      "dependencies": [
+        "runtime-governance-kernel",
+        "CANONICAL_AUTHORITY_HIERARCHY",
+        "execution-lifecycle"
+      ],
+      "supersedes": [],
+      "superseded_by": null,
+      "reflection_path": "project-governance/protocols/state-mutation.protocol.md",
+      "validator_path": "scripts/validators/protocol-state-mutation.ts",
+      "registered_at": "2026-05-24T10:14:29.598Z",
+      "last_updated_at": "2026-05-24T10:14:29.598Z"
+    }
+  ],
+  "coverage": {
+    "total_protocols": 11,
+    "registered_protocols": 11,
+    "with_reflections": 3,
+    "with_validators": 5,
+    "coverage_percent": 100,
+    "reflection_coverage_percent": 27,
+    "validator_coverage_percent": 45
+  },
+  "lifecycle_summary": {
+    "active": 11,
+    "deprecated": 0,
+    "draft": 0,
+    "superseded": 0
+  }
+}

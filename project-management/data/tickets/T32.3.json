@@ -1,0 +1,43 @@
+{
+  "id": "T32.3",
+  "milestone_id": "M32",
+  "title": "Scalability Recommendations",
+  "domain": "Shared",
+  "capability": "Governance Scalability",
+  "purpose": "Document scalability recommendations and create automated alerts for when operational limits are approached.",
+  "dependencies": ["T32.2"],
+  "architectural_constraints": [
+    "Recommendations must be actionable",
+    "Alerts must use governance event bus",
+    "Thresholds must be configurable"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/scalability-monitor.ts",
+      "description": "Scalability threshold monitor",
+      "type": "script"
+    },
+    {
+      "path": "project-governance/performance/recommendations.md",
+      "description": "Scalability recommendations",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Monitor tracks all 6 key metrics continuously",
+    "Alerts emitted when thresholds approached (80% of limit)",
+    "Recommendations document covers each bottleneck",
+    "Thresholds configurable via protocol definition"
+  ],
+  "traceability": [],
+  "estimated_hours": 3,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "LOW",
+    "blocks_scaling": false
+  }
+}

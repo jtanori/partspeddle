@@ -1,0 +1,397 @@
+{
+  "version": "1.0.0",
+  "description": "Canonical invariant registry for VINTRACK governance runtime. All invariants are declarative, machine-verifiable, and cross-referenced to the protocols they protect.",
+  "invariants": [
+    {
+      "id": "execution-single-active",
+      "category": "execution",
+      "description": "At most one execution may be active at any time across the entire runtime.",
+      "expression": "COUNT(active_executions) ≤ 1",
+      "validation_method": "cross_reference",
+      "severity": "CRITICAL",
+      "remediation": "Release stale execution lock or terminate conflicting execution. Validate via execution-lock.json and active-execution.json cross-reference.",
+      "protocols_protected": [
+        "execution-lifecycle",
+        "execution-authorization"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T10:00:00Z",
+        "author": "agent"
+      }
+    },
+    {
+      "id": "execution-lock-matches-active",
+      "category": "execution",
+      "description": "The execution lock holder must match the active execution ID, or the lock must be released.",
+      "expression": "locked → (execution_id = active_execution.execution_id)",
+      "validation_method": "cross_reference",
+      "severity": "CRITICAL",
+      "remediation": "Reconcile execution-lock.json with active-execution.json. Release stale lock if execution has completed.",
+      "protocols_protected": [
+        "execution-lifecycle",
+        "state-mutation"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T10:00:00Z",
+        "author": "agent"
+      }
+    },
+    {
+      "id": "replay-continuity",
+      "category": "replay",
+      "description": "Every completed execution must have a corresponding checkpoint that can replay to the next safe resume point.",
+      "expression": "execution.status = COMPLETE → ∃checkpoint(execution_id = execution.execution_id)",
+      "validation_method": "existence",
+      "severity": "HIGH",
+      "remediation": "Generate missing checkpoint before execution transition. Verify latest-checkpoint.json exists and is valid JSON.",
+      "protocols_protected": [
+        "checkpoint",
+        "execution-lifecycle"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T10:00:00Z",
+        "author": "agent"
+      }
+    },
+    {
+      "id": "lock-no-expired-hold",
+      "category": "lock",
+      "description": "No lock may be held past its expiry time without explicit extension or renewal.",
+      "expression": "locked → (now < expires_at)",
+      "validation_method": "temporal",
+      "severity": "HIGH",
+      "remediation": "Auto-release expired locks via detect-stale-locks.ts or manual recovery. Emit governance event on release.",
+      "protocols_protected": [
+        "execution-authorization",
+        "self-healing"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T10:00:00Z",
+        "author": "agent"
+      }
+    },
+    {
+      "id": "event-temporal-monotonicity",
+      "category": "event",
+      "description": "Event stream timestamps must be monotonically non-decreasing within each stream.",
+      "expression": "∀i>0: events[i].timestamp ≥ events[i-1].timestamp",
+      "validation_method": "script",
+      "severity": "HIGH",
+      "remediation": "Investigate clock skew or concurrent writers. Rebuild stream if corruption detected. Validate via audit-runtime.ts event_consistency check.",
+      "protocols_protected": [
+        "execution-lifecycle",
+        "audit-policy"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T10:00:00Z",
+        "author": "agent"
+      }
+    },
+    {
+      "id": "transition-valid-target",
+      "category": "transition",
+      "description": "All execution state transitions must target a valid state defined in the execution-state-machine protocol.",
+      "expression": "transition.to ∈ state_machine.states",
+      "validation_method": "schema",
+      "severity": "CRITICAL",
+      "remediation": "Block invalid transition and emit critical event. Validate target against execution-state-machine.json states array.",
+      "protocols_protected": [
+        "execution-state-machine",
+        "enforcement-policy"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T10:00:00Z",
+        "author": "agent"
+      }
+    },
+    {
+      "id": "healing-no-silent-destructive",
+      "category": "healing",
+      "description": "Destructive healing actions must never execute without a pre-action snapshot and explicit authorization.",
+      "expression": "destructive_action → (snapshot_created ∧ authorization = explicit)",
+      "validation_method": "cross_reference",
+      "severity": "CRITICAL",
+      "remediation": "Abort healing operation. Require --destructive flag and --no-snapshot=false. Validate via self-heal.ts scan before heal.",
+      "protocols_protected": [
+        "self-healing",
+        "checkpoint"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T10:00:00Z",
+        "author": "agent"
+      }
+    },
+    {
+      "id": "audit-score-threshold",
+      "category": "audit",
+      "description": "Runtime audit severity score must remain above 80/100 with zero critical findings for execution to be considered healthy.",
+      "expression": "audit.severity_score ≥ 80 ∧ audit.summary.critical = 0",
+      "validation_method": "script",
+      "severity": "HIGH",
+      "remediation": "Address all critical findings immediately. Resolve errors before next execution transition. Run audit-runtime.ts and follow remediation plan.",
+      "protocols_protected": [
+        "audit-policy",
+        "enforcement-policy"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T10:00:00Z",
+        "author": "agent"
+      }
+    },
+    {
+      "id": "registry-no-orphan-entries",
+      "category": "audit",
+      "description": "No registry entry may reference a file that does not exist on disk.",
+      "expression": "∀entry ∈ registry: exists(entry.path)",
+      "validation_method": "existence",
+      "severity": "HIGH",
+      "remediation": "Run normalize-governance-registry.ts to detect orphans. Restore missing files or remove stale registry entries. Validate via registry normalization engine.",
+      "protocols_protected": [
+        "audit-policy",
+        "self-healing"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T10:00:00Z",
+        "author": "agent"
+      }
+    },
+    {
+      "id": "protocol-schema-conformance",
+      "category": "audit",
+      "description": "Every protocol definition must validate against protocol-definition.schema.json.",
+      "expression": "∀protocol: validate(protocol, protocol-definition.schema.json) = true",
+      "validation_method": "schema",
+      "severity": "CRITICAL",
+      "remediation": "Fix schema violations in protocol JSON. Run AJV validation. Add missing required fields. Update schema if legitimate evolution.",
+      "protocols_protected": [
+        "enforcement-policy",
+        "audit-policy"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T10:00:00Z",
+        "author": "agent"
+      }
+    },
+    {
+      "id": "mode-mutual-exclusivity",
+      "category": "execution",
+      "description": "Exactly one operational mode may be active at any time across the entire runtime.",
+      "expression": "COUNT(active_modes) = 1",
+      "validation_method": "cross_reference",
+      "severity": "CRITICAL",
+      "remediation": "Verify operational-mode.json registry. Check canonical-state.json and runtime-state.json for mode conflicts. Enter RECONCILE if multiple modes active.",
+      "protocols_protected": [
+        "operational-mode",
+        "execution-state-machine"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T12:09:32.264Z",
+        "author": "governance-system"
+      }
+    },
+    {
+      "id": "recovery-mode-supremacy",
+      "category": "execution",
+      "description": "Recovery modes automatically suspend all execution authority. No ticket advancement or lock acquisition permitted.",
+      "expression": "mode_category = RECOVERY → execution_authority_suspended",
+      "validation_method": "cross_reference",
+      "severity": "CRITICAL",
+      "remediation": "Verify execution-freeze.json guarantees are active. Check freeze_state in canonical-state. Block execution until freeze confirmed.",
+      "protocols_protected": [
+        "operational-mode",
+        "execution-freeze"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T12:09:32.264Z",
+        "author": "governance-system"
+      }
+    },
+    {
+      "id": "freeze-before-recovery",
+      "category": "execution",
+      "description": "Recovery modes may only operate when execution freeze has been initiated and confirmed.",
+      "expression": "mode_category = RECOVERY → freeze_state ∈ {FREEZE_INITIATED, FROZEN, THAW_INITIATED}",
+      "validation_method": "cross_reference",
+      "severity": "CRITICAL",
+      "remediation": "Initiate freeze protocol before entering recovery mode. Verify all freeze guarantees active.",
+      "protocols_protected": [
+        "execution-freeze",
+        "operational-mode"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T12:09:32.264Z",
+        "author": "governance-system"
+      }
+    },
+    {
+      "id": "no-execution-during-frozen",
+      "category": "execution",
+      "description": "No execution may be active while runtime is in FROZEN state.",
+      "expression": "freeze_state = FROZEN → active_execution = null",
+      "validation_method": "cross_reference",
+      "severity": "CRITICAL",
+      "remediation": "Terminate or complete active execution before freezing. Verify active-execution.json shows null execution.",
+      "protocols_protected": [
+        "execution-freeze",
+        "execution-lifecycle"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T12:09:32.264Z",
+        "author": "governance-system"
+      }
+    },
+    {
+      "id": "thaw-requires-integrity",
+      "category": "execution",
+      "description": "Thaw may only complete after all integrity validation criteria pass.",
+      "expression": "freeze_state = THAWED → integrity_validation_passed = true",
+      "validation_method": "cross_reference",
+      "severity": "CRITICAL",
+      "remediation": "Run full integrity validation suite. Address all failing criteria before thaw authorization.",
+      "protocols_protected": [
+        "execution-freeze",
+        "integrity-validation"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T12:09:32.264Z",
+        "author": "governance-system"
+      }
+    },
+    {
+      "id": "drift-must-be-classified",
+      "category": "audit",
+      "description": "All drift events must be classified into exactly one category from the drift taxonomy.",
+      "expression": "drift_detected → drift_category ∈ drift_taxonomy.categories",
+      "validation_method": "schema",
+      "severity": "CRITICAL",
+      "remediation": "Classify drift using drift-classification.json taxonomy. Emit standardized drift report.",
+      "protocols_protected": [
+        "drift-classification",
+        "audit-policy"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T12:09:32.264Z",
+        "author": "governance-system"
+      }
+    },
+    {
+      "id": "critical-drift-requires-freeze",
+      "category": "audit",
+      "description": "Critical severity drift must trigger execution freeze before any repair action.",
+      "expression": "drift.severity = CRITICAL → freeze_state = FROZEN",
+      "validation_method": "cross_reference",
+      "severity": "CRITICAL",
+      "remediation": "Immediately initiate freeze protocol. Enter RECONCILE mode. No repair without freeze.",
+      "protocols_protected": [
+        "drift-classification",
+        "execution-freeze"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T12:09:32.264Z",
+        "author": "governance-system"
+      }
+    },
+    {
+      "id": "repair-requires-contract",
+      "category": "healing",
+      "description": "Every mutation during recovery must have a corresponding repair contract with mutation log and audit event.",
+      "expression": "mutation_during_recovery → ∃repair_contract(repair_id, mutation_log, audit_event)",
+      "validation_method": "cross_reference",
+      "severity": "CRITICAL",
+      "remediation": "Create repair contract before executing mutation. Record exact old/new values. Emit governance event.",
+      "protocols_protected": [
+        "repair-contract",
+        "audit-policy"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T12:09:32.264Z",
+        "author": "governance-system"
+      }
+    },
+    {
+      "id": "repair-idempotency",
+      "category": "healing",
+      "description": "Repairs must be idempotent. Re-executing the same repair on already-repaired state must be a no-op.",
+      "expression": "repair_executed_twice → state_unchanged_on_second_execution",
+      "validation_method": "script",
+      "severity": "HIGH",
+      "remediation": "Design repairs to check current state before mutation. Skip if target state already achieved.",
+      "protocols_protected": [
+        "repair-contract",
+        "self-healing"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T12:09:32.264Z",
+        "author": "governance-system"
+      }
+    },
+    {
+      "id": "recovery-exit-requires-all-criteria",
+      "category": "audit",
+      "description": "Recovery may not be marked complete until all integrity validation exit criteria pass.",
+      "expression": "recovery_complete → ∀criterion ∈ exit_criteria: criterion.passed = true",
+      "validation_method": "script",
+      "severity": "CRITICAL",
+      "remediation": "Run full integrity validation suite. Do not authorize thaw until all criteria pass.",
+      "protocols_protected": [
+        "integrity-validation",
+        "execution-freeze"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T12:09:32.264Z",
+        "author": "governance-system"
+      }
+    },
+    {
+      "id": "authority-hierarchy-total-order",
+      "category": "audit",
+      "description": "Trust hierarchy must form a strict total order with no ambiguous rankings.",
+      "expression": "∀a,b ∈ sources: rank(a) < rank(b) → authority(a) > authority(b)",
+      "validation_method": "schema",
+      "severity": "CRITICAL",
+      "remediation": "Verify authority-reconstruction.json trust hierarchy. Resolve any ambiguous rankings.",
+      "protocols_protected": [
+        "authority-reconstruction",
+        "audit-policy"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T12:09:32.264Z",
+        "author": "governance-system"
+      }
+    },
+    {
+      "id": "journal-immutability",
+      "category": "audit",
+      "description": "Append-only journal must never be mutated, truncated, or reordered.",
+      "expression": "journal.events = append_only",
+      "validation_method": "script",
+      "severity": "CRITICAL",
+      "remediation": "Reject any operation that modifies existing journal entries. Journal corruption requires incident escalation.",
+      "protocols_protected": [
+        "authority-reconstruction",
+        "audit-policy"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T12:09:32.264Z",
+        "author": "governance-system"
+      }
+    }
+  ],
+  "coverage": {
+    "total_invariants": 22,
+    "by_category": {
+      "execution": 7,
+      "replay": 1,
+      "lock": 1,
+      "event": 1,
+      "transition": 1,
+      "healing": 3,
+      "audit": 8
+    },
+    "by_severity": {
+      "CRITICAL": 16,
+      "HIGH": 6
+    },
+    "protocols_protected": 14
+  }
+}

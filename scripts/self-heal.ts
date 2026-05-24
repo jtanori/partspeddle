@@ -14,6 +14,7 @@ import { randomUUID, createHash } from "crypto";
 import { getLockState } from "./execution-lock.js";
 import { emit } from "./emit-governance-event.js";
 import { getCurrentState, getHistory } from "./execution-state.js";
+import { detectStaleLocks, autoRecoverStaleLock } from "./detect-stale-locks.js";
 
 // ── Paths ──
 const HEALING_DIR = resolve("project-governance/runtime/healing");
@@ -155,56 +156,17 @@ export function revertSnapshot(snapshotId: string): { success: boolean; error?: 
 // ── Detectors ──
 
 function detectStaleLocksIssue(): HealingIssue | null {
-  const LOCKS_LOG = resolve("project-governance/runtime/locks/locks.ndjson");
-  if (!existsSync(LOCKS_LOG)) return null;
-
-  const lines = readFileSync(LOCKS_LOG, "utf-8").split("\n").filter(l => l.trim());
-  if (lines.length === 0) return null;
-
-  // Find the most recent acquisition
-  let lastAcquisition: { execution_id: string; expires_at: string; timestamp: string; event_id?: string } | null = null;
-  let acquisitionIndex = -1;
-  for (let i = lines.length - 1; i >= 0; i--) {
-    try {
-      const ev = JSON.parse(lines[i]);
-      if (ev.action === "acquired") {
-        lastAcquisition = ev;
-        acquisitionIndex = i;
-        break;
-      }
-    } catch { /* ignore */ }
-  }
-
-  if (!lastAcquisition) return null;
-
-  // Check if there's a release/recovery/expiry after this acquisition
-  let hasRelease = false;
-  for (let i = acquisitionIndex + 1; i < lines.length; i++) {
-    try {
-      const ev = JSON.parse(lines[i]);
-      if (["released", "recovered", "expired"].includes(ev.action)) {
-        hasRelease = true;
-        break;
-      }
-    } catch { /* ignore */ }
-  }
-
-  if (hasRelease) return null; // already handled
-
-  // Check if expired
-  const now = new Date().getTime();
-  const expiresAt = new Date(lastAcquisition.expires_at).getTime();
-  if (expiresAt < now) {
+  const report = detectStaleLocks();
+  if (report.stale) {
     return {
       category: "stale_lock",
       severity: "error",
-      message: `Stale lock detected for ${lastAcquisition.execution_id} (expired at ${lastAcquisition.expires_at})`,
-      target: lastAcquisition.execution_id,
+      message: report.recommendation,
+      target: report.lock_state.execution_id || "unknown",
       autoRepairable: true,
       destructive: false,
     };
   }
-
   return null;
 }
 
@@ -418,12 +380,8 @@ function detectEventStreamGaps(): HealingIssue[] {
 // ── Repair Actions ──
 
 function repairStaleLock(): { success: boolean; error?: string } {
-  try {
-    getLockState(); // triggers auto-expiry if needed
-    return { success: true };
-  } catch (e) {
-    return { success: false, error: e instanceof Error ? e.message : String(e) };
-  }
+  const result = autoRecoverStaleLock();
+  return { success: result.recovered, error: result.error };
 }
 
 function repairCorruptedState(target: string): { success: boolean; error?: string } {

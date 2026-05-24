@@ -1,0 +1,54 @@
+{
+  "id": "T28.3",
+  "milestone_id": "M28",
+  "title": "Storage Adapter Integration & Validation",
+  "domain": "Shared",
+  "capability": "Governance Stabilization",
+  "purpose": "Validate the storage adapter integration across all runtime concerns and ensure backward compatibility during transition.",
+  "dependencies": [
+    "T28.2"
+  ],
+  "architectural_constraints": [
+    "All existing tests pass with adapter",
+    "No performance regression > 10%",
+    "Rollback to direct filesystem possible via configuration"
+  ],
+  "deliverables": [
+    {
+      "path": "project-governance/runtime/storage/tests/run-storage-tests.ts",
+      "description": "Storage adapter integration tests",
+      "type": "script"
+    }
+  ],
+  "acceptance_criteria": [
+    "All governance scripts execute correctly via adapter",
+    "All existing tests pass",
+    "Performance benchmark within 10% of direct filesystem",
+    "Rollback procedure tested and documented",
+    "No direct fs mutations remain in runtime scripts"
+  ],
+  "traceability": [
+    {
+      "commit_hash": "PENDING_COMMIT",
+      "files_changed": [
+        "scripts/runtime-storage.ts",
+        "scripts/migrate-to-storage-adapter.ts",
+        "project-governance/runtime/storage/tests/run-storage-tests.ts",
+        "project-governance/runtime/storage/ROLLBACK.md",
+        "meta/state/canonical-state.json"
+      ],
+      "description": "Storage adapter integration validated: 34/34 tests pass, -5.4% benchmark overhead, rollback documented, ensureDir optimization applied",
+      "timestamp": "2026-05-24T16:36:29.000Z"
+    }
+  ],
+  "estimated_hours": 4,
+  "status": "completed",
+  "assignee": "agent",
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T16:36:29.000Z",
+    "version": 1,
+    "governance_risk_classification": "HIGH",
+    "blocks_scaling": true
+  }
+}

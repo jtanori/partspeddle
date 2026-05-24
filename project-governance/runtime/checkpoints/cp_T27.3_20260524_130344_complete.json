@@ -1,0 +1,9 @@
+{
+  "checkpoint_id": "cp_T27.3_20260524_130344_complete",
+  "ticket_id": "T27.3",
+  "milestone_id": "M27",
+  "status": "complete",
+  "created_at": "2026-05-24T13:03:44.668Z",
+  "reason": "T27.3 completion — CI gate and monitor implemented",
+  "execution_id": "EXEC-2026-05-24-005"
+}

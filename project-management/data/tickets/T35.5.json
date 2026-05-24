@@ -1,0 +1,55 @@
+{
+  "id": "T35.5",
+  "milestone_id": "M35",
+  "title": "Interactive Examples & Onboarding",
+  "domain": "Shared",
+  "capability": "Governance Documentation",
+  "purpose": "Create interactive execution examples, replay examples, failure simulations, and healing demonstrations for onboarding and training.",
+  "dependencies": ["T35.4"],
+  "architectural_constraints": [
+    "Examples must be deterministic and reproducible",
+    "Must use isolated test data",
+    "Must not interfere with production state"
+  ],
+  "deliverables": [
+    {
+      "path": "project-governance/docs/examples/execution-example.md",
+      "description": "Example execution session",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/docs/examples/replay-example.md",
+      "description": "Example replay session",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/docs/examples/failure-example.md",
+      "description": "Example failure simulation",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/docs/examples/healing-example.md",
+      "description": "Example healing demonstration",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "4 interactive examples created",
+    "All examples are deterministic",
+    "Examples use isolated test data",
+    "Examples are replay-compatible",
+    "Onboarding path documented from quickstart to full manual",
+    "Documentation completeness validated"
+  ],
+  "traceability": [],
+  "estimated_hours": 4,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "MEDIUM",
+    "blocks_scaling": false
+  }
+}

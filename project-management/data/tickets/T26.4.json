@@ -1,0 +1,86 @@
+{
+  "id": "T26.4",
+  "milestone_id": "M26",
+  "title": "Script Redundancy Elimination",
+  "domain": "Shared",
+  "capability": "Governance Stabilization",
+  "purpose": "Eliminate duplicate script functionality, delete dead scripts, extract shared libraries, and ensure every script has a package.json entry or explicit dead declaration.",
+  "dependencies": ["T26.1"],
+  "architectural_constraints": [
+    "Dead scripts archived, not permanently deleted (90-day policy)",
+    "Shared logic extracted to scripts/lib/",
+    "All remaining scripts have package.json entries",
+    "No silent deletions — emit governance events"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/lib/stream-emitter.ts",
+      "description": "Shared stream-append logic extracted from emit-governance-event and emit-telemetry",
+      "type": "script"
+    },
+    {
+      "path": "scripts/audit-runtime.ts",
+      "description": "Absorbs 3 unique checks from audit-runtime-integrity.ts",
+      "type": "script"
+    },
+    {
+      "path": "archive/scripts/",
+      "description": "Archived dead scripts with manifest",
+      "type": "directory"
+    }
+  ],
+  "acceptance_criteria": [
+    "audit-runtime-integrity.ts archived (3 unique checks migrated to audit-runtime.ts)",
+    "emit-governance-event.ts and emit-telemetry.ts use shared stream-emitter.ts",
+    "diagnostics-health.ts merged into diagnostics-console.ts as --quick flag",
+    "bootstrap.ts writes to runtime/state/ (not legacy runtime-state.json)",
+    "self-heal.ts imports stale-lock detection from detect-stale-locks.ts",
+    "Dead scripts archived: generate-runtime-projections.ts, migrate-governance-md-to-json.ts, validate-authority.js, setup-test-db.ts",
+    "Incomplete validators either completed or removed",
+    "All remaining scripts have package.json entries"
+  ],
+  "traceability": [
+    {
+      "commit_hash": "T26.4-in-progress",
+      "files_changed": [
+        "scripts/lib/stream-emitter.ts",
+        "scripts/emit-governance-event.ts",
+        "scripts/emit-telemetry.ts",
+        "scripts/diagnostics-console.ts",
+        "scripts/audit-runtime.ts",
+        "scripts/bootstrap.ts",
+        "scripts/self-heal.ts",
+        "scripts/archive/audit-runtime-integrity.ts",
+        "scripts/archive/generate-runtime-projections.ts",
+        "scripts/archive/migrate-governance-md-to-json.ts",
+        "scripts/archive/setup-test-db.ts",
+        "scripts/archive/validate-authority.js",
+        "package.json"
+      ],
+      "description": "Eliminated script redundancy: extracted shared stream-emitter.ts, merged diagnostics-health into --quick flag, added 3 unique checks to audit-runtime.ts, archived 5 dead scripts, updated bootstrap.ts for runtime/state/ projections, integrated detect-stale-locks into self-heal.ts.",
+      "timestamp": "2026-05-24T07:22:00Z"
+    }
+  ],
+  "observability": {
+    "metrics": ["scripts_remaining", "lines_of_duplicate_code_removed", "dead_scripts_archived"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Deleted script has hidden caller discovered later",
+      "mitigation": "90-day archive before permanent deletion; grep all imports before action",
+      "severity": "medium"
+    }
+  ],
+  "estimated_hours": 5,
+  "status": "completed",
+  "assignee": "agent",
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "MEDIUM",
+    "blocks_scaling": false
+  }
+}

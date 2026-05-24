@@ -1,0 +1,9 @@
+{
+  "checkpoint_id": "cp_T27.2_20260524_124030_complete",
+  "ticket_id": "T27.2",
+  "milestone_id": "M27",
+  "status": "complete",
+  "created_at": "2026-05-24T12:40:30.712Z",
+  "reason": "T27.2 completion — invariant validation engine implemented",
+  "execution_id": "EXEC-2026-05-24-004"
+}

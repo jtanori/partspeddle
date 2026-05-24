@@ -1,0 +1,21 @@
+{
+  "projection_type": "milestone-status",
+  "generated_at": "2026-05-24T13:44:45.616Z",
+  "milestones": [
+    {
+      "id": "M26",
+      "status": "completed",
+      "last_ticket": "T26.7"
+    },
+    {
+      "id": "M27",
+      "status": "completed",
+      "last_ticket": "T27.3"
+    },
+    {
+      "id": "M28",
+      "status": "planned",
+      "active_ticket": null
+    }
+  ]
+}

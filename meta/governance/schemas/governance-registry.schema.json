@@ -18,9 +18,14 @@
           "version": { "type": "string" },
           "scope": { "type": "string" },
           "canonical": { "type": "boolean" },
+          "layer": { "type": "integer", "minimum": 0, "maximum": 5 },
+          "authority": { "type": "string", "description": "Absolute or relative path to the canonical JSON definition" },
+          "dependencies": { "type": "array", "items": { "type": "string" }, "description": "Protocol IDs this extends (derives_from)" },
+          "superseded_by": { "type": ["string", "null"], "description": "Protocol ID that supersedes this one, if any" },
+          "lifecycle_status": { "type": "string", "enum": ["active", "deprecated", "draft", "superseded"] },
           "supersedes": { "type": "array", "items": { "type": "string" } },
-          "reflection_path": { "type": "string" },
-          "validator_path": { "type": "string" }
+          "reflection_path": { "type": ["string", "null"] },
+          "validator_path": { "type": ["string", "null"] }
         }
       }
     },
@@ -32,7 +37,10 @@
         "properties": {
           "id": { "type": "string" },
           "path": { "type": "string" },
-          "version": { "type": "string" }
+          "version": { "type": "string" },
+          "$id": { "type": "string", "description": "Schema URI identifier" },
+          "authority": { "type": "string", "description": "Path to schema definition" },
+          "compatibility_version": { "type": "string", "description": "Minimum compatible registry version" }
         }
       }
     },

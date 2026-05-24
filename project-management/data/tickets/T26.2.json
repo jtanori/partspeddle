@@ -1,0 +1,71 @@
+{
+  "id": "T26.2",
+  "milestone_id": "M26",
+  "title": "Protocol Authority Consolidation",
+  "domain": "Shared",
+  "capability": "Governance Stabilization",
+  "purpose": "Eliminate split authority between project-governance/protocols/ (markdown) and meta/governance/protocols/ (json). Establish meta/governance/protocols/ as the single canonical source.",
+  "dependencies": ["T26.1"],
+  "architectural_constraints": [
+    "Markdown protocols are reflections, not canonical",
+    "All protocol mutations go through JSON canonical layer",
+    "Generated reflections must be reproducible deterministically",
+    "Archive, do not delete, until reflections are verified"
+  ],
+  "deliverables": [
+    {
+      "path": "project-governance/protocols/",
+      "description": "Archive or convert to generated-only reflections",
+      "type": "directory"
+    },
+    {
+      "path": "scripts/validate-reflections.ts",
+      "description": "Reflection integrity validator",
+      "type": "script"
+    }
+  ],
+  "acceptance_criteria": [
+    "project-governance/protocols/ contains only generated reflections or is removed",
+    "All 10 JSON protocols in meta/governance/protocols/ pass schema validation",
+    "deployment-readiness.json conforms to protocol-definition.schema.json or has dedicated schema",
+    "Duplicate filename pairs eliminated (single naming convention)",
+    "validate-reflections.ts confirms markdown matches canonical JSON hashes",
+    "No orphaned reflections (markdown without canonical JSON source)"
+  ],
+  "traceability": [
+    {
+      "commit_hash": "T26.2-in-progress",
+      "files_changed": [
+        "meta/governance/protocols/deployment-readiness.json",
+        "meta/governance/protocols/execution-state-machine.json",
+        "meta/governance/schemas/protocol-definition.schema.json",
+        "scripts/validate-reflections.ts",
+        "project-governance/protocols/archive/*"
+      ],
+      "description": "Consolidated protocol authority: all 10 JSON protocols pass schema validation. Archived 17 old markdown files. Created reflection integrity validator.",
+      "timestamp": "2026-05-24T07:22:00Z"
+    }
+  ],
+  "observability": {
+    "metrics": ["reflection_drift_count", "protocol_validation_failures"],
+    "logs": [],
+    "traces": []
+  },
+  "failure_modes": [
+    {
+      "scenario": "Markdown protocols still referenced by external systems",
+      "mitigation": "Search all references before archival; maintain redirects during transition",
+      "severity": "high"
+    }
+  ],
+  "estimated_hours": 4,
+  "status": "completed",
+  "assignee": "agent",
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "HIGH",
+    "blocks_scaling": true
+  }
+}

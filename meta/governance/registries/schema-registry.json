@@ -1,0 +1,108 @@
+{
+  "version": "1.0.0",
+  "description": "Canonical registry for all governance JSON Schema definitions.",
+  "schemas": [
+    {
+      "id": "authority-declaration",
+      "path": "meta/governance/schemas/authority-declaration.schema.json",
+      "authority": "meta/governance/schemas/authority-declaration.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/authority-declaration.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
+    },
+    {
+      "id": "checkpoint",
+      "path": "meta/governance/schemas/checkpoint.schema.json",
+      "authority": "meta/governance/schemas/checkpoint.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/checkpoint.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
+    },
+    {
+      "id": "enforcement-policy",
+      "path": "meta/governance/schemas/enforcement-policy.schema.json",
+      "authority": "meta/governance/schemas/enforcement-policy.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/enforcement-policy.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
+    },
+    {
+      "id": "governance-registry",
+      "path": "meta/governance/schemas/governance-registry.schema.json",
+      "authority": "meta/governance/schemas/governance-registry.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/governance-registry.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
+    },
+    {
+      "id": "governance-rule",
+      "path": "meta/governance/schemas/governance-rule.schema.json",
+      "authority": "meta/governance/schemas/governance-rule.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/governance-rule.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
+    },
+    {
+      "id": "governance-state",
+      "path": "meta/governance/schemas/governance-state.schema.json",
+      "authority": "meta/governance/schemas/governance-state.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/governance-state.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
+    },
+    {
+      "id": "protocol-definition",
+      "path": "meta/governance/schemas/protocol-definition.schema.json",
+      "authority": "meta/governance/schemas/protocol-definition.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/protocol-definition.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [
+        "audit-policy",
+        "checkpoint",
+        "deployment-readiness",
+        "drift-recovery",
+        "enforcement-policy",
+        "execution-authorization",
+        "execution-lifecycle",
+        "execution-state-machine",
+        "retention-policy",
+        "self-healing",
+        "state-mutation"
+      ],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
+    },
+    {
+      "id": "recovery-policy",
+      "path": "meta/governance/schemas/recovery-policy.schema.json",
+      "authority": "meta/governance/schemas/recovery-policy.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/recovery-policy.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
+    },
+    {
+      "id": "runtime-transition",
+      "path": "meta/governance/schemas/runtime-transition.schema.json",
+      "authority": "meta/governance/schemas/runtime-transition.schema.json",
+      "version": "1.0.0",
+      "$id": "https://vintrack.io/schemas/runtime-transition.schema.json",
+      "compatibility_version": "1.0.0",
+      "governs": [],
+      "last_validated_at": "2026-05-24T10:14:29.551Z"
+    }
+  ]
+}

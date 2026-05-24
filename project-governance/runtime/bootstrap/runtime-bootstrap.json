@@ -1,31 +1,43 @@
 {
   "protocol_version": "1.0.0",
   "bootstrap_type": "MILESTONE_TRANSITION",
-  "generated_at": "2026-05-22T13:58:00Z",
+  "generated_at": "2026-05-24T07:22:00Z",
   "latest_checkpoint": {
-    "id": "cp_T11.4_20260522_075500_complete",
-    "path": "project-governance/runtime/checkpoints/T11.4-checkpoint-seq-1.json"
+    "id": "cp_T26.5_20260524_072200_complete",
+    "path": "project-governance/runtime/checkpoints/latest-checkpoint.json"
   },
   "current_milestone": {
-    "id": "M12",
-    "title": "Projection Architecture"
+    "id": "M26",
+    "title": "Governance Kernel Stabilization",
+    "status": "in_progress"
   },
-  "current_ticket": null,
+  "current_ticket": {
+    "id": "T26.6",
+    "title": "Stale Artifact Cleanup",
+    "status": "in_progress"
+  },
   "previous_milestone": {
-    "id": "M11",
-    "title": "Governance Root Normalization",
+    "id": "M25",
+    "title": "Deployment Governance",
     "status": "completed"
   },
-  "safe_resume_point": "milestone-transition",
-  "resume_phase": "ticket-selection",
-  "runtime_integrity_hash": null,
-  "unresolved_blockers": [],
-  "required_context_files": [
-    "project-governance/runtime/state/active-execution.json",
-    "project-governance/runtime/state/current-milestone.json",
-    "project-governance/runtime/state/current-ticket.json",
-    "project-governance/runtime/bootstrap/runtime-bootstrap.json",
-    "project-governance/runtime/projections/resume-instruction.md"
+  "safe_resume_point": "stabilization-wave",
+  "resume_phase": "ticket-execution",
+  "completed_tickets_count": 55,
+  "active_constraints": [
+    "frontend cannot import backend infrastructure",
+    "shared contracts are canonical",
+    "single package.json governance remains active",
+    "fileParallelism: false enforced for integration tests",
+    "correlation_id stored as TEXT in outbox",
+    "M31 blocked until M26 registry normalization complete",
+    "M31 blocked until M27 invariant system complete",
+    "M31 blocked until M30 architecture mapping complete"
   ],
-  "safe_exit_compliant": true
+  "required_governance_documents": [
+    "project-governance/runtime/runtime-governance-kernel.md",
+    "project-governance/runtime/execution-modes.md",
+    "project-knowledge/repository-structure.md",
+    "project-knowledge/fullstack-orchestration-model.md"
+  ]
 }

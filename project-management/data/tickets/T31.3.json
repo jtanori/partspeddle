@@ -1,0 +1,40 @@
+{
+  "id": "T31.3",
+  "milestone_id": "M31",
+  "title": "Control Plane Integration",
+  "domain": "Shared",
+  "capability": "Governance Operability",
+  "purpose": "Integrate the control plane with enforcement, healing, and suggestion engines so operators can act on dashboard insights directly.",
+  "dependencies": ["T31.2"],
+  "architectural_constraints": [
+    "All actions emit governance events",
+    "Human approval required for destructive actions",
+    "Audit trail for all control plane mutations"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/control-plane.ts",
+      "description": "Control plane action router",
+      "type": "script"
+    }
+  ],
+  "acceptance_criteria": [
+    "Dashboard can trigger enforcement checks",
+    "Dashboard can trigger healing scans",
+    "Dashboard can trigger suggestion generation",
+    "All actions emit events with audit trail",
+    "Destructive actions require explicit confirmation",
+    "Control plane actions validate against invariant engine"
+  ],
+  "traceability": [],
+  "estimated_hours": 4,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "HIGH",
+    "blocks_scaling": true
+  }
+}
