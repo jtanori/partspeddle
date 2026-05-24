@@ -42,3 +42,7 @@ temp/
 test-results/
 trace/
 supabase/.temp/
+# Ignore auto-generated healing snapshots but keep directory
+project-governance/runtime/healing/snapshots/SNAP-*.json
+project-governance/runtime/healing/healing-log.ndjson
+project-governance/runtime/events/streams/*.ndjson

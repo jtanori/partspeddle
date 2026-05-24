@@ -1,0 +1,93 @@
+{
+  "id": "self-healing",
+  "version": "1.0.0",
+  "layer": 3,
+  "scope": "recovery",
+  "canonical": true,
+  "derives_from": ["execution-lifecycle", "drift-recovery"],
+  "purpose": "Governance self-healing mechanisms to reduce manual remediation, repair predictable runtime inconsistencies, and improve execution continuity.",
+  "status": "active",
+  "rules": [
+    {
+      "id": "stale-lock-recovery",
+      "condition": "execution lock heartbeat expired beyond stale threshold",
+      "action": "auto_release_lock_with_audit_event",
+      "severity": "HIGH",
+      "description": "Stale locks prevent new executions and must be auto-released."
+    },
+    {
+      "id": "orphan-projection-detection",
+      "condition": "markdown reflection exists without corresponding canonical JSON protocol",
+      "action": "flag_for_investigation_and_emit_event",
+      "severity": "MEDIUM",
+      "description": "Orphan projections indicate drift between canonical state and generated artifacts."
+    },
+    {
+      "id": "missing-index-detection",
+      "condition": "governance registry missing entry for existing artifact on disk",
+      "action": "flag_and_emit_event_do_not_auto_create",
+      "severity": "MEDIUM",
+      "description": "Missing indexes are detected but never auto-created to prevent data loss."
+    },
+    {
+      "id": "runtime-divergence-detection",
+      "condition": "runtime state diverges from expected state derived from event history",
+      "action": "report_divergence_with_remediation_guidance",
+      "severity": "HIGH",
+      "description": "Runtime divergence indicates corruption or manual tampering."
+    },
+    {
+      "id": "corrupted-state-recovery",
+      "condition": "runtime state file is malformed and cannot be parsed",
+      "action": "snapshot_then_reset_to_idle_with_audit",
+      "severity": "CRITICAL",
+      "description": "Corrupted state files are destructive to repair; snapshot is mandatory."
+    },
+    {
+      "id": "event-stream-gap-detection",
+      "condition": "expected event sequence shows gaps or out-of-order timestamps",
+      "action": "flag_gap_and_emit_investigation_event",
+      "severity": "MEDIUM",
+      "description": "Event gaps may indicate dropped events or clock skew."
+    }
+  ],
+  "invariants": [
+    {
+      "id": "snapshot-before-destruction",
+      "expression": "every destructive healing action creates a recoverable snapshot first",
+      "severity": "CRITICAL",
+      "description": "Snapshots ensure all healing is reversible."
+    },
+    {
+      "id": "audit-every-action",
+      "expression": "every healing action emits a governance event and appends to healing log",
+      "severity": "CRITICAL",
+      "description": "Complete audit trail for all healing operations."
+    },
+    {
+      "id": "human-approval-for-destructive",
+      "expression": "destructive healing requires explicit human authorization or --destructive flag",
+      "severity": "HIGH",
+      "description": "Prevents accidental data loss from automated healing."
+    }
+  ],
+  "triggers": [
+    {
+      "id": "scheduled-healing",
+      "category": "optional",
+      "condition": "every 30 minutes during active sessions",
+      "throttle": { "max_per_minute": 1, "cooldown_seconds": 1800 },
+      "description": "Periodic self-healing scan"
+    },
+    {
+      "id": "post-transition-healing",
+      "category": "mandatory",
+      "condition": "after every execution state transition to blocked or recovering",
+      "description": "Immediate healing check when execution enters failure path"
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-05-20T01:50:00Z",
+    "updated_at": "2026-05-20T01:50:00Z"
+  }
+}
