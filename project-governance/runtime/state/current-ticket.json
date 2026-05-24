@@ -2,14 +2,14 @@
   "protocol_version": "1.0.0",
   "active": true,
   "ticket": {
-    "id": "T29.1",
-    "title": "Global Event Sequence IDs",
+    "id": "T29.2",
+    "title": "Causality Chain Implementation",
     "status": "in_progress"
   },
   "last_ticket": {
-    "id": "T28.2",
+    "id": "T29.1",
     "status": "completed",
-    "completed_at": "2026-05-24T14:33:17.502Z"
+    "completed_at": "2026-05-24T19:09:53.000Z"
   },
-  "updated_at": "2026-05-24T19:00:34.465Z"
+  "updated_at": "2026-05-24T19:10:40.471Z"
 }

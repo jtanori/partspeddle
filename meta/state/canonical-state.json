@@ -3,30 +3,30 @@
   "protocol_version": "1.0.0",
   "authority": "meta/state/canonical-state.json",
   "principle": "This file is the ONLY mutable runtime state. All other state files are derived projections.",
-  "updated_at": "2026-05-24T19:07:51.743Z",
+  "updated_at": "2026-05-24T19:09:53.000Z",
   "execution": {
     "execution_id": "EXEC-2026-05-24-010",
-    "task_id": "T29.1",
+    "task_id": "T29.2",
     "milestone_id": "M29",
     "status": "EXECUTING",
-    "started_at": "2026-05-24T18:59:31.000Z",
+    "started_at": "2026-05-24T19:09:53.000Z",
     "completed_at": null
   },
   "last_execution": {
-    "execution_id": "EXEC-2026-05-24-007",
-    "task_id": "T28.2",
-    "milestone_id": "M28",
+    "execution_id": "EXEC-2026-05-24-010",
+    "task_id": "T29.1",
+    "milestone_id": "M29",
     "status": "COMPLETE",
-    "started_at": "2026-05-24T13:50:42Z",
-    "completed_at": "2026-05-24T14:33:17.502Z"
+    "started_at": "2026-05-24T18:59:31.000Z",
+    "completed_at": "2026-05-24T19:09:53.000Z"
   },
   "milestone": {
     "id": "M29",
     "status": "in_progress"
   },
   "ticket": {
-    "id": "T29.1",
-    "title": "Global Event Sequence IDs",
+    "id": "T29.2",
+    "title": "Causality Chain Implementation",
     "status": "in_progress"
   },
   "lock": {
@@ -41,10 +41,10 @@
   "repository": {
     "branch": "main",
     "base_branch": "main",
-    "worktree_clean": true,
-    "head_commit": "f0ceb7c0bb9972f982204a0fff1a60bc20878be8",
+    "worktree_clean": false,
+    "head_commit": "02a53bc66153cb9cdf3adbd509a5d83c31ff95c1",
     "promotion_status": "pending",
-    "last_validated_at": "2026-05-24T19:07:51.727Z"
+    "last_validated_at": "2026-05-24T19:08:31.164Z"
   },
   "governance": {
     "heartbeat_policy": "ACTIVE",

@@ -1,7 +1,7 @@
 {
   "protocol_version": "1.0.0",
   "bootstrap_type": "CANONICAL_STATE_FIRST",
-  "generated_at": "2026-05-24T19:06:40.015Z",
+  "generated_at": "2026-05-24T19:08:40.339Z",
   "authority": "meta/state/canonical-state.json",
   "latest_checkpoint": {
     "checkpoint_id": "cp_T32_20260524_182343_complete",
