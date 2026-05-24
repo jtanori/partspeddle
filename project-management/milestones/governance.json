@@ -1260,7 +1260,7 @@
       "T29.3"
     ],
     "dependencies": [
-      "M28"
+      "M32"
     ],
     "downstream_impact": "Enables reliable debugging, auditing, and forensics under concurrent execution.",
     "estimated_duration_days": 3,
@@ -1463,7 +1463,7 @@
     ],
     "downstream_impact": "Prevents operational surprises and enables informed scaling decisions.",
     "estimated_duration_days": 3,
-    "status": "planned",
+    "status": "completed",
     "ticket_paths": {
       "T32.1": {
         "path": "project-management/data/tickets/T32.1.json",
@@ -1483,7 +1483,7 @@
     },
     "metadata": {
       "created_at": "2026-05-24T05:50:46Z",
-      "updated_at": "2026-05-24T05:50:46Z",
+      "updated_at": "2026-05-24T18:23:43.000Z",
       "version": 1,
       "lane": "governance",
       "priority": "medium",

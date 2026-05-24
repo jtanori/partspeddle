@@ -4,12 +4,12 @@
   "ticket": {
     "id": "T32.5",
     "title": "P0 Integration & Validation",
-    "status": "in_progress"
+    "status": "completed"
   },
   "last_ticket": {
     "id": "T28.2",
     "status": "completed",
     "completed_at": "2026-05-24T14:33:17.502Z"
   },
-  "updated_at": "2026-05-24T18:21:15.203Z"
+  "updated_at": "2026-05-24T18:24:16.107Z"
 }

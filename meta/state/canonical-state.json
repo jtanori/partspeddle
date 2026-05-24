@@ -3,14 +3,14 @@
   "protocol_version": "1.0.0",
   "authority": "meta/state/canonical-state.json",
   "principle": "This file is the ONLY mutable runtime state. All other state files are derived projections.",
-  "updated_at": "2026-05-24T18:23:24.929Z",
+  "updated_at": "2026-05-24T18:25:04.767Z",
   "execution": {
     "execution_id": "EXEC-2026-05-24-009",
     "task_id": "T32.5",
     "milestone_id": "M32",
-    "status": "EXECUTING",
+    "status": "COMPLETE",
     "started_at": "2026-05-24T17:58:33.000Z",
-    "completed_at": null
+    "completed_at": "2026-05-24T18:23:43.000Z"
   },
   "last_execution": {
     "execution_id": "EXEC-2026-05-24-007",
@@ -22,29 +22,29 @@
   },
   "milestone": {
     "id": "M32",
-    "status": "in_progress"
+    "status": "completed"
   },
   "ticket": {
     "id": "T32.5",
     "title": "P0 Integration & Validation",
-    "status": "in_progress"
+    "status": "completed"
   },
   "lock": {
-    "locked": true,
+    "locked": false,
     "execution_id": "EXEC-2026-05-24-009",
     "locked_at": "2026-05-24T17:58:33.000Z",
     "locked_by": "agent",
     "expires_at": "2026-05-24T21:58:33.000Z",
-    "released_at": null,
-    "release_reason": null
+    "released_at": "2026-05-24T18:23:43.000Z",
+    "release_reason": "T32.5 complete, M32 closed"
   },
   "repository": {
     "branch": "main",
     "base_branch": "main",
-    "worktree_clean": true,
-    "head_commit": "0a9cf7a8bc64bbcff00aeaceec1739038d5acfd8",
+    "worktree_clean": false,
+    "head_commit": "e41a91551cb44cefbad6387fe88776666a8057aa",
     "promotion_status": "pending",
-    "last_validated_at": "2026-05-24T18:23:24.923Z"
+    "last_validated_at": "2026-05-24T18:25:04.762Z"
   },
   "governance": {
     "heartbeat_policy": "ACTIVE",
