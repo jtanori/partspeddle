@@ -1,15 +1,15 @@
 {
   "protocol_version": "1.0.0",
   "bootstrap_type": "CANONICAL_STATE_FIRST",
-  "generated_at": "2026-05-24T19:08:40.339Z",
+  "generated_at": "2026-05-24T20:15:34.505Z",
   "authority": "meta/state/canonical-state.json",
   "latest_checkpoint": {
-    "checkpoint_id": "cp_T32_20260524_182343_complete",
-    "ticket_id": "T32.5",
-    "milestone_id": "M32",
+    "checkpoint_id": "cp_T29.1_20260524_190953_complete",
+    "ticket_id": "T29.1",
+    "milestone_id": "M29",
     "status": "complete",
-    "created_at": "2026-05-24T17:58:33.000Z",
-    "updated_at": "2026-05-24T18:23:43.000Z"
+    "created_at": "2026-05-24T18:59:31.000Z",
+    "updated_at": "2026-05-24T19:09:53.000Z"
   },
   "current_milestone": {
     "id": "M29",
@@ -23,16 +23,16 @@
     "status": "completed"
   },
   "current_ticket": {
-    "id": "T29.1",
+    "id": "T29.2",
     "status": "in_progress"
   },
   "current_branch": "main",
   "execution": {
     "execution_id": "EXEC-2026-05-24-010",
-    "task_id": "T29.1",
+    "task_id": "T29.2",
     "milestone_id": "M29",
     "status": "EXECUTING",
-    "started_at": "2026-05-24T18:59:31.000Z",
+    "started_at": "2026-05-24T19:09:53.000Z",
     "completed_at": null
   },
   "lock": {

@@ -105,7 +105,8 @@
     "repository:sync": "./node_modules/.bin/tsx scripts/sync-repository-status.ts sync",
     "repository:validate": "./node_modules/.bin/tsx scripts/sync-repository-status.ts validate",
     "hygiene:validate": "./node_modules/.bin/tsx scripts/validate-repository-hygiene.ts",
-    "p0:validate": "npm run projection:sync && npm run repository:sync && npm run bootstrap && npm run invariant:validate && npm run storage:test && npm run projection:validate && npm run bootstrap:validate && npm run repository:validate && npm run hygiene:validate"
+    "causality:validate": "./node_modules/.bin/tsx scripts/validate-causality.ts",
+    "p0:validate": "npm run projection:sync && npm run repository:sync && npm run bootstrap && npm run invariant:validate && npm run storage:test && npm run projection:validate && npm run bootstrap:validate && npm run repository:validate && npm run hygiene:validate && npm run causality:validate"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.53.1",

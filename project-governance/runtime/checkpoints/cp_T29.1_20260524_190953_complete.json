@@ -6,6 +6,8 @@
   "status": "complete",
   "created_at": "2026-05-24T18:59:31.000Z",
   "completed_at": "2026-05-24T19:09:53.000Z",
+  "global_sequence": 3,
+  "execution_sequence": 3,
   "validation_summary": {
     "sequence_tests_passed": 8,
     "sequence_tests_failed": 0,

@@ -3,7 +3,7 @@
   "protocol_version": "1.0.0",
   "authority": "meta/state/canonical-state.json",
   "principle": "This file is the ONLY mutable runtime state. All other state files are derived projections.",
-  "updated_at": "2026-05-24T19:09:53.000Z",
+  "updated_at": "2026-05-24T20:15:25.103Z",
   "execution": {
     "execution_id": "EXEC-2026-05-24-010",
     "task_id": "T29.2",
@@ -42,9 +42,9 @@
     "branch": "main",
     "base_branch": "main",
     "worktree_clean": false,
-    "head_commit": "02a53bc66153cb9cdf3adbd509a5d83c31ff95c1",
+    "head_commit": "45eba645dba0c322a570753cd4bd2abba20e760f",
     "promotion_status": "pending",
-    "last_validated_at": "2026-05-24T19:08:31.164Z"
+    "last_validated_at": "2026-05-24T20:15:25.098Z"
   },
   "governance": {
     "heartbeat_policy": "ACTIVE",

@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/protocols/causality-policy.json",
+  "title": "VINTRACK Causality Policy",
+  "description": "Governance protocol for event causality tracking, invariant validation, and deterministic replay.",
+  "version": "1.0.0",
+  "effective_date": "2026-05-24T20:00:00Z",
+  "ticket": "T29.2",
+  "status": "active",
+  "scope": {
+    "surfaces": ["governance", "backend", "shared"],
+    "applies_to": [
+      "project-governance/runtime/events/streams/*.ndjson",
+      "project-governance/runtime/execution-logs/sequence-store.json",
+      "project-governance/runtime/execution-logs/causality-store.json",
+      "project-governance/runtime/checkpoints/cp_*.json"
+    ]
+  },
+  "definitions": {
+    "sequence_types": {
+      "global_sequence": {
+        "description": "Monotonically increasing counter across ALL events in the governance runtime.",
+        "type": "integer",
+        "minimum": 1,
+        "uniqueness": "global",
+        "durability": "immediate_sync"
+      },
+      "execution_sequence": {
+        "description": "Monotonically increasing counter within a single execution context.",
+        "type": "integer",
+        "minimum": 1,
+        "uniqueness": "per_execution",
+        "durability": "immediate_sync"
+      }
+    },
+    "causality_fields": {
+      "parent_event_id": {
+        "description": "The immediately preceding event in the causal chain. Null for genesis events.",
+        "type": ["string", "null"],
+        "format": "uuid"
+      },
+      "causality_chain": {
+        "description": "Ordered list of all ancestor event IDs from genesis to parent.",
+        "type": "array",
+        "items": { "type": "string", "format": "uuid" }
+      }
+    },
+    "linkage_types": {
+      "description": "Classification for cross-execution causal linkages.",
+      "enum": ["handoff", "recovery", "escalation", "replay", "delegation"],
+      "required_when": "execution_id ≠ parent.execution_id"
+    }
+  },
+  "rules": [
+    {
+      "id": "CAUS-R001",
+      "description": "Every governance event MUST receive a global_sequence at emission time.",
+      "enforcement": "emit-governance-event.ts",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "CAUS-R002",
+      "description": "execution_sequence MUST be monotonic within each execution context.",
+      "enforcement": "sequence-tracker.ts",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "CAUS-R003",
+      "description": "parent_event_id MUST reference an event that exists in streams or causality store.",
+      "enforcement": "validate-causality.ts (CI-002)",
+      "severity": "HIGH"
+    },
+    {
+      "id": "CAUS-R004",
+      "description": "Causality chains MUST be acyclic and MUST NOT contain self-references.",
+      "enforcement": "validate-causality.ts (CI-003)",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "CAUS-R005",
+      "description": "Cross-execution linkages MUST declare a valid linkage_type in metadata.",
+      "enforcement": "emit-governance-event.ts + validate-causality.ts (CI-004)",
+      "severity": "HIGH"
+    },
+    {
+      "id": "CAUS-R006",
+      "description": "Causality chains MUST be reconstructible from canonical global_sequence order.",
+      "enforcement": "validate-causality.ts (CI-005)",
+      "severity": "HIGH"
+    },
+    {
+      "id": "CAUS-R007",
+      "description": "Post-causality checkpoints MUST anchor global_sequence and execution_sequence.",
+      "enforcement": "validate-causality.ts (CI-006)",
+      "severity": "MEDIUM"
+    },
+    {
+      "id": "CAUS-R008",
+      "description": "Once emitted, an event's causality metadata MUST never change.",
+      "enforcement": "validate-causality.ts (CI-007)",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "CAUS-R009",
+      "description": "Fork events (multiple children with same parent) MUST emit a lineage.fork event.",
+      "enforcement": "validate-causality.ts (CI-008)",
+      "severity": "MEDIUM"
+    },
+    {
+      "id": "CAUS-R010",
+      "description": "Invalid event type orderings (e.g., completed before started) MUST be rejected.",
+      "enforcement": "validate-causality.ts (CI-009)",
+      "severity": "HIGH"
+    },
+    {
+      "id": "CAUS-R011",
+      "description": "Sequence gaps larger than 100 indicate potentially unsafe compression.",
+      "enforcement": "validate-causality.ts (CI-010)",
+      "severity": "MEDIUM"
+    }
+  ],
+  "invariants": {
+    "registry": "meta/governance/invariants/invariants.json",
+    "codes": ["CI-001", "CI-002", "CI-003", "CI-004", "CI-005", "CI-006", "CI-007", "CI-008", "CI-009", "CI-010"]
+  },
+  "validation": {
+    "script": "scripts/validate-causality.ts",
+    "npm_command": "causality:validate",
+    "schedule": "on-demand + pre-merge",
+    "exit_codes": { "0": "pass", "1": "fail" }
+  },
+  "cross_references": {
+    "sequence_tracker": "scripts/sequence-tracker.ts",
+    "event_emitter": "scripts/emit-governance-event.ts",
+    "checkpoint_schema": "project-governance/runtime/checkpoints/checkpoint-schema.json",
+    "invariant_registry": "meta/governance/invariants/invariants.json"
+  }
+}

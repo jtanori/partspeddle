@@ -375,10 +375,190 @@
         "created_at": "2026-05-24T12:09:32.264Z",
         "author": "governance-system"
       }
+    },
+    {
+      "id": "causality-monotonic-global",
+      "category": "causality",
+      "description": "All ancestor events in a causality chain must have global_sequence ≤ the event's global_sequence.",
+      "expression": "∀ancestor ∈ causality_chain: ancestor.global_sequence ≤ event.global_sequence",
+      "validation_method": "script",
+      "severity": "CRITICAL",
+      "remediation": "Investigate clock skew or sequence assignment bug. Rebuild sequence store if corruption detected.",
+      "protocols_protected": [
+        "causality-chain",
+        "replay-determinism"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T20:00:00Z",
+        "author": "agent",
+        "invariant_code": "CI-001"
+      }
+    },
+    {
+      "id": "causality-parent-existence",
+      "category": "causality",
+      "description": "Every parent_event_id referenced in an event must exist in streams or causality store.",
+      "expression": "parent_event_id ≠ null → ∃event(parent_event_id) ∨ ∃store(parent_event_id)",
+      "validation_method": "script",
+      "severity": "HIGH",
+      "remediation": "Backfill missing parent events or prune orphaned references. Verify causality store integrity.",
+      "protocols_protected": [
+        "causality-chain",
+        "audit-policy"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T20:00:00Z",
+        "author": "agent",
+        "invariant_code": "CI-002"
+      }
+    },
+    {
+      "id": "causality-acyclic-lineage",
+      "category": "causality",
+      "description": "Causality chains must never contain cycles or self-references.",
+      "expression": "∀event: event.event_id ∉ causality_chain ∧ DFS(causality_chain) ≠ event.event_id",
+      "validation_method": "script",
+      "severity": "CRITICAL",
+      "remediation": "Reject event with cyclic lineage. Rebuild causality store from validated checkpoint.",
+      "protocols_protected": [
+        "causality-chain",
+        "replay-determinism"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T20:00:00Z",
+        "author": "agent",
+        "invariant_code": "CI-003"
+      }
+    },
+    {
+      "id": "causality-execution-boundary",
+      "category": "causality",
+      "description": "Cross-execution parent linkages must be explicitly classified with a valid linkage type.",
+      "expression": "execution_id ≠ parent.execution_id → metadata.linkage_type ∈ {handoff, recovery, escalation, replay, delegation}",
+      "validation_method": "script",
+      "severity": "HIGH",
+      "remediation": "Add linkage_type metadata to cross-execution events. Validate classification taxonomy.",
+      "protocols_protected": [
+        "causality-chain",
+        "execution-lifecycle"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T20:00:00Z",
+        "author": "agent",
+        "invariant_code": "CI-004"
+      }
+    },
+    {
+      "id": "causality-replay-determinism",
+      "category": "causality",
+      "description": "Causality chains must be reconstructible from canonical global_sequence order.",
+      "expression": "reconstruct_chain(global_sequence_order) = stored_causality_chain",
+      "validation_method": "script",
+      "severity": "HIGH",
+      "remediation": "Rebuild causality chains from sequence store. Verify no gaps in global_sequence.",
+      "protocols_protected": [
+        "causality-chain",
+        "replay-determinism"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T20:00:00Z",
+        "author": "agent",
+        "invariant_code": "CI-005"
+      }
+    },
+    {
+      "id": "causality-checkpoint-anchoring",
+      "category": "causality",
+      "description": "Post-causality checkpoints must anchor to global_sequence and execution_sequence for replay boundaries.",
+      "expression": "checkpoint.status ∈ {complete, active} → checkpoint.global_sequence ∧ checkpoint.execution_sequence",
+      "validation_method": "script",
+      "severity": "MEDIUM",
+      "remediation": "Backfill sequence anchors into checkpoint. Update checkpoint creation script.",
+      "protocols_protected": [
+        "causality-chain",
+        "checkpoint"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T20:00:00Z",
+        "author": "agent",
+        "invariant_code": "CI-006"
+      }
+    },
+    {
+      "id": "causality-lineage-immutability",
+      "category": "causality",
+      "description": "Once an event is emitted, its causality metadata must never change.",
+      "expression": "∀occurrence(event_id): lineage_signature = constant",
+      "validation_method": "script",
+      "severity": "CRITICAL",
+      "remediation": "Investigate stream corruption or duplicate event IDs with different content. Restore from backup.",
+      "protocols_protected": [
+        "causality-chain",
+        "audit-policy"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T20:00:00Z",
+        "author": "agent",
+        "invariant_code": "CI-007"
+      }
+    },
+    {
+      "id": "causality-fork-visibility",
+      "category": "causality",
+      "description": "When an event has multiple children (fork), a lineage.fork event must be emitted.",
+      "expression": "COUNT(children(parent_id)) > 1 → ∃lineage.fork(fork_origin = parent_id)",
+      "validation_method": "script",
+      "severity": "MEDIUM",
+      "remediation": "Emit lineage.fork event after detecting multiple children. Update emitter logic.",
+      "protocols_protected": [
+        "causality-chain",
+        "event-stream-policy"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T20:00:00Z",
+        "author": "agent",
+        "invariant_code": "CI-008"
+      }
+    },
+    {
+      "id": "causality-event-type-ordering",
+      "category": "causality",
+      "description": "Certain event type orderings are semantically invalid (e.g., completed before started).",
+      "expression": "∀ancestor ∈ causality_chain: (ancestor.type, event.type) ∉ invalid_pairs",
+      "validation_method": "script",
+      "severity": "HIGH",
+      "remediation": "Reject event with invalid causal ordering. Review state machine transitions.",
+      "protocols_protected": [
+        "causality-chain",
+        "execution-state-machine"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T20:00:00Z",
+        "author": "agent",
+        "invariant_code": "CI-009"
+      }
+    },
+    {
+      "id": "causality-compression-safety",
+      "category": "causality",
+      "description": "Sequence gaps larger than 100 indicate potentially unsafe causality compression or pruning.",
+      "expression": "global_sequence[i] - global_sequence[i-1] ≤ 100",
+      "validation_method": "script",
+      "severity": "MEDIUM",
+      "remediation": "Review compression policy. Ensure pruned events are captured in checkpoint anchors.",
+      "protocols_protected": [
+        "causality-chain",
+        "retention-policy"
+      ],
+      "metadata": {
+        "created_at": "2026-05-24T20:00:00Z",
+        "author": "agent",
+        "invariant_code": "CI-010"
+      }
     }
   ],
   "coverage": {
-    "total_invariants": 22,
+    "total_invariants": 32,
     "by_category": {
       "execution": 7,
       "replay": 1,
@@ -386,12 +566,14 @@
       "event": 1,
       "transition": 1,
       "healing": 3,
-      "audit": 8
+      "audit": 8,
+      "causality": 10
     },
     "by_severity": {
-      "CRITICAL": 16,
-      "HIGH": 6
+      "CRITICAL": 20,
+      "HIGH": 10,
+      "MEDIUM": 4
     },
-    "protocols_protected": 14
+    "protocols_protected": 17
   }
 }

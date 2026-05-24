@@ -82,9 +82,17 @@ export interface SequenceAssignment {
  * - parent_event_id is the last event emitted in the same execution
  * - causality_chain includes the full causal path for this execution
  */
+export interface AssignSequencesOptions {
+  /** Override parent event ID for cross-execution linkage */
+  parentEventId?: string | null;
+  /** Causality chain prefix when using cross-execution parent */
+  parentChain?: string[];
+}
+
 export function assignSequences(
   executionId: string | null,
-  eventId: string
+  eventId: string,
+  opts: AssignSequencesOptions = {}
 ): SequenceAssignment {
   const seqStore = loadSequenceStore();
   const causStore = loadCausalityStore();
@@ -99,12 +107,24 @@ export function assignSequences(
   seqStore.execution_sequences[execKey] = execSeq;
 
   // Determine parent and chain
-  const parentId = causStore.execution_parents[execKey] || null;
-  const chain = parentId
-    ? [...(causStore.execution_chains[execKey] || []), parentId]
-    : [];
+  const autoParentId = causStore.execution_parents[execKey] || null;
+  const parentId = opts.parentEventId !== undefined ? opts.parentEventId : autoParentId;
 
-  // Update causality tracking
+  let chain: string[];
+  if (parentId === null) {
+    chain = [];
+  } else if (opts.parentEventId !== undefined && opts.parentChain) {
+    // Cross-execution linkage: use provided chain prefix + parent
+    chain = [...opts.parentChain, parentId];
+  } else if (parentId === autoParentId) {
+    // Intra-execution: extend execution chain
+    chain = [...(causStore.execution_chains[execKey] || []), parentId];
+  } else {
+    // Fallback: no chain history available
+    chain = [parentId];
+  }
+
+  // Update causality tracking for this execution
   causStore.execution_parents[execKey] = eventId;
   causStore.execution_chains[execKey] = chain;
 

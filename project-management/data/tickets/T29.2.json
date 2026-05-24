@@ -14,13 +14,43 @@
   "deliverables": [
     {
       "path": "scripts/validate-causality.ts",
-      "description": "Causality chain validator",
+      "description": "Causality chain validator CLI",
       "type": "script"
+    },
+    {
+      "path": "scripts/lib/causality-validator.ts",
+      "description": "Causality invariant validation engine (testable library)",
+      "type": "library"
+    },
+    {
+      "path": "tests/scripts/causality-validator.test.ts",
+      "description": "Unit tests for all 10 causality invariants",
+      "type": "test"
     },
     {
       "path": "meta/governance/protocols/causality-policy.json",
       "description": "Causality tracking protocol",
       "type": "file"
+    },
+    {
+      "path": "meta/governance/invariants/invariants.json",
+      "description": "Invariant registry with CI-001..CI-010",
+      "type": "registry"
+    },
+    {
+      "path": "scripts/sequence-tracker.ts",
+      "description": "Updated with cross-execution linkage support",
+      "type": "script"
+    },
+    {
+      "path": "scripts/emit-governance-event.ts",
+      "description": "Updated with linkage_type validation for cross-execution events",
+      "type": "script"
+    },
+    {
+      "path": "project-governance/runtime/checkpoints/checkpoint-schema.json",
+      "description": "Updated with global_sequence and execution_sequence anchors",
+      "type": "schema"
     }
   ],
   "acceptance_criteria": [
@@ -30,14 +60,32 @@
     "Replay from events + checkpoints reconstructs identical causality",
     "npm run causality:validate passes"
   ],
-  "traceability": [],
+  "traceability": [
+    {
+      "commit_hash": "TBD",
+      "files_changed": [
+        "scripts/validate-causality.ts",
+        "scripts/lib/causality-validator.ts",
+        "tests/scripts/causality-validator.test.ts",
+        "meta/governance/protocols/causality-policy.json",
+        "meta/governance/invariants/invariants.json",
+        "scripts/sequence-tracker.ts",
+        "scripts/emit-governance-event.ts",
+        "project-governance/runtime/checkpoints/checkpoint-schema.json",
+        "project-governance/runtime/checkpoints/cp_T29.1_20260524_190953_complete.json",
+        "package.json"
+      ],
+      "description": "Implemented 10 causality invariants (CI-001..CI-010) with validator, tests, policy, and schema updates",
+      "timestamp": "2026-05-24T20:16:00Z"
+    }
+  ],
   "estimated_hours": 5,
-  "status": "planned",
-  "assignee": null,
+  "status": "completed",
+  "assignee": "agent",
   "metadata": {
     "created_at": "2026-05-24T05:50:46Z",
-    "updated_at": "2026-05-24T05:50:46Z",
-    "version": 1,
+    "updated_at": "2026-05-24T20:16:00Z",
+    "version": 2,
     "governance_risk_classification": "HIGH",
     "blocks_scaling": true
   }

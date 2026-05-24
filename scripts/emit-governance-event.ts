@@ -98,8 +98,25 @@ function buildEvent(
   const eventId = opts.event_id ?? randomUUID();
   const executionId = opts.execution_id ?? null;
 
+  // Determine if cross-execution linkage is requested
+  const customParent = opts.parent_event_id;
+  const customChain = opts.causality_chain;
+
+  // Validate cross-execution linkage classification
+  if (customParent && executionId) {
+    const linkageType = (opts.metadata?.linkage_type as string) || (payload.linkage_type as string);
+    const validTypes = ["handoff", "recovery", "escalation", "replay", "delegation"];
+    // Note: strict validation deferred to caller; we warn here
+    if (!linkageType || !validTypes.includes(linkageType)) {
+      console.warn(`[emit-governance-event] Cross-execution linkage without valid linkage_type: ${linkageType}. Valid: ${validTypes.join(", ")}`);
+    }
+  }
+
   // Assign sequences for deterministic replay
-  const sequences = assignSequences(executionId, eventId);
+  const sequences = assignSequences(executionId, eventId, {
+    parentEventId: customParent,
+    parentChain: customChain,
+  });
 
   return {
     event_id: eventId,

@@ -142,6 +142,23 @@
           }
         }
       }
+    },
+    "global_sequence": {
+      "type": "number",
+      "minimum": 1,
+      "description": "Global sequence number at checkpoint creation (post-causality system)"
+    },
+    "execution_sequence": {
+      "type": "number",
+      "minimum": 1,
+      "description": "Execution sequence number at checkpoint creation (post-causality system)"
+    },
+    "validation_summary": {
+      "type": "object",
+      "properties": {
+        "global_sequence": { "type": "number", "minimum": 1 },
+        "execution_sequence": { "type": "number", "minimum": 1 }
+      }
     }
   }
 }
