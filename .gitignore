@@ -49,3 +49,5 @@ project-governance/runtime/events/streams/*.ndjson
 # Ignore auto-generated audit reports
 project-governance/runtime/audits/audit-*.json
 project-governance/runtime/audits/audit-*.md
+bench/
+project-governance/runtime/storage/tests/fixtures/
