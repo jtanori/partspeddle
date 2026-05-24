@@ -1,7 +1,7 @@
 {
   "protocol_version": "1.0.0",
   "bootstrap_type": "CANONICAL_STATE_FIRST",
-  "generated_at": "2026-05-24T23:04:44.168Z",
+  "generated_at": "2026-05-24T23:33:25.608Z",
   "authority": "meta/state/canonical-state.json",
   "latest_checkpoint": {
     "checkpoint_id": "cp_T29.1_20260524_190953_complete",
@@ -14,7 +14,7 @@
   "current_milestone": {
     "id": "M29",
     "title": "Event Causality & Replay Integrity",
-    "status": "in_progress",
+    "status": "completed",
     "phase": 29
   },
   "previous_milestone": {
@@ -23,28 +23,40 @@
     "status": "completed"
   },
   "current_ticket": {
-    "id": "T29.2",
-    "status": "in_progress"
+    "id": "T29.3",
+    "status": "completed"
   },
   "current_branch": "main",
   "execution": {
     "execution_id": "EXEC-2026-05-24-010",
-    "task_id": "T29.2",
+    "task_id": "T29.3",
     "milestone_id": "M29",
-    "status": "EXECUTING",
+    "status": "IDLE",
     "started_at": "2026-05-24T19:09:53.000Z",
-    "completed_at": null,
+    "completed_at": "2026-05-24T23:33:01.123Z",
     "lock_expires_at": "2026-05-25T03:00:00.000Z",
-    "updated_at": "2026-05-24T23:01:49.138Z"
+    "updated_at": "2026-05-24T23:33:01.130Z",
+    "normalization": {
+      "boundary_event_id": "c1238e09-ac95-4626-a5fe-181a49d23ca2",
+      "boundary_sequence": 6,
+      "boundary_timestamp": "2026-05-24T23:13:37.695Z",
+      "legacy_frontier": [
+        "04f62734-6831-4392-b364-bde1e049882c",
+        "37d23d94-31db-4365-b243-ea5b36beb436"
+      ],
+      "replay_mode": "deterministic_after_boundary",
+      "normalized_at": "2026-05-24T23:17:01.723Z"
+    }
   },
   "lock": {
-    "locked": true,
+    "locked": false,
     "execution_id": "EXEC-2026-05-24-010",
     "locked_at": "2026-05-24T18:59:31.000Z",
     "locked_by": "agent",
     "expires_at": "2026-05-25T03:00:00.000Z",
-    "released_at": null,
-    "release_reason": null
+    "released_at": "2026-05-24T23:33:01.131Z",
+    "release_reason": "milestone_closure",
+    "updated_at": "2026-05-24T23:33:01.131Z"
   },
   "completed_tickets_count": 43,
   "completed_tickets": [
@@ -96,8 +108,8 @@
     "project-management/milestones/core.json",
     "project-management/milestones/governance.json"
   ],
-  "safe_resume_point": "execution-continuation",
-  "resume_phase": "ticket-execution",
+  "safe_resume_point": "idle",
+  "resume_phase": "awaiting-ticket",
   "active_constraints": [
     "frontend cannot import backend infrastructure",
     "shared contracts are canonical",

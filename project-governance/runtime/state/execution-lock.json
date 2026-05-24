@@ -1,12 +1,12 @@
 {
   "protocol_version": "1.0.0",
-  "locked": true,
+  "locked": false,
   "execution_id": "EXEC-2026-05-24-010",
   "locked_at": "2026-05-24T18:59:31.000Z",
   "locked_by": "agent",
   "expires_at": "2026-05-25T03:00:00.000Z",
-  "released_at": null,
-  "release_reason": null,
+  "released_at": "2026-05-24T23:33:01.131Z",
+  "release_reason": "milestone_closure",
   "lock_ttl_minutes": 240,
   "acquire_rules": {
     "requires_idle_state": true,
@@ -21,5 +21,5 @@
     "requires_checkpoint_flush": true,
     "requires_bootstrap_generation": true
   },
-  "updated_at": "2026-05-24T23:17:16.002Z"
+  "updated_at": "2026-05-24T23:33:16.227Z"
 }

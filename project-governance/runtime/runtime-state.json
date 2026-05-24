@@ -4,7 +4,7 @@
   "active_phase": 29,
   "active_milestone": {
     "id": "M29",
-    "status": "in_progress"
+    "status": "completed"
   },
   "previous_milestone": {
     "id": "M27",
@@ -14,9 +14,9 @@
   "active_ticket": {
     "id": "T29.3",
     "title": "Replay Integrity Validator",
-    "status": "in_progress"
+    "status": "completed"
   },
-  "execution_mode": "EXECUTION",
+  "execution_mode": "IDLE",
   "execution_surface": "fullstack",
   "current_branch": "main",
   "blocked_tickets": [],
@@ -65,5 +65,5 @@
     "typecheck passes",
     "integration tests pass against Postgres + Redis"
   ],
-  "updated_at": "2026-05-24T23:17:15.979Z"
+  "updated_at": "2026-05-24T23:33:16.204Z"
 }
