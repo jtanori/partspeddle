@@ -1,13 +1,17 @@
 #!/usr/bin/env tsx
 /**
  * emit-governance-event.ts
- * Append-only governance event emitter.
- * Reads event-stream-policy.json for stream routing.
+ * Append-only governance event emitter with sequence assignment — T29.1 deliverable
+ *
+ * Assigns global_sequence, execution_sequence, parent_event_id, and causality_chain
+ * to every emitted event for deterministic replay under concurrency.
  */
+
 import { readFileSync, existsSync } from "fs";
 import { randomUUID } from "crypto";
 import { resolve } from "path";
 import { appendToStream, selectStreams, validatePayloadSize } from "./lib/stream-emitter.js";
+import { assignSequences } from "./sequence-tracker.ts";
 
 const POLICY_PATH = resolve("meta/governance/events/event-stream-policy.json");
 const SCHEMA_PATH = resolve("meta/governance/events/schemas/governance-event.schema.json");
@@ -43,6 +47,10 @@ interface GovernanceEvent {
   session_id?: string | null;
   correlation_id?: string | null;
   causation_id?: string | null;
+  global_sequence?: number;
+  execution_sequence?: number;
+  parent_event_id?: string | null;
+  causality_chain?: string[];
   payload?: Record<string, unknown>;
   metadata?: Record<string, unknown>;
 }
@@ -62,6 +70,15 @@ function validateEvent(event: GovernanceEvent, policy: Policy): string[] {
   if (!validSeverities.includes(event.severity)) errors.push(`Invalid severity: ${event.severity}`);
   const validCategories: Category[] = ["execution", "validation", "recovery", "governance", "runtime", "planning", "diagnostics"];
   if (!validCategories.includes(event.category)) errors.push(`Invalid category: ${event.category}`);
+
+  // Validate sequence fields if present
+  if (event.global_sequence !== undefined && (!Number.isInteger(event.global_sequence) || event.global_sequence < 1)) {
+    errors.push("global_sequence must be a positive integer");
+  }
+  if (event.execution_sequence !== undefined && (!Number.isInteger(event.execution_sequence) || event.execution_sequence < 1)) {
+    errors.push("execution_sequence must be a positive integer");
+  }
+
   const sizeErrors = validatePayloadSize(event, policy.validation.max_payload_size_bytes);
   errors.push(...sizeErrors);
   return errors;
@@ -78,19 +95,29 @@ function buildEvent(
   payload: Record<string, unknown> = {},
   opts: Partial<GovernanceEvent> = {}
 ): GovernanceEvent {
+  const eventId = opts.event_id ?? randomUUID();
+  const executionId = opts.execution_id ?? null;
+
+  // Assign sequences for deterministic replay
+  const sequences = assignSequences(executionId, eventId);
+
   return {
-    event_id: opts.event_id ?? randomUUID(),
+    event_id: eventId,
     timestamp: opts.timestamp ?? new Date().toISOString(),
     event_type: eventType,
     severity,
     category,
-    execution_id: opts.execution_id ?? null,
+    execution_id: executionId,
     milestone: opts.milestone ?? null,
     ticket: opts.ticket ?? null,
     actor: opts.actor ?? "system",
     session_id: opts.session_id ?? null,
     correlation_id: opts.correlation_id ?? null,
     causation_id: opts.causation_id ?? null,
+    global_sequence: sequences.global_sequence,
+    execution_sequence: sequences.execution_sequence,
+    parent_event_id: sequences.parent_event_id,
+    causality_chain: sequences.causality_chain,
     payload,
     metadata: opts.metadata ?? {},
   };
@@ -126,5 +153,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     console.error("Validation failed:", result.errors);
     process.exit(1);
   }
-  console.log("Emitted to:", result.streams.join(", "), "event_id:", event.event_id);
+  console.log("Emitted to:", result.streams.join(", "), "event_id:", event.event_id, "global_seq:", event.global_sequence, "exec_seq:", event.execution_sequence);
 }

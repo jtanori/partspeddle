@@ -1,12 +1,12 @@
 {
   "protocol_version": "1.0.0",
-  "locked": false,
-  "execution_id": "EXEC-2026-05-24-009",
-  "locked_at": "2026-05-24T17:58:33.000Z",
+  "locked": true,
+  "execution_id": "EXEC-2026-05-24-010",
+  "locked_at": "2026-05-24T18:59:31.000Z",
   "locked_by": "agent",
-  "expires_at": "2026-05-24T21:58:33.000Z",
-  "released_at": "2026-05-24T18:23:43.000Z",
-  "release_reason": "T32.5 complete, M32 closed",
+  "expires_at": "2026-05-24T22:59:31.000Z",
+  "released_at": null,
+  "release_reason": null,
   "lock_ttl_minutes": 240,
   "acquire_rules": {
     "requires_idle_state": true,
@@ -21,5 +21,5 @@
     "requires_checkpoint_flush": true,
     "requires_bootstrap_generation": true
   },
-  "updated_at": "2026-05-24T18:25:54.815Z"
+  "updated_at": "2026-05-24T19:00:34.467Z"
 }

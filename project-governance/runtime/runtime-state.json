@@ -1,10 +1,10 @@
 {
   "system": "VINTRACK",
   "version": "0.1.0",
-  "active_phase": 32,
+  "active_phase": 29,
   "active_milestone": {
-    "id": "M32",
-    "status": "completed"
+    "id": "M29",
+    "status": "in_progress"
   },
   "previous_milestone": {
     "id": "M27",
@@ -12,11 +12,11 @@
     "completed_at": "2026-05-24T13:03:44.668Z"
   },
   "active_ticket": {
-    "id": "T32.5",
-    "title": "P0 Integration & Validation",
-    "status": "completed"
+    "id": "T29.1",
+    "title": "Global Event Sequence IDs",
+    "status": "in_progress"
   },
-  "execution_mode": "IDLE",
+  "execution_mode": "EXECUTION",
   "execution_surface": "fullstack",
   "current_branch": "main",
   "blocked_tickets": [],
@@ -65,5 +65,5 @@
     "typecheck passes",
     "integration tests pass against Postgres + Redis"
   ],
-  "updated_at": "2026-05-24T18:25:54.801Z"
+  "updated_at": "2026-05-24T19:00:34.453Z"
 }

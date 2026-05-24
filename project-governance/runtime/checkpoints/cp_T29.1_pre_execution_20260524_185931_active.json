@@ -1,0 +1,21 @@
+{
+  "checkpoint_id": "cp_T29.1_pre_execution_20260524_185931_active",
+  "ticket_id": "T29.1",
+  "milestone_id": "M29",
+  "execution_id": "EXEC-2026-05-24-010",
+  "status": "active",
+  "created_at": "2026-05-24T18:59:31.000Z",
+  "updated_at": "2026-05-24T18:59:31.000Z",
+  "canonical_state_path": "meta/state/canonical-state.json",
+  "canonical_state_hash": "25ff0601df51ac21",
+  "projection_hashes": {
+    "runtime-state": "4cff7e6a7729fdad",
+    "active-execution": "7a64040eb38aa234",
+    "current-milestone": "f8b54715e34a83b7",
+    "current-ticket": "08d88c9421a1567b",
+    "execution-lock": "254ae490708cadd4",
+    "runtime-bootstrap": "0b6fd62f5d77b493"
+  },
+  "preceding_checkpoint": "cp_T32_20260524_182343_complete",
+  "rollback_note": "Pre-M29 execution checkpoint. Restore canonical-state and re-run sync-projections to recover."
+}

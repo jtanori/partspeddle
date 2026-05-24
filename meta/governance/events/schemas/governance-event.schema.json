@@ -63,6 +63,26 @@
       "format": "uuid",
       "description": "Event that caused this event"
     },
+    "global_sequence": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Monotonically increasing sequence across all events"
+    },
+    "execution_sequence": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Monotonically increasing sequence within an execution"
+    },
+    "parent_event_id": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "Causally preceding event in the same execution"
+    },
+    "causality_chain": {
+      "type": "array",
+      "items": { "type": "string", "format": "uuid" },
+      "description": "Ordered chain of ancestor event IDs within this execution"
+    },
     "payload": {
       "type": "object",
       "description": "Event-specific data"

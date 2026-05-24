@@ -3,14 +3,14 @@
   "protocol_version": "1.0.0",
   "authority": "meta/state/canonical-state.json",
   "principle": "This file is the ONLY mutable runtime state. All other state files are derived projections.",
-  "updated_at": "2026-05-24T18:26:10.214Z",
+  "updated_at": "2026-05-24T18:59:31.000Z",
   "execution": {
-    "execution_id": "EXEC-2026-05-24-009",
-    "task_id": "T32.5",
-    "milestone_id": "M32",
-    "status": "COMPLETE",
-    "started_at": "2026-05-24T17:58:33.000Z",
-    "completed_at": "2026-05-24T18:23:43.000Z"
+    "execution_id": "EXEC-2026-05-24-010",
+    "task_id": "T29.1",
+    "milestone_id": "M29",
+    "status": "EXECUTING",
+    "started_at": "2026-05-24T18:59:31.000Z",
+    "completed_at": null
   },
   "last_execution": {
     "execution_id": "EXEC-2026-05-24-007",
@@ -21,30 +21,30 @@
     "completed_at": "2026-05-24T14:33:17.502Z"
   },
   "milestone": {
-    "id": "M32",
-    "status": "completed"
+    "id": "M29",
+    "status": "in_progress"
   },
   "ticket": {
-    "id": "T32.5",
-    "title": "P0 Integration & Validation",
-    "status": "completed"
+    "id": "T29.1",
+    "title": "Global Event Sequence IDs",
+    "status": "in_progress"
   },
   "lock": {
-    "locked": false,
-    "execution_id": "EXEC-2026-05-24-009",
-    "locked_at": "2026-05-24T17:58:33.000Z",
+    "locked": true,
+    "execution_id": "EXEC-2026-05-24-010",
+    "locked_at": "2026-05-24T18:59:31.000Z",
     "locked_by": "agent",
-    "expires_at": "2026-05-24T21:58:33.000Z",
-    "released_at": "2026-05-24T18:23:43.000Z",
-    "release_reason": "T32.5 complete, M32 closed"
+    "expires_at": "2026-05-24T22:59:31.000Z",
+    "released_at": null,
+    "release_reason": null
   },
   "repository": {
     "branch": "main",
     "base_branch": "main",
-    "worktree_clean": false,
-    "head_commit": "e2e3da3843afae54e02aa52a5105979108a24692",
+    "worktree_clean": true,
+    "head_commit": "2218d7279e3b10bb4cc413b96ff60e3514edd65c",
     "promotion_status": "pending",
-    "last_validated_at": "2026-05-24T18:26:10.209Z"
+    "last_validated_at": "2026-05-24T18:59:30.899Z"
   },
   "governance": {
     "heartbeat_policy": "ACTIVE",
