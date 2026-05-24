@@ -46,3 +46,6 @@ supabase/.temp/
 project-governance/runtime/healing/snapshots/SNAP-*.json
 project-governance/runtime/healing/healing-log.ndjson
 project-governance/runtime/events/streams/*.ndjson
+# Ignore auto-generated audit reports
+project-governance/runtime/audits/audit-*.json
+project-governance/runtime/audits/audit-*.md

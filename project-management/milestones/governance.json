@@ -934,7 +934,7 @@
     ],
     "downstream_impact": "Enables M25 (Deployment Governance). Provides health substrate for deployment readiness.",
     "estimated_duration_days": 4,
-    "status": "in_progress",
+    "status": "completed",
     "ticket_paths": {
       "T24.1": {
         "path": "project-management/data/tickets/T24.1.json",
