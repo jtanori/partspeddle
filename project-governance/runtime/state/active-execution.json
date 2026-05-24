@@ -11,7 +11,18 @@
     "started_at": "2026-05-24T19:09:53.000Z",
     "completed_at": null,
     "lock_expires_at": "2026-05-25T03:00:00.000Z",
-    "updated_at": "2026-05-24T23:05:57.631Z"
+    "updated_at": "2026-05-24T23:17:01.728Z",
+    "normalization": {
+      "boundary_event_id": "c1238e09-ac95-4626-a5fe-181a49d23ca2",
+      "boundary_sequence": 6,
+      "boundary_timestamp": "2026-05-24T23:13:37.695Z",
+      "legacy_frontier": [
+        "04f62734-6831-4392-b364-bde1e049882c",
+        "37d23d94-31db-4365-b243-ea5b36beb436"
+      ],
+      "replay_mode": "deterministic_after_boundary",
+      "normalized_at": "2026-05-24T23:17:01.723Z"
+    }
   },
   "safe_exit": null,
   "last_execution": {
@@ -49,7 +60,7 @@
   "drift_risk": {
     "level": "NONE",
     "reason": "P0 stabilization active. Projections synchronized.",
-    "last_assessed_at": "2026-05-24T23:06:53.827Z"
+    "last_assessed_at": "2026-05-24T23:17:15.995Z"
   },
   "repository_context": {
     "branch": "main",
@@ -64,12 +75,12 @@
     "checkpoint_persisted": true,
     "projections_synchronized": true,
     "no_active_mutations": false,
-    "last_verified_at": "2026-05-24T23:06:53.828Z"
+    "last_verified_at": "2026-05-24T23:17:15.995Z"
   },
   "system": {
     "name": "VINTRACK",
     "version": "0.1.0",
-    "updated_at": "2026-05-24T23:06:53.828Z"
+    "updated_at": "2026-05-24T23:17:15.995Z"
   },
-  "updated_at": "2026-05-24T23:06:53.828Z"
+  "updated_at": "2026-05-24T23:17:15.995Z"
 }

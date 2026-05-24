@@ -1,0 +1,26 @@
+{
+  "checkpoint_id": "cp_T29.2a_20260524_231337_complete",
+  "ticket_id": "T29.2a",
+  "milestone_id": "M29",
+  "execution_id": "EXEC-2026-05-24-010",
+  "status": "complete",
+  "created_at": "2026-05-24T23:13:37.000Z",
+  "completed_at": "2026-05-24T23:13:37.000Z",
+  "global_sequence": 6,
+  "execution_sequence": 6,
+  "boundary_event_id": "c1238e09-ac95-4626-a5fe-181a49d23ca2",
+  "replay_trust_frontier": [
+    "04f62734-6831-4392-b364-bde1e049882c",
+    "37d23d94-31db-4365-b243-ea5b36beb436"
+  ],
+  "validation_summary": {
+    "causality_invariants_passed": 10,
+    "replay_invariants_passed": 7,
+    "total_invariants_passed": 39,
+    "total_invariants_failed": 0,
+    "boundary_emitted": true,
+    "legacy_frontier_registered": true,
+    "status": "PASS"
+  },
+  "preceding_checkpoint": "cp_T29.3_20260524_230137_complete"
+}

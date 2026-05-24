@@ -104,6 +104,15 @@ function loadCausalityStore(path: string): { execution_parents: Record<string, s
   return JSON.parse(readFileSync(path, "utf-8")) as { execution_parents: Record<string, string>; execution_chains: Record<string, string[]> };
 }
 
+function findBoundaryEvent(events: GovernanceEvent[]): GovernanceEvent | null {
+  return events.find((e) => e.event_type === "causality.boundary") || null;
+}
+
+function getLegacyFrontier(boundary: GovernanceEvent | null): Set<string> {
+  if (!boundary || !boundary.payload?.legacy_frontier) return new Set();
+  return new Set(boundary.payload.legacy_frontier as string[]);
+}
+
 function loadCheckpoints(checkpointsDir: string): Array<Record<string, unknown>> {
   const checkpoints: Array<Record<string, unknown>> = [];
   if (!existsSync(checkpointsDir)) return checkpoints;
@@ -121,7 +130,8 @@ function loadCheckpoints(checkpointsDir: string): Array<Record<string, unknown>>
 
 function buildKnownEventSet(
   events: GovernanceEvent[],
-  causalityStore: ReturnType<typeof loadCausalityStore>
+  causalityStore: ReturnType<typeof loadCausalityStore>,
+  legacyFrontier: Set<string> = new Set()
 ): Set<string> {
   const known = new Set(events.map((e) => e.event_id));
   if (causalityStore) {
@@ -133,6 +143,9 @@ function buildKnownEventSet(
         known.add(id);
       }
     }
+  }
+  for (const id of legacyFrontier) {
+    known.add(id);
   }
   return known;
 }
@@ -488,7 +501,9 @@ export function validateCausality(paths: Partial<ValidationPaths> = {}): Validat
   const events = loadEventStreams(merged.eventsDir);
   const checkpoints = loadCheckpoints(merged.checkpointsDir);
   const causalityStore = loadCausalityStore(merged.causalityStorePath);
-  const knownEvents = buildKnownEventSet(events, causalityStore);
+  const boundary = findBoundaryEvent(events);
+  const legacyFrontier = getLegacyFrontier(boundary);
+  const knownEvents = buildKnownEventSet(events, causalityStore, legacyFrontier);
 
   const allFindings: ValidationFinding[] = [];
 

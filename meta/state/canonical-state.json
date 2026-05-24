@@ -12,7 +12,18 @@
     "started_at": "2026-05-24T19:09:53.000Z",
     "completed_at": null,
     "lock_expires_at": "2026-05-25T03:00:00.000Z",
-    "updated_at": "2026-05-24T23:05:57.631Z"
+    "updated_at": "2026-05-24T23:17:01.728Z",
+    "normalization": {
+      "boundary_event_id": "c1238e09-ac95-4626-a5fe-181a49d23ca2",
+      "boundary_sequence": 6,
+      "boundary_timestamp": "2026-05-24T23:13:37.695Z",
+      "legacy_frontier": [
+        "04f62734-6831-4392-b364-bde1e049882c",
+        "37d23d94-31db-4365-b243-ea5b36beb436"
+      ],
+      "replay_mode": "deterministic_after_boundary",
+      "normalized_at": "2026-05-24T23:17:01.723Z"
+    }
   },
   "last_execution": {
     "execution_id": "EXEC-2026-05-24-010",

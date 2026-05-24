@@ -129,6 +129,15 @@ function loadCheckpoints(checkpointsDir: string): Array<Record<string, unknown>>
   return checkpoints;
 }
 
+function findBoundaryEvent(events: GovernanceEvent[]): GovernanceEvent | null {
+  return events.find((e) => e.event_type === "causality.boundary") || null;
+}
+
+function getLegacyFrontier(boundary: GovernanceEvent | null): Set<string> {
+  if (!boundary || !boundary.payload?.legacy_frontier) return new Set();
+  return new Set(boundary.payload.legacy_frontier as string[]);
+}
+
 function buildKnownEventSet(events: GovernanceEvent[], causalityStore: ReturnType<typeof loadCausalityStore>): Set<string> {
   const known = new Set(events.map((e) => e.event_id));
   if (causalityStore) {
@@ -146,7 +155,7 @@ function buildKnownEventSet(events: GovernanceEvent[], causalityStore: ReturnTyp
 
 // ─── RI-001: Causal Breaks ───
 // Detects events whose causality chain cannot be fully traversed from the stream
-function validateCausalBreaks(events: GovernanceEvent[], knownEvents: Set<string>): ReplayFinding[] {
+function validateCausalBreaks(events: GovernanceEvent[], knownEvents: Set<string>, legacyFrontier: Set<string>): ReplayFinding[] {
   const findings: ReplayFinding[] = [];
   const eventMap = new Map(events.map((e) => [e.event_id, e]));
 
@@ -156,10 +165,13 @@ function validateCausalBreaks(events: GovernanceEvent[], knownEvents: Set<string
     // Walk the chain and verify every ancestor is reachable
     for (let i = 0; i < event.causality_chain.length; i++) {
       const ancestorId = event.causality_chain[i];
+
+      // Legacy frontier ancestors are pre-normalization lineage — do not flag
+      if (legacyFrontier.has(ancestorId)) continue;
+
       const ancestor = eventMap.get(ancestorId);
 
       if (!ancestor) {
-        // Ancestor not in streams — acceptable only if in store AND it's before this event's sequence
         if (!knownEvents.has(ancestorId)) {
           findings.push({
             invariant: "RI-001",
@@ -172,8 +184,8 @@ function validateCausalBreaks(events: GovernanceEvent[], knownEvents: Set<string
         continue;
       }
 
-      // Verify ancestor's chain is a proper prefix
-      if (ancestor.causality_chain) {
+      // Verify ancestor's chain is a proper prefix (skip if ancestor itself is on frontier)
+      if (ancestor.causality_chain && !legacyFrontier.has(ancestor.event_id)) {
         const expectedPrefix = event.causality_chain.slice(0, i);
         const actualPrefix = ancestor.causality_chain;
         if (JSON.stringify(expectedPrefix) !== JSON.stringify(actualPrefix)) {
@@ -243,11 +255,13 @@ function validateOrderingAmbiguity(events: GovernanceEvent[]): ReplayFinding[] {
 }
 
 // ─── RI-003: Orphaned Events ───
-function validateOrphanedEvents(events: GovernanceEvent[], knownEvents: Set<string>): ReplayFinding[] {
+function validateOrphanedEvents(events: GovernanceEvent[], knownEvents: Set<string>, legacyFrontier: Set<string>): ReplayFinding[] {
   const findings: ReplayFinding[] = [];
 
   for (const event of events) {
     if (event.parent_event_id === undefined || event.parent_event_id === null) continue;
+    // Legacy frontier parents are pre-normalization lineage — do not flag
+    if (legacyFrontier.has(event.parent_event_id)) continue;
     if (!knownEvents.has(event.parent_event_id)) {
       findings.push({
         invariant: "RI-003",
@@ -445,9 +459,12 @@ export function validateReplayIntegrity(paths: Partial<ValidationPaths> = {}): R
 
   const allFindings: ReplayFinding[] = [];
 
-  allFindings.push(...validateCausalBreaks(events, knownEvents));
+  const boundary = findBoundaryEvent(events);
+  const legacyFrontier = getLegacyFrontier(boundary);
+
+  allFindings.push(...validateCausalBreaks(events, knownEvents, legacyFrontier));
   allFindings.push(...validateOrderingAmbiguity(events));
-  allFindings.push(...validateOrphanedEvents(events, knownEvents));
+  allFindings.push(...validateOrphanedEvents(events, knownEvents, legacyFrontier));
   allFindings.push(...validateDuplicateLineage(perStreamDuplicates));
   allFindings.push(...validateClockDrift(events));
   allFindings.push(...validateReplayDeterminism(events, sequenceStore));

@@ -49,6 +49,17 @@
       "description": "Classification for cross-execution causal linkages.",
       "enum": ["handoff", "recovery", "escalation", "replay", "delegation"],
       "required_when": "execution_id ≠ parent.execution_id"
+    },
+    "boundary_event": {
+      "description": "Immutable genesis boundary declaring the replay trust frontier.",
+      "type": "causality.boundary",
+      "required_fields": ["boundary_id", "legacy_frontier", "replay_mode"],
+      "constraints": {
+        "parent_event_id": null,
+        "causality_chain": [],
+        "immutable": true,
+        "singleton": true
+      }
     }
   },
   "rules": [
@@ -117,6 +128,36 @@
       "description": "Sequence gaps larger than 100 indicate potentially unsafe compression.",
       "enforcement": "validate-causality.ts (CI-010)",
       "severity": "MEDIUM"
+    },
+    {
+      "id": "GB-001",
+      "description": "Exactly one causality.boundary event MUST exist to declare the replay trust frontier.",
+      "enforcement": "validate-causality.ts + validate-replay-integrity.ts",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "GB-002",
+      "description": "The genesis boundary MUST have null parent_event_id and empty causality_chain.",
+      "enforcement": "validate-causality.ts (CI-002, CI-003)",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "GB-003",
+      "description": "Legacy ancestors referenced in boundary metadata MUST be classified as pre-normalization lineage.",
+      "enforcement": "validate-replay-integrity.ts (RI-001)",
+      "severity": "HIGH"
+    },
+    {
+      "id": "GB-004",
+      "description": "Replay reconstruction MUST stop at the genesis boundary or explicitly enter legacy replay mode.",
+      "enforcement": "validate-replay-integrity.ts (RI-006)",
+      "severity": "HIGH"
+    },
+    {
+      "id": "GB-005",
+      "description": "No historical event MAY be mutated during boundary normalization.",
+      "enforcement": "validate-causality.ts (CI-007) + audit-runtime.ts",
+      "severity": "CRITICAL"
     }
   ],
   "invariants": {

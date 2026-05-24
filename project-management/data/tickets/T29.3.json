@@ -29,7 +29,7 @@
   ],
   "traceability": [
     {
-      "commit_hash": "TBD",
+      "commit_hash": "fcbaf1b",
       "files_changed": [
         "scripts/validate-replay-integrity.ts",
         "scripts/lib/replay-integrity-validator.ts",
