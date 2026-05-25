@@ -13,8 +13,8 @@
     "completed_at": "2026-05-25T02:20:15.000Z"
   },
   "active_ticket": {
-    "id": "T31.0",
-    "title": "Canonical Recipe Registry Bootstrap",
+    "id": "T31.1",
+    "title": "Unified Runtime Dashboard Design",
     "status": "in_progress"
   },
   "execution_mode": "IDLE",
@@ -66,5 +66,5 @@
     "typecheck passes",
     "integration tests pass against Postgres + Redis"
   ],
-  "updated_at": "2026-05-25T03:49:57.960Z"
+  "updated_at": "2026-05-25T03:55:49.224Z"
 }

@@ -1,0 +1,110 @@
+{
+  "id": "healing_self_heal_run",
+  "version": "1.0.0",
+  "category": "healing",
+  "description": "Execute the self-healing protocol: scan for drift, attempt auto-repair, emit repair events, and snapshot results. Requires snapshot before mutation.",
+  "capabilities": ["read", "mutate", "emit", "recovery"],
+  "determinism": {
+    "deterministic": false,
+    "idempotent": false,
+    "replaySafe": true,
+    "sideEffects": ["filesystem", "event_streams"]
+  },
+  "inputs": [
+    {
+      "name": "mode",
+      "type": "string",
+      "required": false,
+      "default": "scan",
+      "description": "scan | heal | snapshot"
+    },
+    {
+      "name": "auto_repair",
+      "type": "boolean",
+      "required": false,
+      "default": false,
+      "description": "Whether to attempt automatic repair"
+    }
+  ],
+  "guards": [
+    {
+      "invariant": "LOCK_FREE",
+      "behavior": "warn",
+      "description": "Healing while execution is active may cause race conditions"
+    },
+    {
+      "invariant": "CHECKPOINT_FRESHNESS",
+      "behavior": "warn",
+      "description": "Recent checkpoint recommended before healing"
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "action": "heal_snapshot",
+      "command": "npm run heal:snapshot",
+      "description": "Create pre-healing snapshot",
+      "timeout_seconds": 30
+    },
+    {
+      "order": 2,
+      "action": "heal_scan",
+      "command": "npm run heal:scan",
+      "description": "Scan for drift and anomalies",
+      "timeout_seconds": 60
+    },
+    {
+      "order": 3,
+      "action": "heal_repair",
+      "command": "npm run heal:run",
+      "description": "Attempt auto-repair of detected drifts",
+      "timeout_seconds": 120
+    }
+  ],
+  "emits": [
+    {
+      "event_type": "control.recipe.invoked",
+      "severity": "info",
+      "category": "governance"
+    },
+    {
+      "event_type": "control.action.executed",
+      "severity": "info",
+      "category": "recovery"
+    },
+    {
+      "event_type": "governance.drift.repaired",
+      "severity": "info",
+      "category": "recovery"
+    },
+    {
+      "event_type": "governance.drift.detected",
+      "severity": "warn",
+      "category": "recovery"
+    }
+  ],
+  "rollback": [
+    {
+      "order": 1,
+      "action": "snapshot_restore",
+      "command": "npm run heal:snapshot --restore",
+      "description": "Restore pre-healing snapshot"
+    }
+  ],
+  "requiresApproval": false,
+  "compatibility": {
+    "minimumRuntime": "0.1.0"
+  },
+  "dependencies": {
+    "invokes": [],
+    "depends_on": ["healing_sync_projections"],
+    "blocks": [],
+    "supersedes": []
+  },
+  "metadata": {
+    "author": "system",
+    "created_at": "2026-05-25T02:45:00Z",
+    "updated_at": "2026-05-25T02:45:00Z",
+    "tags": ["healing", "self-heal", "drift", "recovery"]
+  }
+}

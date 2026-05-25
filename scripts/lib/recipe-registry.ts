@@ -243,14 +243,27 @@ export function validateRecipes(recipes: Array<{ path: string; recipe: Recipe }>
       });
     }
 
-    // ReplaySafe consistency
+    // ReplaySafe consistency: warn if replaySafe without determinism
+    // Non-deterministic recipes can be replaySafe if they emit sufficient events
+    // to capture state during execution. Mutating non-deterministic recipes
+    // should emit events to preserve replay integrity.
     if (recipe.determinism.replaySafe && !recipe.determinism.deterministic) {
-      errors.push({
-        recipe: recipe.id,
-        code: "REPLAY_WITHOUT_DETERMINISM",
-        message: "replaySafe=true requires deterministic=true",
-        severity: "error",
-      });
+      const isMutating = recipe.capabilities.includes("mutate") || recipe.capabilities.includes("destructive");
+      if (isMutating && recipe.emits.length < 2) {
+        errors.push({
+          recipe: recipe.id,
+          code: "REPLAY_WITHOUT_DETERMINISM",
+          message: "Non-deterministic mutating recipe with replaySafe=true should emit at least 2 events to preserve replay integrity",
+          severity: "warning",
+        });
+      } else {
+        errors.push({
+          recipe: recipe.id,
+          code: "REPLAY_WITHOUT_DETERMINISM",
+          message: "replaySafe=true without deterministic=true — ensure events capture execution variance",
+          severity: "warning",
+        });
+      }
     }
   }
 

@@ -1,0 +1,61 @@
+{
+  "id": "diagnostics_suggest_next_actions",
+  "version": "1.0.0",
+  "category": "diagnostics",
+  "description": "Generate non-mutating operational recommendations based on current runtime state, milestone progress, and historical patterns. Purely advisory — no state mutation.",
+  "capabilities": ["read", "emit"],
+  "determinism": {
+    "deterministic": false,
+    "idempotent": true,
+    "replaySafe": true,
+    "sideEffects": []
+  },
+  "inputs": [
+    {
+      "name": "context",
+      "type": "string",
+      "required": false,
+      "default": "current",
+      "description": "current | milestone | ticket | global"
+    }
+  ],
+  "guards": [],
+  "steps": [
+    {
+      "order": 1,
+      "action": "suggestions_generate",
+      "command": "npm run suggestions:generate",
+      "description": "Generate operational recommendations",
+      "timeout_seconds": 30
+    }
+  ],
+  "emits": [
+    {
+      "event_type": "control.recipe.invoked",
+      "severity": "info",
+      "category": "governance"
+    },
+    {
+      "event_type": "control.suggestion.generated",
+      "severity": "debug",
+      "category": "planning"
+    }
+  ],
+  "rollback": [],
+  "requiresApproval": false,
+  "compatibility": {
+    "minimumRuntime": "0.1.0"
+  },
+  "dependencies": {
+    "invokes": [],
+    "depends_on": [],
+    "blocks": [],
+    "supersedes": []
+  },
+  "metadata": {
+    "author": "system",
+    "created_at": "2026-05-25T02:45:00Z",
+    "updated_at": "2026-05-25T02:45:00Z",
+    "tags": ["diagnostics", "suggestions", "advisory", "non-mutating"]
+  }
+}

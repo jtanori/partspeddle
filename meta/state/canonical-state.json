@@ -3,10 +3,10 @@
   "protocol_version": "1.0.0",
   "authority": "meta/state/canonical-state.json",
   "principle": "This file is the ONLY mutable runtime state. All other state files are derived projections.",
-  "updated_at": "2026-05-25T02:35:00.000Z",
+  "updated_at": "2026-05-25T02:50:00.000Z",
   "execution": {
     "execution_id": "EXEC-2026-05-24-010",
-    "task_id": "T31.0",
+    "task_id": "T31.1",
     "milestone_id": "M31",
     "status": "PLANNING",
     "started_at": "2026-05-24T19:09:53.000Z",
@@ -39,8 +39,8 @@
     "title": "Operational Control Plane"
   },
   "ticket": {
-    "id": "T31.0",
-    "title": "Canonical Recipe Registry Bootstrap",
+    "id": "T31.1",
+    "title": "Unified Runtime Dashboard Design",
     "status": "in_progress"
   },
   "lock": {
