@@ -128,7 +128,7 @@
     ],
     "downstream_impact": "Enables M17 (Automation). Blocks any automated doc generation.",
     "estimated_duration_days": 2,
-    "status": "in_progress",
+    "status": "completed",
     "metadata": {
       "wave": 2,
       "risk": "LOW",

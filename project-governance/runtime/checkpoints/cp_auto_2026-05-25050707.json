@@ -1,0 +1,29 @@
+{
+  "checkpoint_id": "cp_auto_2026-05-25050707",
+  "milestone_id": "M31",
+  "ticket_id": null,
+  "status": "complete",
+  "created_at": "2026-05-25T05:07:07.548Z",
+  "updated_at": "2026-05-25T05:07:07.548Z",
+  "global_sequence": 41,
+  "execution_sequence": 0,
+  "previous_checkpoint": "cp_auto_2026-05-25045934",
+  "causality": {
+    "execution_id": "EXEC-2026-05-24-010",
+    "parent_event_id": null,
+    "causality_chain": []
+  },
+  "replay_boundary": {
+    "boundary_event_id": "c1238e09-ac95-4626-a5fe-181a49d23ca2",
+    "boundary_sequence": 6
+  },
+  "validation_summary": {
+    "replay_integrity": "PASS",
+    "causality": "PASS",
+    "invariants": "PASS",
+    "projections": "PASS",
+    "recipes": "PASS"
+  },
+  "git_commit": "unknown",
+  "closure_reason": "M31 Operational Control Plane closure"
+}

@@ -1,0 +1,21 @@
+{
+  "action_id": "ACT-2026-05-25-05-01-11-3c254307",
+  "timestamp": "2026-05-25T05:01:37.648Z",
+  "actor": "operator",
+  "recipe_id": "diagnostics_health_check",
+  "target": "diagnostics_health_check",
+  "parameters": {},
+  "reason": "control-plane execution",
+  "state": "executing",
+  "dry_run": true,
+  "validation": {
+    "passed": true,
+    "guards_checked": [
+      "RECIPE_EXISTS",
+      "ACTION_CLASS_POLICY",
+      "LOCK_VALIDATION",
+      "INPUT_VALIDATION"
+    ],
+    "violations": []
+  }
+}

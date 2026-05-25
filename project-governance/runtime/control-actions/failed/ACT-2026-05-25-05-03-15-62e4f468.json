@@ -1,0 +1,27 @@
+{
+  "action_id": "ACT-2026-05-25-05-03-15-62e4f468",
+  "timestamp": "2026-05-25T05:03:41.976Z",
+  "actor": "operator",
+  "recipe_id": "enforcement_validate_all",
+  "target": "enforcement_validate_all",
+  "parameters": {},
+  "reason": "control-plane execution",
+  "state": "failed",
+  "dry_run": false,
+  "validation": {
+    "passed": true,
+    "guards_checked": [
+      "RECIPE_EXISTS",
+      "ACTION_CLASS_POLICY",
+      "LOCK_VALIDATION",
+      "INPUT_VALIDATION"
+    ],
+    "violations": []
+  },
+  "execution": {
+    "started_at": "2026-05-25T05:03:15.819Z",
+    "completed_at": "2026-05-25T05:03:41.975Z",
+    "error": "\n> vintrack@0.1.0 enforce:run\n> ./node_modules/.bin/tsx scripts/enforce-governance.ts enforce\n\n# Governance Enforcement Report\n\n**Result:** ❌ FAILED\n**Latency:** 2476ms\n**Violations:** 2\n\n## Violations\n\n### protocol-validation (high)\n- **Message:** Protocol causality-policy.json violates schema: data must have required property 'id', data must have required property 'layer', data must have required property 'derives_from', data must have required property 'canonical', data must NOT have additional properties, data must NOT have additional properties, data must NOT have additional properties, data must NOT have additional properties, data must NOT have additional properties, data must NOT have additional properties, data/scope must be string, data/scope must be equal to one of the allowed values, data/rules/0 must have required property 'condition', data/rules/0 must have required property 'action', data/rules/1 must have required property 'condition', data/rules/1 must have required property 'action', data/rules/2 must have required property 'condition', data/rules/2 must have required property 'action', data/rules/3 must have required property 'condition', data/rules/3 must have required property 'action', data/rules/4 must have required property 'condition', data/rules/4 must have required property 'action', data/rules/5 must have required property 'condition', data/rules/5 must have required property 'action', data/rules/6 must have required property 'condition', data/rules/6 must have required property 'action', data/rules/7 must have required property 'condition', data/rules/7 must have required property 'action', data/rules/8 must have required property 'condition', data/rules/8 must have required property 'action', data/rules/9 must have required property 'condition', data/rules/9 must have required property 'action', data/rules/10 must have required property 'condition', data/rules/10 must have required property 'action', data/rules/11 must have required property 'condition', data/rules/11 must have required property 'action', data/rules/12 must have required property 'condition', data/rules/12 must have required property 'action', data/rules/13 must have required property 'condition', data/rules/13 must have required property 'action', data/rules/14 must have required property 'condition', data/rules/14 must have required property 'action', data/rules/15 must have required property 'condition', data/rules/15 must have required property 'action', data/invariants must be array\n- **Target:** /Users/dev/Projects/vintrack/meta/governance/protocols/causality-policy.json\n- **Recovery:** Update causality-policy.json to conform to protocol-definition.schema.json.\n\n### protocol-validation (high)\n- **Message:** Protocol control-plane-policy.json violates schema: data must have required property 'id', data must have required property 'version', data must have required property 'layer', data must have required property 'scope', data must have required property 'derives_from', data must have required property 'canonical', data must NOT have additional properties, data must NOT have additional properties, data must NOT have additional properties, data must NOT have additional properties, data must NOT have additional properties, data must NOT have additional properties, data must NOT have additional properties, data must NOT have additional properties, data must NOT have additional properties\n- **Target:** /Users/dev/Projects/vintrack/meta/governance/protocols/control-plane-policy.json\n- **Recovery:** Update control-plane-policy.json to conform to protocol-definition.schema.json.\n\n## Summary by Category\n\n- schema: 0\n- runtime: 0\n- protocol: 2\n- milestone: 0\n- dependency: 0\n- execution: 0\n",
+    "rollback_triggered": true
+  }
+}

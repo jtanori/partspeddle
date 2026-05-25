@@ -202,4 +202,6 @@ function main(): void {
   console.log(`   ${join(CHECKPOINT_DIR, `${manifest.checkpoint_id}.json`)}`);
 }
 
-main();
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main();
+}

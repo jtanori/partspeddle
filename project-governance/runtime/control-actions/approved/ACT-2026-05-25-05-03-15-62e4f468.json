@@ -1,0 +1,26 @@
+{
+  "action_id": "ACT-2026-05-25-05-03-15-62e4f468",
+  "timestamp": "2026-05-25T05:03:15.752Z",
+  "actor": "operator",
+  "recipe_id": "enforcement_validate_all",
+  "target": "enforcement_validate_all",
+  "parameters": {},
+  "reason": "control-plane execution",
+  "state": "approved",
+  "dry_run": false,
+  "validation": {
+    "passed": true,
+    "guards_checked": [
+      "RECIPE_EXISTS",
+      "ACTION_CLASS_POLICY",
+      "LOCK_VALIDATION",
+      "INPUT_VALIDATION"
+    ],
+    "violations": []
+  },
+  "approval": {
+    "required": false,
+    "approved": true,
+    "mode": "auto"
+  }
+}

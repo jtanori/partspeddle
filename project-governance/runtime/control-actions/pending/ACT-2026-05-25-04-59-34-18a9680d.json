@@ -1,0 +1,11 @@
+{
+  "action_id": "ACT-2026-05-25-04-59-34-18a9680d",
+  "timestamp": "2026-05-25T04:59:34.203Z",
+  "actor": "operator",
+  "recipe_id": "diagnostics_health_check",
+  "target": "diagnostics_health_check",
+  "parameters": {},
+  "reason": "control-plane execution",
+  "state": "pending",
+  "dry_run": true
+}

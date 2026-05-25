@@ -4,17 +4,17 @@
   "generated_at": "2026-05-24T23:33:25.608Z",
   "authority": "meta/state/canonical-state.json",
   "latest_checkpoint": {
-    "checkpoint_id": "cp_M30_closure_20260525_022015_complete",
-    "ticket_id": null,
-    "milestone_id": "M30",
+    "checkpoint_id": "cp_auto_2026-05-25045934",
+    "ticket_id": "T31.3b",
+    "milestone_id": "M31",
     "status": "complete",
-    "created_at": "2026-05-25T02:20:15.000Z",
-    "updated_at": "2026-05-25T02:20:15.000Z"
+    "created_at": "2026-05-25T04:59:34.178Z",
+    "updated_at": "2026-05-25T04:59:34.178Z"
   },
   "current_milestone": {
     "id": "M31",
     "title": "Operational Control Plane",
-    "status": "in_progress",
+    "status": "completed",
     "phase": 31
   },
   "previous_milestone": {
@@ -22,9 +22,10 @@
     "title": "Governance Architecture Mapping",
     "status": "completed"
   },
+  "completed_tickets_count": 54,
   "current_ticket": {
-    "id": "T31.3b",
-    "status": "in_progress"
+    "id": null,
+    "status": null
   },
   "current_branch": "main",
   "execution": {
@@ -107,7 +108,12 @@
     "T30.2",
     "T30.3",
     "T30.4",
-    "T30.5"
+    "T30.5",
+    "T31.0",
+    "T31.1",
+    "T31.2",
+    "T31.3a",
+    "T31.3b"
   ],
   "milestone_registry": [
     "project-management/milestones/core.json",
