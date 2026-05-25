@@ -1,0 +1,107 @@
+{
+  "id": "enforcement_validate_all",
+  "version": "1.0.0",
+  "category": "enforcement",
+  "description": "Run all validation gates sequentially: bootstrap, projections, invariants, causality, replay, benchmark, hygiene. Abort on first integrity failure.",
+  "inputs": [
+    {
+      "name": "abort_on_failure",
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "description": "Whether to abort the recipe on first gate failure"
+    },
+    {
+      "name": "emit_events",
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "description": "Whether to emit governance events for each gate result"
+    }
+  ],
+  "guards": [
+    {
+      "invariant": "REPOSITORY_HYGIENE",
+      "behavior": "block",
+      "description": "Worktree must be clean before running enforcement gates"
+    },
+    {
+      "invariant": "CHECKPOINT_FRESHNESS",
+      "behavior": "warn",
+      "description": "Latest checkpoint should be within 24 hours"
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "action": "bootstrap_validate",
+      "command": "npm run bootstrap:validate",
+      "description": "Validate bootstrap alignment with canonical state",
+      "timeout_seconds": 60
+    },
+    {
+      "order": 2,
+      "action": "projection_validate",
+      "command": "npm run projection:validate",
+      "description": "Validate all projections are consistent",
+      "timeout_seconds": 60
+    },
+    {
+      "order": 3,
+      "action": "invariant_validate",
+      "command": "npm run invariant:validate",
+      "description": "Run all 39 invariants",
+      "timeout_seconds": 120
+    },
+    {
+      "order": 4,
+      "action": "causality_validate",
+      "command": "npm run causality:validate",
+      "description": "Validate causality invariants",
+      "timeout_seconds": 120
+    },
+    {
+      "order": 5,
+      "action": "replay_validate",
+      "command": "npm run replay:validate",
+      "description": "Validate replay integrity",
+      "timeout_seconds": 120
+    },
+    {
+      "order": 6,
+      "action": "benchmark_validate",
+      "command": "npm run benchmark:validate",
+      "description": "Validate benchmark regression gates",
+      "timeout_seconds": 60
+    }
+  ],
+  "emits": [
+    {
+      "event_type": "control.recipe.invoked",
+      "severity": "info",
+      "category": "governance",
+      "payload_schema": "recipe-invocation"
+    },
+    {
+      "event_type": "control.action.executed",
+      "severity": "info",
+      "category": "validation",
+      "payload_schema": "gate-result"
+    },
+    {
+      "event_type": "control.action.failed",
+      "severity": "error",
+      "category": "validation",
+      "payload_schema": "gate-failure"
+    }
+  ],
+  "rollback": [],
+  "requiresApproval": false,
+  "replaySafe": true,
+  "metadata": {
+    "author": "system",
+    "created_at": "2026-05-25T02:30:00Z",
+    "updated_at": "2026-05-25T02:30:00Z",
+    "tags": ["enforcement", "validation", "p0"]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "T31.0",
+  "milestone_id": "M31",
+  "title": "Canonical Recipe Registry Bootstrap",
+  "domain": "Shared",
+  "capability": "Governance Operability",
+  "purpose": "Establish the canonical recipe registry as the single source of truth for executable operational intents. Recipes must be machine-readable, topology-addressable, composable, and governable. No operational meaning shall be hardcoded in dashboard or control plane code.",
+  "dependencies": ["T30.3"],
+  "architectural_constraints": [
+    "Recipes must define intent, not implementation",
+    "Recipe registry must be JSON-native and schema-validated",
+    "Every recipe must declare replaySafe, requiresApproval, emits, rollback, and guards",
+    "Dashboard and control plane must consume recipes, never define them",
+    "Recipes must be discoverable via governance query layer"
+  ],
+  "deliverables": [
+    {
+      "path": "meta/governance/schemas/recipe.schema.json",
+      "description": "Canonical recipe JSON schema",
+      "type": "schema"
+    },
+    {
+      "path": "project-governance/recipes/enforcement/validate-all.json",
+      "description": "Sample enforcement recipe: run all validation gates",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/recipes/healing/sync-projections.json",
+      "description": "Sample healing recipe: projection drift repair",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/recipes/diagnostics/health-check.json",
+      "description": "Sample diagnostics recipe: quick health assessment",
+      "type": "file"
+    },
+    {
+      "path": "project-governance/recipes/orchestration/milestone-close.json",
+      "description": "Sample orchestration recipe: formal milestone closure sequence",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Recipe schema validates all mandatory properties: id, version, category, description, inputs, guards, steps, emits, rollback, requiresApproval, replaySafe",
+    "At least 4 sample recipes exist across enforcement, healing, diagnostics, and orchestration categories",
+    "Recipes are discoverable via governance query layer (npm run governance:query)",
+    "Recipe registry directory structure is established and documented",
+    "No dashboard or control plane code hardcodes operational semantics"
+  ],
+  "traceability": [],
+  "estimated_hours": 4,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-25T02:30:00Z",
+    "updated_at": "2026-05-25T02:30:00Z",
+    "version": 1,
+    "governance_risk_classification": "HIGH",
+    "blocks_scaling": true
+  }
+}

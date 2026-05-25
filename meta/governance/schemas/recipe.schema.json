@@ -1,0 +1,141 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/recipe",
+  "title": "Governance Recipe",
+  "description": "Canonical executable operational intent for the governance runtime",
+  "type": "object",
+  "required": [
+    "id",
+    "version",
+    "category",
+    "description",
+    "inputs",
+    "guards",
+    "steps",
+    "emits",
+    "rollback",
+    "requiresApproval",
+    "replaySafe"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z]+_[a-z_]+$",
+      "description": "Unique recipe identifier, e.g. heal_projection_drift"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["enforcement", "healing", "diagnostics", "orchestration", "migration"],
+      "description": "Recipe classification"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Human-readable purpose"
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "type", "required"],
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "type": "string" },
+          "required": { "type": "boolean" },
+          "default": {},
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "guards": {
+      "type": "array",
+      "description": "Invariant gates that must pass before execution",
+      "items": {
+        "type": "object",
+        "required": ["invariant", "behavior"],
+        "properties": {
+          "invariant": { "type": "string" },
+          "behavior": {
+            "type": "string",
+            "enum": ["block", "warn", "skip"]
+          },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "description": "Ordered execution steps",
+      "items": {
+        "type": "object",
+        "required": ["order", "action", "command"],
+        "properties": {
+          "order": { "type": "integer", "minimum": 1 },
+          "action": { "type": "string" },
+          "command": { "type": "string" },
+          "description": { "type": "string" },
+          "timeout_seconds": { "type": "integer", "minimum": 1 }
+        }
+      }
+    },
+    "emits": {
+      "type": "array",
+      "description": "Governance events emitted during execution",
+      "items": {
+        "type": "object",
+        "required": ["event_type", "severity", "category"],
+        "properties": {
+          "event_type": { "type": "string" },
+          "severity": {
+            "type": "string",
+            "enum": ["debug", "info", "warn", "error", "critical"]
+          },
+          "category": {
+            "type": "string",
+            "enum": ["execution", "validation", "recovery", "governance", "runtime", "planning", "diagnostics"]
+          },
+          "payload_schema": { "type": "string" }
+        }
+      }
+    },
+    "rollback": {
+      "type": "array",
+      "description": "Steps to reverse mutation if execution fails",
+      "items": {
+        "type": "object",
+        "required": ["order", "action", "command"],
+        "properties": {
+          "order": { "type": "integer", "minimum": 1 },
+          "action": { "type": "string" },
+          "command": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "requiresApproval": {
+      "type": "boolean",
+      "description": "Whether human approval is required before execution"
+    },
+    "replaySafe": {
+      "type": "boolean",
+      "description": "Whether recipe execution is deterministic and replay-safe"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "author": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

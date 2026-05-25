@@ -12,19 +12,19 @@
     "updated_at": "2026-05-25T02:20:15.000Z"
   },
   "current_milestone": {
-    "id": "M30",
-    "title": "Governance Architecture Mapping",
-    "status": "completed",
-    "phase": 30
+    "id": "M31",
+    "title": "Operational Control Plane",
+    "status": "in_progress",
+    "phase": 31
   },
   "previous_milestone": {
-    "id": "M29",
-    "title": "Event Causality & Replay Integrity",
+    "id": "M30",
+    "title": "Governance Architecture Mapping",
     "status": "completed"
   },
   "current_ticket": {
-    "id": null,
-    "status": null
+    "id": "T31.0",
+    "status": "planned"
   },
   "current_branch": "main",
   "execution": {

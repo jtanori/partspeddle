@@ -1,0 +1,55 @@
+{
+  "id": "diagnostics_health_check",
+  "version": "1.0.0",
+  "category": "diagnostics",
+  "description": "Run a quick health assessment of the governance runtime: locks, projections, invariants, and heartbeat age.",
+  "inputs": [
+    {
+      "name": "detail_level",
+      "type": "string",
+      "required": false,
+      "default": "summary",
+      "description": "summary | detailed | full"
+    }
+  ],
+  "guards": [],
+  "steps": [
+    {
+      "order": 1,
+      "action": "diagnostics_quick",
+      "command": "npm run diagnostics:health",
+      "description": "Quick health check",
+      "timeout_seconds": 30
+    },
+    {
+      "order": 2,
+      "action": "lock_state",
+      "command": "npm run lock:state",
+      "description": "Check execution lock status",
+      "timeout_seconds": 10
+    },
+    {
+      "order": 3,
+      "action": "topology_status",
+      "command": "npm run topology:build",
+      "description": "Verify topology can be built",
+      "timeout_seconds": 30
+    }
+  ],
+  "emits": [
+    {
+      "event_type": "control.recipe.invoked",
+      "severity": "info",
+      "category": "governance"
+    }
+  ],
+  "rollback": [],
+  "requiresApproval": false,
+  "replaySafe": true,
+  "metadata": {
+    "author": "system",
+    "created_at": "2026-05-25T02:30:00Z",
+    "updated_at": "2026-05-25T02:30:00Z",
+    "tags": ["diagnostics", "health", "quick"]
+  }
+}

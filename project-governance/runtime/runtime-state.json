@@ -1,21 +1,21 @@
 {
   "system": "VINTRACK",
   "version": "0.1.0",
-  "active_phase": 30,
+  "active_phase": 31,
   "active_milestone": {
-    "id": "M30",
-    "status": "completed",
-    "title": "Governance Architecture Mapping"
+    "id": "M31",
+    "status": "in_progress",
+    "title": "Operational Control Plane"
   },
   "previous_milestone": {
-    "id": "M29",
+    "id": "M30",
     "status": "completed",
-    "completed_at": "2026-05-24T23:32:01.000Z"
+    "completed_at": "2026-05-25T02:20:15.000Z"
   },
   "active_ticket": {
-    "id": null,
-    "title": null,
-    "status": null
+    "id": "T31.0",
+    "title": "Canonical Recipe Registry Bootstrap",
+    "status": "planned"
   },
   "execution_mode": "IDLE",
   "execution_surface": "fullstack",
@@ -66,5 +66,5 @@
     "typecheck passes",
     "integration tests pass against Postgres + Redis"
   ],
-  "updated_at": "2026-05-25T02:24:17.385Z"
+  "updated_at": "2026-05-25T03:37:58.174Z"
 }

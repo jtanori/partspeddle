@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vintrack.io/schemas/control-action",
+  "title": "Control Plane Action Event",
+  "description": "Event schema for control plane operational intents and outcomes",
+  "type": "object",
+  "required": [
+    "event_id",
+    "timestamp",
+    "event_type",
+    "severity",
+    "category",
+    "action_id",
+    "actor",
+    "intent",
+    "outcome"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "control.action.requested",
+        "control.action.approved",
+        "control.action.rejected",
+        "control.action.executed",
+        "control.action.failed",
+        "control.action.rolled_back",
+        "control.suggestion.generated",
+        "control.recipe.invoked",
+        "control.guard.blocked"
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["debug", "info", "warn", "error", "critical"]
+    },
+    "category": {
+      "type": "string",
+      "enum": ["execution", "validation", "recovery", "governance", "runtime", "planning", "diagnostics"]
+    },
+    "action_id": {
+      "type": "string",
+      "description": "Unique identifier for this action instance"
+    },
+    "actor": {
+      "type": "string",
+      "description": "Entity that initiated or authorized the action"
+    },
+    "intent": {
+      "type": "object",
+      "required": ["recipe_id", "target"],
+      "properties": {
+        "recipe_id": { "type": "string" },
+        "target": { "type": "string" },
+        "parameters": { "type": "object" },
+        "reason": { "type": "string" }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["pending", "approved", "rejected", "executed", "failed", "rolled_back"]
+        },
+        "result": { "type": "object" },
+        "error": { "type": "string" },
+        "rollback_triggered": { "type": "boolean" }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "properties": {
+        "required": { "type": "boolean" },
+        "approved_by": { "type": "string" },
+        "approved_at": { "type": "string", "format": "date-time" },
+        "rejection_reason": { "type": "string" }
+      }
+    },
+    "causality_chain": {
+      "type": "array",
+      "items": { "type": "string", "format": "uuid" }
+    },
+    "parent_event_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "metadata": {
+      "type": "object"
+    }
+  }
+}

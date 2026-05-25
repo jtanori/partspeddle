@@ -128,7 +128,7 @@
     ],
     "downstream_impact": "Enables M17 (Automation). Blocks any automated doc generation.",
     "estimated_duration_days": 2,
-    "status": "planned",
+    "status": "in_progress",
     "metadata": {
       "wave": 2,
       "risk": "LOW",
@@ -1425,9 +1425,11 @@
       "No registry semantics duplicated in control plane code"
     ],
     "tickets": [
+      "T31.0",
       "T31.1",
       "T31.2",
-      "T31.3"
+      "T31.3a",
+      "T31.3b"
     ],
     "dependencies": [
       "M26",
@@ -1448,8 +1450,13 @@
         "exists": true,
         "isValid": true
       },
-      "T31.3": {
-        "path": "project-management/data/tickets/T31.3.json",
+      "T31.3a": {
+        "path": "project-management/data/tickets/T31.3a.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T31.3b": {
+        "path": "project-management/data/tickets/T31.3b.json",
         "exists": true,
         "isValid": true
       }

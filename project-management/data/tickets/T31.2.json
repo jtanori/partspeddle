@@ -5,7 +5,7 @@
   "domain": "Shared",
   "capability": "Governance Operability",
   "purpose": "Implement the CLI runtime dashboard that aggregates data from telemetry, events, state files, and audit logs into a unified operational view.",
-  "dependencies": ["T31.1"],
+  "dependencies": ["T31.1", "T31.0"],
   "architectural_constraints": [
     "Must not bypass governance event bus",
     "Must use storage adapter for all reads",

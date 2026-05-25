@@ -5,7 +5,7 @@
   "domain": "Shared",
   "capability": "Governance Operability",
   "purpose": "Design the unified runtime control plane dashboard that exposes active execution, event streams, lock status, replay sessions, audit status, healing actions, enforcement violations, and invariant violations.",
-  "dependencies": ["T30.3"],
+  "dependencies": ["T30.3", "T31.0"],
   "architectural_constraints": [
     "CLI-first implementation (no advanced UI)",
     "Read-only queries, no locks held during display",

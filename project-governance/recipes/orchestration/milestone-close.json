@@ -1,0 +1,112 @@
+{
+  "id": "orchestration_milestone_close",
+  "version": "1.0.0",
+  "category": "orchestration",
+  "description": "Formal milestone closure sequence: validate all gates, emit milestone.completed event, create closure checkpoint, sync projections, release lock.",
+  "inputs": [
+    {
+      "name": "milestone_id",
+      "type": "string",
+      "required": true,
+      "description": "Milestone to close, e.g. M30"
+    },
+    {
+      "name": "checkpoint_metadata",
+      "type": "object",
+      "required": false,
+      "description": "Additional metadata for the closure checkpoint"
+    }
+  ],
+  "guards": [
+    {
+      "invariant": "ALL_TICKETS_COMPLETED",
+      "behavior": "block",
+      "description": "All milestone tickets must be completed"
+    },
+    {
+      "invariant": "WORKTREE_CLEAN",
+      "behavior": "block",
+      "description": "Worktree must be clean before closure"
+    },
+    {
+      "invariant": "INVARIANTS_PASS",
+      "behavior": "block",
+      "description": "All invariants must pass"
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "action": "enforce_all",
+      "command": "npm run enforce:run",
+      "description": "Run all enforcement gates",
+      "timeout_seconds": 180
+    },
+    {
+      "order": 2,
+      "action": "emit_completed",
+      "command": "npm run governance:event:emit milestone.completed info governance",
+      "description": "Emit milestone.completed event",
+      "timeout_seconds": 30
+    },
+    {
+      "order": 3,
+      "action": "create_checkpoint",
+      "command": "scripts/create-checkpoint.ts",
+      "description": "Create closure checkpoint",
+      "timeout_seconds": 30
+    },
+    {
+      "order": 4,
+      "action": "sync_projections",
+      "command": "npm run projection:sync",
+      "description": "Synchronize projections",
+      "timeout_seconds": 60
+    },
+    {
+      "order": 5,
+      "action": "release_lock",
+      "command": "npm run lock:release",
+      "description": "Release execution lock",
+      "timeout_seconds": 10
+    }
+  ],
+  "emits": [
+    {
+      "event_type": "control.recipe.invoked",
+      "severity": "info",
+      "category": "governance"
+    },
+    {
+      "event_type": "control.action.executed",
+      "severity": "info",
+      "category": "governance"
+    },
+    {
+      "event_type": "milestone.completed",
+      "severity": "info",
+      "category": "governance"
+    },
+    {
+      "event_type": "checkpoint.created",
+      "severity": "info",
+      "category": "governance"
+    }
+  ],
+  "rollback": [
+    {
+      "order": 1,
+      "action": "lock_reacquire",
+      "command": "npm run lock:acquire",
+      "description": "Reacquire lock if closure failed mid-sequence"
+    }
+  ],
+  "requiresApproval": true,
+  "replaySafe": true,
+  "metadata": {
+    "author": "system",
+    "created_at": "2026-05-25T02:30:00Z",
+    "updated_at": "2026-05-25T02:30:00Z",
+    "tags": ["orchestration", "milestone", "closure"]
+  }
+}

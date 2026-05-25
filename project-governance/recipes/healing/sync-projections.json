@@ -1,0 +1,73 @@
+{
+  "id": "healing_sync_projections",
+  "version": "1.0.0",
+  "category": "healing",
+  "description": "Repair projection drift by re-synchronizing all runtime projections from canonical state. Emits drift repair events.",
+  "inputs": [
+    {
+      "name": "validate_after",
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "description": "Run projection validation after sync"
+    }
+  ],
+  "guards": [
+    {
+      "invariant": "LOCK_FREE",
+      "behavior": "warn",
+      "description": "Healing while execution is active may cause race conditions"
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "action": "heal_snapshot",
+      "command": "npm run heal:snapshot",
+      "description": "Create pre-healing snapshot",
+      "timeout_seconds": 30
+    },
+    {
+      "order": 2,
+      "action": "projection_sync",
+      "command": "npm run projection:sync",
+      "description": "Synchronize all projections from canonical state",
+      "timeout_seconds": 60
+    },
+    {
+      "order": 3,
+      "action": "projection_validate",
+      "command": "npm run projection:validate",
+      "description": "Validate projections after sync",
+      "timeout_seconds": 60
+    }
+  ],
+  "emits": [
+    {
+      "event_type": "control.recipe.invoked",
+      "severity": "info",
+      "category": "governance"
+    },
+    {
+      "event_type": "control.action.executed",
+      "severity": "info",
+      "category": "recovery"
+    }
+  ],
+  "rollback": [
+    {
+      "order": 1,
+      "action": "snapshot_restore",
+      "command": "npm run heal:snapshot --restore",
+      "description": "Restore pre-healing snapshot"
+    }
+  ],
+  "requiresApproval": false,
+  "replaySafe": true,
+  "metadata": {
+    "author": "system",
+    "created_at": "2026-05-25T02:30:00Z",
+    "updated_at": "2026-05-25T02:30:00Z",
+    "tags": ["healing", "projections", "drift"]
+  }
+}

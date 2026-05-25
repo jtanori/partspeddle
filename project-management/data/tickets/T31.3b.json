@@ -1,11 +1,11 @@
 {
-  "id": "T31.3",
+  "id": "T31.3b",
   "milestone_id": "M31",
-  "title": "Control Plane Integration",
+  "title": "Control Plane Integration (Implementation)",
   "domain": "Shared",
   "capability": "Governance Operability",
   "purpose": "Integrate the control plane with enforcement, healing, and suggestion engines so operators can act on dashboard insights directly.",
-  "dependencies": ["T31.2"],
+  "dependencies": ["T31.2", "T31.3a"],
   "architectural_constraints": [
     "All actions emit governance events",
     "Human approval required for destructive actions",

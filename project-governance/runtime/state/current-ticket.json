@@ -2,14 +2,14 @@
   "protocol_version": "1.0.0",
   "active": true,
   "ticket": {
-    "id": null,
-    "title": null,
-    "status": null
+    "id": "T31.0",
+    "title": "Canonical Recipe Registry Bootstrap",
+    "status": "planned"
   },
   "last_ticket": {
     "id": "T29.1",
     "status": "completed",
     "completed_at": "2026-05-24T19:09:53.000Z"
   },
-  "updated_at": "2026-05-25T02:24:17.398Z"
+  "updated_at": "2026-05-25T03:37:58.191Z"
 }
