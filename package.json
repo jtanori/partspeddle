@@ -111,6 +111,11 @@
     "topology:visualize": "./node_modules/.bin/tsx scripts/governance-visualize.ts",
     "governance:query": "./node_modules/.bin/tsx scripts/governance-query.ts",
     "governance:impact": "./node_modules/.bin/tsx scripts/governance-impact.ts",
+    "recipe": "./node_modules/.bin/tsx scripts/recipe-cli.ts",
+    "recipe:validate": "./node_modules/.bin/tsx scripts/validate-recipes.ts",
+    "recipe:discover": "./node_modules/.bin/tsx scripts/recipe-discovery.ts",
+    "recipe:graph": "./node_modules/.bin/tsx scripts/recipe-graph.ts",
+    "recipe:dry-run": "./node_modules/.bin/tsx scripts/recipe-dry-run.ts",
     "p0:validate": "npm run projection:sync && npm run repository:sync && npm run bootstrap && npm run invariant:validate && npm run storage:test && npm run projection:validate && npm run bootstrap:validate && npm run repository:validate && npm run hygiene:validate && npm run causality:validate && npm run replay:validate && npm run benchmark:validate"
   },
   "dependencies": {

@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "category": "diagnostics",
   "description": "Run a quick health assessment of the governance runtime: locks, projections, invariants, and heartbeat age.",
+  "capabilities": ["read", "emit"],
+  "determinism": {
+    "deterministic": true,
+    "idempotent": true,
+    "replaySafe": true,
+    "sideEffects": []
+  },
   "inputs": [
     {
       "name": "detail_level",
@@ -45,7 +52,15 @@
   ],
   "rollback": [],
   "requiresApproval": false,
-  "replaySafe": true,
+  "compatibility": {
+    "minimumRuntime": "0.1.0"
+  },
+  "dependencies": {
+    "invokes": [],
+    "depends_on": [],
+    "blocks": [],
+    "supersedes": []
+  },
   "metadata": {
     "author": "system",
     "created_at": "2026-05-25T02:30:00Z",

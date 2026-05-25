@@ -15,7 +15,7 @@
   "active_ticket": {
     "id": "T31.0",
     "title": "Canonical Recipe Registry Bootstrap",
-    "status": "planned"
+    "status": "in_progress"
   },
   "execution_mode": "IDLE",
   "execution_surface": "fullstack",
@@ -66,5 +66,5 @@
     "typecheck passes",
     "integration tests pass against Postgres + Redis"
   ],
-  "updated_at": "2026-05-25T03:37:58.174Z"
+  "updated_at": "2026-05-25T03:49:57.960Z"
 }

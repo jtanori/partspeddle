@@ -9,13 +9,16 @@
     "version",
     "category",
     "description",
+    "capabilities",
+    "determinism",
     "inputs",
     "guards",
     "steps",
     "emits",
     "rollback",
     "requiresApproval",
-    "replaySafe"
+    "replaySafe",
+    "compatibility"
   ],
   "properties": {
     "id": {
@@ -37,6 +40,38 @@
       "type": "string",
       "minLength": 10,
       "description": "Human-readable purpose"
+    },
+    "capabilities": {
+      "type": "array",
+      "description": "Capability classes this recipe exercises",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": ["read", "emit", "mutate", "destructive", "orchestration", "recovery"]
+      }
+    },
+    "determinism": {
+      "type": "object",
+      "required": ["deterministic", "idempotent", "replaySafe"],
+      "properties": {
+        "deterministic": {
+          "type": "boolean",
+          "description": "Same inputs always produce same behavior"
+        },
+        "idempotent": {
+          "type": "boolean",
+          "description": "Safe to execute multiple times"
+        },
+        "replaySafe": {
+          "type": "boolean",
+          "description": "Valid during replay reconstruction"
+        },
+        "sideEffects": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "External mutation surfaces touched"
+        }
+      }
     },
     "inputs": {
       "type": "array",
@@ -121,9 +156,50 @@
       "type": "boolean",
       "description": "Whether human approval is required before execution"
     },
-    "replaySafe": {
-      "type": "boolean",
-      "description": "Whether recipe execution is deterministic and replay-safe"
+    "compatibility": {
+      "type": "object",
+      "required": ["minimumRuntime"],
+      "properties": {
+        "minimumRuntime": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Minimum governance runtime version"
+        },
+        "deprecated": {
+          "type": "boolean",
+          "description": "Whether this recipe version is deprecated"
+        },
+        "supersededBy": {
+          "type": "string",
+          "description": "Recipe ID that supersedes this one"
+        }
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "description": "Recipe dependency graph",
+      "properties": {
+        "invokes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Recipes this recipe directly invokes"
+        },
+        "depends_on": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Recipes that must execute before this one"
+        },
+        "blocks": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Recipes that cannot execute while this one is active"
+        },
+        "supersedes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Recipe versions this one replaces"
+        }
+      }
     },
     "metadata": {
       "type": "object",

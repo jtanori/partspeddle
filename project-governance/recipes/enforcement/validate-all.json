@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "category": "enforcement",
   "description": "Run all validation gates sequentially: bootstrap, projections, invariants, causality, replay, benchmark, hygiene. Abort on first integrity failure.",
+  "capabilities": ["read", "emit"],
+  "determinism": {
+    "deterministic": true,
+    "idempotent": true,
+    "replaySafe": true,
+    "sideEffects": []
+  },
   "inputs": [
     {
       "name": "abort_on_failure",
@@ -97,7 +104,15 @@
   ],
   "rollback": [],
   "requiresApproval": false,
-  "replaySafe": true,
+  "compatibility": {
+    "minimumRuntime": "0.1.0"
+  },
+  "dependencies": {
+    "invokes": [],
+    "depends_on": [],
+    "blocks": ["healing_sync_projections", "orchestration_milestone_close"],
+    "supersedes": []
+  },
   "metadata": {
     "author": "system",
     "created_at": "2026-05-25T02:30:00Z",

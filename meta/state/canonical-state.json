@@ -41,7 +41,7 @@
   "ticket": {
     "id": "T31.0",
     "title": "Canonical Recipe Registry Bootstrap",
-    "status": "planned"
+    "status": "in_progress"
   },
   "lock": {
     "locked": false,
