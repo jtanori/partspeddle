@@ -98,6 +98,20 @@ function buildEvent(
   const eventId = opts.event_id ?? randomUUID();
   const executionId = opts.execution_id ?? null;
 
+  // Pre-validate core fields BEFORE sequence assignment to prevent orphaned sequences
+  const eventTypeRe = /^[a-z]+\.[a-z]+(_[a-z]+)*$/;
+  if (!eventTypeRe.test(eventType)) {
+    throw new Error(`Invalid event_type format: ${eventType}. Must match ${eventTypeRe.source}`);
+  }
+  const validSeverities: Severity[] = ["debug", "info", "warn", "error", "critical"];
+  if (!validSeverities.includes(severity)) {
+    throw new Error(`Invalid severity: ${severity}. Valid: ${validSeverities.join(", ")}`);
+  }
+  const validCategories: Category[] = ["execution", "validation", "recovery", "governance", "runtime", "planning", "diagnostics"];
+  if (!validCategories.includes(category)) {
+    throw new Error(`Invalid category: ${category}. Valid: ${validCategories.join(", ")}`);
+  }
+
   // Determine if cross-execution linkage is requested
   const customParent = opts.parent_event_id;
   const customChain = opts.causality_chain;
