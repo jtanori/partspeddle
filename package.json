@@ -46,7 +46,6 @@
     "telemetry:validate": "./node_modules/.bin/tsx scripts/validate-telemetry.ts",
     "telemetry:test": "./node_modules/.bin/tsx project-governance/runtime/telemetry/tests/run-telemetry-tests.ts",
     "replay:run": "./node_modules/.bin/tsx scripts/replay-execution.ts",
-    "replay:validate": "./node_modules/.bin/tsx scripts/validate-replay.ts",
     "replay:test": "./node_modules/.bin/tsx project-governance/runtime/replay/tests/run-replay-tests.ts",
     "diagnostics:run": "./node_modules/.bin/tsx scripts/diagnostics-console.ts",
     "diagnostics:health": "./node_modules/.bin/tsx scripts/diagnostics-console.ts --quick",
