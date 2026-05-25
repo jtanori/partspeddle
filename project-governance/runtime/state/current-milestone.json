@@ -1,14 +1,14 @@
 {
   "protocol_version": "1.0.0",
   "active_milestone": {
-    "id": "M21",
+    "id": "M30",
     "status": "completed",
-    "title": "Runtime Observability and Diagnostics"
+    "title": "Governance Architecture Mapping"
   },
   "previous_milestone": {
-    "id": "M27",
+    "id": "M29",
     "status": "completed",
-    "completed_at": "2026-05-24T13:03:44.668Z"
+    "completed_at": "2026-05-24T23:32:01.000Z"
   },
-  "updated_at": "2026-05-25T01:25:09.865Z"
+  "updated_at": "2026-05-25T02:24:17.396Z"
 }

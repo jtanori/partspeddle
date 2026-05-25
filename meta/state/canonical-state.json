@@ -3,11 +3,11 @@
   "protocol_version": "1.0.0",
   "authority": "meta/state/canonical-state.json",
   "principle": "This file is the ONLY mutable runtime state. All other state files are derived projections.",
-  "updated_at": "2026-05-25T01:25:24.598Z",
+  "updated_at": "2026-05-25T02:20:00.000Z",
   "execution": {
     "execution_id": "EXEC-2026-05-24-010",
     "task_id": null,
-    "milestone_id": "M21",
+    "milestone_id": "M30",
     "status": "IDLE",
     "started_at": "2026-05-24T19:09:53.000Z",
     "completed_at": "2026-05-25T01:24:48.015Z",
@@ -34,9 +34,9 @@
     "completed_at": "2026-05-24T19:09:53.000Z"
   },
   "milestone": {
-    "id": "M21",
+    "id": "M30",
     "status": "completed",
-    "title": "Runtime Observability and Diagnostics"
+    "title": "Governance Architecture Mapping"
   },
   "ticket": {
     "id": null,
@@ -56,8 +56,8 @@
   "repository": {
     "branch": "main",
     "base_branch": "main",
-    "worktree_clean": false,
-    "head_commit": "d284e77a72f7c597a189ba3240f0abda4528cb8f",
+    "worktree_clean": true,
+    "head_commit": "6131189dcd26bc2be09df5611d20c311beb48c27",
     "promotion_status": "pending",
     "last_validated_at": "2026-05-25T01:25:24.593Z"
   },
@@ -93,10 +93,10 @@
   "drift": null,
   "safe_exit": null,
   "last_milestone": {
-    "id": "M27",
+    "id": "M29",
     "status": "completed",
-    "completed_at": "2026-05-24T13:03:44.668Z"
+    "completed_at": "2026-05-24T23:32:01.000Z"
   },
-  "head_commit": "d284e77a72f7c597a189ba3240f0abda4528cb8f",
+  "head_commit": "6131189dcd26bc2be09df5611d20c311beb48c27",
   "worktree_clean": true
 }

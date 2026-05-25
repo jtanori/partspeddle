@@ -1,8 +1,8 @@
 {
-  "checkpoint_id": "cp_T29.1_20260524_190953_complete",
-  "ticket_id": "T29.1",
-  "milestone_id": "M29",
+  "checkpoint_id": "cp_M30_closure_20260525_022015_complete",
+  "ticket_id": null,
+  "milestone_id": "M30",
   "status": "complete",
-  "created_at": "2026-05-24T18:59:31.000Z",
-  "updated_at": "2026-05-24T19:09:53.000Z"
+  "created_at": "2026-05-25T02:20:15.000Z",
+  "updated_at": "2026-05-25T02:20:15.000Z"
 }

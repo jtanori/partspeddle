@@ -4,27 +4,27 @@
   "generated_at": "2026-05-24T23:33:25.608Z",
   "authority": "meta/state/canonical-state.json",
   "latest_checkpoint": {
-    "checkpoint_id": "cp_T29.1_20260524_190953_complete",
-    "ticket_id": "T29.1",
-    "milestone_id": "M29",
+    "checkpoint_id": "cp_M30_closure_20260525_022015_complete",
+    "ticket_id": null,
+    "milestone_id": "M30",
     "status": "complete",
-    "created_at": "2026-05-24T18:59:31.000Z",
-    "updated_at": "2026-05-24T19:09:53.000Z"
+    "created_at": "2026-05-25T02:20:15.000Z",
+    "updated_at": "2026-05-25T02:20:15.000Z"
   },
   "current_milestone": {
-    "id": "M29",
-    "title": "Event Causality & Replay Integrity",
+    "id": "M30",
+    "title": "Governance Architecture Mapping",
     "status": "completed",
-    "phase": 29
+    "phase": 30
   },
   "previous_milestone": {
-    "id": "M28",
-    "title": "Runtime Storage Abstraction",
+    "id": "M29",
+    "title": "Event Causality & Replay Integrity",
     "status": "completed"
   },
   "current_ticket": {
-    "id": "T29.3",
-    "status": "completed"
+    "id": null,
+    "status": null
   },
   "current_branch": "main",
   "execution": {
@@ -58,7 +58,7 @@
     "release_reason": "milestone_closure",
     "updated_at": "2026-05-24T23:33:01.131Z"
   },
-  "completed_tickets_count": 43,
+  "completed_tickets_count": 48,
   "completed_tickets": [
     "T11.1",
     "T11.2",
@@ -102,7 +102,12 @@
     "T1.5A",
     "T1.6",
     "T1.7",
-    "T1.8"
+    "T1.8",
+    "T30.1",
+    "T30.2",
+    "T30.3",
+    "T30.4",
+    "T30.5"
   ],
   "milestone_registry": [
     "project-management/milestones/core.json",

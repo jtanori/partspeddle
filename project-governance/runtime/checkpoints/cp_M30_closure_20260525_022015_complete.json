@@ -1,0 +1,33 @@
+{
+  "checkpoint_id": "cp_M30_closure_20260525_022015_complete",
+  "milestone_id": "M30",
+  "ticket_id": null,
+  "status": "complete",
+  "created_at": "2026-05-25T02:20:15.000Z",
+  "updated_at": "2026-05-25T02:20:15.000Z",
+  "global_sequence": 11,
+  "execution_sequence": 11,
+  "previous_checkpoint": "cp_M29_closure_20260524_233201_complete",
+  "validation_summary": {
+    "replay_integrity": "PASS",
+    "causality": "PASS",
+    "invariants": "PASS",
+    "projections": "PASS",
+    "benchmark": "PASS"
+  },
+  "topology_snapshot": {
+    "node_count": 150,
+    "edge_count": 237,
+    "subsystem_count": 8,
+    "topology_version": "1.0.0"
+  },
+  "artifacts": {
+    "topology_json": "meta/governance/topology/governance-topology.json",
+    "mermaid_diagram": "project-governance/maps/diagrams/governance-topology.mmd",
+    "dot_diagram": "project-governance/maps/diagrams/governance-topology.dot",
+    "json_graph": "project-governance/maps/graphs/governance-graph.json",
+    "subsystem_map": "project-governance/maps/subsystem-map.md"
+  },
+  "git_commit": "6131189dcd26bc2be09df5611d20c311beb48c27",
+  "closure_reason": "milestone_closure"
+}
