@@ -1,0 +1,306 @@
+{
+  "version": "1.0.0",
+  "surfaces": [
+    {
+      "id": "execution_status",
+      "name": "Execution Status",
+      "description": "Current execution state: milestone, ticket, lock status, and runtime mode. Read-only projection of canonical state.",
+      "authority": "projected",
+      "mutability": "read-only",
+      "freshness": "realtime",
+      "freshness_seconds": 5,
+      "replayVisibility": true,
+      "approvalRequired": false,
+      "riskLevel": "low",
+      "dataSources": [
+        {
+          "source": "canonical-state",
+          "path": "meta/state/canonical-state.json",
+          "query": "execution, milestone, ticket, lock"
+        },
+        {
+          "source": "projection",
+          "path": "project-governance/runtime/state/active-execution.json"
+        }
+      ],
+      "queryPattern": "Read active-execution projection; fallback to canonical-state",
+      "recipeIds": [],
+      "events": [
+        {
+          "event_type": "control.suggestion.generated",
+          "emitted_on": "view"
+        }
+      ],
+      "filters": [
+        {
+          "field": "execution_id",
+          "type": "string",
+          "required": false
+        },
+        {
+          "field": "milestone_id",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "event_streams",
+      "name": "Event Streams",
+      "description": "Governance event stream inspection: default, validation, diagnostics, execution. Read-only stream tail queries.",
+      "authority": "canonical",
+      "mutability": "read-only",
+      "freshness": "near-realtime",
+      "freshness_seconds": 10,
+      "replayVisibility": true,
+      "approvalRequired": false,
+      "riskLevel": "low",
+      "dataSources": [
+        {
+          "source": "event-stream",
+          "path": "project-governance/runtime/events/streams/",
+          "query": "tail -n 50 *.ndjson"
+        }
+      ],
+      "queryPattern": "Stream tail read with severity/category filtering",
+      "recipeIds": [],
+      "events": [],
+      "filters": [
+        {
+          "field": "severity",
+          "type": "enum",
+          "required": false
+        },
+        {
+          "field": "category",
+          "type": "enum",
+          "required": false
+        },
+        {
+          "field": "event_type",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "lock_status",
+      "name": "Lock Status",
+      "description": "Execution lock state: locked/unlocked, owner, expiration, release history. Critical for coordination safety.",
+      "authority": "projected",
+      "mutability": "read-only",
+      "freshness": "realtime",
+      "freshness_seconds": 5,
+      "replayVisibility": true,
+      "approvalRequired": false,
+      "riskLevel": "medium",
+      "dataSources": [
+        {
+          "source": "projection",
+          "path": "project-governance/runtime/state/execution-lock.json"
+        },
+        {
+          "source": "canonical-state",
+          "path": "meta/state/canonical-state.json",
+          "query": "lock"
+        }
+      ],
+      "queryPattern": "Read execution-lock projection",
+      "recipeIds": [],
+      "events": [],
+      "filters": [
+        {
+          "field": "locked",
+          "type": "boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "replay_integrity",
+      "name": "Replay Integrity",
+      "description": "Replay validation status, sequence continuity, causality chain health, and genesis boundary state.",
+      "authority": "derived",
+      "mutability": "read-only",
+      "freshness": "delayed",
+      "freshness_seconds": 300,
+      "replayVisibility": true,
+      "approvalRequired": false,
+      "riskLevel": "high",
+      "dataSources": [
+        {
+          "source": "event-stream",
+          "path": "project-governance/runtime/events/streams/",
+          "query": "validate-replay-integrity"
+        },
+        {
+          "source": "projection",
+          "path": "project-governance/runtime/execution-logs/sequence-store.json"
+        }
+      ],
+      "queryPattern": "Run validate-replay-integrity.ts; cache result for 5 min",
+      "recipeIds": [],
+      "events": [
+        {
+          "event_type": "control.action.executed",
+          "emitted_on": "refresh"
+        }
+      ],
+      "filters": [
+        {
+          "field": "stream",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "audit_trail",
+      "name": "Audit Trail",
+      "description": "Runtime audit results: invariant validation, bootstrap checks, projection drift, benchmark status. Derived from validation runs.",
+      "authority": "derived",
+      "mutability": "read-only",
+      "freshness": "delayed",
+      "freshness_seconds": 300,
+      "replayVisibility": true,
+      "approvalRequired": false,
+      "riskLevel": "medium",
+      "dataSources": [
+        {
+          "source": "event-stream",
+          "path": "project-governance/runtime/events/streams/validation.ndjson"
+        },
+        {
+          "source": "projection",
+          "path": "project-governance/runtime/audits/"
+        }
+      ],
+      "queryPattern": "Read validation event stream tail; aggregate by gate",
+      "recipeIds": ["enforcement_validate_all"],
+      "events": [],
+      "filters": [
+        {
+          "field": "gate",
+          "type": "string",
+          "required": false
+        },
+        {
+          "field": "status",
+          "type": "enum",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "healing_actions",
+      "name": "Healing Actions",
+      "description": "Self-healing status, drift detection results, available healing recipes, and recovery history. Actionable surface for recovery operations.",
+      "authority": "projected",
+      "mutability": "actionable",
+      "freshness": "near-realtime",
+      "freshness_seconds": 30,
+      "replayVisibility": true,
+      "approvalRequired": true,
+      "riskLevel": "high",
+      "dataSources": [
+        {
+          "source": "recipe-registry",
+          "path": "project-governance/recipes/healing/"
+        },
+        {
+          "source": "projection",
+          "path": "project-governance/runtime/state/"
+        }
+      ],
+      "queryPattern": "Scan healing recipe registry; display with dry-run plan",
+      "recipeIds": ["healing_sync_projections", "healing_self_heal_run"],
+      "events": [
+        {
+          "event_type": "control.recipe.invoked",
+          "emitted_on": "action"
+        },
+        {
+          "event_type": "control.action.approved",
+          "emitted_on": "action"
+        }
+      ],
+      "filters": [
+        {
+          "field": "recipe_id",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "enforcement_status",
+      "name": "Enforcement Status",
+      "description": "Invariant registry, enforcement gate results, violation counts, and policy compliance. Actionable for manual enforcement triggers.",
+      "authority": "canonical",
+      "mutability": "actionable",
+      "freshness": "near-realtime",
+      "freshness_seconds": 60,
+      "replayVisibility": true,
+      "approvalRequired": false,
+      "riskLevel": "medium",
+      "dataSources": [
+        {
+          "source": "canonical-state",
+          "path": "meta/governance/invariants/invariants.json"
+        },
+        {
+          "source": "recipe-registry",
+          "path": "project-governance/recipes/enforcement/"
+        }
+      ],
+      "queryPattern": "Load invariant registry; run enforcement recipe on demand",
+      "recipeIds": ["enforcement_validate_all"],
+      "events": [
+        {
+          "event_type": "control.recipe.invoked",
+          "emitted_on": "action"
+        }
+      ],
+      "filters": [
+        {
+          "field": "severity",
+          "type": "enum",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "invariant_violations",
+      "name": "Invariant Violations",
+      "description": "Live invariant violation feed: critical, high, medium, low findings. Derived from most recent invariant validation run.",
+      "authority": "derived",
+      "mutability": "read-only",
+      "freshness": "delayed",
+      "freshness_seconds": 300,
+      "replayVisibility": true,
+      "approvalRequired": false,
+      "riskLevel": "high",
+      "dataSources": [
+        {
+          "source": "event-stream",
+          "path": "project-governance/runtime/events/streams/validation.ndjson"
+        }
+      ],
+      "queryPattern": "Filter validation events for invariant.validation_complete; extract findings",
+      "recipeIds": [],
+      "events": [],
+      "filters": [
+        {
+          "field": "severity",
+          "type": "enum",
+          "required": false
+        },
+        {
+          "field": "invariant_code",
+          "type": "string",
+          "required": false
+        }
+      ]
+    }
+  ]
+}
