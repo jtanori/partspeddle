@@ -1,0 +1,13 @@
+╔══════════════════════════════════════════════════════════════╗
+║           VINTRACK RUNTIME DIAGNOSTIC CONSOLE                ║
+╚══════════════════════════════════════════════════════════════╝
+
+─── Quick Health Checks ───
+✅ canonical_state: Milestone M29 (completed)
+✅ event_streams: Streams available
+⚠️ telemetry_streams: Missing: default.ndjson
+❌ drift: Last event 12.2 min ago
+
+4 checks, 1 failed, 1 warnings
+
+──────────────────────────────────────────────────────────────

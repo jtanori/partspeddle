@@ -1,0 +1,13 @@
+{
+  "execution_id": "--help",
+  "reconstructed_at": "2026-05-25T01:21:00.161Z",
+  "event_count": 0,
+  "timeline_start": "",
+  "timeline_end": "",
+  "sources": [
+    "governance/events",
+    "telemetry/logs"
+  ],
+  "integrity_hash": "hash-00000000",
+  "status": "unknown"
+}

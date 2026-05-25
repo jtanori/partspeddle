@@ -2,14 +2,14 @@
   "protocol_version": "1.0.0",
   "active": true,
   "ticket": {
-    "id": "T29.3",
-    "title": "Replay Integrity Validator",
-    "status": "completed"
+    "id": null,
+    "title": null,
+    "status": null
   },
   "last_ticket": {
     "id": "T29.1",
     "status": "completed",
     "completed_at": "2026-05-24T19:09:53.000Z"
   },
-  "updated_at": "2026-05-24T23:33:16.222Z"
+  "updated_at": "2026-05-25T01:25:09.867Z"
 }
