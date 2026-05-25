@@ -116,6 +116,7 @@
     "recipe:discover": "./node_modules/.bin/tsx scripts/recipe-discovery.ts",
     "recipe:graph": "./node_modules/.bin/tsx scripts/recipe-graph.ts",
     "recipe:dry-run": "./node_modules/.bin/tsx scripts/recipe-dry-run.ts",
+    "dashboard": "./node_modules/.bin/tsx scripts/runtime-dashboard.ts",
     "p0:validate": "npm run projection:sync && npm run repository:sync && npm run bootstrap && npm run invariant:validate && npm run storage:test && npm run projection:validate && npm run bootstrap:validate && npm run repository:validate && npm run hygiene:validate && npm run causality:validate && npm run replay:validate && npm run benchmark:validate && npm run recipe:validate"
   },
   "dependencies": {

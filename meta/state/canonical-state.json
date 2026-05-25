@@ -3,10 +3,10 @@
   "protocol_version": "1.0.0",
   "authority": "meta/state/canonical-state.json",
   "principle": "This file is the ONLY mutable runtime state. All other state files are derived projections.",
-  "updated_at": "2026-05-25T03:00:00.000Z",
+  "updated_at": "2026-05-25T03:05:00.000Z",
   "execution": {
     "execution_id": "EXEC-2026-05-24-010",
-    "task_id": "T31.2",
+    "task_id": "T31.3a",
     "milestone_id": "M31",
     "status": "PLANNING",
     "started_at": "2026-05-24T19:09:53.000Z",
@@ -39,8 +39,8 @@
     "title": "Operational Control Plane"
   },
   "ticket": {
-    "id": "T31.2",
-    "title": "CLI Dashboard Implementation",
+    "id": "T31.3a",
+    "title": "Control Action Event Semantics",
     "status": "in_progress"
   },
   "lock": {

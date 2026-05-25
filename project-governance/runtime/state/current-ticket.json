@@ -2,8 +2,8 @@
   "protocol_version": "1.0.0",
   "active": true,
   "ticket": {
-    "id": "T31.2",
-    "title": "CLI Dashboard Implementation",
+    "id": "T31.3a",
+    "title": "Control Action Event Semantics",
     "status": "in_progress"
   },
   "last_ticket": {
@@ -11,5 +11,5 @@
     "status": "completed",
     "completed_at": "2026-05-24T19:09:53.000Z"
   },
-  "updated_at": "2026-05-25T04:01:38.289Z"
+  "updated_at": "2026-05-25T04:16:36.375Z"
 }
