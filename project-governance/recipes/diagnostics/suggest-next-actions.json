@@ -2,8 +2,11 @@
   "id": "diagnostics_suggest_next_actions",
   "version": "1.0.0",
   "category": "diagnostics",
-  "description": "Generate non-mutating operational recommendations based on current runtime state, milestone progress, and historical patterns. Purely advisory — no state mutation.",
-  "capabilities": ["read", "emit"],
+  "description": "Generate non-mutating operational recommendations based on current runtime state, milestone progress, and historical patterns. Purely advisory \u2014 no state mutation.",
+  "capabilities": [
+    "read",
+    "emit"
+  ],
   "determinism": {
     "deterministic": false,
     "idempotent": true,
@@ -56,6 +59,12 @@
     "author": "system",
     "created_at": "2026-05-25T02:45:00Z",
     "updated_at": "2026-05-25T02:45:00Z",
-    "tags": ["diagnostics", "suggestions", "advisory", "non-mutating"]
-  }
+    "tags": [
+      "diagnostics",
+      "suggestions",
+      "advisory",
+      "non-mutating"
+    ]
+  },
+  "actionClass": "diagnostics"
 }

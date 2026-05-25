@@ -156,6 +156,11 @@
       "type": "boolean",
       "description": "Whether human approval is required before execution"
     },
+    "actionClass": {
+      "type": "string",
+      "enum": ["observational", "administrative", "enforcement", "recovery", "destructive", "orchestration"],
+      "description": "Operational classification for approval routing and risk assessment"
+    },
     "compatibility": {
       "type": "object",
       "required": ["minimumRuntime"],

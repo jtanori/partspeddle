@@ -13,8 +13,8 @@
     "completed_at": "2026-05-25T02:20:15.000Z"
   },
   "active_ticket": {
-    "id": "T31.3a",
-    "title": "Control Action Event Semantics",
+    "id": "T31.3b",
+    "title": "Control Plane Integration (Implementation)",
     "status": "in_progress"
   },
   "execution_mode": "IDLE",
@@ -66,5 +66,5 @@
     "typecheck passes",
     "integration tests pass against Postgres + Redis"
   ],
-  "updated_at": "2026-05-25T04:16:36.362Z"
+  "updated_at": "2026-05-25T04:47:54.003Z"
 }

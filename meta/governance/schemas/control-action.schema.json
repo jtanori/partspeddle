@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://vintrack.io/schemas/control-action",
   "title": "Control Plane Action Event",
-  "description": "Event schema for control plane operational intents and outcomes",
+  "description": "Event schema for control plane operational intents, approvals, executions, and outcomes. Supports full lifecycle: intent → validation → approval → execution → checkpoint.",
   "type": "object",
   "required": [
     "event_id",
@@ -27,12 +27,16 @@
     "event_type": {
       "type": "string",
       "enum": [
-        "control.action.requested",
-        "control.action.approved",
-        "control.action.rejected",
-        "control.action.executed",
-        "control.action.failed",
-        "control.action.rolled_back",
+        "intent.requested",
+        "intent.validated",
+        "intent.approved",
+        "intent.rejected",
+        "execution.started",
+        "execution.completed",
+        "execution.failed",
+        "execution.rolled_back",
+        "checkpoint.created",
+        "projection.synced",
         "control.suggestion.generated",
         "control.recipe.invoked",
         "control.guard.blocked"
@@ -48,11 +52,20 @@
     },
     "action_id": {
       "type": "string",
-      "description": "Unique identifier for this action instance"
+      "description": "Unique identifier for this action execution chain"
+    },
+    "execution_id": {
+      "type": "string",
+      "description": "Governance runtime execution ID"
     },
     "actor": {
       "type": "string",
       "description": "Entity that initiated or authorized the action"
+    },
+    "action_class": {
+      "type": "string",
+      "enum": ["observational", "administrative", "enforcement", "recovery", "destructive", "orchestration"],
+      "description": "Operational classification of the action"
     },
     "intent": {
       "type": "object",
@@ -61,7 +74,36 @@
         "recipe_id": { "type": "string" },
         "target": { "type": "string" },
         "parameters": { "type": "object" },
-        "reason": { "type": "string" }
+        "reason": { "type": "string" },
+        "immutable": {
+          "type": "boolean",
+          "description": "Whether this intent is immutable once emitted"
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["pending", "passed", "failed"]
+        },
+        "guards_checked": { "type": "array", "items": { "type": "string" } },
+        "violations": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["auto", "human", "governance"]
+        },
+        "minimum_approvers": { "type": "integer", "minimum": 1 },
+        "required_roles": { "type": "array", "items": { "type": "string" } },
+        "approved_by": { "type": "string" },
+        "approved_at": { "type": "string", "format": "date-time" },
+        "rejection_reason": { "type": "string" }
       }
     },
     "outcome": {
@@ -70,20 +112,12 @@
       "properties": {
         "status": {
           "type": "string",
-          "enum": ["pending", "approved", "rejected", "executed", "failed", "rolled_back"]
+          "enum": ["pending", "validated", "approved", "rejected", "started", "completed", "failed", "rolled_back"]
         },
         "result": { "type": "object" },
         "error": { "type": "string" },
-        "rollback_triggered": { "type": "boolean" }
-      }
-    },
-    "approval": {
-      "type": "object",
-      "properties": {
-        "required": { "type": "boolean" },
-        "approved_by": { "type": "string" },
-        "approved_at": { "type": "string", "format": "date-time" },
-        "rejection_reason": { "type": "string" }
+        "rollback_triggered": { "type": "boolean" },
+        "checkpoint_id": { "type": "string" }
       }
     },
     "causality_chain": {
@@ -98,7 +132,12 @@
       "type": "object"
     },
     "metadata": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "schema_version": { "type": "string" },
+        "checkpoint_anchor": { "type": "string" },
+        "recipe_version": { "type": "string" }
+      }
     }
   }
 }

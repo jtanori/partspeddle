@@ -3,12 +3,21 @@
   "version": "1.0.0",
   "category": "orchestration",
   "description": "Formal milestone closure sequence: validate all gates, emit milestone.completed event, create closure checkpoint, sync projections, release lock.",
-  "capabilities": ["read", "emit", "mutate", "orchestration"],
+  "capabilities": [
+    "read",
+    "emit",
+    "mutate",
+    "orchestration"
+  ],
   "determinism": {
     "deterministic": true,
     "idempotent": false,
     "replaySafe": true,
-    "sideEffects": ["filesystem", "event_streams", "checkpoints"]
+    "sideEffects": [
+      "filesystem",
+      "event_streams",
+      "checkpoints"
+    ]
   },
   "inputs": [
     {
@@ -113,7 +122,9 @@
     "minimumRuntime": "0.1.0"
   },
   "dependencies": {
-    "invokes": ["enforcement_validate_all"],
+    "invokes": [
+      "enforcement_validate_all"
+    ],
     "depends_on": [],
     "blocks": [],
     "supersedes": []
@@ -122,6 +133,11 @@
     "author": "system",
     "created_at": "2026-05-25T02:30:00Z",
     "updated_at": "2026-05-25T02:30:00Z",
-    "tags": ["orchestration", "milestone", "closure"]
-  }
+    "tags": [
+      "orchestration",
+      "milestone",
+      "closure"
+    ]
+  },
+  "actionClass": "orchestration"
 }

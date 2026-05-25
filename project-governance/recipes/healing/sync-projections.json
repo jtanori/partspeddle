@@ -3,12 +3,19 @@
   "version": "1.0.0",
   "category": "healing",
   "description": "Repair projection drift by re-synchronizing all runtime projections from canonical state. Emits drift repair events.",
-  "capabilities": ["read", "mutate", "emit", "recovery"],
+  "capabilities": [
+    "read",
+    "mutate",
+    "emit",
+    "recovery"
+  ],
   "determinism": {
     "deterministic": true,
     "idempotent": true,
     "replaySafe": true,
-    "sideEffects": ["filesystem"]
+    "sideEffects": [
+      "filesystem"
+    ]
   },
   "inputs": [
     {
@@ -83,6 +90,11 @@
     "author": "system",
     "created_at": "2026-05-25T02:30:00Z",
     "updated_at": "2026-05-25T02:30:00Z",
-    "tags": ["healing", "projections", "drift"]
-  }
+    "tags": [
+      "healing",
+      "projections",
+      "drift"
+    ]
+  },
+  "actionClass": "healing"
 }
