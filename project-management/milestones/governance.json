@@ -1349,7 +1349,7 @@
     ],
     "downstream_impact": "Enables onboarding, debugging, and architectural reasoning.",
     "estimated_duration_days": 3,
-    "status": "planned",
+    "status": "in_progress",
     "ticket_paths": {
       "T30.1": {
         "path": "project-management/data/tickets/T30.1.json",
@@ -1369,7 +1369,7 @@
     },
     "metadata": {
       "created_at": "2026-05-24T05:50:46Z",
-      "updated_at": "2026-05-24T05:50:46Z",
+      "updated_at": "2026-05-25T01:49:07.766Z",
       "version": 1,
       "lane": "governance",
       "priority": "medium",

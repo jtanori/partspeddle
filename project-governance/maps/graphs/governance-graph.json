@@ -1,0 +1,2098 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {
+    "name": "governance_topology",
+    "version": "1.0.0",
+    "generated_at": "2026-05-25T01:58:46.933Z"
+  },
+  "nodes": [
+    {
+      "id": "validator:scripts/validate-benchmark.ts",
+      "label": "validate-benchmark.ts",
+      "type": "validator",
+      "authority": "agent"
+    },
+    {
+      "id": "validator:scripts/validate-bootstrap.ts",
+      "label": "validate-bootstrap.ts",
+      "type": "validator",
+      "authority": "agent"
+    },
+    {
+      "id": "validator:scripts/validate-causality.ts",
+      "label": "validate-causality.ts",
+      "type": "validator",
+      "authority": "agent"
+    },
+    {
+      "id": "validator:scripts/validate-invariants.ts",
+      "label": "validate-invariants.ts",
+      "type": "validator",
+      "authority": "agent"
+    },
+    {
+      "id": "validator:scripts/validate-projections.ts",
+      "label": "validate-projections.ts",
+      "type": "validator",
+      "authority": "agent"
+    },
+    {
+      "id": "validator:scripts/validate-reflections.ts",
+      "label": "validate-reflections.ts",
+      "type": "validator",
+      "authority": "agent"
+    },
+    {
+      "id": "validator:scripts/validate-replay-integrity.ts",
+      "label": "validate-replay-integrity.ts",
+      "type": "validator",
+      "authority": "agent"
+    },
+    {
+      "id": "validator:scripts/validate-replay.ts",
+      "label": "validate-replay.ts",
+      "type": "validator",
+      "authority": "agent"
+    },
+    {
+      "id": "validator:scripts/validate-repository-hygiene.ts",
+      "label": "validate-repository-hygiene.ts",
+      "type": "validator",
+      "authority": "agent"
+    },
+    {
+      "id": "validator:scripts/validate-telemetry.ts",
+      "label": "validate-telemetry.ts",
+      "type": "validator",
+      "authority": "agent"
+    },
+    {
+      "id": "emitter:scripts/emit-governance-event.ts",
+      "label": "emit-governance-event.ts",
+      "type": "emitter",
+      "authority": "agent"
+    },
+    {
+      "id": "emitter:scripts/emit-telemetry.ts",
+      "label": "emit-telemetry.ts",
+      "type": "emitter",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/analyze-workflow-patterns.ts",
+      "label": "analyze-workflow-patterns.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/archive/audit-runtime-integrity.ts",
+      "label": "audit-runtime-integrity.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/archive/generate-runtime-projections.ts",
+      "label": "generate-runtime-projections.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/archive/migrate-governance-md-to-json.ts",
+      "label": "migrate-governance-md-to-json.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/archive/setup-test-db.ts",
+      "label": "setup-test-db.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/audit-runtime.ts",
+      "label": "audit-runtime.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/bootstrap.ts",
+      "label": "bootstrap.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/check-deployment-readiness.ts",
+      "label": "check-deployment-readiness.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/create-ticket.ts",
+      "label": "create-ticket.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/detect-stale-locks.ts",
+      "label": "detect-stale-locks.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/diagnostics-console.ts",
+      "label": "diagnostics-console.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/diagnostics-health.ts",
+      "label": "diagnostics-health.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/emit-governance-event.ts",
+      "label": "emit-governance-event.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/emit-telemetry.ts",
+      "label": "emit-telemetry.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/enforce-governance.ts",
+      "label": "enforce-governance.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/execute-recipe.ts",
+      "label": "execute-recipe.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/execution-lock.ts",
+      "label": "execution-lock.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/execution-state.ts",
+      "label": "execution-state.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/generate-governance.ts",
+      "label": "generate-governance.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/generate-recipe-md.ts",
+      "label": "generate-recipe-md.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/governance-impact.ts",
+      "label": "governance-impact.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/governance-query.ts",
+      "label": "governance-query.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/governance-topology.ts",
+      "label": "governance-topology.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/governance-visualize.ts",
+      "label": "governance-visualize.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/invariant-monitor.ts",
+      "label": "invariant-monitor.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/lib/causality-validator.ts",
+      "label": "causality-validator.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/lib/governance-topology.ts",
+      "label": "governance-topology.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/lib/replay-integrity-validator.ts",
+      "label": "replay-integrity-validator.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/lib/stream-emitter.ts",
+      "label": "stream-emitter.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/migrate-to-storage-adapter.ts",
+      "label": "migrate-to-storage-adapter.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/normalize-governance-registry.ts",
+      "label": "normalize-governance-registry.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/query-governance-events.ts",
+      "label": "query-governance-events.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/replay-execution.ts",
+      "label": "replay-execution.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/resolve-continuation.ts",
+      "label": "resolve-continuation.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/runtime-storage.ts",
+      "label": "runtime-storage.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/self-heal.ts",
+      "label": "self-heal.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/sequence-tracker.ts",
+      "label": "sequence-tracker.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/suggest-next-actions.ts",
+      "label": "suggest-next-actions.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/sync-projections.ts",
+      "label": "sync-projections.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/sync-repository-status.ts",
+      "label": "sync-repository-status.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/validate-benchmark.ts",
+      "label": "validate-benchmark.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/validate-bootstrap.ts",
+      "label": "validate-bootstrap.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/validate-causality.ts",
+      "label": "validate-causality.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/validate-invariants.ts",
+      "label": "validate-invariants.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/validate-projections.ts",
+      "label": "validate-projections.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/validate-reflections.ts",
+      "label": "validate-reflections.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/validate-replay-integrity.ts",
+      "label": "validate-replay-integrity.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/validate-replay.ts",
+      "label": "validate-replay.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/validate-repository-hygiene.ts",
+      "label": "validate-repository-hygiene.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/validate-telemetry.ts",
+      "label": "validate-telemetry.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/validators/governance/governance-event.ts",
+      "label": "governance-event.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/validators/protocol-checkpoint.ts",
+      "label": "protocol-checkpoint.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/validators/protocol-enforcement-policy.ts",
+      "label": "protocol-enforcement-policy.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/validators/protocol-execution-lifecycle.ts",
+      "label": "protocol-execution-lifecycle.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/validators/protocol-execution-state-machine.ts",
+      "label": "protocol-execution-state-machine.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "script:scripts/validators/protocol-state-mutation.ts",
+      "label": "protocol-state-mutation.ts",
+      "type": "script",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/audit-policy.json",
+      "label": "audit-policy.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/authority-reconstruction.json",
+      "label": "authority-reconstruction.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/causality-policy.json",
+      "label": "causality-policy.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/checkpoint.json",
+      "label": "checkpoint.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/deployment-readiness.json",
+      "label": "deployment-readiness.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/drift-classification.json",
+      "label": "drift-classification.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/drift-recovery.json",
+      "label": "drift-recovery.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/enforcement-policy.json",
+      "label": "enforcement-policy.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/execution-authorization.json",
+      "label": "execution-authorization.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/execution-freeze.json",
+      "label": "execution-freeze.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/execution-lifecycle.json",
+      "label": "execution-lifecycle.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/execution-state-machine.json",
+      "label": "execution-state-machine.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/integrity-validation.json",
+      "label": "integrity-validation.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/invariant-policy.json",
+      "label": "invariant-policy.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/operational-mode.json",
+      "label": "operational-mode.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/repair-contract.json",
+      "label": "repair-contract.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/retention-policy.json",
+      "label": "retention-policy.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/self-healing.json",
+      "label": "self-healing.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "policy:meta/governance/protocols/state-mutation.json",
+      "label": "state-mutation.json",
+      "type": "policy",
+      "authority": "agent"
+    },
+    {
+      "id": "schema:meta/governance/schemas/authority-declaration.schema.json",
+      "label": "authority-declaration.schema.json",
+      "type": "schema",
+      "authority": "agent"
+    },
+    {
+      "id": "schema:meta/governance/schemas/checkpoint.schema.json",
+      "label": "checkpoint.schema.json",
+      "type": "schema",
+      "authority": "agent"
+    },
+    {
+      "id": "schema:meta/governance/schemas/drift-classification.schema.json",
+      "label": "drift-classification.schema.json",
+      "type": "schema",
+      "authority": "agent"
+    },
+    {
+      "id": "schema:meta/governance/schemas/enforcement-policy.schema.json",
+      "label": "enforcement-policy.schema.json",
+      "type": "schema",
+      "authority": "agent"
+    },
+    {
+      "id": "schema:meta/governance/schemas/execution-freeze.schema.json",
+      "label": "execution-freeze.schema.json",
+      "type": "schema",
+      "authority": "agent"
+    },
+    {
+      "id": "schema:meta/governance/schemas/governance-registry.schema.json",
+      "label": "governance-registry.schema.json",
+      "type": "schema",
+      "authority": "agent"
+    },
+    {
+      "id": "schema:meta/governance/schemas/governance-rule.schema.json",
+      "label": "governance-rule.schema.json",
+      "type": "schema",
+      "authority": "agent"
+    },
+    {
+      "id": "schema:meta/governance/schemas/governance-state.schema.json",
+      "label": "governance-state.schema.json",
+      "type": "schema",
+      "authority": "agent"
+    },
+    {
+      "id": "schema:meta/governance/schemas/integrity-validation.schema.json",
+      "label": "integrity-validation.schema.json",
+      "type": "schema",
+      "authority": "agent"
+    },
+    {
+      "id": "schema:meta/governance/schemas/operational-mode.schema.json",
+      "label": "operational-mode.schema.json",
+      "type": "schema",
+      "authority": "agent"
+    },
+    {
+      "id": "schema:meta/governance/schemas/protocol-definition.schema.json",
+      "label": "protocol-definition.schema.json",
+      "type": "schema",
+      "authority": "agent"
+    },
+    {
+      "id": "schema:meta/governance/schemas/recovery-policy.schema.json",
+      "label": "recovery-policy.schema.json",
+      "type": "schema",
+      "authority": "agent"
+    },
+    {
+      "id": "schema:meta/governance/schemas/repair-contract.schema.json",
+      "label": "repair-contract.schema.json",
+      "type": "schema",
+      "authority": "agent"
+    },
+    {
+      "id": "schema:meta/governance/schemas/runtime-transition.schema.json",
+      "label": "runtime-transition.schema.json",
+      "type": "schema",
+      "authority": "agent"
+    },
+    {
+      "id": "schema:meta/governance/schemas/storage-adapter.schema.json",
+      "label": "storage-adapter.schema.json",
+      "type": "schema",
+      "authority": "agent"
+    },
+    {
+      "id": "journal:project-governance/runtime/events/streams/default.ndjson",
+      "label": "default.ndjson",
+      "type": "journal",
+      "authority": "agent"
+    },
+    {
+      "id": "journal:project-governance/runtime/events/streams/diagnostics.ndjson",
+      "label": "diagnostics.ndjson",
+      "type": "journal",
+      "authority": "agent"
+    },
+    {
+      "id": "journal:project-governance/runtime/events/streams/execution.ndjson",
+      "label": "execution.ndjson",
+      "type": "journal",
+      "authority": "agent"
+    },
+    {
+      "id": "journal:project-governance/runtime/events/streams/validation.ndjson",
+      "label": "validation.ndjson",
+      "type": "journal",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_M21_20260525_012324_complete.json",
+      "label": "cp_M21_20260525_012324_complete.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_M29_closure_20260524_233201_complete.json",
+      "label": "cp_M29_closure_20260524_233201_complete.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T27.1_20260524_105624_complete.json",
+      "label": "cp_T27.1_20260524_105624_complete.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T27.2_20260524_123033_active.json",
+      "label": "cp_T27.2_20260524_123033_active.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T27.2_20260524_124030_complete.json",
+      "label": "cp_T27.2_20260524_124030_complete.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T27.3_20260524_125820_active.json",
+      "label": "cp_T27.3_20260524_125820_active.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T27.3_20260524_130344_complete.json",
+      "label": "cp_T27.3_20260524_130344_complete.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T28.1_20260524_135042_active.json",
+      "label": "cp_T28.1_20260524_135042_active.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T28.1_20260524_135806_complete.json",
+      "label": "cp_T28.1_20260524_135806_complete.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T28.2_20260524_135954_active.json",
+      "label": "cp_T28.2_20260524_135954_active.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T28.2_20260524_143317_complete.json",
+      "label": "cp_T28.2_20260524_143317_complete.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T28.3_20260524_143805_active.json",
+      "label": "cp_T28.3_20260524_143805_active.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T28.3_20260524_163629_complete.json",
+      "label": "cp_T28.3_20260524_163629_complete.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T29.1_20260524_190953_complete.json",
+      "label": "cp_T29.1_20260524_190953_complete.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T29.1_pre_execution_20260524_185931_active.json",
+      "label": "cp_T29.1_pre_execution_20260524_185931_active.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T29.2_20260524_201637_complete.json",
+      "label": "cp_T29.2_20260524_201637_complete.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T29.2a_20260524_231337_complete.json",
+      "label": "cp_T29.2a_20260524_231337_complete.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T29.3_20260524_230137_complete.json",
+      "label": "cp_T29.3_20260524_230137_complete.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T32_20260524_182343_complete.json",
+      "label": "cp_T32_20260524_182343_complete.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "checkpoint:cp_T32_pre_stabilization_20260524_175833_active.json",
+      "label": "cp_T32_pre_stabilization_20260524_175833_active.json",
+      "type": "checkpoint",
+      "authority": "agent"
+    },
+    {
+      "id": "projection:active-execution.json",
+      "label": "active-execution.json",
+      "type": "projection",
+      "authority": "agent"
+    },
+    {
+      "id": "projection:current-milestone.json",
+      "label": "current-milestone.json",
+      "type": "projection",
+      "authority": "agent"
+    },
+    {
+      "id": "projection:current-ticket.json",
+      "label": "current-ticket.json",
+      "type": "projection",
+      "authority": "agent"
+    },
+    {
+      "id": "projection:execution-lock.json",
+      "label": "execution-lock.json",
+      "type": "projection",
+      "authority": "agent"
+    },
+    {
+      "id": "projection:enforcement-status.json",
+      "label": "enforcement-status.json",
+      "type": "projection",
+      "authority": "agent"
+    },
+    {
+      "id": "projection:milestone-status.json",
+      "label": "milestone-status.json",
+      "type": "projection",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:$schema",
+      "label": "$schema",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:protocol_version",
+      "label": "protocol_version",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:authority",
+      "label": "authority",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:principle",
+      "label": "principle",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:updated_at",
+      "label": "updated_at",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:execution",
+      "label": "execution",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:last_execution",
+      "label": "last_execution",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:milestone",
+      "label": "milestone",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:ticket",
+      "label": "ticket",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:lock",
+      "label": "lock",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:repository",
+      "label": "repository",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:governance",
+      "label": "governance",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:confidence",
+      "label": "confidence",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:drift",
+      "label": "drift",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:safe_exit",
+      "label": "safe_exit",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:last_milestone",
+      "label": "last_milestone",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:head_commit",
+      "label": "head_commit",
+      "type": "state_domain",
+      "authority": "agent"
+    },
+    {
+      "id": "state_domain:worktree_clean",
+      "label": "worktree_clean",
+      "type": "state_domain",
+      "authority": "agent"
+    }
+  ],
+  "edges": [
+    {
+      "source": "validator:scripts/validate-benchmark.ts",
+      "target": "state_domain:execution",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-benchmark.ts",
+      "target": "state_domain:lock",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-benchmark.ts",
+      "target": "state_domain:governance",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_M21_20260525_012324_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_M29_closure_20260524_233201_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T27.1_20260524_105624_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T27.2_20260524_123033_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T27.2_20260524_124030_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T27.3_20260524_125820_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T27.3_20260524_130344_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T28.1_20260524_135042_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T28.1_20260524_135806_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T28.2_20260524_135954_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T28.2_20260524_143317_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T28.3_20260524_143805_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T28.3_20260524_163629_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T29.1_20260524_190953_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T29.1_pre_execution_20260524_185931_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T29.2_20260524_201637_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T29.2a_20260524_231337_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T29.3_20260524_230137_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T32_20260524_182343_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "checkpoint:cp_T32_pre_stabilization_20260524_175833_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "state_domain:milestone",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "state_domain:ticket",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "state_domain:governance",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-bootstrap.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_M21_20260525_012324_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_M29_closure_20260524_233201_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T27.1_20260524_105624_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T27.2_20260524_123033_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T27.2_20260524_124030_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T27.3_20260524_125820_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T27.3_20260524_130344_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T28.1_20260524_135042_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T28.1_20260524_135806_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T28.2_20260524_135954_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T28.2_20260524_143317_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T28.3_20260524_143805_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T28.3_20260524_163629_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T29.1_20260524_190953_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T29.1_pre_execution_20260524_185931_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T29.2_20260524_201637_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T29.2a_20260524_231337_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T29.3_20260524_230137_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T32_20260524_182343_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "checkpoint:cp_T32_pre_stabilization_20260524_175833_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-causality.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "journal:project-governance/runtime/events/streams/default.ndjson",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "journal:project-governance/runtime/events/streams/diagnostics.ndjson",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "journal:project-governance/runtime/events/streams/execution.ndjson",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "journal:project-governance/runtime/events/streams/validation.ndjson",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_M21_20260525_012324_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_M29_closure_20260524_233201_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T27.1_20260524_105624_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T27.2_20260524_123033_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T27.2_20260524_124030_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T27.3_20260524_125820_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T27.3_20260524_130344_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T28.1_20260524_135042_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T28.1_20260524_135806_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T28.2_20260524_135954_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T28.2_20260524_143317_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T28.3_20260524_143805_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T28.3_20260524_163629_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T29.1_20260524_190953_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T29.1_pre_execution_20260524_185931_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T29.2_20260524_201637_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T29.2a_20260524_231337_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T29.3_20260524_230137_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T32_20260524_182343_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "checkpoint:cp_T32_pre_stabilization_20260524_175833_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "state_domain:authority",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "state_domain:execution",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "state_domain:milestone",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "state_domain:ticket",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "state_domain:lock",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "state_domain:governance",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "state_domain:drift",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "policy:meta/governance/protocols/execution-state-machine.json",
+      "relation": "references"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "policy:meta/governance/protocols/operational-mode.json",
+      "relation": "references"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "projection:active-execution.json",
+      "relation": "references"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "projection:current-milestone.json",
+      "relation": "references"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "projection:current-ticket.json",
+      "relation": "references"
+    },
+    {
+      "source": "validator:scripts/validate-invariants.ts",
+      "target": "projection:execution-lock.json",
+      "relation": "references"
+    },
+    {
+      "source": "validator:scripts/validate-projections.ts",
+      "target": "state_domain:execution",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-projections.ts",
+      "target": "state_domain:last_execution",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-projections.ts",
+      "target": "state_domain:milestone",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-projections.ts",
+      "target": "state_domain:ticket",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-projections.ts",
+      "target": "state_domain:lock",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-projections.ts",
+      "target": "state_domain:repository",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-projections.ts",
+      "target": "state_domain:governance",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-projections.ts",
+      "target": "state_domain:drift",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-projections.ts",
+      "target": "state_domain:head_commit",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-projections.ts",
+      "target": "state_domain:worktree_clean",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-projections.ts",
+      "target": "projection:active-execution.json",
+      "relation": "references"
+    },
+    {
+      "source": "validator:scripts/validate-projections.ts",
+      "target": "projection:current-milestone.json",
+      "relation": "references"
+    },
+    {
+      "source": "validator:scripts/validate-projections.ts",
+      "target": "projection:current-ticket.json",
+      "relation": "references"
+    },
+    {
+      "source": "validator:scripts/validate-projections.ts",
+      "target": "projection:execution-lock.json",
+      "relation": "references"
+    },
+    {
+      "source": "validator:scripts/validate-reflections.ts",
+      "target": "state_domain:governance",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_M21_20260525_012324_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_M29_closure_20260524_233201_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T27.1_20260524_105624_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T27.2_20260524_123033_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T27.2_20260524_124030_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T27.3_20260524_125820_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T27.3_20260524_130344_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T28.1_20260524_135042_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T28.1_20260524_135806_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T28.2_20260524_135954_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T28.2_20260524_143317_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T28.3_20260524_143805_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T28.3_20260524_163629_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T29.1_20260524_190953_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T29.1_pre_execution_20260524_185931_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T29.2_20260524_201637_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T29.2a_20260524_231337_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T29.3_20260524_230137_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T32_20260524_182343_complete.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "checkpoint:cp_T32_pre_stabilization_20260524_175833_active.json",
+      "relation": "validates"
+    },
+    {
+      "source": "validator:scripts/validate-replay-integrity.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "validator:scripts/validate-replay.ts",
+      "target": "state_domain:execution",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-replay.ts",
+      "target": "state_domain:governance",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-repository-hygiene.ts",
+      "target": "state_domain:repository",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-telemetry.ts",
+      "target": "state_domain:execution",
+      "relation": "protects"
+    },
+    {
+      "source": "validator:scripts/validate-telemetry.ts",
+      "target": "state_domain:governance",
+      "relation": "protects"
+    },
+    {
+      "source": "emitter:scripts/emit-governance-event.ts",
+      "target": "journal:default.ndjson",
+      "relation": "emits_to"
+    },
+    {
+      "source": "emitter:scripts/emit-telemetry.ts",
+      "target": "journal:default.ndjson",
+      "relation": "emits_to"
+    },
+    {
+      "source": "script:scripts/archive/audit-runtime-integrity.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/archive/audit-runtime-integrity.ts",
+      "target": "projection:active-execution.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/archive/audit-runtime-integrity.ts",
+      "target": "projection:current-milestone.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/archive/audit-runtime-integrity.ts",
+      "target": "projection:current-ticket.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/archive/audit-runtime-integrity.ts",
+      "target": "projection:execution-lock.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/archive/generate-runtime-projections.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/archive/generate-runtime-projections.ts",
+      "target": "projection:active-execution.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/archive/generate-runtime-projections.ts",
+      "target": "projection:current-milestone.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/archive/generate-runtime-projections.ts",
+      "target": "projection:current-ticket.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/archive/generate-runtime-projections.ts",
+      "target": "projection:execution-lock.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/audit-runtime.ts",
+      "target": "projection:active-execution.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/audit-runtime.ts",
+      "target": "projection:current-milestone.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/audit-runtime.ts",
+      "target": "projection:current-ticket.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/audit-runtime.ts",
+      "target": "projection:execution-lock.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/bootstrap.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/check-deployment-readiness.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/check-deployment-readiness.ts",
+      "target": "policy:meta/governance/protocols/deployment-readiness.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/check-deployment-readiness.ts",
+      "target": "projection:current-milestone.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/check-deployment-readiness.ts",
+      "target": "projection:current-ticket.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/check-deployment-readiness.ts",
+      "target": "projection:execution-lock.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/detect-stale-locks.ts",
+      "target": "projection:execution-lock.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/enforce-governance.ts",
+      "target": "policy:meta/governance/protocols/enforcement-policy.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/enforce-governance.ts",
+      "target": "policy:meta/governance/protocols/execution-state-machine.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/enforce-governance.ts",
+      "target": "projection:execution-lock.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/execution-lock.ts",
+      "target": "projection:execution-lock.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/execution-state.ts",
+      "target": "policy:meta/governance/protocols/execution-state-machine.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/governance-visualize.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/lib/causality-validator.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/lib/governance-topology.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/lib/replay-integrity-validator.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/replay-execution.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/resolve-continuation.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/resolve-continuation.ts",
+      "target": "projection:active-execution.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/resolve-continuation.ts",
+      "target": "projection:current-milestone.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/resolve-continuation.ts",
+      "target": "projection:execution-lock.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/runtime-storage.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/self-heal.ts",
+      "target": "projection:execution-lock.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/suggest-next-actions.ts",
+      "target": "policy:meta/governance/protocols/deployment-readiness.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/suggest-next-actions.ts",
+      "target": "policy:meta/governance/protocols/self-healing.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/sync-projections.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/sync-projections.ts",
+      "target": "projection:active-execution.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/sync-projections.ts",
+      "target": "projection:current-milestone.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/sync-projections.ts",
+      "target": "projection:current-ticket.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/sync-projections.ts",
+      "target": "projection:execution-lock.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validate-bootstrap.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validate-causality.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validate-invariants.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validate-invariants.ts",
+      "target": "policy:meta/governance/protocols/execution-state-machine.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validate-invariants.ts",
+      "target": "policy:meta/governance/protocols/operational-mode.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validate-invariants.ts",
+      "target": "projection:active-execution.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validate-invariants.ts",
+      "target": "projection:current-milestone.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validate-invariants.ts",
+      "target": "projection:current-ticket.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validate-invariants.ts",
+      "target": "projection:execution-lock.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validate-projections.ts",
+      "target": "projection:active-execution.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validate-projections.ts",
+      "target": "projection:current-milestone.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validate-projections.ts",
+      "target": "projection:current-ticket.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validate-projections.ts",
+      "target": "projection:execution-lock.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validate-replay-integrity.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validators/protocol-checkpoint.ts",
+      "target": "policy:meta/governance/protocols/checkpoint.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validators/protocol-enforcement-policy.ts",
+      "target": "policy:meta/governance/protocols/enforcement-policy.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validators/protocol-execution-lifecycle.ts",
+      "target": "policy:meta/governance/protocols/execution-lifecycle.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validators/protocol-execution-state-machine.ts",
+      "target": "policy:meta/governance/protocols/execution-state-machine.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validators/protocol-state-mutation.ts",
+      "target": "policy:meta/governance/protocols/state-mutation.json",
+      "relation": "references"
+    },
+    {
+      "source": "script:scripts/validators/protocol-state-mutation.ts",
+      "target": "projection:active-execution.json",
+      "relation": "references"
+    },
+    {
+      "source": "checkpoint:cp_M21_20260525_012324_complete.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_M29_closure_20260524_233201_complete.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T27.1_20260524_105624_complete.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T27.2_20260524_123033_active.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T27.2_20260524_124030_complete.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T27.3_20260524_125820_active.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T27.3_20260524_130344_complete.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T28.1_20260524_135042_active.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T28.1_20260524_135806_complete.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T28.2_20260524_135954_active.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T28.2_20260524_143317_complete.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T28.3_20260524_143805_active.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T28.3_20260524_163629_complete.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T29.1_20260524_190953_complete.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T29.1_pre_execution_20260524_185931_active.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T29.2_20260524_201637_complete.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T29.2a_20260524_231337_complete.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T29.3_20260524_230137_complete.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T32_20260524_182343_complete.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "checkpoint:cp_T32_pre_stabilization_20260524_175833_active.json",
+      "target": "state_domain:execution",
+      "relation": "depends_on"
+    },
+    {
+      "source": "projection:active-execution.json",
+      "target": "state_domain:canonical-state",
+      "relation": "projects_from"
+    },
+    {
+      "source": "projection:current-milestone.json",
+      "target": "state_domain:canonical-state",
+      "relation": "projects_from"
+    },
+    {
+      "source": "projection:current-ticket.json",
+      "target": "state_domain:canonical-state",
+      "relation": "projects_from"
+    },
+    {
+      "source": "projection:execution-lock.json",
+      "target": "state_domain:canonical-state",
+      "relation": "projects_from"
+    },
+    {
+      "source": "projection:enforcement-status.json",
+      "target": "state_domain:canonical-state",
+      "relation": "projects_from"
+    },
+    {
+      "source": "projection:milestone-status.json",
+      "target": "state_domain:canonical-state",
+      "relation": "projects_from"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:$schema",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:protocol_version",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:authority",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:principle",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:updated_at",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:execution",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:last_execution",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:milestone",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:ticket",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:lock",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:repository",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:governance",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:confidence",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:drift",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:safe_exit",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:last_milestone",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:head_commit",
+      "relation": "contains"
+    },
+    {
+      "source": "state_domain:canonical-state",
+      "target": "state_domain:worktree_clean",
+      "relation": "contains"
+    }
+  ]
+}

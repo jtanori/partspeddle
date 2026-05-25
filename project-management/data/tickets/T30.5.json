@@ -1,0 +1,41 @@
+{
+  "id": "T30.5",
+  "milestone_id": "M30",
+  "title": "Impact Analysis Engine",
+  "domain": "Shared",
+  "capability": "Governance Comprehensibility",
+  "purpose": "Predict governance consequences before mutation by computing blast radius, protected domains, and affected invariants for any component.",
+  "dependencies": ["T30.4"],
+  "architectural_constraints": [
+    "Must use canonical topology for dependency resolution",
+    "Deterministic: same target always produces same report",
+    "Risk classification: LOW, MEDIUM, HIGH, CRITICAL"
+  ],
+  "deliverables": [
+    {
+      "path": "scripts/governance-impact.ts",
+      "description": "Impact analysis CLI",
+      "type": "script"
+    }
+  ],
+  "acceptance_criteria": [
+    "Identifies direct dependents of a target component",
+    "Performs transitive dependency BFS",
+    "Lists protected domains that would be unprotected",
+    "Lists affected invariants (validators that validate target)",
+    "Computes blast-radius score as percentage of total nodes",
+    "Classifies risk: LOW, MEDIUM, HIGH, CRITICAL",
+    "Exit code 1 on CRITICAL, 0 otherwise"
+  ],
+  "traceability": [],
+  "estimated_hours": 3,
+  "status": "completed",
+  "assignee": "agent",
+  "metadata": {
+    "created_at": "2026-05-24T05:50:46Z",
+    "updated_at": "2026-05-24T05:50:46Z",
+    "version": 1,
+    "governance_risk_classification": "LOW",
+    "blocks_scaling": false
+  }
+}

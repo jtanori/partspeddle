@@ -107,6 +107,10 @@
     "causality:validate": "./node_modules/.bin/tsx scripts/validate-causality.ts",
     "replay:validate": "./node_modules/.bin/tsx scripts/validate-replay-integrity.ts",
     "benchmark:validate": "./node_modules/.bin/tsx scripts/validate-benchmark.ts",
+    "topology:build": "./node_modules/.bin/tsx scripts/governance-topology.ts",
+    "topology:visualize": "./node_modules/.bin/tsx scripts/governance-visualize.ts",
+    "governance:query": "./node_modules/.bin/tsx scripts/governance-query.ts",
+    "governance:impact": "./node_modules/.bin/tsx scripts/governance-impact.ts",
     "p0:validate": "npm run projection:sync && npm run repository:sync && npm run bootstrap && npm run invariant:validate && npm run storage:test && npm run projection:validate && npm run bootstrap:validate && npm run repository:validate && npm run hygiene:validate && npm run causality:validate && npm run replay:validate && npm run benchmark:validate"
   },
   "dependencies": {

@@ -1,0 +1,538 @@
+graph TD;
+  validator_scripts_validate_benchmark_ts["validate-benchmark.ts"]
+  validator_scripts_validate_bootstrap_ts["validate-bootstrap.ts"]
+  validator_scripts_validate_causality_ts["validate-causality.ts"]
+  validator_scripts_validate_invariants_ts["validate-invariants.ts"]
+  validator_scripts_validate_projections_ts["validate-projections.ts"]
+  validator_scripts_validate_reflections_ts["validate-reflections.ts"]
+  validator_scripts_validate_replay_integrity_ts["validate-replay-integrity.ts"]
+  validator_scripts_validate_replay_ts["validate-replay.ts"]
+  validator_scripts_validate_repository_hygiene_ts["validate-repository-hygiene.ts"]
+  validator_scripts_validate_telemetry_ts["validate-telemetry.ts"]
+  emitter_scripts_emit_governance_event_ts["emit-governance-event.ts"]
+  emitter_scripts_emit_telemetry_ts["emit-telemetry.ts"]
+  script_scripts_analyze_workflow_patterns_ts["analyze-workflow-patterns.ts"]
+  script_scripts_archive_audit_runtime_integrity_ts["audit-runtime-integrity.ts"]
+  script_scripts_archive_generate_runtime_projections_ts["generate-runtime-projection..."]
+  script_scripts_archive_migrate_governance_md_to_json_ts["migrate-governance-md-to-js..."]
+  script_scripts_archive_setup_test_db_ts["setup-test-db.ts"]
+  script_scripts_audit_runtime_ts["audit-runtime.ts"]
+  script_scripts_bootstrap_ts["bootstrap.ts"]
+  script_scripts_check_deployment_readiness_ts["check-deployment-readiness.ts"]
+  script_scripts_create_ticket_ts["create-ticket.ts"]
+  script_scripts_detect_stale_locks_ts["detect-stale-locks.ts"]
+  script_scripts_diagnostics_console_ts["diagnostics-console.ts"]
+  script_scripts_diagnostics_health_ts["diagnostics-health.ts"]
+  script_scripts_emit_governance_event_ts["emit-governance-event.ts"]
+  script_scripts_emit_telemetry_ts["emit-telemetry.ts"]
+  script_scripts_enforce_governance_ts["enforce-governance.ts"]
+  script_scripts_execute_recipe_ts["execute-recipe.ts"]
+  script_scripts_execution_lock_ts["execution-lock.ts"]
+  script_scripts_execution_state_ts["execution-state.ts"]
+  script_scripts_generate_governance_ts["generate-governance.ts"]
+  script_scripts_generate_recipe_md_ts["generate-recipe-md.ts"]
+  script_scripts_governance_impact_ts["governance-impact.ts"]
+  script_scripts_governance_query_ts["governance-query.ts"]
+  script_scripts_governance_topology_ts["governance-topology.ts"]
+  script_scripts_governance_visualize_ts["governance-visualize.ts"]
+  script_scripts_invariant_monitor_ts["invariant-monitor.ts"]
+  script_scripts_lib_causality_validator_ts["causality-validator.ts"]
+  script_scripts_lib_governance_topology_ts["governance-topology.ts"]
+  script_scripts_lib_replay_integrity_validator_ts["replay-integrity-validator.ts"]
+  script_scripts_lib_stream_emitter_ts["stream-emitter.ts"]
+  script_scripts_migrate_to_storage_adapter_ts["migrate-to-storage-adapter.ts"]
+  script_scripts_normalize_governance_registry_ts["normalize-governance-regist..."]
+  script_scripts_query_governance_events_ts["query-governance-events.ts"]
+  script_scripts_replay_execution_ts["replay-execution.ts"]
+  script_scripts_resolve_continuation_ts["resolve-continuation.ts"]
+  script_scripts_runtime_storage_ts["runtime-storage.ts"]
+  script_scripts_self_heal_ts["self-heal.ts"]
+  script_scripts_sequence_tracker_ts["sequence-tracker.ts"]
+  script_scripts_suggest_next_actions_ts["suggest-next-actions.ts"]
+  script_scripts_sync_projections_ts["sync-projections.ts"]
+  script_scripts_sync_repository_status_ts["sync-repository-status.ts"]
+  script_scripts_validate_benchmark_ts["validate-benchmark.ts"]
+  script_scripts_validate_bootstrap_ts["validate-bootstrap.ts"]
+  script_scripts_validate_causality_ts["validate-causality.ts"]
+  script_scripts_validate_invariants_ts["validate-invariants.ts"]
+  script_scripts_validate_projections_ts["validate-projections.ts"]
+  script_scripts_validate_reflections_ts["validate-reflections.ts"]
+  script_scripts_validate_replay_integrity_ts["validate-replay-integrity.ts"]
+  script_scripts_validate_replay_ts["validate-replay.ts"]
+  script_scripts_validate_repository_hygiene_ts["validate-repository-hygiene.ts"]
+  script_scripts_validate_telemetry_ts["validate-telemetry.ts"]
+  script_scripts_validators_governance_governance_event_ts["governance-event.ts"]
+  script_scripts_validators_protocol_checkpoint_ts["protocol-checkpoint.ts"]
+  script_scripts_validators_protocol_enforcement_policy_ts["protocol-enforcement-policy.ts"]
+  script_scripts_validators_protocol_execution_lifecycle_ts["protocol-execution-lifecycl..."]
+  script_scripts_validators_protocol_execution_state_machine_ts["protocol-execution-state-ma..."]
+  script_scripts_validators_protocol_state_mutation_ts["protocol-state-mutation.ts"]
+  policy_meta_governance_protocols_audit_policy_json["audit-policy.json"]
+  policy_meta_governance_protocols_authority_reconstruction_json["authority-reconstruction.json"]
+  policy_meta_governance_protocols_causality_policy_json["causality-policy.json"]
+  policy_meta_governance_protocols_checkpoint_json["checkpoint.json"]
+  policy_meta_governance_protocols_deployment_readiness_json["deployment-readiness.json"]
+  policy_meta_governance_protocols_drift_classification_json["drift-classification.json"]
+  policy_meta_governance_protocols_drift_recovery_json["drift-recovery.json"]
+  policy_meta_governance_protocols_enforcement_policy_json["enforcement-policy.json"]
+  policy_meta_governance_protocols_execution_authorization_json["execution-authorization.json"]
+  policy_meta_governance_protocols_execution_freeze_json["execution-freeze.json"]
+  policy_meta_governance_protocols_execution_lifecycle_json["execution-lifecycle.json"]
+  policy_meta_governance_protocols_execution_state_machine_json["execution-state-machine.json"]
+  policy_meta_governance_protocols_integrity_validation_json["integrity-validation.json"]
+  policy_meta_governance_protocols_invariant_policy_json["invariant-policy.json"]
+  policy_meta_governance_protocols_operational_mode_json["operational-mode.json"]
+  policy_meta_governance_protocols_repair_contract_json["repair-contract.json"]
+  policy_meta_governance_protocols_retention_policy_json["retention-policy.json"]
+  policy_meta_governance_protocols_self_healing_json["self-healing.json"]
+  policy_meta_governance_protocols_state_mutation_json["state-mutation.json"]
+  schema_meta_governance_schemas_authority_declaration_schema_json["authority-declaration.schem..."]
+  schema_meta_governance_schemas_checkpoint_schema_json["checkpoint.schema.json"]
+  schema_meta_governance_schemas_drift_classification_schema_json["drift-classification.schema..."]
+  schema_meta_governance_schemas_enforcement_policy_schema_json["enforcement-policy.schema.json"]
+  schema_meta_governance_schemas_execution_freeze_schema_json["execution-freeze.schema.json"]
+  schema_meta_governance_schemas_governance_registry_schema_json["governance-registry.schema...."]
+  schema_meta_governance_schemas_governance_rule_schema_json["governance-rule.schema.json"]
+  schema_meta_governance_schemas_governance_state_schema_json["governance-state.schema.json"]
+  schema_meta_governance_schemas_integrity_validation_schema_json["integrity-validation.schema..."]
+  schema_meta_governance_schemas_operational_mode_schema_json["operational-mode.schema.json"]
+  schema_meta_governance_schemas_protocol_definition_schema_json["protocol-definition.schema...."]
+  schema_meta_governance_schemas_recovery_policy_schema_json["recovery-policy.schema.json"]
+  schema_meta_governance_schemas_repair_contract_schema_json["repair-contract.schema.json"]
+  schema_meta_governance_schemas_runtime_transition_schema_json["runtime-transition.schema.json"]
+  schema_meta_governance_schemas_storage_adapter_schema_json["storage-adapter.schema.json"]
+  journal_project_governance_runtime_events_streams_default_ndjson["default.ndjson"]
+  journal_project_governance_runtime_events_streams_diagnostics_ndjson["diagnostics.ndjson"]
+  journal_project_governance_runtime_events_streams_execution_ndjson["execution.ndjson"]
+  journal_project_governance_runtime_events_streams_validation_ndjson["validation.ndjson"]
+  checkpoint_cp_M21_20260525_012324_complete_json["cp_M21_20260525_012324_comp..."]
+  checkpoint_cp_M29_closure_20260524_233201_complete_json["cp_M29_closure_20260524_233..."]
+  checkpoint_cp_T27_1_20260524_105624_complete_json["cp_T27.1_20260524_105624_co..."]
+  checkpoint_cp_T27_2_20260524_123033_active_json["cp_T27.2_20260524_123033_ac..."]
+  checkpoint_cp_T27_2_20260524_124030_complete_json["cp_T27.2_20260524_124030_co..."]
+  checkpoint_cp_T27_3_20260524_125820_active_json["cp_T27.3_20260524_125820_ac..."]
+  checkpoint_cp_T27_3_20260524_130344_complete_json["cp_T27.3_20260524_130344_co..."]
+  checkpoint_cp_T28_1_20260524_135042_active_json["cp_T28.1_20260524_135042_ac..."]
+  checkpoint_cp_T28_1_20260524_135806_complete_json["cp_T28.1_20260524_135806_co..."]
+  checkpoint_cp_T28_2_20260524_135954_active_json["cp_T28.2_20260524_135954_ac..."]
+  checkpoint_cp_T28_2_20260524_143317_complete_json["cp_T28.2_20260524_143317_co..."]
+  checkpoint_cp_T28_3_20260524_143805_active_json["cp_T28.3_20260524_143805_ac..."]
+  checkpoint_cp_T28_3_20260524_163629_complete_json["cp_T28.3_20260524_163629_co..."]
+  checkpoint_cp_T29_1_20260524_190953_complete_json["cp_T29.1_20260524_190953_co..."]
+  checkpoint_cp_T29_1_pre_execution_20260524_185931_active_json["cp_T29.1_pre_execution_2026..."]
+  checkpoint_cp_T29_2_20260524_201637_complete_json["cp_T29.2_20260524_201637_co..."]
+  checkpoint_cp_T29_2a_20260524_231337_complete_json["cp_T29.2a_20260524_231337_c..."]
+  checkpoint_cp_T29_3_20260524_230137_complete_json["cp_T29.3_20260524_230137_co..."]
+  checkpoint_cp_T32_20260524_182343_complete_json["cp_T32_20260524_182343_comp..."]
+  checkpoint_cp_T32_pre_stabilization_20260524_175833_active_json["cp_T32_pre_stabilization_20..."]
+  projection_active_execution_json["active-execution.json"]
+  projection_current_milestone_json["current-milestone.json"]
+  projection_current_ticket_json["current-ticket.json"]
+  projection_execution_lock_json["execution-lock.json"]
+  projection_enforcement_status_json["enforcement-status.json"]
+  projection_milestone_status_json["milestone-status.json"]
+  state_domain__schema["$schema"]
+  state_domain_protocol_version["protocol_version"]
+  state_domain_authority["authority"]
+  state_domain_principle["principle"]
+  state_domain_updated_at["updated_at"]
+  state_domain_execution["execution"]
+  state_domain_last_execution["last_execution"]
+  state_domain_milestone["milestone"]
+  state_domain_ticket["ticket"]
+  state_domain_lock["lock"]
+  state_domain_repository["repository"]
+  state_domain_governance["governance"]
+  state_domain_confidence["confidence"]
+  state_domain_drift["drift"]
+  state_domain_safe_exit["safe_exit"]
+  state_domain_last_milestone["last_milestone"]
+  state_domain_head_commit["head_commit"]
+  state_domain_worktree_clean["worktree_clean"]
+  validator_scripts_validate_benchmark_ts -->|protects| state_domain_execution
+  validator_scripts_validate_benchmark_ts -->|protects| state_domain_lock
+  validator_scripts_validate_benchmark_ts -->|protects| state_domain_governance
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_M21_20260525_012324_complete_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_M29_closure_20260524_233201_complete_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T27_1_20260524_105624_complete_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T27_2_20260524_123033_active_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T27_2_20260524_124030_complete_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T27_3_20260524_125820_active_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T27_3_20260524_130344_complete_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T28_1_20260524_135042_active_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T28_1_20260524_135806_complete_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T28_2_20260524_135954_active_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T28_2_20260524_143317_complete_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T28_3_20260524_143805_active_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T28_3_20260524_163629_complete_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T29_1_20260524_190953_complete_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T29_1_pre_execution_20260524_185931_active_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T29_2_20260524_201637_complete_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T29_2a_20260524_231337_complete_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T29_3_20260524_230137_complete_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T32_20260524_182343_complete_json
+  validator_scripts_validate_bootstrap_ts -->|validates| checkpoint_cp_T32_pre_stabilization_20260524_175833_active_json
+  validator_scripts_validate_bootstrap_ts -->|protects| state_domain_milestone
+  validator_scripts_validate_bootstrap_ts -->|protects| state_domain_ticket
+  validator_scripts_validate_bootstrap_ts -->|protects| state_domain_governance
+  validator_scripts_validate_bootstrap_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_M21_20260525_012324_complete_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_M29_closure_20260524_233201_complete_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T27_1_20260524_105624_complete_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T27_2_20260524_123033_active_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T27_2_20260524_124030_complete_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T27_3_20260524_125820_active_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T27_3_20260524_130344_complete_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T28_1_20260524_135042_active_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T28_1_20260524_135806_complete_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T28_2_20260524_135954_active_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T28_2_20260524_143317_complete_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T28_3_20260524_143805_active_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T28_3_20260524_163629_complete_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T29_1_20260524_190953_complete_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T29_1_pre_execution_20260524_185931_active_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T29_2_20260524_201637_complete_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T29_2a_20260524_231337_complete_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T29_3_20260524_230137_complete_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T32_20260524_182343_complete_json
+  validator_scripts_validate_causality_ts -->|validates| checkpoint_cp_T32_pre_stabilization_20260524_175833_active_json
+  validator_scripts_validate_causality_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  validator_scripts_validate_invariants_ts -->|validates| journal_project_governance_runtime_events_streams_default_ndjson
+  validator_scripts_validate_invariants_ts -->|validates| journal_project_governance_runtime_events_streams_diagnostics_ndjson
+  validator_scripts_validate_invariants_ts -->|validates| journal_project_governance_runtime_events_streams_execution_ndjson
+  validator_scripts_validate_invariants_ts -->|validates| journal_project_governance_runtime_events_streams_validation_ndjson
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_M21_20260525_012324_complete_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_M29_closure_20260524_233201_complete_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T27_1_20260524_105624_complete_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T27_2_20260524_123033_active_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T27_2_20260524_124030_complete_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T27_3_20260524_125820_active_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T27_3_20260524_130344_complete_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T28_1_20260524_135042_active_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T28_1_20260524_135806_complete_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T28_2_20260524_135954_active_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T28_2_20260524_143317_complete_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T28_3_20260524_143805_active_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T28_3_20260524_163629_complete_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T29_1_20260524_190953_complete_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T29_1_pre_execution_20260524_185931_active_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T29_2_20260524_201637_complete_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T29_2a_20260524_231337_complete_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T29_3_20260524_230137_complete_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T32_20260524_182343_complete_json
+  validator_scripts_validate_invariants_ts -->|validates| checkpoint_cp_T32_pre_stabilization_20260524_175833_active_json
+  validator_scripts_validate_invariants_ts -->|protects| state_domain_authority
+  validator_scripts_validate_invariants_ts -->|protects| state_domain_execution
+  validator_scripts_validate_invariants_ts -->|protects| state_domain_milestone
+  validator_scripts_validate_invariants_ts -->|protects| state_domain_ticket
+  validator_scripts_validate_invariants_ts -->|protects| state_domain_lock
+  validator_scripts_validate_invariants_ts -->|protects| state_domain_governance
+  validator_scripts_validate_invariants_ts -->|protects| state_domain_drift
+  validator_scripts_validate_invariants_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  validator_scripts_validate_invariants_ts -->|references| policy_meta_governance_protocols_execution_state_machine_json
+  validator_scripts_validate_invariants_ts -->|references| policy_meta_governance_protocols_operational_mode_json
+  validator_scripts_validate_invariants_ts -->|references| projection_active_execution_json
+  validator_scripts_validate_invariants_ts -->|references| projection_current_milestone_json
+  validator_scripts_validate_invariants_ts -->|references| projection_current_ticket_json
+  validator_scripts_validate_invariants_ts -->|references| projection_execution_lock_json
+  validator_scripts_validate_projections_ts -->|protects| state_domain_execution
+  validator_scripts_validate_projections_ts -->|protects| state_domain_last_execution
+  validator_scripts_validate_projections_ts -->|protects| state_domain_milestone
+  validator_scripts_validate_projections_ts -->|protects| state_domain_ticket
+  validator_scripts_validate_projections_ts -->|protects| state_domain_lock
+  validator_scripts_validate_projections_ts -->|protects| state_domain_repository
+  validator_scripts_validate_projections_ts -->|protects| state_domain_governance
+  validator_scripts_validate_projections_ts -->|protects| state_domain_drift
+  validator_scripts_validate_projections_ts -->|protects| state_domain_head_commit
+  validator_scripts_validate_projections_ts -->|protects| state_domain_worktree_clean
+  validator_scripts_validate_projections_ts -->|references| projection_active_execution_json
+  validator_scripts_validate_projections_ts -->|references| projection_current_milestone_json
+  validator_scripts_validate_projections_ts -->|references| projection_current_ticket_json
+  validator_scripts_validate_projections_ts -->|references| projection_execution_lock_json
+  validator_scripts_validate_reflections_ts -->|protects| state_domain_governance
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_M21_20260525_012324_complete_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_M29_closure_20260524_233201_complete_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T27_1_20260524_105624_complete_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T27_2_20260524_123033_active_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T27_2_20260524_124030_complete_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T27_3_20260524_125820_active_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T27_3_20260524_130344_complete_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T28_1_20260524_135042_active_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T28_1_20260524_135806_complete_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T28_2_20260524_135954_active_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T28_2_20260524_143317_complete_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T28_3_20260524_143805_active_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T28_3_20260524_163629_complete_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T29_1_20260524_190953_complete_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T29_1_pre_execution_20260524_185931_active_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T29_2_20260524_201637_complete_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T29_2a_20260524_231337_complete_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T29_3_20260524_230137_complete_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T32_20260524_182343_complete_json
+  validator_scripts_validate_replay_integrity_ts -->|validates| checkpoint_cp_T32_pre_stabilization_20260524_175833_active_json
+  validator_scripts_validate_replay_integrity_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  validator_scripts_validate_replay_ts -->|protects| state_domain_execution
+  validator_scripts_validate_replay_ts -->|protects| state_domain_governance
+  validator_scripts_validate_repository_hygiene_ts -->|protects| state_domain_repository
+  validator_scripts_validate_telemetry_ts -->|protects| state_domain_execution
+  validator_scripts_validate_telemetry_ts -->|protects| state_domain_governance
+  emitter_scripts_emit_governance_event_ts -->|emits_to| journal_default_ndjson
+  emitter_scripts_emit_telemetry_ts -->|emits_to| journal_default_ndjson
+  script_scripts_archive_audit_runtime_integrity_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_archive_audit_runtime_integrity_ts -->|references| projection_active_execution_json
+  script_scripts_archive_audit_runtime_integrity_ts -->|references| projection_current_milestone_json
+  script_scripts_archive_audit_runtime_integrity_ts -->|references| projection_current_ticket_json
+  script_scripts_archive_audit_runtime_integrity_ts -->|references| projection_execution_lock_json
+  script_scripts_archive_generate_runtime_projections_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_archive_generate_runtime_projections_ts -->|references| projection_active_execution_json
+  script_scripts_archive_generate_runtime_projections_ts -->|references| projection_current_milestone_json
+  script_scripts_archive_generate_runtime_projections_ts -->|references| projection_current_ticket_json
+  script_scripts_archive_generate_runtime_projections_ts -->|references| projection_execution_lock_json
+  script_scripts_audit_runtime_ts -->|references| projection_active_execution_json
+  script_scripts_audit_runtime_ts -->|references| projection_current_milestone_json
+  script_scripts_audit_runtime_ts -->|references| projection_current_ticket_json
+  script_scripts_audit_runtime_ts -->|references| projection_execution_lock_json
+  script_scripts_bootstrap_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_check_deployment_readiness_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_check_deployment_readiness_ts -->|references| policy_meta_governance_protocols_deployment_readiness_json
+  script_scripts_check_deployment_readiness_ts -->|references| projection_current_milestone_json
+  script_scripts_check_deployment_readiness_ts -->|references| projection_current_ticket_json
+  script_scripts_check_deployment_readiness_ts -->|references| projection_execution_lock_json
+  script_scripts_detect_stale_locks_ts -->|references| projection_execution_lock_json
+  script_scripts_enforce_governance_ts -->|references| policy_meta_governance_protocols_enforcement_policy_json
+  script_scripts_enforce_governance_ts -->|references| policy_meta_governance_protocols_execution_state_machine_json
+  script_scripts_enforce_governance_ts -->|references| projection_execution_lock_json
+  script_scripts_execution_lock_ts -->|references| projection_execution_lock_json
+  script_scripts_execution_state_ts -->|references| policy_meta_governance_protocols_execution_state_machine_json
+  script_scripts_governance_visualize_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_lib_causality_validator_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_lib_governance_topology_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_lib_replay_integrity_validator_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_replay_execution_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_resolve_continuation_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_resolve_continuation_ts -->|references| projection_active_execution_json
+  script_scripts_resolve_continuation_ts -->|references| projection_current_milestone_json
+  script_scripts_resolve_continuation_ts -->|references| projection_execution_lock_json
+  script_scripts_runtime_storage_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_self_heal_ts -->|references| projection_execution_lock_json
+  script_scripts_suggest_next_actions_ts -->|references| policy_meta_governance_protocols_deployment_readiness_json
+  script_scripts_suggest_next_actions_ts -->|references| policy_meta_governance_protocols_self_healing_json
+  script_scripts_sync_projections_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_sync_projections_ts -->|references| projection_active_execution_json
+  script_scripts_sync_projections_ts -->|references| projection_current_milestone_json
+  script_scripts_sync_projections_ts -->|references| projection_current_ticket_json
+  script_scripts_sync_projections_ts -->|references| projection_execution_lock_json
+  script_scripts_validate_bootstrap_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_validate_causality_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_validate_invariants_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_validate_invariants_ts -->|references| policy_meta_governance_protocols_execution_state_machine_json
+  script_scripts_validate_invariants_ts -->|references| policy_meta_governance_protocols_operational_mode_json
+  script_scripts_validate_invariants_ts -->|references| projection_active_execution_json
+  script_scripts_validate_invariants_ts -->|references| projection_current_milestone_json
+  script_scripts_validate_invariants_ts -->|references| projection_current_ticket_json
+  script_scripts_validate_invariants_ts -->|references| projection_execution_lock_json
+  script_scripts_validate_projections_ts -->|references| projection_active_execution_json
+  script_scripts_validate_projections_ts -->|references| projection_current_milestone_json
+  script_scripts_validate_projections_ts -->|references| projection_current_ticket_json
+  script_scripts_validate_projections_ts -->|references| projection_execution_lock_json
+  script_scripts_validate_replay_integrity_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_validators_protocol_checkpoint_ts -->|references| policy_meta_governance_protocols_checkpoint_json
+  script_scripts_validators_protocol_enforcement_policy_ts -->|references| policy_meta_governance_protocols_enforcement_policy_json
+  script_scripts_validators_protocol_execution_lifecycle_ts -->|references| policy_meta_governance_protocols_execution_lifecycle_json
+  script_scripts_validators_protocol_execution_state_machine_ts -->|references| policy_meta_governance_protocols_execution_state_machine_json
+  script_scripts_validators_protocol_state_mutation_ts -->|references| policy_meta_governance_protocols_state_mutation_json
+  script_scripts_validators_protocol_state_mutation_ts -->|references| projection_active_execution_json
+  checkpoint_cp_M21_20260525_012324_complete_json -->|depends_on| state_domain_execution
+  checkpoint_cp_M29_closure_20260524_233201_complete_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T27_1_20260524_105624_complete_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T27_2_20260524_123033_active_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T27_2_20260524_124030_complete_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T27_3_20260524_125820_active_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T27_3_20260524_130344_complete_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T28_1_20260524_135042_active_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T28_1_20260524_135806_complete_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T28_2_20260524_135954_active_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T28_2_20260524_143317_complete_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T28_3_20260524_143805_active_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T28_3_20260524_163629_complete_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T29_1_20260524_190953_complete_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T29_1_pre_execution_20260524_185931_active_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T29_2_20260524_201637_complete_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T29_2a_20260524_231337_complete_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T29_3_20260524_230137_complete_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T32_20260524_182343_complete_json -->|depends_on| state_domain_execution
+  checkpoint_cp_T32_pre_stabilization_20260524_175833_active_json -->|depends_on| state_domain_execution
+  projection_active_execution_json -->|projects_from| state_domain_canonical_state
+  projection_current_milestone_json -->|projects_from| state_domain_canonical_state
+  projection_current_ticket_json -->|projects_from| state_domain_canonical_state
+  projection_execution_lock_json -->|projects_from| state_domain_canonical_state
+  projection_enforcement_status_json -->|projects_from| state_domain_canonical_state
+  projection_milestone_status_json -->|projects_from| state_domain_canonical_state
+  state_domain_canonical_state -->|contains| state_domain__schema
+  state_domain_canonical_state -->|contains| state_domain_protocol_version
+  state_domain_canonical_state -->|contains| state_domain_authority
+  state_domain_canonical_state -->|contains| state_domain_principle
+  state_domain_canonical_state -->|contains| state_domain_updated_at
+  state_domain_canonical_state -->|contains| state_domain_execution
+  state_domain_canonical_state -->|contains| state_domain_last_execution
+  state_domain_canonical_state -->|contains| state_domain_milestone
+  state_domain_canonical_state -->|contains| state_domain_ticket
+  state_domain_canonical_state -->|contains| state_domain_lock
+  state_domain_canonical_state -->|contains| state_domain_repository
+  state_domain_canonical_state -->|contains| state_domain_governance
+  state_domain_canonical_state -->|contains| state_domain_confidence
+  state_domain_canonical_state -->|contains| state_domain_drift
+  state_domain_canonical_state -->|contains| state_domain_safe_exit
+  state_domain_canonical_state -->|contains| state_domain_last_milestone
+  state_domain_canonical_state -->|contains| state_domain_head_commit
+  state_domain_canonical_state -->|contains| state_domain_worktree_clean
+  style validator_scripts_validate_benchmark_ts fill:#bbf,stroke:#333
+  style validator_scripts_validate_bootstrap_ts fill:#bbf,stroke:#333
+  style validator_scripts_validate_causality_ts fill:#bbf,stroke:#333
+  style validator_scripts_validate_invariants_ts fill:#bbf,stroke:#333
+  style validator_scripts_validate_projections_ts fill:#bbf,stroke:#333
+  style validator_scripts_validate_reflections_ts fill:#bbf,stroke:#333
+  style validator_scripts_validate_replay_integrity_ts fill:#bbf,stroke:#333
+  style validator_scripts_validate_replay_ts fill:#bbf,stroke:#333
+  style validator_scripts_validate_repository_hygiene_ts fill:#bbf,stroke:#333
+  style validator_scripts_validate_telemetry_ts fill:#bbf,stroke:#333
+  style emitter_scripts_emit_governance_event_ts fill:#bfb,stroke:#333
+  style emitter_scripts_emit_telemetry_ts fill:#bfb,stroke:#333
+  style script_scripts_analyze_workflow_patterns_ts fill:#f9f,stroke:#333
+  style script_scripts_archive_audit_runtime_integrity_ts fill:#f9f,stroke:#333
+  style script_scripts_archive_generate_runtime_projections_ts fill:#f9f,stroke:#333
+  style script_scripts_archive_migrate_governance_md_to_json_ts fill:#f9f,stroke:#333
+  style script_scripts_archive_setup_test_db_ts fill:#f9f,stroke:#333
+  style script_scripts_audit_runtime_ts fill:#f9f,stroke:#333
+  style script_scripts_bootstrap_ts fill:#f9f,stroke:#333
+  style script_scripts_check_deployment_readiness_ts fill:#f9f,stroke:#333
+  style script_scripts_create_ticket_ts fill:#f9f,stroke:#333
+  style script_scripts_detect_stale_locks_ts fill:#f9f,stroke:#333
+  style script_scripts_diagnostics_console_ts fill:#f9f,stroke:#333
+  style script_scripts_diagnostics_health_ts fill:#f9f,stroke:#333
+  style script_scripts_emit_governance_event_ts fill:#f9f,stroke:#333
+  style script_scripts_emit_telemetry_ts fill:#f9f,stroke:#333
+  style script_scripts_enforce_governance_ts fill:#f9f,stroke:#333
+  style script_scripts_execute_recipe_ts fill:#f9f,stroke:#333
+  style script_scripts_execution_lock_ts fill:#f9f,stroke:#333
+  style script_scripts_execution_state_ts fill:#f9f,stroke:#333
+  style script_scripts_generate_governance_ts fill:#f9f,stroke:#333
+  style script_scripts_generate_recipe_md_ts fill:#f9f,stroke:#333
+  style script_scripts_governance_impact_ts fill:#f9f,stroke:#333
+  style script_scripts_governance_query_ts fill:#f9f,stroke:#333
+  style script_scripts_governance_topology_ts fill:#f9f,stroke:#333
+  style script_scripts_governance_visualize_ts fill:#f9f,stroke:#333
+  style script_scripts_invariant_monitor_ts fill:#f9f,stroke:#333
+  style script_scripts_lib_causality_validator_ts fill:#f9f,stroke:#333
+  style script_scripts_lib_governance_topology_ts fill:#f9f,stroke:#333
+  style script_scripts_lib_replay_integrity_validator_ts fill:#f9f,stroke:#333
+  style script_scripts_lib_stream_emitter_ts fill:#f9f,stroke:#333
+  style script_scripts_migrate_to_storage_adapter_ts fill:#f9f,stroke:#333
+  style script_scripts_normalize_governance_registry_ts fill:#f9f,stroke:#333
+  style script_scripts_query_governance_events_ts fill:#f9f,stroke:#333
+  style script_scripts_replay_execution_ts fill:#f9f,stroke:#333
+  style script_scripts_resolve_continuation_ts fill:#f9f,stroke:#333
+  style script_scripts_runtime_storage_ts fill:#f9f,stroke:#333
+  style script_scripts_self_heal_ts fill:#f9f,stroke:#333
+  style script_scripts_sequence_tracker_ts fill:#f9f,stroke:#333
+  style script_scripts_suggest_next_actions_ts fill:#f9f,stroke:#333
+  style script_scripts_sync_projections_ts fill:#f9f,stroke:#333
+  style script_scripts_sync_repository_status_ts fill:#f9f,stroke:#333
+  style script_scripts_validate_benchmark_ts fill:#f9f,stroke:#333
+  style script_scripts_validate_bootstrap_ts fill:#f9f,stroke:#333
+  style script_scripts_validate_causality_ts fill:#f9f,stroke:#333
+  style script_scripts_validate_invariants_ts fill:#f9f,stroke:#333
+  style script_scripts_validate_projections_ts fill:#f9f,stroke:#333
+  style script_scripts_validate_reflections_ts fill:#f9f,stroke:#333
+  style script_scripts_validate_replay_integrity_ts fill:#f9f,stroke:#333
+  style script_scripts_validate_replay_ts fill:#f9f,stroke:#333
+  style script_scripts_validate_repository_hygiene_ts fill:#f9f,stroke:#333
+  style script_scripts_validate_telemetry_ts fill:#f9f,stroke:#333
+  style script_scripts_validators_governance_governance_event_ts fill:#f9f,stroke:#333
+  style script_scripts_validators_protocol_checkpoint_ts fill:#f9f,stroke:#333
+  style script_scripts_validators_protocol_enforcement_policy_ts fill:#f9f,stroke:#333
+  style script_scripts_validators_protocol_execution_lifecycle_ts fill:#f9f,stroke:#333
+  style script_scripts_validators_protocol_execution_state_machine_ts fill:#f9f,stroke:#333
+  style script_scripts_validators_protocol_state_mutation_ts fill:#f9f,stroke:#333
+  style policy_meta_governance_protocols_audit_policy_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_authority_reconstruction_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_causality_policy_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_checkpoint_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_deployment_readiness_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_drift_classification_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_drift_recovery_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_enforcement_policy_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_execution_authorization_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_execution_freeze_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_execution_lifecycle_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_execution_state_machine_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_integrity_validation_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_invariant_policy_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_operational_mode_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_repair_contract_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_retention_policy_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_self_healing_json fill:#bff,stroke:#333
+  style policy_meta_governance_protocols_state_mutation_json fill:#bff,stroke:#333
+  style schema_meta_governance_schemas_authority_declaration_schema_json fill:#f9f,stroke:#333
+  style schema_meta_governance_schemas_checkpoint_schema_json fill:#f9f,stroke:#333
+  style schema_meta_governance_schemas_drift_classification_schema_json fill:#f9f,stroke:#333
+  style schema_meta_governance_schemas_enforcement_policy_schema_json fill:#f9f,stroke:#333
+  style schema_meta_governance_schemas_execution_freeze_schema_json fill:#f9f,stroke:#333
+  style schema_meta_governance_schemas_governance_registry_schema_json fill:#f9f,stroke:#333
+  style schema_meta_governance_schemas_governance_rule_schema_json fill:#f9f,stroke:#333
+  style schema_meta_governance_schemas_governance_state_schema_json fill:#f9f,stroke:#333
+  style schema_meta_governance_schemas_integrity_validation_schema_json fill:#f9f,stroke:#333
+  style schema_meta_governance_schemas_operational_mode_schema_json fill:#f9f,stroke:#333
+  style schema_meta_governance_schemas_protocol_definition_schema_json fill:#f9f,stroke:#333
+  style schema_meta_governance_schemas_recovery_policy_schema_json fill:#f9f,stroke:#333
+  style schema_meta_governance_schemas_repair_contract_schema_json fill:#f9f,stroke:#333
+  style schema_meta_governance_schemas_runtime_transition_schema_json fill:#f9f,stroke:#333
+  style schema_meta_governance_schemas_storage_adapter_schema_json fill:#f9f,stroke:#333
+  style journal_project_governance_runtime_events_streams_default_ndjson fill:#fbb,stroke:#333
+  style journal_project_governance_runtime_events_streams_diagnostics_ndjson fill:#fbb,stroke:#333
+  style journal_project_governance_runtime_events_streams_execution_ndjson fill:#fbb,stroke:#333
+  style journal_project_governance_runtime_events_streams_validation_ndjson fill:#fbb,stroke:#333
+  style checkpoint_cp_M21_20260525_012324_complete_json fill:#ffb,stroke:#333
+  style checkpoint_cp_M29_closure_20260524_233201_complete_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T27_1_20260524_105624_complete_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T27_2_20260524_123033_active_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T27_2_20260524_124030_complete_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T27_3_20260524_125820_active_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T27_3_20260524_130344_complete_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T28_1_20260524_135042_active_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T28_1_20260524_135806_complete_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T28_2_20260524_135954_active_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T28_2_20260524_143317_complete_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T28_3_20260524_143805_active_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T28_3_20260524_163629_complete_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T29_1_20260524_190953_complete_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T29_1_pre_execution_20260524_185931_active_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T29_2_20260524_201637_complete_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T29_2a_20260524_231337_complete_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T29_3_20260524_230137_complete_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T32_20260524_182343_complete_json fill:#ffb,stroke:#333
+  style checkpoint_cp_T32_pre_stabilization_20260524_175833_active_json fill:#ffb,stroke:#333
+  style projection_active_execution_json fill:#f9f,stroke:#333
+  style projection_current_milestone_json fill:#f9f,stroke:#333
+  style projection_current_ticket_json fill:#f9f,stroke:#333
+  style projection_execution_lock_json fill:#f9f,stroke:#333
+  style projection_enforcement_status_json fill:#f9f,stroke:#333
+  style projection_milestone_status_json fill:#f9f,stroke:#333
+  style state_domain__schema fill:#f9f,stroke:#333
+  style state_domain_protocol_version fill:#f9f,stroke:#333
+  style state_domain_authority fill:#f9f,stroke:#333
+  style state_domain_principle fill:#f9f,stroke:#333
+  style state_domain_updated_at fill:#f9f,stroke:#333
+  style state_domain_execution fill:#f9f,stroke:#333
+  style state_domain_last_execution fill:#f9f,stroke:#333
+  style state_domain_milestone fill:#f9f,stroke:#333
+  style state_domain_ticket fill:#f9f,stroke:#333
+  style state_domain_lock fill:#f9f,stroke:#333
+  style state_domain_repository fill:#f9f,stroke:#333
+  style state_domain_governance fill:#f9f,stroke:#333
+  style state_domain_confidence fill:#f9f,stroke:#333
+  style state_domain_drift fill:#f9f,stroke:#333
+  style state_domain_safe_exit fill:#f9f,stroke:#333
+  style state_domain_last_milestone fill:#f9f,stroke:#333
+  style state_domain_head_commit fill:#f9f,stroke:#333
+  style state_domain_worktree_clean fill:#f9f,stroke:#333
