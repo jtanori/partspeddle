@@ -18,7 +18,7 @@ jobs:
   lint-and-typecheck:
     name: Lint & TypeCheck
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
 
@@ -37,8 +37,11 @@ jobs:
       - name: Format check
         run: npm run format:check
 
-      - name: Type check
+      - name: Type check (backend)
         run: npm run typecheck
+
+      - name: Type check (frontend)
+        run: npm run typecheck:frontend
 
   unit-tests:
     name: Unit Tests

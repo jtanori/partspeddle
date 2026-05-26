@@ -131,12 +131,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Validate protocols against schema
-        run: |
-          npx tsx scripts/validate-protocol-schemas.ts
-        continue-on-error: true
+      - name: Validate repository hygiene
+        run: npx tsx scripts/validate-repository-hygiene.ts
 
       - name: Validate registry consistency
-        run: |
-          npx tsx scripts/normalize-governance-registry.ts --validate-only
-        continue-on-error: true
+        run: npx tsx scripts/normalize-governance-registry.ts --validate-only
