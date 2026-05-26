@@ -31,9 +31,10 @@ describe('InMemoryListingRepository', () => {
 
       const result = await repository.findById(listing.id);
       expect(result).not.toBeNull();
-      expect(result!.id).toBe(listing.id);
-      expect(result!.title).toBe('Vintage Watch');
-      expect(result!.status).toBe('draft');
+      if (result === null) throw new Error('unreachable');
+      expect(result.id).toBe(listing.id);
+      expect(result.title).toBe('Vintage Watch');
+      expect(result.status).toBe('draft');
     });
   });
 
@@ -112,7 +113,8 @@ describe('InMemoryListingRepository', () => {
       await repository.save(listing);
       const found = await repository.findById(listing.id);
       expect(found).not.toBeNull();
-      expect(found!.title).toBe('Item');
+      if (found === null) throw new Error('unreachable');
+      expect(found.title).toBe('Item');
     });
 
     it('updates existing listing', async () => {
@@ -127,7 +129,9 @@ describe('InMemoryListingRepository', () => {
       await repository.save(listing);
 
       const found = await repository.findById(id);
-      expect(found!.status).toBe('active');
+      expect(found).not.toBeNull();
+      if (found === null) throw new Error('unreachable');
+      expect(found.status).toBe('active');
     });
   });
 

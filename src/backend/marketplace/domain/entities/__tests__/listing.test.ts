@@ -187,10 +187,14 @@ describe('Listing', () => {
         'corr-1',
       );
 
-      expect(() => listing.withdraw('corr-2')).toThrow(DomainError);
+      expect(() => {
+        listing.withdraw('corr-2');
+      }).toThrow(DomainError);
 
       listing.publish('corr-2');
-      expect(() => listing.publish('corr-3')).toThrow(DomainError);
+      expect(() => {
+        listing.publish('corr-3');
+      }).toThrow(DomainError);
     });
 
     it('sold is terminal', () => {
@@ -208,8 +212,12 @@ describe('Listing', () => {
       listing.publish('corr-2');
       listing.markAsSold('buyer-123', 'corr-3');
 
-      expect(() => listing.withdraw('corr-4')).toThrow(DomainError);
-      expect(() => listing.publish('corr-4')).toThrow(DomainError);
+      expect(() => {
+        listing.withdraw('corr-4');
+      }).toThrow(DomainError);
+      expect(() => {
+        listing.publish('corr-4');
+      }).toThrow(DomainError);
     });
   });
 });
