@@ -46,4 +46,4 @@ forensic/recovery-contaminated-snapshot-2026-05-21  ← immutable evidence tag
 
 ---
 
-*Cleanup commit: TBD*
+*Cleanup commit: 6cfbc3b*
