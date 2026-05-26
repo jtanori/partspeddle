@@ -13,8 +13,8 @@ export function emitEvent(
   payload: Record<string, unknown>
 ): void {
   try {
-    const payloadJson = JSON.stringify(payload);
-    const child = spawn("npx", ["tsx", "scripts/emit-governance-event.ts", eventType, "info", "governance", payloadJson], {
+    const payloadJson = JSON.stringify({ ...payload, action_id: actionId });
+    const child = spawn("npx", ["tsx", "scripts/emit-governance-event.ts", eventType, "info", "governance", payloadJson, "--execution-id", actionId], {
       detached: true,
       stdio: "ignore",
     });

@@ -110,7 +110,10 @@ function loadJSON<T>(path: string): T | null {
   }
 }
 
+let _emitEvents = true;
+
 function emitEvent(event: GovernanceEvent): void {
+  if (!_emitEvents) return;
   // Try to use the governance event emitter if available
   try {
     const { emit } = require('./emit-governance-event.js');
@@ -416,7 +419,8 @@ const validators: Record<string, Validator> = {
 
 // ─── Main Engine ───
 
-function runValidation(): ValidationReport {
+export function runValidation(options?: { emitEvents?: boolean }): ValidationReport {
+  _emitEvents = options?.emitEvents ?? true;
   const registry = loadJSON<InvariantRegistry>(INVARIANTS_PATH);
   if (!registry) {
     throw new Error(`Cannot load invariant registry from ${INVARIANTS_PATH}`);
@@ -610,4 +614,4 @@ function main(): void {
   process.exit(report.overall_status === 'PASS' ? 0 : report.overall_status === 'DEGRADED' ? 2 : 1);
 }
 
-main();
+if (import.meta.url === `file://${process.argv[1]}`) { main(); }

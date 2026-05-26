@@ -53,7 +53,7 @@ function loadJson<T>(path: string): T {
   return JSON.parse(readFileSync(path, "utf-8")) as T;
 }
 
-function validateProjectionConsistency(): { passed: boolean; drifts: Array<{ projection: string; field: string; expected: unknown; actual: unknown }> } {
+export function validateProjectionConsistency(): { passed: boolean; drifts: Array<{ projection: string; field: string; expected: unknown; actual: unknown }> } {
   const drifts: Array<{ projection: string; field: string; expected: unknown; actual: unknown }> = [];
   const state = loadJson<CanonicalState>(CANONICAL_STATE_PATH);
 
@@ -165,4 +165,4 @@ function main(): void {
   }
 }
 
-main();
+if (import.meta.url === `file://${process.argv[1]}`) { main(); }

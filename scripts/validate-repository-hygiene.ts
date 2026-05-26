@@ -42,7 +42,7 @@ function getTrackedRootFiles(): string[] {
   }
 }
 
-function checkRootHygiene(): HygieneResult {
+export function checkRootHygiene(): HygieneResult {
   const violations: string[] = [];
   const tracked = getTrackedRootFiles();
 
@@ -79,4 +79,4 @@ function main(): void {
   }
 }
 
-main();
+if (import.meta.url === `file://${process.argv[1]}`) { main(); }

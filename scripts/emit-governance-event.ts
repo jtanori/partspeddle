@@ -173,16 +173,31 @@ export { buildEvent, loadPolicy, validateEvent, selectGovStreams as selectStream
 if (import.meta.url === `file://${process.argv[1]}`) {
   const args = process.argv.slice(2);
   if (args.length < 3) {
-    console.error("Usage: tsx scripts/emit-governance-event.ts <event_type> <severity> <category> [payload_json]");
+    console.error("Usage: tsx scripts/emit-governance-event.ts <event_type> <severity> <category> [payload_json] [--execution-id <id>]");
     process.exit(1);
   }
   const [eventType, severity, category, payloadRaw] = args;
   const payload = payloadRaw ? JSON.parse(payloadRaw) : {};
-  const event = buildEvent(eventType, severity as Severity, category as Category, payload, { actor: "system" });
+
+  // Parse --execution-id flag if present
+  let executionId: string | null = null;
+  const execIdIdx = args.indexOf("--execution-id");
+  if (execIdIdx !== -1 && args[execIdIdx + 1]) {
+    executionId = args[execIdIdx + 1];
+  }
+
+  // Extract action_id from payload for backward compatibility with control plane
+  const actionId = payload.action_id as string | undefined;
+  const inferredExecutionId = executionId || actionId || null;
+
+  const event = buildEvent(eventType, severity as Severity, category as Category, payload, {
+    actor: "system",
+    execution_id: inferredExecutionId,
+  });
   const result = emit(event);
   if (!result.ok) {
     console.error("Validation failed:", result.errors);
     process.exit(1);
   }
-  console.log("Emitted to:", result.streams.join(", "), "event_id:", event.event_id, "global_seq:", event.global_sequence, "exec_seq:", event.execution_sequence);
+  console.log("Emitted to:", result.streams.join(", "), "event_id:", event.event_id, "global_seq:", event.global_sequence, "exec_seq:", event.execution_sequence, "execution_id:", event.execution_id);
 }

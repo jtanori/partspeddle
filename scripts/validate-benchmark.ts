@@ -73,10 +73,7 @@ function emitWarning(result: BenchmarkResult): void {
   }
 }
 
-function main(): void {
-  console.log("Benchmark Validation");
-  console.log("====================\n");
-
+export function validateBenchmark(): { passed: boolean; errors: string[]; warnings: string[] } {
   const latest = loadLatestBenchmark();
   let result: BenchmarkResult;
 
@@ -85,8 +82,6 @@ function main(): void {
     result.adapter_ms = latest.adapter_ms;
     result.direct_ms = latest.direct_ms;
   } else {
-    // No benchmark log — run a quick heuristic check via storage tests
-    console.log("No benchmark log found. Run: npm run storage:test to generate one.");
     result = {
       status: "PASS",
       regression_percent: 0,
@@ -95,21 +90,38 @@ function main(): void {
     };
   }
 
-  console.log(`Status:       ${result.status}`);
-  console.log(`Regression:   ${result.regression_percent.toFixed(1)}%`);
-  console.log(`Threshold:    ${result.threshold}%`);
-  console.log(`Classification: ${result.classification}`);
+  const errors: string[] = [];
+  const warnings: string[] = [];
 
-  if (result.status === "WARN" || result.status === "FAIL" || result.status === "CRITICAL") {
-    emitWarning(result);
+  if (result.status === "FAIL" || result.status === "CRITICAL") {
+    errors.push(`Benchmark regression ${result.status}: ${result.regression_percent.toFixed(1)}% (threshold: ${result.threshold}%)`);
+  } else if (result.status === "WARN") {
+    warnings.push(`Benchmark regression advisory: ${result.regression_percent.toFixed(1)}%`);
   }
 
-  console.log("\n" + "=".repeat(50));
-  if (result.status === "PASS") {
+  return { passed: errors.length === 0, errors, warnings };
+}
+
+function main(): void {
+  console.log("Benchmark Validation");
+  console.log("====================\n");
+
+  const result = validateBenchmark();
+
+  if (result.warnings.length > 0) {
+    for (const w of result.warnings) {
+      console.log(`⚠️  ${w}`);
+    }
+  }
+
+  if (result.errors.length > 0) {
+    for (const e of result.errors) {
+      console.log(`❌ ${e}`);
+    }
+  }
+
+  if (result.passed) {
     console.log("✅ Benchmark within acceptable range.");
-    process.exit(0);
-  } else if (result.status === "WARN") {
-    console.log("⚠️  Benchmark regression advisory — execution allowed.");
     process.exit(0);
   } else {
     console.log("❌ Benchmark regression exceeds blocking threshold.");
@@ -117,4 +129,4 @@ function main(): void {
   }
 }
 
-main();
+if (import.meta.url === `file://${process.argv[1]}`) { main(); }

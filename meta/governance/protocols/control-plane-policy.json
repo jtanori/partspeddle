@@ -1,247 +1,240 @@
 {
-  "protocol_version": "1.1.0",
-  "policy_id": "control-plane-operations",
-  "authority": "meta/governance/protocols/control-plane-policy.json",
-  "description": "Operational policy governing control plane actions, intent emission, approval chains, execution orchestration, and checkpoint semantics",
-  "principles": [
-    "Intent emission precedes execution",
-    "Every action emits a governed event",
-    "Intent events are immutable once emitted",
-    "Destructive actions require human approval",
-    "Rollback must be replay-safe",
-    "Operator attribution is preserved in all action events",
-    "Execution chains share a single correlation ID",
-    "Checkpoint creation is conditional on execution completion"
-  ],
-  "action_classes": {
-    "observational": {
-      "description": "No mutation. Pure read operations.",
-      "examples": ["diagnostics_health_check", "suggest_next_actions"],
-      "approval": "auto",
-      "risk_level": "low"
-    },
-    "administrative": {
-      "description": "Metadata mutation only. No runtime state changes.",
-      "examples": ["projection_sync", "index_rebuild"],
-      "approval": "auto",
-      "risk_level": "low"
-    },
-    "enforcement": {
-      "description": "Governance checks and validations.",
-      "examples": ["enforcement_validate_all"],
-      "approval": "auto",
-      "risk_level": "medium"
-    },
-    "recovery": {
-      "description": "Healing, drift repair, and state restoration.",
-      "examples": ["healing_sync_projections", "healing_self_heal_run"],
-      "approval": "human",
-      "risk_level": "high"
-    },
-    "destructive": {
-      "description": "Irreversible or high-risk mutations.",
-      "examples": ["state_reset", "stream_purge"],
-      "approval": "human",
-      "risk_level": "critical"
-    },
-    "orchestration": {
-      "description": "Multi-step execution invoking other recipes.",
-      "examples": ["orchestration_milestone_close"],
-      "approval": "human",
-      "risk_level": "high"
-    }
-  },
-  "approval_matrix": {
-    "auto_approved": {
-      "classes": ["observational", "administrative", "enforcement"],
-      "maximum_risk": "medium",
-      "requires_acknowledgment": false
-    },
-    "human_approval": {
-      "classes": ["recovery", "destructive", "orchestration"],
-      "minimum_approvers": 1,
-      "required_roles": ["governance_operator"],
-      "timeout_seconds": 3600,
-      "escalation_on_timeout": true
-    },
-    "governance_approval": {
-      "actions": ["policy_update", "invariant_bypass", "protocol_amendment"],
-      "minimum_approvers": 2,
-      "required_roles": ["governance_admin", "system_architect"],
-      "timeout_seconds": 86400
-    }
-  },
-  "execution_lifecycle": {
-    "stages": [
-      {
-        "name": "intent.requested",
-        "description": "Operator intent emitted",
-        "emits": ["intent.requested"],
-        "next": ["intent.validated"],
-        "properties": {
-          "immutable": true,
-          "correlation_anchor": true
-        }
-      },
-      {
-        "name": "intent.validated",
-        "description": "Guard layer validates against invariants and policy",
-        "emits": ["intent.validated"],
-        "next": ["intent.approved", "intent.rejected"],
-        "properties": {
-          "immutable": true
-        }
-      },
-      {
-        "name": "intent.approved",
-        "description": "Human or governance authorization granted",
-        "emits": ["intent.approved"],
-        "next": ["execution.started"],
-        "properties": {
-          "immutable": true
-        }
-      },
-      {
-        "name": "intent.rejected",
-        "description": "Action denied by invariant or human",
-        "emits": ["intent.rejected"],
-        "next": [],
-        "properties": {
-          "terminal": true,
-          "immutable": true
-        }
-      },
-      {
-        "name": "execution.started",
-        "description": "Orchestration layer begins recipe execution",
-        "emits": ["execution.started", "control.recipe.invoked"],
-        "next": ["execution.completed", "execution.failed"],
-        "properties": {}
-      },
-      {
-        "name": "execution.completed",
-        "description": "Recipe executed successfully",
-        "emits": ["execution.completed"],
-        "next": ["checkpoint.created"],
-        "properties": {}
-      },
-      {
-        "name": "execution.failed",
-        "description": "Recipe execution failed",
-        "emits": ["execution.failed"],
-        "next": ["execution.rolled_back"],
-        "properties": {}
-      },
-      {
-        "name": "execution.rolled_back",
-        "description": "Rollback executed after failure",
-        "emits": ["execution.rolled_back"],
-        "next": [],
-        "properties": {
-          "terminal": true
-        }
-      },
-      {
-        "name": "checkpoint.created",
-        "description": "Checkpoint emitted on successful execution",
-        "emits": ["checkpoint.created"],
-        "next": ["projection.synced"],
-        "properties": {
-          "conditional": true
-        }
-      },
-      {
-        "name": "projection.synced",
-        "description": "Projections synchronized from canonical state",
-        "emits": ["projection.synced"],
-        "next": [],
-        "properties": {
-          "terminal": true
-        }
-      }
+  "id": "control-plane-policy",
+  "version": "1.1.0",
+  "layer": 2,
+  "scope": "governance",
+  "canonical": true,
+  "status": "active",
+  "derives_from": ["runtime-governance-kernel", "execution-lifecycle"],
+  "narrative_ref": "control-plane-policy.md",
+  "title": "VINTRACK Control Plane Policy",
+  "description": "Operational policy governing control plane actions, intent emission, approval chains, execution orchestration, and checkpoint semantics.",
+  "purpose": "Separate intent from execution, enforce approval boundaries, and ensure every operational action is governed, attributed, and recoverable.",
+  "state_machine": {
+    "states": [
+      { "id": "intent.requested", "terminal": false, "semantics": "Operator intent emitted. Correlation anchor. Immutable.", "entry_trigger": "Operator submits intent via dashboard, CLI, API, or agent.", "exit_trigger": "Guard layer begins validation." },
+      { "id": "intent.validated", "terminal": false, "semantics": "Guard layer validates against invariants and policy.", "entry_trigger": "Validation begins against schema, policy, locks, dependencies.", "exit_trigger": "Validation decision rendered." },
+      { "id": "intent.approved", "terminal": false, "semantics": "Human or governance authorization granted. Immutable.", "entry_trigger": "Approval quorum satisfied for required action class.", "exit_trigger": "Execution orchestration begins." },
+      { "id": "intent.rejected", "terminal": true, "semantics": "Action denied by invariant or human. Terminal.", "entry_trigger": "Validation failed or approval denied.", "exit_trigger": "None — terminal state." },
+      { "id": "execution.started", "terminal": false, "semantics": "Orchestration layer begins recipe execution.", "entry_trigger": "Recipe invocation triggered.", "exit_trigger": "Execution completes or fails." },
+      { "id": "execution.completed", "terminal": false, "semantics": "Recipe executed successfully.", "entry_trigger": "Recipe finished without errors.", "exit_trigger": "Checkpoint creation triggered." },
+      { "id": "execution.failed", "terminal": false, "semantics": "Recipe execution failed.", "entry_trigger": "Unrecoverable error during execution.", "exit_trigger": "Rollback initiated." },
+      { "id": "execution.rolled_back", "terminal": true, "semantics": "Rollback executed after failure. Terminal.", "entry_trigger": "Rollback recipe applied.", "exit_trigger": "None — terminal state." },
+      { "id": "checkpoint.created", "terminal": false, "semantics": "Checkpoint emitted on successful execution. Conditional.", "entry_trigger": "Execution completed and checkpoint policy satisfied.", "exit_trigger": "Projections synchronized." },
+      { "id": "projection.synced", "terminal": true, "semantics": "Projections synchronized from canonical state. Terminal.", "entry_trigger": "All projections updated.", "exit_trigger": "None — terminal state." }
+    ],
+    "transitions": [
+      { "from": "intent.requested", "to": "intent.validated", "trigger": "validation_requested", "guard": null, "description": "Guard layer validates intent." },
+      { "from": "intent.validated", "to": "intent.approved", "trigger": "validation_passed", "guard": null, "description": "Intent passes validation and approval requirements." },
+      { "from": "intent.validated", "to": "intent.rejected", "trigger": "validation_failed", "guard": null, "description": "Intent fails validation or approval is denied." },
+      { "from": "intent.approved", "to": "execution.started", "trigger": "approval_granted", "guard": null, "description": "Orchestration begins recipe execution." },
+      { "from": "execution.started", "to": "execution.completed", "trigger": "execution_succeeded", "guard": null, "description": "Recipe execution completes successfully." },
+      { "from": "execution.started", "to": "execution.failed", "trigger": "execution_failed", "guard": null, "description": "Recipe execution encounters unrecoverable error." },
+      { "from": "execution.completed", "to": "checkpoint.created", "trigger": "checkpoint_triggered", "guard": null, "description": "Checkpoint created after successful execution." },
+      { "from": "execution.failed", "to": "execution.rolled_back", "trigger": "rollback_requested", "guard": null, "description": "Rollback executed after execution failure." },
+      { "from": "checkpoint.created", "to": "projection.synced", "trigger": "projection_synced", "guard": null, "description": "Projections synchronized from checkpoint." }
+    ],
+    "forbidden_transitions": [
+      { "from": "intent.rejected", "to": "*", "reason": "Terminal state. No exit." },
+      { "from": "execution.rolled_back", "to": "*", "reason": "Terminal state. No exit." },
+      { "from": "projection.synced", "to": "*", "reason": "Terminal state. No exit." },
+      { "from": "intent.requested", "to": "intent.approved", "reason": "Must pass through validated." },
+      { "from": "intent.requested", "to": "execution.started", "reason": "Must pass through validated and approved." },
+      { "from": "execution.started", "to": "checkpoint.created", "reason": "Must pass through completed." },
+      { "from": "execution.failed", "to": "checkpoint.created", "reason": "Failed executions trigger rollback, not checkpoint." }
     ]
   },
-  "correlation_semantics": {
-    "description": "Every event in an execution chain shares the same action_id",
-    "required_fields": ["action_id", "execution_id", "actor"],
-    "propagation": {
-      "intent_events": "action_id is generated here",
-      "approval_events": "inherit action_id from intent",
-      "execution_events": "inherit action_id from intent",
-      "checkpoint_events": "inherit action_id from execution"
+  "rules": [
+    {
+      "id": "observational_auto_approved",
+      "condition": "action class is observational, administrative, or enforcement",
+      "action": "auto-approve and execute without human intervention",
+      "severity": "LOW",
+      "description": "Low-risk action classes (observational, administrative, enforcement) are auto-approved."
+    },
+    {
+      "id": "recovery_requires_human_approval",
+      "condition": "action class is recovery, destructive, or orchestration",
+      "action": "require human approval with governance_operator role before execution",
+      "severity": "HIGH",
+      "description": "High-risk action classes require human approval. Minimum 1 approver with governance_operator role."
+    },
+    {
+      "id": "governance_approval_quorum",
+      "condition": "action is policy_update, invariant_bypass, or protocol_amendment",
+      "action": "require governance approval with minimum 2 approvers",
+      "severity": "CRITICAL",
+      "description": "Governance-level changes require 2 approvers with governance_admin or system_architect roles."
+    },
+    {
+      "id": "intent_precedes_execution",
+      "condition": "execution is requested",
+      "action": "verify intent.requested and intent.approved events exist",
+      "severity": "CRITICAL",
+      "description": "Intent emission MUST precede execution."
+    },
+    {
+      "id": "intent_immutable",
+      "condition": "intent event has been emitted",
+      "action": "prevent mutation of intent metadata",
+      "severity": "CRITICAL",
+      "description": "Intent events are immutable once emitted."
+    },
+    {
+      "id": "rollback_replay_safe",
+      "condition": "rollback is executed",
+      "action": "verify rollback recipe is replay-safe before applying",
+      "severity": "HIGH",
+      "description": "Rollback must be replay-safe."
+    },
+    {
+      "id": "operator_attribution",
+      "condition": "any action event is emitted",
+      "action": "include actor field in event payload",
+      "severity": "CRITICAL",
+      "description": "Operator attribution is preserved in all action events."
+    },
+    {
+      "id": "correlation_id_shared",
+      "condition": "execution chain spans multiple events",
+      "action": "propagate action_id across intent, approval, execution, and checkpoint events",
+      "severity": "HIGH",
+      "description": "Every event in an execution chain shares the same action_id."
+    },
+    {
+      "id": "checkpoint_conditional",
+      "condition": "execution completes successfully",
+      "action": "create checkpoint and synchronize projections",
+      "severity": "MEDIUM",
+      "description": "Checkpoint creation is conditional on execution completion."
     }
+  ],
+  "invariants": [
+    {
+      "id": "intent_before_execution",
+      "expression": "execution.started → ∃ intent.approved with same action_id",
+      "severity": "CRITICAL",
+      "description": "Execution cannot start without approved intent."
+    },
+    {
+      "id": "intent_immutability",
+      "expression": "intent.requested → intent metadata unchanged for all time",
+      "severity": "CRITICAL",
+      "description": "Intent events are append-only and immutable."
+    },
+    {
+      "id": "destructive_requires_approval",
+      "expression": "action_class ∈ {recovery, destructive, orchestration} → approval granted",
+      "severity": "CRITICAL",
+      "description": "Destructive actions require explicit human approval."
+    },
+    {
+      "id": "correlation_preserved",
+      "expression": "∀ events in execution chain: action_id is constant",
+      "severity": "HIGH",
+      "description": "All events in an execution chain share the same correlation ID."
+    },
+    {
+      "id": "operator_attributed",
+      "expression": "∀ action events: actor ≠ null ∧ actor ≠ undefined",
+      "severity": "HIGH",
+      "description": "Every action event carries operator attribution."
+    }
+  ],
+  "triggers": [
+    {
+      "id": "intent_submitted",
+      "category": "mandatory",
+      "condition": "operator submits intent",
+      "description": "Intent.requested event emitted."
+    },
+    {
+      "id": "guard_validation",
+      "category": "mandatory",
+      "condition": "intent.requested emitted",
+      "description": "Guard layer validates intent."
+    },
+    {
+      "id": "approval_timeout",
+      "category": "optional",
+      "condition": "human approval pending > 3600s",
+      "throttle": { "max_per_minute": 1, "cooldown_seconds": 3600 },
+      "description": "Escalate on approval timeout for human-approval actions."
+    }
+  ],
+  "emissions": {
+    "intent_requested": "intent.requested",
+    "intent_validated": "intent.validated",
+    "intent_approved": "intent.approved",
+    "intent_rejected": "intent.rejected",
+    "execution_started": "execution.started",
+    "execution_completed": "execution.completed",
+    "execution_failed": "execution.failed",
+    "execution_rolled_back": "execution.rolled_back",
+    "checkpoint_created": "checkpoint.created",
+    "projection_synced": "projection.synced",
+    "control_suggestion": "control.suggestion.generated",
+    "control_recipe_invoked": "control.recipe.invoked",
+    "control_guard_blocked": "control.guard.blocked"
   },
-  "event_families": {
-    "intent.requested": {
-      "description": "Operator intent emitted",
-      "severity": "info",
-      "required_fields": ["action_id", "actor", "intent"],
-      "emitted_by": ["dashboard", "cli", "api", "agent"]
+  "schemas": {
+    "action_class": {
+      "type": "string",
+      "enum": ["observational", "administrative", "enforcement", "recovery", "destructive", "orchestration"]
     },
-    "intent.validated": {
-      "description": "Guard validation complete",
-      "severity": "info",
-      "required_fields": ["action_id", "validation"]
+    "approval_mode": {
+      "type": "string",
+      "enum": ["auto", "human", "governance"]
     },
-    "intent.approved": {
-      "description": "Authorization granted",
-      "severity": "info",
-      "required_fields": ["action_id", "approval"]
-    },
-    "intent.rejected": {
-      "description": "Action denied",
-      "severity": "warn",
-      "required_fields": ["action_id", "approval"]
-    },
-    "execution.started": {
-      "description": "Execution begins",
-      "severity": "info",
-      "required_fields": ["action_id", "intent"]
-    },
-    "execution.completed": {
-      "description": "Execution successful",
-      "severity": "info",
-      "required_fields": ["action_id", "outcome"]
-    },
-    "execution.failed": {
-      "description": "Execution failed",
-      "severity": "error",
-      "required_fields": ["action_id", "outcome"]
-    },
-    "execution.rolled_back": {
-      "description": "Rollback after failure",
-      "severity": "warn",
-      "required_fields": ["action_id", "outcome"]
-    },
-    "checkpoint.created": {
-      "description": "Checkpoint emitted",
-      "severity": "info",
-      "required_fields": ["action_id", "outcome.checkpoint_id"]
-    },
-    "projection.synced": {
-      "description": "Projections synchronized",
-      "severity": "debug",
-      "required_fields": ["action_id"]
-    },
-    "control.suggestion.generated": {
-      "description": "Non-mutating recommendation",
-      "severity": "debug",
-      "required_fields": ["action_id", "actor"]
-    },
-    "control.recipe.invoked": {
-      "description": "Recipe execution initiated",
-      "severity": "info",
-      "required_fields": ["action_id", "recipe_id"]
-    },
-    "control.guard.blocked": {
-      "description": "Invariant prevented action",
-      "severity": "warn",
-      "required_fields": ["action_id", "invariant"]
+    "intent_record": {
+      "type": "object",
+      "required": ["action_id", "recipe_id", "execution_id", "action_class", "actor", "timestamp"],
+      "properties": {
+        "action_id": { "type": "string", "format": "uuid" },
+        "recipe_id": { "type": "string" },
+        "execution_id": { "type": "string" },
+        "action_class": { "$ref": "#/schemas/action_class" },
+        "actor": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "approval": {
+          "type": "object",
+          "properties": {
+            "mode": { "$ref": "#/schemas/approval_mode" },
+            "minimum_approvers": { "type": "integer", "minimum": 1 },
+            "required_roles": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
     }
   },
   "metadata": {
     "created_at": "2026-05-25T02:30:00Z",
-    "updated_at": "2026-05-25T03:15:00Z",
-    "version": 2
+    "updated_at": "2026-05-25T21:16:00Z",
+    "author": "governance-system",
+    "protocol_version": "1.1.0",
+    "policy_id": "control-plane-operations",
+    "principles": [
+      "Intent emission precedes execution",
+      "Every action emits a governed event",
+      "Intent events are immutable once emitted",
+      "Destructive actions require human approval",
+      "Rollback must be replay-safe",
+      "Operator attribution is preserved in all action events",
+      "Execution chains share a single correlation ID",
+      "Checkpoint creation is conditional on execution completion"
+    ],
+    "action_classes": {
+      "observational": { "description": "No mutation. Pure read operations.", "examples": ["diagnostics_health_check", "suggest_next_actions"], "approval": "auto", "risk_level": "low" },
+      "administrative": { "description": "Metadata mutation only. No runtime state changes.", "examples": ["projection_sync", "index_rebuild"], "approval": "auto", "risk_level": "low" },
+      "enforcement": { "description": "Governance checks and validations.", "examples": ["enforcement_validate_all"], "approval": "auto", "risk_level": "medium" },
+      "recovery": { "description": "Healing, drift repair, and state restoration.", "examples": ["healing_sync_projections", "healing_self_heal_run"], "approval": "human", "risk_level": "high" },
+      "destructive": { "description": "Irreversible or high-risk mutations.", "examples": ["state_reset", "stream_purge"], "approval": "human", "risk_level": "critical" },
+      "orchestration": { "description": "Multi-step execution invoking other recipes.", "examples": ["orchestration_milestone_close"], "approval": "human", "risk_level": "high" }
+    },
+    "approval_matrix": {
+      "auto_approved": { "classes": ["observational", "administrative", "enforcement"], "maximum_risk": "medium", "requires_acknowledgment": false },
+      "human_approval": { "classes": ["recovery", "destructive", "orchestration"], "minimum_approvers": 1, "required_roles": ["governance_operator"], "timeout_seconds": 3600, "escalation_on_timeout": true },
+      "governance_approval": { "actions": ["policy_update", "invariant_bypass", "protocol_amendment"], "minimum_approvers": 2, "required_roles": ["governance_admin", "system_architect"], "timeout_seconds": 86400 }
+    }
   }
 }

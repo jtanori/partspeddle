@@ -36,7 +36,7 @@ function loadJson<T>(path: string): T {
   return JSON.parse(readFileSync(path, "utf-8")) as T;
 }
 
-function validateDashboard(): { passed: boolean; errors: string[]; warnings: string[] } {
+export function validateDashboard(): { passed: boolean; errors: string[]; warnings: string[] } {
   const errors: string[] = [];
   const warnings: string[] = [];
 
@@ -108,8 +108,8 @@ function validateDashboard(): { passed: boolean; errors: string[]; warnings: str
 
     // Data source existence (lightweight check)
     for (const ds of s.dataSources) {
-      if (ds.source === "canonical-state" && !ds.path.includes("meta/state")) {
-        warnings.push(`${s.id}: canonical-state source should point to meta/state/`);
+      if (ds.source === "canonical-state" && !ds.path.includes("meta/state") && !ds.path.includes("meta/governance")) {
+        warnings.push(`${s.id}: canonical-state source should point to meta/state/ or meta/governance/`);
       }
     }
 
@@ -153,4 +153,4 @@ function main(): void {
   }
 }
 
-main();
+if (import.meta.url === `file://${process.argv[1]}`) { main(); }

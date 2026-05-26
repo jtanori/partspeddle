@@ -16,7 +16,7 @@ function loadJson<T>(path: string): T {
   return JSON.parse(readFileSync(path, "utf-8")) as T;
 }
 
-function validateBootstrap(): { passed: boolean; errors: string[] } {
+export function validateBootstrap(): { passed: boolean; errors: string[] } {
   const errors: string[] = [];
 
   if (!existsSync(BOOTSTRAP_PATH)) {
@@ -70,4 +70,4 @@ function main(): void {
   }
 }
 
-main();
+if (import.meta.url === `file://${process.argv[1]}`) { main(); }

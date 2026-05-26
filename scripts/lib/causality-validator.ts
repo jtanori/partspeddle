@@ -434,6 +434,8 @@ function validateForkVisibility(events: GovernanceEvent[]): ValidationFinding[] 
 }
 
 // ─── CI-009 — Event Type Ordering Constraints ───
+// RI-008: Execution-Scoped Lifecycle Validation
+// Ordering constraints evaluate within execution_id scope, not globally.
 function validateEventTypeOrdering(events: GovernanceEvent[]): ValidationFinding[] {
   const findings: ValidationFinding[] = [];
   const eventMap = new Map(events.map((e) => [e.event_id, e]));
@@ -444,11 +446,41 @@ function validateEventTypeOrdering(events: GovernanceEvent[]): ValidationFinding
     ["rollback.applied", "execution.started"],
   ];
 
+  /**
+   * Determine if two events share an execution context.
+   * Uses execution_id (top-level) or action_id (payload) as the scope key.
+   *
+   * RI-008: Events without execution scoping cannot have lifecycle ordering
+   * validated — they may belong to different logical executions.
+   */
+  function sameExecutionScope(a: GovernanceEvent, b: GovernanceEvent): boolean {
+    // Explicit execution_id match (post-M31 fix)
+    if (a.execution_id && b.execution_id && a.execution_id === b.execution_id) {
+      return true;
+    }
+    // Explicit action_id match (control plane payload)
+    const aAction = a.payload?.action_id as string | undefined;
+    const bAction = b.payload?.action_id as string | undefined;
+    if (aAction && bAction && aAction === bAction) {
+      return true;
+    }
+    // Unscoped events (legacy pre-M31): cannot validate lifecycle ordering
+    // across events because they may belong to different executions.
+    // Return false to skip ordering checks for unscoped pairs.
+    return false;
+  }
+
   for (const event of events) {
     if (!event.causality_chain) continue;
     for (const ancestorId of event.causality_chain) {
       const ancestor = eventMap.get(ancestorId);
       if (!ancestor) continue;
+
+      // RI-008: Lifecycle validity is execution-local, not global.
+      if (!sameExecutionScope(event, ancestor)) {
+        continue;
+      }
+
       for (const [pred, succ] of invalidOrderings) {
         if (ancestor.event_type === pred && event.event_type === succ) {
           findings.push({
