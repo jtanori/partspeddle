@@ -6,6 +6,13 @@
       "direct_ms": 1312.1259099999997,
       "timestamp": "2026-05-24T23:37:26.799Z",
       "classification": "PASS"
+    },
+    {
+      "overhead": 5.830547874154656,
+      "adapter_ms": 2222.46711,
+      "direct_ms": 2100.0241939999996,
+      "timestamp": "2026-05-26T04:17:48.587Z",
+      "classification": "PASS"
     }
   ]
 }
