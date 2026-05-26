@@ -151,7 +151,7 @@
     "trust_principle": "No transactional, marketplace, or messaging operation can occur without an established identity principal.",
     "scope": {
       "in": [
-        "Auth synchronization (Supabase Auth → Identity domain)",
+        "Auth synchronization (Supabase Auth \u2192 Identity domain)",
         "Profile lifecycle (User, Profile, BuyerProfile, SellerProfile)",
         "Seller onboarding state machine",
         "Stripe Connect integration",
@@ -168,7 +168,7 @@
     },
     "exit_criteria": [
       "User registration creates identity record + profile atomically",
-      "Seller onboarding transitions: pending → onboarding → review → active",
+      "Seller onboarding transitions: pending \u2192 onboarding \u2192 review \u2192 active",
       "Events emitted on all state transitions",
       "RLS policies enforce data isolation",
       "Integration tests verify trigger behavior"
@@ -285,7 +285,7 @@
         "Listing aggregates (Listing, InventoryItem)",
         "Catalog organization (Collection, Garage, Yard)",
         "Media pipelines (Supabase Storage integration)",
-        "Publishing workflows (draft → published → archived)",
+        "Publishing workflows (draft \u2192 published \u2192 archived)",
         "Listing state machine",
         "Search indexing events"
       ],
@@ -312,7 +312,8 @@
       "T3.6",
       "T3.2A",
       "T3.3A",
-      "T3.7"
+      "T3.7",
+      "T3.8"
     ],
     "dependencies": [
       "M1",
@@ -529,7 +530,7 @@
       "Escrow release only after inspection/dispute resolution",
       "Idempotency prevents duplicate charges",
       "Compensation events reverse failed transactions",
-      "End-to-end test: buyer checkout → seller settlement"
+      "End-to-end test: buyer checkout \u2192 seller settlement"
     ],
     "tickets": [
       "T6.1",

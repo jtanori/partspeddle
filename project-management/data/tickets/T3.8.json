@@ -1,0 +1,74 @@
+{
+  "id": "T3.8",
+  "milestone_id": "M3",
+  "title": "Marketplace Repository Layer",
+  "domain": "Marketplace",
+  "capability": "Persistence Infrastructure",
+  "purpose": "Implement backend repository layer for marketplace domain entities. Establish domain-oriented repository interfaces, PostgreSQL persistence adapters, and domain entities that consume shared contracts as the canonical data boundary. Preserve frontend/backend compiler isolation and shared contract authority.",
+  "dependencies": ["T3.2"],
+  "architectural_constraints": [
+    "Repository interfaces remain in domain layer",
+    "PostgreSQL implementations remain in infrastructure layer",
+    "Shared contracts are the ONLY data shape authority",
+    "No contract duplication permitted",
+    "No ORM types leak across domain boundaries",
+    "Frontend must not import backend repository code",
+    "TypeScript strict mode must pass on all surfaces"
+  ],
+  "deliverables": [
+    {
+      "path": "src/backend/marketplace/domain/entities/listing.ts",
+      "description": "Listing domain aggregate with state validation and event emission",
+      "type": "file"
+    },
+    {
+      "path": "src/backend/marketplace/domain/repositories/listing-repository.ts",
+      "description": "IListingRepository interface defining contract for persistence operations",
+      "type": "file"
+    },
+    {
+      "path": "src/backend/marketplace/infrastructure/persistence/listing-repository.ts",
+      "description": "PostgreSQL implementation of IListingRepository with outbox integration",
+      "type": "file"
+    },
+    {
+      "path": "src/backend/marketplace/infrastructure/persistence/listing-repository.memory.ts",
+      "description": "In-memory test adapter for IListingRepository",
+      "type": "file"
+    },
+    {
+      "path": "src/backend/marketplace/domain/entities/__tests__/listing.test.ts",
+      "description": "Unit tests for Listing aggregate behavior",
+      "type": "file"
+    },
+    {
+      "path": "src/backend/marketplace/infrastructure/persistence/__tests__/listing-repository.test.ts",
+      "description": "Unit tests for PostgreSQL listing repository",
+      "type": "file"
+    }
+  ],
+  "acceptance_criteria": [
+    "Listing aggregate supports create, update, publish, withdraw, and mark-as-sold operations",
+    "IListingRepository interface exposes findById, findBySellerId, save, and delete methods",
+    "PostgresListingRepository implements IListingRepository using raw SQL",
+    "Repository save() persists uncommitted domain events to outbox atomically",
+    "All repository methods use shared contract types (ListingResponse, ListingStatus)",
+    "No Zod schema redefinition exists in backend marketplace code",
+    "npm run typecheck passes with zero errors",
+    "npm run typecheck:frontend passes with zero errors",
+    "Unit tests pass for Listing aggregate and repository implementation",
+    "In-memory adapter passes same test suite as PostgreSQL adapter"
+  ],
+  "traceability": [],
+  "estimated_hours": 6,
+  "status": "planned",
+  "assignee": null,
+  "metadata": {
+    "created_at": "2026-05-26T05:00:00Z",
+    "updated_at": "2026-05-26T05:00:00Z",
+    "version": 1,
+    "surface": "backend",
+    "governance_classification": "feature",
+    "adr_reference": "ADR-004"
+  }
+}
