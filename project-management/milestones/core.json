@@ -321,10 +321,10 @@
     ],
     "downstream_impact": "Blocks M4 (AI needs listings to enrich), M5 (Search needs listings to index), M6 (Transactions needs listings to purchase).",
     "estimated_duration_days": 3,
-    "status": "planned",
+    "status": "in_progress",
     "metadata": {
       "created_at": "2026-05-19T02:28:56.226Z",
-      "updated_at": "2026-05-19T02:28:56.226Z",
+      "updated_at": "2026-05-27T00:54:45.464253Z",
       "version": 1
     },
     "ticket_paths": {
@@ -355,6 +355,11 @@
       },
       "T3.6": {
         "path": "project-management/data/tickets/T3.6.json",
+        "exists": true,
+        "isValid": true
+      },
+      "T3.8": {
+        "path": "project-management/data/tickets/T3.8.json",
         "exists": true,
         "isValid": true
       }

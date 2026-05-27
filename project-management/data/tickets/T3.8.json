@@ -5,7 +5,9 @@
   "domain": "Marketplace",
   "capability": "Persistence Infrastructure",
   "purpose": "Implement backend repository layer for marketplace domain entities. Establish domain-oriented repository interfaces, PostgreSQL persistence adapters, and domain entities that consume shared contracts as the canonical data boundary. Preserve frontend/backend compiler isolation and shared contract authority.",
-  "dependencies": ["T3.2"],
+  "dependencies": [
+    "T3.2"
+  ],
   "architectural_constraints": [
     "Repository interfaces remain in domain layer",
     "PostgreSQL implementations remain in infrastructure layer",
@@ -91,10 +93,11 @@
   "assignee": "agent",
   "metadata": {
     "created_at": "2026-05-26T05:00:00Z",
-    "updated_at": "2026-05-26T23:24:08Z",
+    "updated_at": "2026-05-27T00:54:59.160032Z",
     "version": 1,
     "surface": "backend",
     "governance_classification": "feature",
-    "adr_reference": "ADR-004"
+    "adr_reference": "ADR-004",
+    "pr_url": "https://github.com/jtanori/partspeddle/pull/1"
   }
 }
