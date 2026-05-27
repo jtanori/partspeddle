@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import type { Request, Response, NextFunction } from 'express';
 import { authMiddleware } from '../auth.js';
 import type { IdentityProvider } from '../../../application/ports/identity-provider.js';
-import { DomainError } from '../../../../shared/errors/domain-error.js';
+import { DomainError } from '../../../../../shared/errors/domain-error.js';
 
 function createMockProvider(verifyResult?: unknown): IdentityProvider {
   return {

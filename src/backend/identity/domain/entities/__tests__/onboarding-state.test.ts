@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { OnboardingState } from '../onboarding-state.js';
-import { DomainError } from '../../../../shared/errors/domain-error.js';
+import { DomainError } from '../../../../../shared/errors/domain-error.js';
 
 describe('OnboardingState', () => {
   it('creates with no completed steps', () => {

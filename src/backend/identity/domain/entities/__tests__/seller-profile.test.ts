@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { SellerProfile } from '../seller-profile.js';
-import { DomainError } from '../../../../shared/errors/domain-error.js';
+import { DomainError } from '../../../../../shared/errors/domain-error.js';
 
 describe('SellerProfile', () => {
   describe('creation', () => {
