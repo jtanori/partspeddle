@@ -9,15 +9,53 @@ on:
     branches:
       - main
 
+env:
+  NPM_CONFIG_LEGACY_PEER_DEPS: "false"
+
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  dependency-audit:
+    name: CI/Dependency Integrity Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies (strict)
+        run: npm ci
+
+      - name: Validate lockfile consistency
+        run: npm ls --all --depth=0
+
+      - name: Check for lockfile drift
+        run: git diff --exit-code package-lock.json
+
+      - name: Verify critical dependency alignment
+        run: |
+          node -e "
+            const pkg = require('./package.json');
+            const ssr = pkg.dependencies['@supabase/ssr'];
+            const js = pkg.dependencies['@supabase/supabase-js'];
+
+            if (!ssr || !js) throw new Error('Missing Supabase deps');
+
+            console.log('Supabase deps locked:', { ssr, js });
+          "
+
   lint-and-typecheck:
     name: Lint & TypeCheck
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    needs: [dependency-audit]
     steps:
       - uses: actions/checkout@v4
 
@@ -46,6 +84,7 @@ jobs:
     name: Unit Tests
     runs-on: ubuntu-latest
     timeout-minutes: 3
+    needs: [dependency-audit]
     steps:
       - uses: actions/checkout@v4
 
@@ -65,6 +104,7 @@ jobs:
     name: TypeCheck Frontend
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    needs: [dependency-audit]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -78,7 +118,7 @@ jobs:
     name: Frontend Build
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: [typecheck-frontend]
+    needs: [dependency-audit, typecheck-frontend]
     steps:
       - uses: actions/checkout@v4
 
@@ -101,6 +141,7 @@ jobs:
     name: Integration Tests
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    needs: [dependency-audit]
     services:
       postgres:
         image: postgres:15-alpine
@@ -185,7 +226,7 @@ jobs:
     name: Frontend E2E Tests
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: [frontend-build, integration-tests]
+    needs: [dependency-audit, frontend-build, integration-tests]
     steps:
       - uses: actions/checkout@v4
 
