@@ -68,8 +68,15 @@ function createPayload(type: SupabaseAuthWebhookPayload['type']): SupabaseAuthWe
 }
 
 describe('createSupabaseAuthWebhookHandler', () => {
+  beforeEach(() => {
+    process.env.SUPABASE_JWT_SECRET = 'test-jwt-secret-for-webhook-validation';
+    process.env.SUPABASE_URL = 'http://localhost:54321';
+  });
+
   afterEach(() => {
     vi.clearAllMocks();
+    delete process.env.SUPABASE_JWT_SECRET;
+    delete process.env.SUPABASE_URL;
   });
 
   it('returns 400 for invalid payload', async () => {

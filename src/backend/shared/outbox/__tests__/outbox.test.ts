@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { DomainEvent } from '../../../shared/event-bus/domain-event.js';
+import { DomainEvent } from '../../../../shared/event-bus/domain-event.js';
 import { Outbox } from '../outbox.js';
 
 // ─── In-memory DB adapter for testing ───────────────────────────────────────

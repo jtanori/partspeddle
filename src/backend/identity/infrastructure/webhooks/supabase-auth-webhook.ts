@@ -93,6 +93,9 @@ export function createSupabaseAuthWebhookHandler(deps: AuthWebhookDeps) {
       }
 
       const webhookPayload = payload as SupabaseAuthWebhookPayload;
+      // Runtime validation after `as` cast — type system assumes correctness,
+      // but we must guard against malformed payloads at runtime.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!webhookPayload.type || !webhookPayload.record?.id) {
         res.status(400).json({
           error: 'IDENTITY_WEBHOOK_INVALID_PAYLOAD',

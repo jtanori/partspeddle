@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { DomainEvent } from '../../../shared/event-bus/domain-event.js';
+import { DomainEvent } from '../../../../shared/event-bus/domain-event.js';
 import { OutboxRelayWorker } from '../relay-worker.js';
 import type { Outbox, OutboxEntry } from '../outbox.js';
 

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createDomainWorker, closeWorker } from '../worker-factory.js';
-import { DomainError } from '../../../shared/errors/domain-error.js';
+import { DomainError } from '../../../../shared/errors/domain-error.js';
 
 // Minimal mock for BullMQ Worker
 const mockOn = vi.fn();

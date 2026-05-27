@@ -53,24 +53,25 @@ export class RedisWebhookIdempotencyStore implements WebhookIdempotencyStore {
 export class InMemoryWebhookIdempotencyStore implements WebhookIdempotencyStore {
   private readonly store = new Map<string, number>(); // key -> expiry timestamp
 
-  async isProcessed(authProvider: string, eventId: string): Promise<boolean> {
+  isProcessed(authProvider: string, eventId: string): Promise<boolean> {
     const key = this._key(authProvider, eventId);
     const expiry = this.store.get(key);
-    if (!expiry) return false;
+    if (!expiry) return Promise.resolve(false);
     if (Date.now() > expiry) {
       this.store.delete(key);
-      return false;
+      return Promise.resolve(false);
     }
-    return true;
+    return Promise.resolve(true);
   }
 
-  async markProcessed(
+  markProcessed(
     authProvider: string,
     eventId: string,
     ttlSeconds = DEFAULT_TTL_SECONDS,
   ): Promise<void> {
     const key = this._key(authProvider, eventId);
     this.store.set(key, Date.now() + ttlSeconds * 1000);
+    return Promise.resolve();
   }
 
   clear(): void {
