@@ -118,7 +118,12 @@ export function createSellerRoutes(deps: SellerRoutesDeps): Router {
       return;
     }
 
-    const step = req.params.step;
+    const step =
+      typeof req.params.step === 'string'
+        ? req.params.step
+        : Array.isArray(req.params.step)
+          ? req.params.step[0]
+          : '';
     const validSteps = ['identity', 'banking', 'tax', 'terms'] as const;
     if (!validSteps.includes(step as typeof validSteps[number])) {
       res.status(400).json({

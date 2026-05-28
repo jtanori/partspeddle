@@ -13,10 +13,7 @@
 import type { Job } from 'bullmq';
 import type postgres from 'postgres';
 import type { JobPayload } from '../../shared/queue/worker-factory.js';
-import { User } from '../domain/entities/user.js';
-import { Profile } from '../domain/entities/profile.js';
 import { PostgresUserRepository } from '../infrastructure/persistence/user-repository.js';
-import { PostgresProfileRepository } from '../infrastructure/persistence/profile-repository.js';
 import { logger } from '../../shared/observability/logger.js';
 import { DomainError } from '../../../shared/errors/domain-error.js';
 
@@ -41,11 +38,10 @@ export async function authSyncProcessor(
   });
 
   const userRepo = new PostgresUserRepository(deps.sql);
-  const profileRepo = new PostgresProfileRepository(deps.sql);
 
   switch (eventType) {
     case 'user.created': {
-      const email = (data.email as string) ?? '';
+      const email = data.email as string;
 
       // Idempotent: check if user already exists
       const existing = await userRepo.findById(userId);
@@ -54,19 +50,26 @@ export async function authSyncProcessor(
         return;
       }
 
-      const user = User.create({ id: userId, email }, correlationId, 'system:webhook');
-      await userRepo.save(user);
+      // Persist user directly — webhook processor is infrastructure, not domain orchestration
+      await deps.sql`
+        INSERT INTO identity.users (id, email, status, created_at, updated_at)
+        VALUES (${userId}, ${email}, 'active', NOW(), NOW())
+        ON CONFLICT (id) DO NOTHING
+      `;
 
       // Create profile
-      const profile = new Profile({ id: crypto.randomUUID(), userId });
-      await profileRepo.save(profile);
+      await deps.sql`
+        INSERT INTO identity.profiles (id, user_id, created_at, updated_at)
+        VALUES (${crypto.randomUUID()}, ${userId}, NOW(), NOW())
+        ON CONFLICT (id) DO NOTHING
+      `;
 
       logger.info('User and profile created from webhook', { userId, email, correlationId });
       break;
     }
 
     case 'user.updated': {
-      const email = (data.email as string) ?? '';
+      const email = data.email as string;
       const user = await userRepo.findById(userId);
 
       if (!user) {
