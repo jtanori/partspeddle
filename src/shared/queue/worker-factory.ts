@@ -32,10 +32,40 @@ export interface WorkerFactoryOptions {
  */
 function wrapProcessor(processor: Processor): Processor {
   return async (job: Job<JobPayload>) => {
-    const payload = job.data;
+    // Cast to unknown to validate runtime structure without triggering
+    // no-unnecessary-condition on the typed JobPayload shape.
+    const raw = job.data as unknown;
 
-    const meta = payload.metadata as Record<string, unknown>;
-    if (typeof meta.correlationId !== 'string' || !meta.correlationId) {
+    if (typeof raw !== 'object' || raw === null) {
+      throw new DomainError(
+        'SHARED_QUEUE_INVALID_PAYLOAD',
+        'Job payload must be an object',
+        job.id ?? 'unknown',
+        false,
+      );
+    }
+
+    if (!('metadata' in raw)) {
+      throw new DomainError(
+        'SHARED_QUEUE_INVALID_PAYLOAD',
+        'Job payload must include metadata',
+        job.id ?? 'unknown',
+        false,
+      );
+    }
+
+    const meta = (raw as Record<string, unknown>).metadata;
+    if (typeof meta !== 'object' || meta === null) {
+      throw new DomainError(
+        'SHARED_QUEUE_INVALID_PAYLOAD',
+        'Job metadata must be an object',
+        job.id ?? 'unknown',
+        false,
+      );
+    }
+
+    const metaRecord = meta as Record<string, unknown>;
+    if (typeof metaRecord.correlationId !== 'string' || !metaRecord.correlationId) {
       throw new DomainError(
         'SHARED_QUEUE_INVALID_PAYLOAD',
         'Job metadata must include correlationId',
@@ -44,7 +74,7 @@ function wrapProcessor(processor: Processor): Processor {
       );
     }
 
-    if (typeof meta.actorId !== 'string' || !meta.actorId) {
+    if (typeof metaRecord.actorId !== 'string' || !metaRecord.actorId) {
       throw new DomainError(
         'SHARED_QUEUE_INVALID_PAYLOAD',
         'Job metadata must include actorId',
