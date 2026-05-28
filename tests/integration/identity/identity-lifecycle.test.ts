@@ -11,12 +11,12 @@
 
 import { describe, it, expect } from 'vitest';
 import { sql } from '../../setup-integration.js';
-import { User } from '../../../src/identity/domain/entities/user.js';
-import { Profile } from '../../../src/identity/domain/entities/profile.js';
-import { SellerProfile } from '../../../src/identity/domain/entities/seller-profile.js';
-import { PostgresUserRepository } from '../../../src/identity/infrastructure/persistence/user-repository.js';
-import { PostgresProfileRepository } from '../../../src/identity/infrastructure/persistence/profile-repository.js';
-import { PostgresSellerProfileRepository } from '../../../src/identity/infrastructure/persistence/seller-profile-repository.js';
+import { User } from '../../../src/backend/identity/domain/entities/user.js';
+import { Profile } from '../../../src/backend/identity/domain/entities/profile.js';
+import { SellerProfile } from '../../../src/backend/identity/domain/entities/seller-profile.js';
+import { PostgresUserRepository } from '../../../src/backend/identity/infrastructure/persistence/user-repository.js';
+import { PostgresProfileRepository } from '../../../src/backend/identity/infrastructure/persistence/profile-repository.js';
+import { PostgresSellerProfileRepository } from '../../../src/backend/identity/infrastructure/persistence/seller-profile-repository.js';
 
 describe('Identity Lifecycle (integration)', () => {
   it('creates user and profile via repository', async () => {

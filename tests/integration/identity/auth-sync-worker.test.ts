@@ -9,7 +9,7 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { sql } from '../../setup-integration.js';
-import { authSyncProcessor } from '../../../src/identity/queue/auth-sync-worker.js';
+import { authSyncProcessor } from '../../../src/backend/identity/queue/auth-sync-worker.js';
 import type { Job } from 'bullmq';
 import type { JobPayload } from '../../../src/shared/queue/worker-factory.js';
 
