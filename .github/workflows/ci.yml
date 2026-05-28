@@ -197,7 +197,7 @@ jobs:
           exit 1
 
       - name: Setup test database
-        run: npx tsx scripts/setup-test-db.ts
+        run: npm run test:db:setup
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:54322/postgres
           REDIS_URL: redis://localhost:6379
