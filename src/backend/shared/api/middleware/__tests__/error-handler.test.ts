@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { errorHandlerMiddleware } from '../error-handler.js';
-import { DomainError } from '../../../errors/domain-error.js';
+import { DomainError } from '../../../../../shared/errors/domain-error.js';
 
 describe('errorHandlerMiddleware', () => {
   beforeEach(() => {
