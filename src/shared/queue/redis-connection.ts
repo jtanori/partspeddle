@@ -17,7 +17,6 @@ export function getRedisConnection(): Redis {
     });
 
     sharedRedis.on('error', (_err: Error) => {
-      // eslint-disable-next-line no-console
       console.error('Redis connection error:', _err.message);
     });
   }

@@ -5,9 +5,7 @@ const DOMAIN_PATTERN = /^[a-z]+$/;
 export const PAYLOAD_HARD_LIMIT_BYTES = 64 * 1024;
 export const PAYLOAD_PREFERRED_LIMIT_BYTES = 32 * 1024;
 
-export interface DomainEventPayload {
-  readonly [key: string]: unknown;
-}
+export type DomainEventPayload = Record<string, unknown>;
 
 export interface DomainEventMetadata {
   readonly traceparent?: string;

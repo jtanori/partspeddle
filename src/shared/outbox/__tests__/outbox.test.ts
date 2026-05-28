@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { DomainEvent } from '../../event-bus/domain-event.js';
-import { Outbox, type OutboxEntry } from '../outbox.js';
+import { Outbox } from '../outbox.js';
 
 // ─── In-memory DB adapter for testing ───────────────────────────────────────
 interface InMemoryRow {

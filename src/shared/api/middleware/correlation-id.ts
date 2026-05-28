@@ -15,7 +15,7 @@ export function correlationIdMiddleware(req: Request, res: Response, next: NextF
   const correlationId =
     (req.headers['x-correlation-id'] as string | undefined) ?? crypto.randomUUID();
 
-  const traceparentHeader = req.headers['traceparent'] as string | undefined;
+  const traceparentHeader = req.headers.traceparent as string | undefined;
   const traceContext = traceparentHeader
     ? parseTraceparent(traceparentHeader) ?? generateTraceparent()
     : generateTraceparent();

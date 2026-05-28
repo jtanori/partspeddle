@@ -34,24 +34,6 @@ function wrapProcessor(processor: Processor): Processor {
   return async (job: Job<JobPayload>) => {
     const payload = job.data;
 
-    if (typeof payload !== 'object' || payload === null) {
-      throw new DomainError(
-        'SHARED_QUEUE_INVALID_PAYLOAD',
-        'Job payload must be an object',
-        job.id ?? 'unknown',
-        false,
-      );
-    }
-
-    if (typeof payload.metadata !== 'object' || payload.metadata === null) {
-      throw new DomainError(
-        'SHARED_QUEUE_INVALID_PAYLOAD',
-        'Job payload must include metadata object',
-        job.id ?? 'unknown',
-        false,
-      );
-    }
-
     const meta = payload.metadata as Record<string, unknown>;
     if (typeof meta.correlationId !== 'string' || !meta.correlationId) {
       throw new DomainError(

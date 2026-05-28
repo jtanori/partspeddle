@@ -18,7 +18,7 @@ export function errorHandlerMiddleware(
   _next: NextFunction,
 ): void {
   const correlationId =
-    ((req as unknown as Record<string, unknown>).correlationId as string) ?? 'unknown';
+    ((req as unknown as Record<string, unknown>).correlationId as string | undefined) ?? 'unknown';
 
   let domainError: DomainError;
 

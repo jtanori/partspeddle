@@ -42,7 +42,7 @@ export function normalizeError(error: unknown): ApiError {
     return {
       message: String(e.message),
       code: String(e.code),
-      correlationId: e.correlationId ? String(e.correlationId) : undefined,
+      correlationId: typeof e.correlationId === 'string' ? e.correlationId : undefined,
       retryable: Boolean(e.retryable),
       original: error,
     };
@@ -58,6 +58,21 @@ export function normalizeError(error: unknown): ApiError {
 
 export function isNetworkError(error: unknown): boolean {
   return error instanceof TypeError || (error instanceof Error && error.message.includes('fetch'));
+}
+
+export class ApiClientError extends Error {
+  readonly code: string;
+  readonly correlationId: string | undefined;
+  readonly retryable: boolean;
+  readonly original: unknown;
+
+  constructor(apiError: ApiError) {
+    super(apiError.message);
+    this.code = apiError.code;
+    this.correlationId = apiError.correlationId;
+    this.retryable = apiError.retryable;
+    this.original = apiError.original;
+  }
 }
 
 export function isRetryable(error: ApiError): boolean {

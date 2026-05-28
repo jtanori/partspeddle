@@ -59,7 +59,7 @@ export class Outbox {
       payload: event.payload,
       aggregate_id: event.aggregateId,
       correlation_id: event.correlationId,
-      traceparent: (event.metadata as Record<string, unknown>)?.traceparent as string | undefined,
+      traceparent: (event.metadata as Record<string, unknown>).traceparent as string | undefined,
       status: 'pending',
       retry_count: 0,
       created_at: now,

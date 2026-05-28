@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { DomainEvent } from '../../event-bus/domain-event.js';
 import { OutboxRelayWorker } from '../relay-worker.js';
 import type { Outbox, OutboxEntry } from '../outbox.js';

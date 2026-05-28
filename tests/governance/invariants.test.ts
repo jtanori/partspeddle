@@ -40,7 +40,7 @@ describe("Repository Invariants", () => {
 });
 
 describe("Runtime Invariants", () => {
-  let state: any;
+  let state: unknown;
 
   beforeAll(() => {
     state = loadJSON(`${STATE_DIR}/active-execution.json`);
@@ -176,7 +176,7 @@ describe("Capability Registry Invariants", () => {
 
   it("all referenced tools must exist", () => {
     const content = readFileSync("meta/tools/capability-registry.yaml", "utf-8");
-    const toolMatches = content.match(/command: "([^"]+)"/g) || [];
+    const toolMatches = content.match(/command: "([^"]+)"/g) ?? [];
     for (const match of toolMatches) {
       const path = match.replace('command: "', "").replace('"', "");
       expect(existsSync(path)).toBe(true);

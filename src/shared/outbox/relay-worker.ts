@@ -56,7 +56,7 @@ export class OutboxRelayWorker {
     if (this.running) return;
     this.running = true;
     this.timer = setInterval(() => {
-      this.poll().catch((error) => {
+      this.poll().catch((error: unknown) => {
         // Unhandled polling errors are logged but not thrown to keep worker alive
         console.error('Outbox relay poll error:', error);
       });

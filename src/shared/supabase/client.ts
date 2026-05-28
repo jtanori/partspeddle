@@ -29,34 +29,32 @@ let anonClient: ReturnType<typeof createClient<Database>> | null = null;
 export function createSupabaseClient(role: ClientRole): ReturnType<typeof createClient<Database>> {
   const env = validateSupabaseEnv();
 
-  if (role === 'service') {
-    if (!serviceClient) {
-      serviceClient = createClient<Database>(env.supabaseUrl, env.serviceKey, {
+  switch (role) {
+    case 'service': {
+      serviceClient ??= createClient<Database>(env.supabaseUrl, env.serviceKey, {
         auth: {
           autoRefreshToken: false,
           persistSession: false,
         },
       });
+      return serviceClient;
     }
-    return serviceClient;
-  }
-
-  if (role === 'anon') {
-    if (!anonClient) {
+    case 'anon': {
       // Anon key is derived from service key prefix for local Supabase,
       // or provided separately in production.
       const anonKey = process.env.SUPABASE_ANON_KEY ?? env.serviceKey;
-      anonClient = createClient<Database>(env.supabaseUrl, anonKey, {
+      anonClient ??= createClient<Database>(env.supabaseUrl, anonKey, {
         auth: {
           autoRefreshToken: false,
           persistSession: false,
         },
       });
+      return anonClient;
     }
-    return anonClient;
+    default: {
+      throw new Error(`Unknown Supabase client role: ${role as string}`);
+    }
   }
-
-  throw new Error(`Unknown Supabase client role: ${role}`);
 }
 
 /**

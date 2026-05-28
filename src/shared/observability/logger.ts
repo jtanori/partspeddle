@@ -114,12 +114,16 @@ function log(
 }
 
 export const logger = {
-  debug: (message: string, context?: Record<string, unknown>, meta?: { correlationId?: string; traceparent?: string }) =>
-    log('debug', message, context, meta),
-  info: (message: string, context?: Record<string, unknown>, meta?: { correlationId?: string; traceparent?: string }) =>
-    log('info', message, context, meta),
-  warn: (message: string, context?: Record<string, unknown>, meta?: { correlationId?: string; traceparent?: string }) =>
-    log('warn', message, context, meta),
-  error: (message: string, context?: Record<string, unknown>, meta?: { correlationId?: string; traceparent?: string }) =>
-    log('error', message, context, meta),
+  debug: (message: string, context?: Record<string, unknown>, meta?: { correlationId?: string; traceparent?: string }) => {
+    log('debug', message, context, meta);
+  },
+  info: (message: string, context?: Record<string, unknown>, meta?: { correlationId?: string; traceparent?: string }) => {
+    log('info', message, context, meta);
+  },
+  warn: (message: string, context?: Record<string, unknown>, meta?: { correlationId?: string; traceparent?: string }) => {
+    log('warn', message, context, meta);
+  },
+  error: (message: string, context?: Record<string, unknown>, meta?: { correlationId?: string; traceparent?: string }) => {
+    log('error', message, context, meta);
+  },
 };

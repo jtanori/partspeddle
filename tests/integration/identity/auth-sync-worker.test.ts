@@ -7,7 +7,7 @@
  * - user.deleted → soft-deletes user
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { sql } from '../../setup-integration.js';
 import { authSyncProcessor } from '../../../src/backend/identity/queue/auth-sync-worker.js';
 import type { Job } from 'bullmq';

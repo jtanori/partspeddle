@@ -78,8 +78,8 @@ export interface AlgoliaClientOptionsContract {
  * Future implementations MUST conform to this interface.
  */
 export interface SearchClientContract {
-  search<T>(indexName: string, query: string, options?: unknown): Promise<{
-    hits: T[];
+  search(indexName: string, query: string, options?: unknown): Promise<{
+    hits: unknown[];
     nbHits: number;
     page: number;
     nbPages: number;

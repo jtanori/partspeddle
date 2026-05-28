@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { mkdtempSync, writeFileSync, readFileSync, existsSync, rmdirSync, unlinkSync } from 'fs';
+import { mkdtempSync, writeFileSync, readFileSync, existsSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
 import {
@@ -7,7 +7,6 @@ import {
   writeJson,
   updateJson,
   readJsonDir,
-  backupJson,
   listBackups,
   restoreJson,
   inspectJson,
@@ -25,9 +24,7 @@ describe('json-utils', () => {
   });
 
   afterEach(() => {
-    // Cleanup temp files
-    const files = readFileSync;
-    // Best effort cleanup
+    // Best effort cleanup handled by OS temp dir purge
   });
 
   it('reads and parses JSON', () => {
