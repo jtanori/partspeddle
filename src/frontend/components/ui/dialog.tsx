@@ -6,9 +6,9 @@ import { cn } from '@/frontend/lib/utils';
 const Dialog = ({ children, open, onOpenChange }: { children: React.ReactNode; open?: boolean; onOpenChange?: (open: boolean) => void }) => {
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center" onClick={() => onOpenChange?.(false)}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center" onClick={() => { onOpenChange?.(false); }}>
       <div className="fixed inset-0 bg-black/50" />
-      <div onClick={(e) => e.stopPropagation()}>{children}</div>
+      <div onClick={(e) => { e.stopPropagation(); }}>{children}</div>
     </div>
   );
 };
@@ -25,7 +25,9 @@ const DialogContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTML
     >
       {children}
       <button
-        onClick={() => {}}
+        onClick={() => {
+          // intentional noop — close action wired via parent onOpenChange
+        }}
         className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
       >
         <span className="sr-only">Close</span>

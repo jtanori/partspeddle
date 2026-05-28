@@ -51,7 +51,8 @@ describe("causality-validator", () => {
     expect(result.passed).toBe(false);
     const f = result.findings.find((x) => x.invariant === "CI-001");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("CRITICAL");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("CRITICAL");
   });
 
   it("CI-001: passes when sequences are monotonic", () => {
@@ -76,7 +77,8 @@ describe("causality-validator", () => {
     const result = validateCausality(paths);
     const f = result.findings.find((x) => x.invariant === "CI-002");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("HIGH");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("HIGH");
   });
 
   it("CI-002: allows parent known via causality store", () => {
@@ -105,7 +107,8 @@ describe("causality-validator", () => {
     const result = validateCausality(paths);
     const f = result.findings.find((x) => x.invariant === "CI-003");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("CRITICAL");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("CRITICAL");
   });
 
   it("CI-003: detects cycle through ancestors", () => {
@@ -120,7 +123,8 @@ describe("causality-validator", () => {
     const result = validateCausality(paths);
     const f = result.findings.find((x) => x.invariant === "CI-003");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("CRITICAL");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("CRITICAL");
   });
 
   it("CI-004: flags unclassified cross-execution linkage", () => {
@@ -134,7 +138,8 @@ describe("causality-validator", () => {
     const result = validateCausality(paths);
     const f = result.findings.find((x) => x.invariant === "CI-004");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("HIGH");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("HIGH");
   });
 
   it("CI-004: allows classified cross-execution linkage", () => {
@@ -160,7 +165,8 @@ describe("causality-validator", () => {
     const result = validateCausality(paths);
     const f = result.findings.find((x) => x.invariant === "CI-005");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("HIGH");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("HIGH");
   });
 
   it("CI-005: passes on correct chain reconstruction", () => {
@@ -209,7 +215,8 @@ describe("causality-validator", () => {
     const result = validateCausality(paths);
     const f = result.findings.find((x) => x.invariant === "CI-007");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("CRITICAL");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("CRITICAL");
   });
 
   it("CI-008: flags missing fork event", () => {
@@ -224,7 +231,8 @@ describe("causality-validator", () => {
     const result = validateCausality(paths);
     const f = result.findings.find((x) => x.invariant === "CI-008");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("MEDIUM");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("MEDIUM");
   });
 
   it("CI-008: passes when lineage.fork emitted", () => {
@@ -252,7 +260,8 @@ describe("causality-validator", () => {
     const result = validateCausality(paths);
     const f = result.findings.find((x) => x.invariant === "CI-009");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("HIGH");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("HIGH");
   });
 
   it("CI-010: flags large sequence gaps", () => {
@@ -266,7 +275,8 @@ describe("causality-validator", () => {
     const result = validateCausality(paths);
     const f = result.findings.find((x) => x.invariant === "CI-010");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("MEDIUM");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("MEDIUM");
   });
 
   it("CI-010: ignores small sequence gaps", () => {

@@ -34,7 +34,7 @@ function wrapProcessor(processor: Processor): Processor {
   return async (job: Job<JobPayload>) => {
     const payload = job.data;
 
-    if (!payload || typeof payload !== 'object') {
+    if (typeof payload !== 'object' || payload === null) {
       throw new DomainError(
         'SHARED_QUEUE_INVALID_PAYLOAD',
         'Job payload must be an object',
@@ -43,7 +43,7 @@ function wrapProcessor(processor: Processor): Processor {
       );
     }
 
-    if (!payload.metadata || typeof payload.metadata !== 'object') {
+    if (typeof payload.metadata !== 'object' || payload.metadata === null) {
       throw new DomainError(
         'SHARED_QUEUE_INVALID_PAYLOAD',
         'Job payload must include metadata object',
@@ -107,27 +107,28 @@ export function createDomainWorker(
     },
   );
 
-  worker.on('failed', async (job, _err) => {
-    if (!job) return;
+  worker.on('failed', (job, _err) => {
+    void (async () => {
+      if (!job) return;
 
-    const attemptsMade = job.attemptsMade ?? 0;
-    const totalAttempts = job.opts.attempts ?? 1;
+      const attemptsMade = job.attemptsMade;
+      const totalAttempts = job.opts.attempts ?? 1;
 
-    if (attemptsMade >= totalAttempts) {
-      // Move to DLQ
-      try {
-        await dlq.add(job.name, job.data, {
-          jobId: job.id ?? undefined,
-          removeOnComplete: { count: 100 },
-          removeOnFail: { count: 0 },
-        });
-        await job.remove();
-      } catch (dlqError) {
-        // If DLQ insertion fails, leave the failed job in place for manual inspection
-        // eslint-disable-next-line no-console
-        console.error('Failed to move job to DLQ:', dlqError);
+      if (attemptsMade >= totalAttempts) {
+        // Move to DLQ
+        try {
+          await dlq.add(job.name, job.data, {
+            jobId: job.id ?? undefined,
+            removeOnComplete: { count: 100 },
+            removeOnFail: { count: 0 },
+          });
+          await job.remove();
+        } catch (dlqError) {
+          // If DLQ insertion fails, leave the failed job in place for manual inspection
+          console.error('Failed to move job to DLQ:', dlqError);
+        }
       }
-    }
+    })();
   });
 
   return worker;

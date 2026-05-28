@@ -16,7 +16,7 @@ import type { Hit } from 'instantsearch.js';
  * Ticket: T3.5
  */
 export function ResultList() {
-  const { hits } = useHits();
+  const { items } = useHits();
   const { status } = useInstantSearch();
   const isLoading = status === 'loading' || status === 'stalled';
 
@@ -24,17 +24,17 @@ export function ResultList() {
     return <LoadingSkeleton />;
   }
 
-  if (hits.length === 0) {
+  if (items.length === 0) {
     return <EmptyState />;
   }
 
   return (
     <div className="space-y-4">
       <div className="text-sm text-muted-foreground">
-        {hits.length} result{hits.length !== 1 ? 's' : ''}
+        {items.length} result{items.length !== 1 ? 's' : ''}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-        {hits.map((hit) => (
+        {items.map((hit) => (
           <HitCard key={hit.objectID} hit={hit} />
         ))}
       </div>

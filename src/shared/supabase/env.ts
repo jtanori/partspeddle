@@ -7,6 +7,8 @@
  * @see /project-knowledge/service-role-governance.md
  */
 
+import { assertDefined } from '../utils/assert.js';
+
 export interface SupabaseEnv {
   readonly supabaseUrl: string;
   readonly serviceKey: string;
@@ -42,8 +44,17 @@ export function validateSupabaseEnv(): SupabaseEnv {
   }
 
   return {
-    supabaseUrl: process.env.SUPABASE_URL!,
-    serviceKey: process.env.SUPABASE_SERVICE_KEY!,
-    databaseUrl: process.env.DATABASE_URL!,
+    supabaseUrl: assertDefined(
+      process.env.SUPABASE_URL,
+      'SUPABASE_URL is required',
+    ),
+    serviceKey: assertDefined(
+      process.env.SUPABASE_SERVICE_KEY,
+      'SUPABASE_SERVICE_KEY is required',
+    ),
+    databaseUrl: assertDefined(
+      process.env.DATABASE_URL,
+      'DATABASE_URL is required',
+    ),
   };
 }

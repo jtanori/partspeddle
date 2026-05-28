@@ -37,7 +37,11 @@ async function checkRedis(): Promise<boolean> {
     await redis.quit();
     return true;
   } catch {
-    await redis.disconnect().catch(() => {});
+    try {
+      redis.disconnect();
+    } catch {
+      // intentional noop — disconnect failure already means Redis is down
+    }
     return false;
   }
 }
@@ -54,9 +58,13 @@ async function checkPostgres(): Promise<boolean> {
   try {
     const result = await sql`SELECT 1 as connected`;
     await sql.end({ timeout: 1 });
-    return result[0]?.connected === 1;
+    return result[0].connected === 1;
   } catch {
-    await sql.end({ timeout: 1 }).catch(() => {});
+    try {
+      await sql.end({ timeout: 1 });
+    } catch {
+      // intentional noop — end failure already means Postgres is down
+    }
     return false;
   }
 }

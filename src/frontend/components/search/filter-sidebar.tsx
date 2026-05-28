@@ -46,7 +46,9 @@ function CategoryFilter() {
             <input
               type="checkbox"
               checked={item.isRefined}
-              onChange={() => refine(item.value)}
+              onChange={() => {
+                refine(item.value);
+              }}
               className="rounded border-gray-300"
             />
             <span className="flex-1 text-sm capitalize">{item.label.replace('_', ' ')}</span>
@@ -74,7 +76,9 @@ function ConditionFilter() {
             <input
               type="checkbox"
               checked={item.isRefined}
-              onChange={() => refine(item.value)}
+              onChange={() => {
+                refine(item.value);
+              }}
               className="rounded border-gray-300"
             />
             <span className="flex-1 text-sm capitalize">{item.label.replace('_', ' ')}</span>
@@ -104,7 +108,9 @@ function LocationFilter() {
             <input
               type="checkbox"
               checked={item.isRefined}
-              onChange={() => refine(item.value)}
+              onChange={() => {
+                refine(item.value);
+              }}
               className="rounded border-gray-300"
             />
             <span className="flex-1 text-sm">{item.label}</span>
@@ -156,7 +162,9 @@ function PriceFilter() {
           type="number"
           placeholder="Min"
           value={min}
-          onChange={(e) => setMin(e.target.value)}
+          onChange={(e) => {
+            setMin(e.target.value);
+          }}
           className="h-8"
           min={0}
         />
@@ -165,7 +173,9 @@ function PriceFilter() {
           type="number"
           placeholder="Max"
           value={max}
-          onChange={(e) => setMax(e.target.value)}
+          onChange={(e) => {
+            setMax(e.target.value);
+          }}
           className="h-8"
           min={0}
         />
@@ -204,7 +214,9 @@ function FilterSection({
             variant="ghost"
             size="sm"
             className="h-6 w-6 p-0"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
           >
             {isOpen ? '−' : '+'}
           </Button>

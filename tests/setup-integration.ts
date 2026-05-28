@@ -49,7 +49,9 @@ beforeAll(async () => {
   sql = postgres(DATABASE_URL, {
     max: 5,
     connect_timeout: 2,
-    onnotice: () => {}, // suppress NOTICE spam during tests
+    onnotice: () => {
+      // intentional noop — suppress NOTICE spam during tests
+    },
   });
 
   redis = new Redis(REDIS_URL, {

@@ -30,7 +30,9 @@ export function SearchInput() {
         refine(inputValue);
       }
     }, 200);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [inputValue, query, refine]);
 
   const handleClear = () => {
@@ -45,7 +47,9 @@ export function SearchInput() {
         type="search"
         placeholder="Search listings..."
         value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={(e) => {
+          setInputValue(e.target.value);
+        }}
         className="pl-10 pr-10 h-12 text-lg"
         aria-label="Search listings"
       />

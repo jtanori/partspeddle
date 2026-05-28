@@ -9,7 +9,7 @@
  * Requires: running Postgres + Redis, migrations applied.
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { sql } from '../../setup-integration.js';
 import { User } from '../../../src/identity/domain/entities/user.js';
 import { Profile } from '../../../src/identity/domain/entities/profile.js';
@@ -31,11 +31,13 @@ describe('Identity Lifecycle (integration)', () => {
 
     const foundUser = await userRepo.findById(user.id);
     expect(foundUser).not.toBeNull();
-    expect(foundUser!.email).toBe('test@example.com');
+    if (!foundUser) throw new Error('Expected user to exist');
+    expect(foundUser.email).toBe('test@example.com');
 
     const foundProfile = await profileRepo.findByUserId(user.id);
     expect(foundProfile).not.toBeNull();
-    expect(foundProfile!.userId).toBe(user.id);
+    if (!foundProfile) throw new Error('Expected profile to exist');
+    expect(foundProfile.userId).toBe(user.id);
   });
 
   it('persists outbox events on user save', async () => {
@@ -78,8 +80,9 @@ describe('Identity Lifecycle (integration)', () => {
 
     const found = await sellerRepo.findById(profile.id);
     expect(found).not.toBeNull();
-    expect(found!.status).toBe('active');
-    expect(found!.activatedAt).toBeInstanceOf(Date);
-    expect(found!.onboardingState.isComplete).toBe(true);
+    if (!found) throw new Error('Expected seller profile to exist');
+    expect(found.status).toBe('active');
+    expect(found.activatedAt).toBeInstanceOf(Date);
+    expect(found.onboardingState.isComplete).toBe(true);
   });
 });

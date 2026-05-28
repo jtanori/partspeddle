@@ -1,6 +1,7 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
+import { assertDefined } from '@/shared/utils/assert';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -10,8 +11,14 @@ export async function GET(request: NextRequest) {
   if (code) {
     const cookieStore = await cookies();
     const supabase = createServerClient(
-      process.env.SUPABASE_AUTH_URL!,
-      process.env.SUPABASE_ANON_KEY!,
+      assertDefined(
+        process.env.SUPABASE_AUTH_URL,
+        'SUPABASE_AUTH_URL is required',
+      ),
+      assertDefined(
+        process.env.SUPABASE_ANON_KEY,
+        'SUPABASE_ANON_KEY is required',
+      ),
       {
         cookies: {
           getAll() {

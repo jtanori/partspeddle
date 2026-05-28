@@ -48,7 +48,8 @@ describe("replay-integrity-validator", () => {
     const result = validateReplayIntegrity(paths);
     const f = result.findings.find((x) => x.invariant === "RI-001");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("CRITICAL");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("CRITICAL");
   });
 
   it("RI-001: detects prefix mismatch in ancestor chain", () => {
@@ -79,7 +80,8 @@ describe("replay-integrity-validator", () => {
     const result = validateReplayIntegrity(paths);
     const f = result.findings.find((x) => x.invariant === "RI-002");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("CRITICAL");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("CRITICAL");
   });
 
   it("RI-002: detects timestamp inversion", () => {
@@ -93,7 +95,8 @@ describe("replay-integrity-validator", () => {
     const result = validateReplayIntegrity(paths);
     const f = result.findings.find((x) => x.invariant === "RI-002");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("HIGH");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("HIGH");
   });
 
   it("RI-003: detects orphaned events", () => {
@@ -106,7 +109,8 @@ describe("replay-integrity-validator", () => {
     const result = validateReplayIntegrity(paths);
     const f = result.findings.find((x) => x.invariant === "RI-003");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("HIGH");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("HIGH");
   });
 
   it("RI-004: detects duplicate events within same stream", () => {
@@ -119,7 +123,8 @@ describe("replay-integrity-validator", () => {
     const result = validateReplayIntegrity(paths);
     const f = result.findings.find((x) => x.invariant === "RI-004");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("MEDIUM");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("MEDIUM");
   });
 
   it("RI-004: ignores cross-stream duplicates", () => {
@@ -145,7 +150,8 @@ describe("replay-integrity-validator", () => {
     const result = validateReplayIntegrity(paths);
     const f = result.findings.find((x) => x.invariant === "RI-005");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("HIGH");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("HIGH");
   });
 
   it("RI-005: detects timestamp/sequence contradiction within execution", () => {
@@ -159,7 +165,8 @@ describe("replay-integrity-validator", () => {
     const result = validateReplayIntegrity(paths);
     const f = result.findings.find((x) => x.invariant === "RI-005");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("HIGH");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("HIGH");
   });
 
   it("RI-006: detects replay gap from sequence store", () => {
@@ -173,7 +180,8 @@ describe("replay-integrity-validator", () => {
     const result = validateReplayIntegrity(paths);
     const f = result.findings.find((x) => x.invariant === "RI-006");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("HIGH");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("HIGH");
   });
 
   it("RI-006: detects middle gap", () => {
@@ -188,7 +196,8 @@ describe("replay-integrity-validator", () => {
     const result = validateReplayIntegrity(paths);
     const f = result.findings.find((x) => x.invariant === "RI-006");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("MEDIUM");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("MEDIUM");
   });
 
   it("RI-006: flags missing execution_sequence", () => {
@@ -201,7 +210,8 @@ describe("replay-integrity-validator", () => {
     const result = validateReplayIntegrity(paths);
     const f = result.findings.find((x) => x.invariant === "RI-006");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("MEDIUM");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("MEDIUM");
   });
 
   it("RI-007: detects missing anchor event for checkpoint", () => {
@@ -219,7 +229,8 @@ describe("replay-integrity-validator", () => {
     const result = validateReplayIntegrity(paths);
     const f = result.findings.find((x) => x.invariant === "RI-007");
     expect(f).toBeDefined();
-    expect(f!.severity).toBe("HIGH");
+    if (!f) throw new Error("Expected finding to exist");
+    expect(f.severity).toBe("HIGH");
   });
 
   it("RI-007: exempts pre-causality checkpoints", () => {

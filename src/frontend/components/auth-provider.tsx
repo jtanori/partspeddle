@@ -2,6 +2,7 @@
 
 import { createBrowserClient } from '@supabase/ssr';
 import { createContext, useContext, useEffect, useState } from 'react';
+import { assertDefined } from '@/shared/utils/assert';
 
 interface User {
   id: string;
@@ -24,8 +25,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      assertDefined(
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
+        'NEXT_PUBLIC_SUPABASE_URL is required',
+      ),
+      assertDefined(
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+        'NEXT_PUBLIC_SUPABASE_ANON_KEY is required',
+      ),
     );
 
     const {
@@ -39,7 +46,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   return (

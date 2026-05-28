@@ -31,7 +31,9 @@ export function PaginationControls() {
         variant="outline"
         size="sm"
         disabled={isFirstPage}
-        onClick={() => refine(currentRefinement - 1)}
+        onClick={() => {
+          refine(currentRefinement - 1);
+        }}
         aria-label="Previous page"
       >
         <ChevronLeft className="h-4 w-4" />
@@ -47,7 +49,9 @@ export function PaginationControls() {
             size="sm"
             className="min-w-[2.5rem]"
             disabled={!canRefine}
-            onClick={() => refine(page)}
+            onClick={() => {
+              refine(page);
+            }}
             aria-label={`Page ${page + 1}`}
             aria-current={isCurrent ? 'page' : undefined}
           >
@@ -60,7 +64,9 @@ export function PaginationControls() {
         variant="outline"
         size="sm"
         disabled={isLastPage}
-        onClick={() => refine(currentRefinement + 1)}
+        onClick={() => {
+          refine(currentRefinement + 1);
+        }}
         aria-label="Next page"
       >
         <ChevronRight className="h-4 w-4" />
