@@ -92,9 +92,10 @@ describe('authMiddleware', () => {
 
     expect(next).toHaveBeenCalled();
     expect(req.auth).toBeDefined();
-    expect(req.auth!.userId).toBe('user-123');
-    expect(req.auth!.email).toBe('test@example.com');
-    expect(req.auth!.roles).toContain('user');
+    if (!req.auth) throw new Error('unreachable');
+    expect(req.auth.userId).toBe('user-123');
+    expect(req.auth.email).toBe('test@example.com');
+    expect(req.auth.roles).toContain('user');
   });
 
   it('returns 401 on invalid token', async () => {
@@ -153,7 +154,9 @@ describe('authMiddleware', () => {
 
     await middleware(req, res, next);
 
-    expect(req.auth!.roles).toContain('seller');
+    expect(req.auth).toBeDefined();
+    if (!req.auth) throw new Error('unreachable');
+    expect(req.auth.roles).toContain('seller');
   });
 
   it('derives admin role from role claim', async () => {
@@ -172,6 +175,8 @@ describe('authMiddleware', () => {
 
     await middleware(req, res, next);
 
-    expect(req.auth!.roles).toContain('admin');
+    expect(req.auth).toBeDefined();
+    if (!req.auth) throw new Error('unreachable');
+    expect(req.auth.roles).toContain('admin');
   });
 });

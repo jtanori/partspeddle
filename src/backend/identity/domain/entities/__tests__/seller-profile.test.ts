@@ -23,7 +23,7 @@ describe('SellerProfile', () => {
     it('rejects duplicate step completion', () => {
       const profile = SellerProfile.create({ id: crypto.randomUUID(), userId: crypto.randomUUID() }, 'corr-1');
       profile.completeOnboardingStep('identity', 'corr-1');
-      expect(() => profile.completeOnboardingStep('identity', 'corr-1')).toThrow(DomainError);
+      expect(() => { profile.completeOnboardingStep('identity', 'corr-1'); }).toThrow(DomainError);
     });
   });
 
@@ -36,7 +36,7 @@ describe('SellerProfile', () => {
 
     it('rejects empty stripe account id', () => {
       const profile = SellerProfile.create({ id: crypto.randomUUID(), userId: crypto.randomUUID() }, 'corr-1');
-      expect(() => profile.linkStripeAccount('')).toThrow(DomainError);
+      expect(() => { profile.linkStripeAccount(''); }).toThrow(DomainError);
     });
   });
 
@@ -54,7 +54,7 @@ describe('SellerProfile', () => {
     it('rejects submit when onboarding incomplete', () => {
       const profile = SellerProfile.create({ id: crypto.randomUUID(), userId: crypto.randomUUID() }, 'corr-1');
       profile.completeOnboardingStep('identity', 'corr-1');
-      expect(() => profile.submitForReview('corr-1')).toThrow(DomainError);
+      expect(() => { profile.submitForReview('corr-1'); }).toThrow(DomainError);
     });
   });
 
@@ -82,7 +82,7 @@ describe('SellerProfile', () => {
       profile.completeOnboardingStep('tax', 'corr-1');
       profile.completeOnboardingStep('terms', 'corr-1');
       profile.submitForReview('corr-1');
-      expect(() => profile.activate('corr-1')).toThrow(DomainError);
+      expect(() => { profile.activate('corr-1'); }).toThrow(DomainError);
     });
   });
 
@@ -106,8 +106,8 @@ describe('SellerProfile', () => {
 
     it('rejects invalid transitions', () => {
       const profile = SellerProfile.create({ id: crypto.randomUUID(), userId: crypto.randomUUID() }, 'corr-1');
-      expect(() => profile.activate('corr-1')).toThrow(DomainError);
-      expect(() => profile.suspend('reason', 'corr-1')).toThrow(DomainError);
+      expect(() => { profile.activate('corr-1'); }).toThrow(DomainError);
+      expect(() => { profile.suspend('reason', 'corr-1'); }).toThrow(DomainError);
     });
   });
 
