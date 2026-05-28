@@ -24,7 +24,8 @@ describe('domainEventSchema', () => {
   });
 
   it('rejects missing required fields', () => {
-    const { eventId: _, ...missingEventId } = validEvent;
+    const missingEventId = { ...validEvent };
+    delete (missingEventId as Record<string, unknown>).eventId;
 
     expect(() => domainEventSchema.parse(missingEventId)).toThrow();
   });
