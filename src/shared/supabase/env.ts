@@ -15,11 +15,7 @@ export interface SupabaseEnv {
   readonly databaseUrl: string;
 }
 
-const REQUIRED_VARS = [
-  'SUPABASE_URL',
-  'SUPABASE_SERVICE_KEY',
-  'DATABASE_URL',
-] as const;
+const REQUIRED_VARS = ['SUPABASE_URL', 'SUPABASE_SERVICE_KEY', 'DATABASE_URL'] as const;
 
 /**
  * Validate that all required Supabase environment variables are present.
@@ -39,22 +35,13 @@ export function validateSupabaseEnv(): SupabaseEnv {
   if (missing.length > 0) {
     throw new Error(
       `Missing required environment variables: ${missing.join(', ')}. ` +
-        `Application cannot start without Supabase configuration.`,
+        `Application cannot start without Supabase configuration.`
     );
   }
 
   return {
-    supabaseUrl: assertDefined(
-      process.env.SUPABASE_URL,
-      'SUPABASE_URL is required',
-    ),
-    serviceKey: assertDefined(
-      process.env.SUPABASE_SERVICE_KEY,
-      'SUPABASE_SERVICE_KEY is required',
-    ),
-    databaseUrl: assertDefined(
-      process.env.DATABASE_URL,
-      'DATABASE_URL is required',
-    ),
+    supabaseUrl: assertDefined(process.env.SUPABASE_URL, 'SUPABASE_URL is required'),
+    serviceKey: assertDefined(process.env.SUPABASE_SERVICE_KEY, 'SUPABASE_SERVICE_KEY is required'),
+    databaseUrl: assertDefined(process.env.DATABASE_URL, 'DATABASE_URL is required'),
   };
 }

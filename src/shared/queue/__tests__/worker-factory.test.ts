@@ -23,7 +23,10 @@ import { Worker } from 'bullmq';
 describe('createDomainWorker', () => {
   const mockRedis = {} as unknown as import('ioredis').Redis;
   const mockQueue = { name: 'identity-onboarding' } as unknown as import('bullmq').Queue;
-  const mockDlq = { name: 'identity-onboarding-dlq', add: vi.fn().mockResolvedValue(undefined) } as unknown as import('bullmq').Queue;
+  const mockDlq = {
+    name: 'identity-onboarding-dlq',
+    add: vi.fn().mockResolvedValue(undefined),
+  } as unknown as import('bullmq').Queue;
   const processor = vi.fn().mockResolvedValue({ ok: true });
 
   beforeEach(() => {
@@ -39,7 +42,7 @@ describe('createDomainWorker', () => {
       expect.objectContaining({
         connection: mockRedis,
         concurrency: 5,
-      }),
+      })
     );
   });
 
@@ -49,7 +52,7 @@ describe('createDomainWorker', () => {
     expect(Worker).toHaveBeenCalledWith(
       expect.any(String),
       expect.any(Function),
-      expect.objectContaining({ concurrency: 10 }),
+      expect.objectContaining({ concurrency: 10 })
     );
   });
 

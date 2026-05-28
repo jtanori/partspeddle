@@ -71,7 +71,7 @@ sellerEventCatalog.register('identity.seller_reactivated', {
 export function createSellerOnboardingStepCompletedEvent(
   payload: SellerOnboardingStepCompletedPayload,
   correlationId: string,
-  actorId = 'system',
+  actorId = 'system'
 ): DomainEvent {
   return new DomainEvent({
     eventType: 'identity.seller_onboarding_step_completed',
@@ -87,7 +87,7 @@ export function createSellerOnboardingStepCompletedEvent(
 export function createSellerActivatedEvent(
   payload: SellerActivatedPayload,
   correlationId: string,
-  actorId = 'system',
+  actorId = 'system'
 ): DomainEvent {
   return new DomainEvent({
     eventType: 'identity.seller_activated',
@@ -103,7 +103,7 @@ export function createSellerActivatedEvent(
 export function createSellerSuspendedEvent(
   payload: SellerSuspendedPayload,
   correlationId: string,
-  actorId = 'system',
+  actorId = 'system'
 ): DomainEvent {
   return new DomainEvent({
     eventType: 'identity.seller_suspended',
@@ -119,7 +119,7 @@ export function createSellerSuspendedEvent(
 export function createSellerReactivatedEvent(
   payload: SellerReactivatedPayload,
   correlationId: string,
-  actorId = 'system',
+  actorId = 'system'
 ): DomainEvent {
   return new DomainEvent({
     eventType: 'identity.seller_reactivated',

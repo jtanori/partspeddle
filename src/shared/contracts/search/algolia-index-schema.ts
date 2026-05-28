@@ -63,11 +63,7 @@ export const FILTER_OPERATORS: readonly FilterOperatorContract[] = [
 /**
  * Attributes enabled for sorting.
  */
-export const SORTABLE_ATTRIBUTES = [
-  'price',
-  'created_at',
-  'relevance',
-] as const;
+export const SORTABLE_ATTRIBUTES = ['price', 'created_at', 'relevance'] as const;
 
 export type SortableAttribute = (typeof SORTABLE_ATTRIBUTES)[number];
 

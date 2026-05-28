@@ -8,14 +8,8 @@ export async function middleware(request: NextRequest) {
   });
 
   const supabase = createServerClient(
-    assertDefined(
-      process.env.SUPABASE_AUTH_URL,
-      'SUPABASE_AUTH_URL is required',
-    ),
-    assertDefined(
-      process.env.SUPABASE_ANON_KEY,
-      'SUPABASE_ANON_KEY is required',
-    ),
+    assertDefined(process.env.SUPABASE_AUTH_URL, 'SUPABASE_AUTH_URL is required'),
+    assertDefined(process.env.SUPABASE_ANON_KEY, 'SUPABASE_ANON_KEY is required'),
     {
       cookies: {
         getAll() {
@@ -33,7 +27,7 @@ export async function middleware(request: NextRequest) {
           });
         },
       },
-    },
+    }
   );
 
   const {
@@ -54,7 +48,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-  ],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
 };

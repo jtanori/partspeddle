@@ -1,8 +1,4 @@
-export {
-  type IdentityProvider,
-  type VerifiedToken,
-  type AuthUser,
-} from './identity-provider.js';
+export { type IdentityProvider, type VerifiedToken, type AuthUser } from './identity-provider.js';
 
 export {
   type AuthContext,

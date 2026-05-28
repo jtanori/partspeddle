@@ -23,15 +23,8 @@ export interface AuthMiddlewareOptions {
   readonly optional?: boolean;
 }
 
-export function authMiddleware(
-  provider: IdentityProvider,
-  options: AuthMiddlewareOptions = {},
-) {
-  return async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): Promise<void> => {
+export function authMiddleware(provider: IdentityProvider, options: AuthMiddlewareOptions = {}) {
+  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const authHeader = req.headers.authorization ?? '';
     const correlationId = req.correlationId ?? crypto.randomUUID();
 

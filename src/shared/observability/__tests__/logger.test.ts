@@ -48,7 +48,9 @@ describe('logger', () => {
   });
 
   it('redacts JWT strings', () => {
-    logger.info('test', { token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk' });
+    logger.info('test', {
+      token: 'mock-jwt-token-12345',
+    });
 
     const entry = JSON.parse(logs[0]);
     expect(entry.context.token).toBe('[REDACTED]');

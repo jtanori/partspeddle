@@ -61,19 +61,19 @@ describe('identity schema', () => {
   describe('foreign key constraints', () => {
     it('profiles.user_id references identity.users', async () => {
       await expect(
-        sql`INSERT INTO identity.profiles (user_id) VALUES (${crypto.randomUUID()})`,
+        sql`INSERT INTO identity.profiles (user_id) VALUES (${crypto.randomUUID()})`
       ).rejects.toThrow(/foreign key constraint/);
     });
 
     it('seller_profiles.user_id references identity.users', async () => {
       await expect(
-        sql`INSERT INTO identity.seller_profiles (user_id) VALUES (${crypto.randomUUID()})`,
+        sql`INSERT INTO identity.seller_profiles (user_id) VALUES (${crypto.randomUUID()})`
       ).rejects.toThrow(/foreign key constraint/);
     });
 
     it('onboarding_steps.seller_profile_id references seller_profiles', async () => {
       await expect(
-        sql`INSERT INTO identity.onboarding_steps (seller_profile_id, step) VALUES (${crypto.randomUUID()}, 'identity')`,
+        sql`INSERT INTO identity.onboarding_steps (seller_profile_id, step) VALUES (${crypto.randomUUID()}, 'identity')`
       ).rejects.toThrow(/foreign key constraint/);
     });
   });
@@ -102,7 +102,7 @@ describe('identity schema', () => {
       await sql`INSERT INTO identity.users (id, email) VALUES (${userId}, 'dup@example.com')`;
 
       await expect(
-        sql`INSERT INTO identity.users (id, email) VALUES (${crypto.randomUUID()}, 'dup@example.com')`,
+        sql`INSERT INTO identity.users (id, email) VALUES (${crypto.randomUUID()}, 'dup@example.com')`
       ).rejects.toThrow(/unique constraint/);
     });
 
@@ -111,9 +111,9 @@ describe('identity schema', () => {
       await sql`INSERT INTO identity.users (id, email) VALUES (${userId}, 'profile@example.com')`;
       await sql`INSERT INTO identity.profiles (user_id) VALUES (${userId})`;
 
-      await expect(
-        sql`INSERT INTO identity.profiles (user_id) VALUES (${userId})`,
-      ).rejects.toThrow(/unique constraint/);
+      await expect(sql`INSERT INTO identity.profiles (user_id) VALUES (${userId})`).rejects.toThrow(
+        /unique constraint/
+      );
     });
 
     it('prevents duplicate onboarding steps per seller', async () => {
@@ -127,7 +127,7 @@ describe('identity schema', () => {
       await sql`INSERT INTO identity.onboarding_steps (seller_profile_id, step) VALUES (${sellerId}, 'identity')`;
 
       await expect(
-        sql`INSERT INTO identity.onboarding_steps (seller_profile_id, step) VALUES (${sellerId}, 'identity')`,
+        sql`INSERT INTO identity.onboarding_steps (seller_profile_id, step) VALUES (${sellerId}, 'identity')`
       ).rejects.toThrow(/unique constraint/);
     });
 
@@ -138,7 +138,7 @@ describe('identity schema', () => {
       await sql`INSERT INTO identity.seller_profiles (user_id, stripe_connect_account_id) VALUES (${userId1}, 'acct_123')`;
 
       await expect(
-        sql`INSERT INTO identity.seller_profiles (user_id, stripe_connect_account_id) VALUES (${userId2}, 'acct_123')`,
+        sql`INSERT INTO identity.seller_profiles (user_id, stripe_connect_account_id) VALUES (${userId2}, 'acct_123')`
       ).rejects.toThrow(/unique constraint/);
     });
   });

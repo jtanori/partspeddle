@@ -25,11 +25,11 @@ class MockOutbox implements Outbox {
   }
 
   async getPending(limit: number): Promise<OutboxEntry[]> {
-    return this.entries.filter(e => e.status === 'pending').slice(0, limit);
+    return this.entries.filter((e) => e.status === 'pending').slice(0, limit);
   }
 
   async markPublished(id: string): Promise<void> {
-    const entry = this.entries.find(e => e.id === id);
+    const entry = this.entries.find((e) => e.id === id);
     if (entry) {
       entry.status = 'published';
       entry.published_at = new Date().toISOString();
@@ -37,7 +37,7 @@ class MockOutbox implements Outbox {
   }
 
   async markFailed(id: string, error: string): Promise<void> {
-    const entry = this.entries.find(e => e.id === id);
+    const entry = this.entries.find((e) => e.id === id);
     if (entry) {
       entry.status = 'pending';
       entry.retry_count++;
@@ -46,11 +46,11 @@ class MockOutbox implements Outbox {
   }
 
   async getFailedForDlq(maxRetries: number): Promise<OutboxEntry[]> {
-    return this.entries.filter(e => e.retry_count >= maxRetries && e.status !== 'published');
+    return this.entries.filter((e) => e.retry_count >= maxRetries && e.status !== 'published');
   }
 
   async claimPending(id: string): Promise<boolean> {
-    const entry = this.entries.find(e => e.id === id && e.status === 'pending');
+    const entry = this.entries.find((e) => e.id === id && e.status === 'pending');
     if (entry) {
       entry.status = 'processing';
       entry.updated_at = new Date().toISOString();
@@ -193,14 +193,16 @@ describe('OutboxRelayWorker', () => {
 
   it('poll returns count of processed events', async () => {
     await outbox.insert(sampleEvent);
-    await outbox.insert(new DomainEvent({
-      eventType: 'listing.published',
-      correlationId: '6ba7b810-9dad-11d1-80b4-00c04fd430c9',
-      actorId: 'system',
-      domain: 'marketplace',
-      aggregateId: 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12',
-      payload: { listingId: 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12' },
-    }));
+    await outbox.insert(
+      new DomainEvent({
+        eventType: 'listing.published',
+        correlationId: '6ba7b810-9dad-11d1-80b4-00c04fd430c9',
+        actorId: 'system',
+        domain: 'marketplace',
+        aggregateId: 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12',
+        payload: { listingId: 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12' },
+      })
+    );
 
     const processed = await worker.poll();
 
@@ -215,7 +217,7 @@ describe('OutboxRelayWorker', () => {
     expect(worker.isRunning()).toBe(true);
 
     // Wait for at least one poll
-    await new Promise(r => setTimeout(r, 250));
+    await new Promise((r) => setTimeout(r, 250));
 
     worker.stop();
     expect(worker.isRunning()).toBe(false);

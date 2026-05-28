@@ -135,7 +135,10 @@ describe('EventCatalog', () => {
 
   it('returns list of registered event types', () => {
     catalog.register('seller.activated', { version: 1, payloadSchema: sellerActivatedSchema });
-    catalog.register('listing.published', { version: 1, payloadSchema: z.object({ listingId: z.string().uuid() }) });
+    catalog.register('listing.published', {
+      version: 1,
+      payloadSchema: z.object({ listingId: z.string().uuid() }),
+    });
 
     const types = catalog.listEventTypes();
     expect(types).toContain('seller.activated');

@@ -23,7 +23,7 @@ export function wrapError(
   error: unknown,
   code: string,
   correlationId: string,
-  isRetryable = false,
+  isRetryable = false
 ): DomainError {
   if (error instanceof DomainError) {
     return error;

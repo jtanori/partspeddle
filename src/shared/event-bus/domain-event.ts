@@ -69,9 +69,7 @@ export class DomainEvent {
     this.eventVersion = props.eventVersion ?? 1;
     this.schemaVersion = props.schemaVersion ?? 1;
     this.occurredAt =
-      props.occurredAt && props.trustedTimestamp
-        ? props.occurredAt
-        : new Date().toISOString();
+      props.occurredAt && props.trustedTimestamp ? props.occurredAt : new Date().toISOString();
     this.causationId = props.causationId ?? props.correlationId;
     this.aggregateType = props.aggregateType;
     this.metadata = props.metadata ?? {};
@@ -107,7 +105,7 @@ export class DomainEvent {
         'SHARED_EVENT_INVALID_TYPE',
         `Event type must match domain.action format (past tense, lowercase). Got: ${this.eventType}`,
         this.correlationId,
-        false,
+        false
       );
     }
   }
@@ -118,7 +116,7 @@ export class DomainEvent {
         'SHARED_EVENT_INVALID_DOMAIN',
         `Domain must be lowercase single word. Got: ${this.domain}`,
         this.correlationId,
-        false,
+        false
       );
     }
   }
@@ -129,7 +127,7 @@ export class DomainEvent {
         'SHARED_EVENT_PAYLOAD_EMPTY',
         'Event payload cannot be empty. Include at least the aggregate state after the change.',
         this.correlationId,
-        false,
+        false
       );
     }
 
@@ -139,7 +137,7 @@ export class DomainEvent {
         'SHARED_EVENT_PAYLOAD_TOO_LARGE',
         `Event payload exceeds hard limit of ${PAYLOAD_HARD_LIMIT_BYTES} bytes (${size} bytes).`,
         this.correlationId,
-        false,
+        false
       );
     }
   }

@@ -15,7 +15,7 @@ export function createListingCreatedEvent(
     currency: string;
   },
   correlationId: string,
-  actorId = 'system',
+  actorId = 'system'
 ): DomainEvent {
   return new DomainEvent({
     eventType: 'marketplace.listing_created',
@@ -31,7 +31,7 @@ export function createListingCreatedEvent(
 export function createListingPublishedEvent(
   payload: { listingId: string; previousStatus: string },
   correlationId: string,
-  actorId = 'system',
+  actorId = 'system'
 ): DomainEvent {
   return new DomainEvent({
     eventType: 'marketplace.listing_published',
@@ -47,7 +47,7 @@ export function createListingPublishedEvent(
 export function createListingWithdrawnEvent(
   payload: { listingId: string; previousStatus: string },
   correlationId: string,
-  actorId = 'system',
+  actorId = 'system'
 ): DomainEvent {
   return new DomainEvent({
     eventType: 'marketplace.listing_delisted',
@@ -63,7 +63,7 @@ export function createListingWithdrawnEvent(
 export function createListingSoldEvent(
   payload: { listingId: string; buyerId: string },
   correlationId: string,
-  actorId = 'system',
+  actorId = 'system'
 ): DomainEvent {
   return new DomainEvent({
     eventType: 'marketplace.listing_purchased',

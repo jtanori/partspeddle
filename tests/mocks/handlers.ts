@@ -97,7 +97,7 @@ export const handlers = [
           (l) =>
             l.title.toLowerCase().includes(query) ||
             (l.description?.toLowerCase().includes(query) ?? false) ||
-            (l.tags?.some((t) => t.toLowerCase().includes(query)) ?? false),
+            (l.tags?.some((t) => t.toLowerCase().includes(query)) ?? false)
         )
       : mockListings;
 

@@ -7,10 +7,7 @@
 
 import { Router, type Request, type Response } from 'express';
 import type { ISellerProfileRepository } from '../../domain/repositories/seller-profile-repository.js';
-import {
-  RegisterSellerRequestSchema,
-  SellerProfileResponseSchema,
-} from '../dto/seller-dto.js';
+import { RegisterSellerRequestSchema, SellerProfileResponseSchema } from '../dto/seller-dto.js';
 import { SellerProfile } from '../../domain/entities/seller-profile.js';
 import { logger } from '../../../shared/observability/logger.js';
 import { DomainError } from '../../../../shared/errors/domain-error.js';
@@ -63,7 +60,7 @@ export function createSellerRoutes(deps: SellerRoutesDeps): Router {
       const profile = SellerProfile.create(
         { id: crypto.randomUUID(), userId: auth.userId },
         correlationId,
-        auth.userId,
+        auth.userId
       );
       profile.linkStripeAccount(stripeConnectAccountId);
 
@@ -125,7 +122,7 @@ export function createSellerRoutes(deps: SellerRoutesDeps): Router {
           ? req.params.step[0]
           : '';
     const validSteps = ['identity', 'banking', 'tax', 'terms'] as const;
-    if (!validSteps.includes(step as typeof validSteps[number])) {
+    if (!validSteps.includes(step as (typeof validSteps)[number])) {
       res.status(400).json({
         error: 'IDENTITY_ONBOARDING_INVALID_STEP',
         message: `Invalid onboarding step: ${step}`,
@@ -146,7 +143,11 @@ export function createSellerRoutes(deps: SellerRoutesDeps): Router {
         return;
       }
 
-      profile.completeOnboardingStep(step as typeof validSteps[number], correlationId, auth.userId);
+      profile.completeOnboardingStep(
+        step as (typeof validSteps)[number],
+        correlationId,
+        auth.userId
+      );
       await deps.sellerProfileRepository.save(profile);
 
       const response = SellerProfileResponseSchema.parse({

@@ -17,7 +17,9 @@ describe('Counter', () => {
 
   it('throws on forbidden label', () => {
     const counter = new Counter('test', 'test');
-    expect(() => { counter.inc({ userId: '123' }); }).toThrow('Forbidden metric label');
+    expect(() => {
+      counter.inc({ userId: '123' });
+    }).toThrow('Forbidden metric label');
   });
 });
 

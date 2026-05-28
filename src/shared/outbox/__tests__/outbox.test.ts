@@ -27,20 +27,28 @@ class InMemoryDbClient {
   }
 
   async query<T>(sql: string, _params: unknown[]): Promise<T[]> {
-    if (sql.includes('status = \'pending\'')) {
-      return this.rows.filter(r => r.status === 'pending') as unknown as T[];
+    if (sql.includes("status = 'pending'")) {
+      return this.rows.filter((r) => r.status === 'pending') as unknown as T[];
     }
     if (sql.includes('retry_count >=')) {
       const maxRetries = Number(_params[0]);
-      return this.rows.filter(r => r.retry_count >= maxRetries && r.status !== 'published') as unknown as T[];
+      return this.rows.filter(
+        (r) => r.retry_count >= maxRetries && r.status !== 'published'
+      ) as unknown as T[];
     }
     return this.rows as unknown as T[];
   }
 
-  async update(table: string, data: Record<string, unknown>, conditions: Record<string, unknown>): Promise<number> {
+  async update(
+    table: string,
+    data: Record<string, unknown>,
+    conditions: Record<string, unknown>
+  ): Promise<number> {
     if (table === 'outbox') {
-      const row = this.rows.find(r =>
-        Object.entries(conditions).every(([key, value]) => (r as Record<string, unknown>)[key] === value),
+      const row = this.rows.find((r) =>
+        Object.entries(conditions).every(
+          ([key, value]) => (r as Record<string, unknown>)[key] === value
+        )
       );
       if (row) {
         Object.assign(row, data);
@@ -99,14 +107,16 @@ describe('Outbox', () => {
 
   it('getPending returns only pending events', async () => {
     await outbox.insert(sampleEvent);
-    await outbox.insert(new DomainEvent({
-      eventType: 'listing.published',
-      correlationId: '6ba7b810-9dad-11d1-80b4-00c04fd430c9',
-      actorId: 'system',
-      domain: 'marketplace',
-      aggregateId: 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12',
-      payload: { listingId: 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12' },
-    }));
+    await outbox.insert(
+      new DomainEvent({
+        eventType: 'listing.published',
+        correlationId: '6ba7b810-9dad-11d1-80b4-00c04fd430c9',
+        actorId: 'system',
+        domain: 'marketplace',
+        aggregateId: 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12',
+        payload: { listingId: 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12' },
+      })
+    );
 
     const pending = await outbox.getPending(10);
     expect(pending).toHaveLength(2);

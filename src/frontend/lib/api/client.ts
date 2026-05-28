@@ -31,10 +31,7 @@ async function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function fetchWithTimeout(
-  url: string,
-  config: RequestConfig,
-): Promise<Response> {
+async function fetchWithTimeout(url: string, config: RequestConfig): Promise<Response> {
   const { timeout = DEFAULT_TIMEOUT, ...rest } = config;
 
   const controller = new AbortController();
@@ -53,10 +50,7 @@ async function fetchWithTimeout(
   }
 }
 
-async function executeRequest(
-  url: string,
-  config: RequestConfig,
-): Promise<Response> {
+async function executeRequest(url: string, config: RequestConfig): Promise<Response> {
   const correlationId = generateCorrelationId();
   const token = await getAuthToken();
 
@@ -110,11 +104,7 @@ export async function apiGet<T>(url: string, config?: RequestConfig): Promise<T>
   throw new ApiClientError(normalizeError(new Error('Max retries exceeded')));
 }
 
-export async function apiPost<T>(
-  url: string,
-  body: unknown,
-  config?: RequestConfig,
-): Promise<T> {
+export async function apiPost<T>(url: string, body: unknown, config?: RequestConfig): Promise<T> {
   const response = await executeRequest(url, {
     ...config,
     method: 'POST',
@@ -123,11 +113,7 @@ export async function apiPost<T>(
   return (await response.json()) as T;
 }
 
-export async function apiPut<T>(
-  url: string,
-  body: unknown,
-  config?: RequestConfig,
-): Promise<T> {
+export async function apiPut<T>(url: string, body: unknown, config?: RequestConfig): Promise<T> {
   const response = await executeRequest(url, {
     ...config,
     method: 'PUT',

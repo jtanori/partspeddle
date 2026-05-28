@@ -84,7 +84,7 @@ export async function closePool(): Promise<void> {
  * ```
  */
 export async function executeInTransaction<T>(
-  callback: (tx: ReturnType<typeof postgres>) => Promise<T>,
+  callback: (tx: ReturnType<typeof postgres>) => Promise<T>
 ): Promise<T> {
   const pool = createPool();
 
@@ -112,12 +112,7 @@ export async function withTimeout<T>(query: Promise<T>, ms: number): Promise<T> 
   const timeout = new Promise<never>((_, reject) => {
     setTimeout(() => {
       reject(
-        new DomainError(
-          'SHARED_DB_QUERY_TIMEOUT',
-          `Query timed out after ${ms}ms`,
-          'system',
-          false,
-        ),
+        new DomainError('SHARED_DB_QUERY_TIMEOUT', `Query timed out after ${ms}ms`, 'system', false)
       );
     }, ms);
   });

@@ -64,7 +64,7 @@ export class Listing {
   static create(
     props: Omit<ListingProps, 'status' | 'createdAt'>,
     correlationId: string,
-    actorId = 'system',
+    actorId = 'system'
   ): Listing {
     const listing = new Listing({
       ...props,
@@ -81,8 +81,8 @@ export class Listing {
           currency: props.currency,
         },
         correlationId,
-        actorId,
-      ),
+        actorId
+      )
     );
     return listing;
   }
@@ -112,7 +112,11 @@ export class Listing {
     const previous = this._status;
     this._status = 'active';
     this._uncommittedEvents.push(
-      createListingPublishedEvent({ listingId: this.id, previousStatus: previous }, correlationId, actorId),
+      createListingPublishedEvent(
+        { listingId: this.id, previousStatus: previous },
+        correlationId,
+        actorId
+      )
     );
   }
 
@@ -121,7 +125,11 @@ export class Listing {
     const previous = this._status;
     this._status = 'withdrawn';
     this._uncommittedEvents.push(
-      createListingWithdrawnEvent({ listingId: this.id, previousStatus: previous }, correlationId, actorId),
+      createListingWithdrawnEvent(
+        { listingId: this.id, previousStatus: previous },
+        correlationId,
+        actorId
+      )
     );
   }
 
@@ -129,7 +137,7 @@ export class Listing {
     this._assertTransitionTo('sold');
     this._status = 'sold';
     this._uncommittedEvents.push(
-      createListingSoldEvent({ listingId: this.id, buyerId }, correlationId, actorId),
+      createListingSoldEvent({ listingId: this.id, buyerId }, correlationId, actorId)
     );
   }
 
@@ -146,7 +154,7 @@ export class Listing {
         `Cannot transition from ${this._status} to ${target}`,
         crypto.randomUUID(),
         false,
-        { from: this._status, to: target },
+        { from: this._status, to: target }
       );
     }
   }
@@ -157,7 +165,7 @@ export class Listing {
         'MARKETPLACE_LISTING_INVALID_ID',
         'Listing.id is required',
         crypto.randomUUID(),
-        false,
+        false
       );
     }
     if (!this.title || this.title.length > 200) {
@@ -165,7 +173,7 @@ export class Listing {
         'MARKETPLACE_LISTING_INVALID_TITLE',
         'Listing.title is required and must be ≤ 200 characters',
         crypto.randomUUID(),
-        false,
+        false
       );
     }
     if (this.price <= 0) {
@@ -173,7 +181,7 @@ export class Listing {
         'MARKETPLACE_LISTING_INVALID_PRICE',
         'Listing.price must be positive',
         crypto.randomUUID(),
-        false,
+        false
       );
     }
     if (!this.currency || this.currency.length !== 3) {
@@ -181,7 +189,7 @@ export class Listing {
         'MARKETPLACE_LISTING_INVALID_CURRENCY',
         'Listing.currency must be a 3-letter ISO code',
         crypto.randomUUID(),
-        false,
+        false
       );
     }
     if (!this.sellerId) {
@@ -189,7 +197,7 @@ export class Listing {
         'MARKETPLACE_LISTING_INVALID_SELLER',
         'Listing.sellerId is required',
         crypto.randomUUID(),
-        false,
+        false
       );
     }
   }

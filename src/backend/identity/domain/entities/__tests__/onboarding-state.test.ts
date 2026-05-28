@@ -29,7 +29,9 @@ describe('OnboardingState', () => {
   it('rejects duplicate step completion', () => {
     const state = OnboardingState.create();
     state.completeStep('identity');
-    expect(() => { state.completeStep('identity'); }).toThrow(DomainError);
+    expect(() => {
+      state.completeStep('identity');
+    }).toThrow(DomainError);
   });
 
   it('rehydrates from completed steps', () => {

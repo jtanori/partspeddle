@@ -23,7 +23,7 @@ export class InMemorySellerProfileRepository implements ISellerProfileRepository
             activatedAt: profile.activatedAt,
             onboardingState: profile.onboardingState,
           })
-        : null,
+        : null
     );
   }
 
@@ -43,7 +43,7 @@ export class InMemorySellerProfileRepository implements ISellerProfileRepository
         stripeConnectAccountId: profile.stripeConnectAccountId,
         activatedAt: profile.activatedAt,
         onboardingState: profile.onboardingState,
-      }),
+      })
     );
     this.userIdIndex.set(profile.userId, profile.id);
     return Promise.resolve();

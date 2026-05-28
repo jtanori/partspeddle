@@ -11,14 +11,8 @@ export async function GET(request: NextRequest) {
   if (code) {
     const cookieStore = await cookies();
     const supabase = createServerClient(
-      assertDefined(
-        process.env.SUPABASE_AUTH_URL,
-        'SUPABASE_AUTH_URL is required',
-      ),
-      assertDefined(
-        process.env.SUPABASE_ANON_KEY,
-        'SUPABASE_ANON_KEY is required',
-      ),
+      assertDefined(process.env.SUPABASE_AUTH_URL, 'SUPABASE_AUTH_URL is required'),
+      assertDefined(process.env.SUPABASE_ANON_KEY, 'SUPABASE_ANON_KEY is required'),
       {
         cookies: {
           getAll() {
@@ -30,7 +24,7 @@ export async function GET(request: NextRequest) {
             });
           },
         },
-      },
+      }
     );
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
@@ -38,7 +32,5 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  return NextResponse.redirect(
-    new URL('/login?error=auth_callback_failed', request.url),
-  );
+  return NextResponse.redirect(new URL('/login?error=auth_callback_failed', request.url));
 }

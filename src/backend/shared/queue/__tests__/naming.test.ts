@@ -17,20 +17,14 @@ describe('deriveQueueNames', () => {
   });
 
   it('throws on uppercase domain', () => {
-    expect(() => deriveQueueNames('Identity', 'onboarding')).toThrow(
-      'Invalid queue name',
-    );
+    expect(() => deriveQueueNames('Identity', 'onboarding')).toThrow('Invalid queue name');
   });
 
   it('throws on underscore in purpose', () => {
-    expect(() => deriveQueueNames('identity', 'onboarding_steps')).toThrow(
-      'Invalid queue name',
-    );
+    expect(() => deriveQueueNames('identity', 'onboarding_steps')).toThrow('Invalid queue name');
   });
 
   it('throws on empty purpose', () => {
-    expect(() => deriveQueueNames('identity', '')).toThrow(
-      'Invalid queue name',
-    );
+    expect(() => deriveQueueNames('identity', '')).toThrow('Invalid queue name');
   });
 });

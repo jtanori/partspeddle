@@ -66,7 +66,7 @@ export class SupabaseAuthProvider implements IdentityProvider {
         'IDENTITY_AUTH_INVALID_TOKEN',
         `Token verification failed: ${message}`,
         crypto.randomUUID(),
-        false,
+        false
       );
     }
   }
@@ -79,7 +79,18 @@ export class SupabaseAuthProvider implements IdentityProvider {
       return null;
     }
 
-    const user = (result as { data?: { user?: { id: string; email?: string; app_metadata?: Record<string, unknown>; user_metadata?: Record<string, unknown> } | null } }).data?.user;
+    const user = (
+      result as {
+        data?: {
+          user?: {
+            id: string;
+            email?: string;
+            app_metadata?: Record<string, unknown>;
+            user_metadata?: Record<string, unknown>;
+          } | null;
+        };
+      }
+    ).data?.user;
     if (!user) {
       return null;
     }
@@ -106,7 +117,7 @@ export class SupabaseAuthProvider implements IdentityProvider {
         'IDENTITY_AUTH_REVOKE_FAILED',
         `Failed to revoke sessions: ${error.message}`,
         crypto.randomUUID(),
-        true,
+        true
       );
     }
   }

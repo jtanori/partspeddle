@@ -7,7 +7,14 @@ export async function ListingGrid() {
     listings = await getListings();
   } catch {
     return (
-      <div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280', fontFamily: 'system-ui, sans-serif' }}>
+      <div
+        style={{
+          padding: '2rem',
+          textAlign: 'center',
+          color: '#6b7280',
+          fontFamily: 'system-ui, sans-serif',
+        }}
+      >
         <p>Featured listings are currently unavailable.</p>
         <p style={{ fontSize: '0.875rem' }}>Please check back later.</p>
       </div>
@@ -16,7 +23,14 @@ export async function ListingGrid() {
 
   if (listings.length === 0) {
     return (
-      <div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280', fontFamily: 'system-ui, sans-serif' }}>
+      <div
+        style={{
+          padding: '2rem',
+          textAlign: 'center',
+          color: '#6b7280',
+          fontFamily: 'system-ui, sans-serif',
+        }}
+      >
         <p>No listings available yet.</p>
       </div>
     );

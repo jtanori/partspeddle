@@ -136,10 +136,7 @@ function PriceFilter() {
   }, [range.min, range.max]);
 
   const handleApply = () => {
-    refine([
-      min ? Number(min) : undefined,
-      max ? Number(max) : undefined,
-    ]);
+    refine([min ? Number(min) : undefined, max ? Number(max) : undefined]);
   };
 
   const handleClear = () => {
@@ -151,12 +148,17 @@ function PriceFilter() {
   const hasValue = min || max;
 
   return (
-    <FilterSection title="Price Range" rightAction={hasValue ? (
-      <Button variant="ghost" size="sm" className="h-6 px-2" onClick={handleClear}>
-        <X className="h-3 w-3 mr-1" />
-        Clear
-      </Button>
-    ) : null}>
+    <FilterSection
+      title="Price Range"
+      rightAction={
+        hasValue ? (
+          <Button variant="ghost" size="sm" className="h-6 px-2" onClick={handleClear}>
+            <X className="h-3 w-3 mr-1" />
+            Clear
+          </Button>
+        ) : null
+      }
+    >
       <div className="flex items-center gap-2">
         <Input
           type="number"

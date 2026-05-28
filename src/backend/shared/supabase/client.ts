@@ -48,7 +48,7 @@ export function createSupabaseClient(role: ClientRole): ReturnType<typeof create
             autoRefreshToken: false,
             persistSession: false,
           },
-        },
+        }
       );
       return anonClient;
     }

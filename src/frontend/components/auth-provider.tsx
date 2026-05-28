@@ -25,24 +25,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const supabase = createBrowserClient(
-      assertDefined(
-        process.env.NEXT_PUBLIC_SUPABASE_URL,
-        'NEXT_PUBLIC_SUPABASE_URL is required',
-      ),
+      assertDefined(process.env.NEXT_PUBLIC_SUPABASE_URL, 'NEXT_PUBLIC_SUPABASE_URL is required'),
       assertDefined(
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-        'NEXT_PUBLIC_SUPABASE_ANON_KEY is required',
-      ),
+        'NEXT_PUBLIC_SUPABASE_ANON_KEY is required'
+      )
     );
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(
-        session?.user
-          ? { id: session.user.id, email: session.user.email }
-          : null,
-      );
+      setUser(session?.user ? { id: session.user.id, email: session.user.email } : null);
       setIsLoading(false);
     });
 
@@ -51,11 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  return (
-    <AuthContext.Provider value={{ user, isLoading }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, isLoading }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuthContext() {

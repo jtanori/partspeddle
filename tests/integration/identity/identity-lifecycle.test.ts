@@ -62,10 +62,7 @@ describe('Identity Lifecycle (integration)', () => {
     const user = User.create({ id: crypto.randomUUID(), email: 'seller@example.com' }, 'corr-1');
     await userRepo.save(user);
 
-    const profile = SellerProfile.create(
-      { id: crypto.randomUUID(), userId: user.id },
-      'corr-1',
-    );
+    const profile = SellerProfile.create({ id: crypto.randomUUID(), userId: user.id }, 'corr-1');
     profile.linkStripeAccount('acct_test');
     await sellerRepo.save(profile);
 

@@ -1,13 +1,16 @@
 import { describe, it, expect, vi } from 'vitest';
 import { checkQueueHealth } from '../health.js';
 
-function createMockQueue(name: string, counts: {
-  waiting?: number;
-  active?: number;
-  completed?: number;
-  failed?: number;
-  delayed?: number;
-}) {
+function createMockQueue(
+  name: string,
+  counts: {
+    waiting?: number;
+    active?: number;
+    completed?: number;
+    failed?: number;
+    delayed?: number;
+  }
+) {
   return {
     name,
     getWaitingCount: vi.fn().mockResolvedValue(counts.waiting ?? 0),
@@ -34,9 +37,7 @@ describe('checkQueueHealth', () => {
   });
 
   it('returns unhealthy when waiting exceeds threshold', async () => {
-    const queues = [
-      createMockQueue('identity-onboarding', { waiting: 1500, failed: 0 }),
-    ];
+    const queues = [createMockQueue('identity-onboarding', { waiting: 1500, failed: 0 })];
 
     const result = await checkQueueHealth(queues);
 
@@ -44,9 +45,7 @@ describe('checkQueueHealth', () => {
   });
 
   it('returns unhealthy when failed exceeds threshold', async () => {
-    const queues = [
-      createMockQueue('identity-onboarding', { waiting: 10, failed: 150 }),
-    ];
+    const queues = [createMockQueue('identity-onboarding', { waiting: 10, failed: 150 })];
 
     const result = await checkQueueHealth(queues);
 

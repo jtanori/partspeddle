@@ -36,7 +36,7 @@ export class RedisWebhookIdempotencyStore implements WebhookIdempotencyStore {
   async markProcessed(
     authProvider: string,
     eventId: string,
-    ttlSeconds = DEFAULT_TTL_SECONDS,
+    ttlSeconds = DEFAULT_TTL_SECONDS
   ): Promise<void> {
     const key = this._key(authProvider, eventId);
     await this.redis.setex(key, ttlSeconds, '1');
@@ -67,7 +67,7 @@ export class InMemoryWebhookIdempotencyStore implements WebhookIdempotencyStore 
   markProcessed(
     authProvider: string,
     eventId: string,
-    ttlSeconds = DEFAULT_TTL_SECONDS,
+    ttlSeconds = DEFAULT_TTL_SECONDS
   ): Promise<void> {
     const key = this._key(authProvider, eventId);
     this.store.set(key, Date.now() + ttlSeconds * 1000);

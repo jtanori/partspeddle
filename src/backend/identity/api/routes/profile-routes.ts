@@ -6,10 +6,7 @@
 
 import { Router, type Request, type Response } from 'express';
 import type { IProfileRepository } from '../../domain/repositories/profile-repository.js';
-import {
-  UpdateProfileRequestSchema,
-  ProfileResponseSchema,
-} from '../dto/profile-dto.js';
+import { UpdateProfileRequestSchema, ProfileResponseSchema } from '../dto/profile-dto.js';
 import { logger } from '../../../shared/observability/logger.js';
 
 export interface ProfileRoutesDeps {

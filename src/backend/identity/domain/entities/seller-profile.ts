@@ -70,7 +70,7 @@ export class SellerProfile {
   static create(
     props: { readonly id: string; readonly userId: string },
     _correlationId: string,
-    _actorId = 'system',
+    _actorId = 'system'
   ): SellerProfile {
     const profile = new SellerProfile({ id: props.id, userId: props.userId });
     return profile;
@@ -109,18 +109,14 @@ export class SellerProfile {
    *
    * @throws {DomainError} IDENTITY_ONBOARDING_STEP_ALREADY_COMPLETED if duplicate
    */
-  completeOnboardingStep(
-    step: OnboardingStep,
-    correlationId: string,
-    actorId = 'system',
-  ): void {
+  completeOnboardingStep(step: OnboardingStep, correlationId: string, actorId = 'system'): void {
     this._onboardingState.completeStep(step);
     this._uncommittedEvents.push(
       createSellerOnboardingStepCompletedEvent(
         { sellerProfileId: this.id, userId: this.userId, step },
         correlationId,
-        actorId,
-      ),
+        actorId
+      )
     );
   }
 
@@ -134,7 +130,7 @@ export class SellerProfile {
         'IDENTITY_SELLER_INVALID_STRIPE_ACCOUNT',
         'Stripe Connect account ID cannot be empty',
         crypto.randomUUID(),
-        false,
+        false
       );
     }
     this._stripeConnectAccountId = stripeAccountId;
@@ -149,14 +145,14 @@ export class SellerProfile {
 
     if (!this._onboardingState.isComplete) {
       const missing = ['identity', 'banking', 'tax', 'terms'].filter(
-        (s) => !this._onboardingState.hasStep(s as OnboardingStep),
+        (s) => !this._onboardingState.hasStep(s as OnboardingStep)
       );
       throw new DomainError(
         'IDENTITY_SELLER_ONBOARDING_INCOMPLETE',
         `Cannot submit for review: missing onboarding steps [${missing.join(', ')}]`,
         correlationId,
         false,
-        { missingSteps: missing },
+        { missingSteps: missing }
       );
     }
 
@@ -176,7 +172,7 @@ export class SellerProfile {
         'IDENTITY_SELLER_STRIPE_REQUIRED',
         'Cannot activate: Stripe Connect account not linked',
         correlationId,
-        false,
+        false
       );
     }
 
@@ -195,8 +191,8 @@ export class SellerProfile {
           firstActivation: isFirstActivation,
         },
         correlationId,
-        actorId,
-      ),
+        actorId
+      )
     );
   }
 
@@ -210,8 +206,8 @@ export class SellerProfile {
       createSellerSuspendedEvent(
         { sellerProfileId: this.id, userId: this.userId, reason },
         correlationId,
-        actorId,
-      ),
+        actorId
+      )
     );
   }
 
@@ -230,8 +226,8 @@ export class SellerProfile {
           activatedAt: this._activatedAt?.toISOString(),
         },
         correlationId,
-        actorId,
-      ),
+        actorId
+      )
     );
   }
 
@@ -248,7 +244,7 @@ export class SellerProfile {
         `Cannot transition from ${this._status} to ${target}`,
         crypto.randomUUID(),
         false,
-        { from: this._status, to: target },
+        { from: this._status, to: target }
       );
     }
   }
@@ -259,7 +255,7 @@ export class SellerProfile {
         'IDENTITY_SELLER_INVALID_ID',
         'SellerProfile.id is required',
         crypto.randomUUID(),
-        false,
+        false
       );
     }
     if (!this.userId) {
@@ -267,7 +263,7 @@ export class SellerProfile {
         'IDENTITY_SELLER_INVALID_USER_ID',
         'SellerProfile.userId is required',
         crypto.randomUUID(),
-        false,
+        false
       );
     }
   }

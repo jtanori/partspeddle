@@ -20,7 +20,7 @@ export class InMemoryUserRepository implements IUserRepository {
             email: user.email,
             status: user.status,
           })
-        : null,
+        : null
     );
   }
 
@@ -37,7 +37,7 @@ export class InMemoryUserRepository implements IUserRepository {
         id: user.id,
         email: user.email,
         status: user.status,
-      }),
+      })
     );
     this.emailIndex.set(user.email, user.id);
     return Promise.resolve();

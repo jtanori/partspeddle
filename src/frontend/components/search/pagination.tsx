@@ -13,15 +13,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
  * Ticket: T3.5
  */
 export function PaginationControls() {
-  const {
-    pages,
-    currentRefinement,
-    nbPages,
-    isFirstPage,
-    isLastPage,
-    canRefine,
-    refine,
-  } = usePagination({ padding: 1 });
+  const { pages, currentRefinement, nbPages, isFirstPage, isLastPage, canRefine, refine } =
+    usePagination({ padding: 1 });
 
   if (nbPages <= 1) return null;
 

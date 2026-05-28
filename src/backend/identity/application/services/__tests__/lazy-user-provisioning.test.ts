@@ -69,7 +69,7 @@ describe('ensureUser (lazy provisioning)', () => {
     const auth = createAuthContext();
 
     await expect(
-      ensureUser({ userRepository: repo, identityProvider: provider }, auth),
+      ensureUser({ userRepository: repo, identityProvider: provider }, auth)
     ).rejects.toThrow('User user-123 exists in JWT but not at auth provider');
   });
 });

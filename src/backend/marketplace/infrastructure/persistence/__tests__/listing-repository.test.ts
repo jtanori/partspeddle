@@ -25,7 +25,7 @@ describe('InMemoryListingRepository', () => {
           currency: 'USD',
           sellerId: '550e8400-e29b-41d4-a716-446655440002',
         },
-        'corr-1',
+        'corr-1'
       );
       await repository.save(listing);
 
@@ -56,7 +56,7 @@ describe('InMemoryListingRepository', () => {
           currency: 'USD',
           sellerId,
         },
-        'corr-1',
+        'corr-1'
       );
 
       const listing2 = Listing.create(
@@ -68,7 +68,7 @@ describe('InMemoryListingRepository', () => {
           currency: 'USD',
           sellerId,
         },
-        'corr-2',
+        'corr-2'
       );
 
       await repository.save(listing1);
@@ -86,9 +86,16 @@ describe('InMemoryListingRepository', () => {
 
       await repository.save(
         Listing.create(
-          { id: crypto.randomUUID(), title: 'A Item', description: 'Desc', price: 100, currency: 'USD', sellerId: sellerA },
-          'corr-1',
-        ),
+          {
+            id: crypto.randomUUID(),
+            title: 'A Item',
+            description: 'Desc',
+            price: 100,
+            currency: 'USD',
+            sellerId: sellerA,
+          },
+          'corr-1'
+        )
       );
 
       const results = await repository.findBySellerId(sellerB);
@@ -107,7 +114,7 @@ describe('InMemoryListingRepository', () => {
           currency: 'USD',
           sellerId: crypto.randomUUID(),
         },
-        'corr-1',
+        'corr-1'
       );
 
       await repository.save(listing);
@@ -120,8 +127,15 @@ describe('InMemoryListingRepository', () => {
     it('updates existing listing', async () => {
       const id = crypto.randomUUID();
       const listing = Listing.create(
-        { id, title: 'Original', description: 'Desc', price: 100, currency: 'USD', sellerId: crypto.randomUUID() },
-        'corr-1',
+        {
+          id,
+          title: 'Original',
+          description: 'Desc',
+          price: 100,
+          currency: 'USD',
+          sellerId: crypto.randomUUID(),
+        },
+        'corr-1'
       );
       await repository.save(listing);
 
@@ -146,7 +160,7 @@ describe('InMemoryListingRepository', () => {
           currency: 'USD',
           sellerId: crypto.randomUUID(),
         },
-        'corr-1',
+        'corr-1'
       );
       await repository.save(listing);
 

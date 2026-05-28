@@ -34,7 +34,7 @@ export interface ProvisionedUser {
  */
 export async function ensureUser(
   deps: LazyProvisioningDeps,
-  auth: AuthContext,
+  auth: AuthContext
 ): Promise<ProvisionedUser> {
   // 1. Try to find existing user
   const existing = await deps.userRepository.findById(auth.userId);
@@ -56,7 +56,7 @@ export async function ensureUser(
   const user = User.create(
     { id: authUser.id, email: authUser.email },
     auth.correlationId,
-    auth.userId, // actorId = the user themselves
+    auth.userId // actorId = the user themselves
   );
 
   await deps.userRepository.save(user);

@@ -32,12 +32,7 @@ export function normalizeError(error: unknown): ApiError {
     };
   }
 
-  if (
-    typeof error === 'object' &&
-    error !== null &&
-    'code' in error &&
-    'message' in error
-  ) {
+  if (typeof error === 'object' && error !== null && 'code' in error && 'message' in error) {
     const e = error as Record<string, unknown>;
     return {
       message: String(e.message),

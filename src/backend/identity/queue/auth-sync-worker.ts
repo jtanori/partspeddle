@@ -26,7 +26,7 @@ export interface AuthSyncWorkerDeps {
 
 export async function authSyncProcessor(
   deps: AuthSyncWorkerDeps,
-  job: Job<JobPayload>,
+  job: Job<JobPayload>
 ): Promise<void> {
   const { data, metadata } = job.data;
   const correlationId = metadata.correlationId;
@@ -95,7 +95,7 @@ export async function authSyncProcessor(
           'IDENTITY_AUTH_SYNC_USER_NOT_FOUND',
           `User ${userId} not found for update. Possible out-of-order webhook.`,
           correlationId,
-          true, // retryable
+          true // retryable
         );
       }
 

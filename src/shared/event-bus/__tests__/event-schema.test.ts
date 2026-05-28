@@ -31,19 +31,23 @@ describe('domainEventSchema', () => {
   });
 
   it('rejects invalid eventType format', () => {
-    expect(() => domainEventSchema.parse({ ...validEvent, eventType: 'sellerActivated' })).toThrow();
-    expect(() => domainEventSchema.parse({ ...validEvent, eventType: 'Seller.Activated' })).toThrow();
-    expect(() => domainEventSchema.parse({ ...validEvent, eventType: 'seller.activate' })).toThrow();
-    expect(() => domainEventSchema.parse({ ...validEvent, eventType: 'payment.authorize' })).toThrow();
+    expect(() =>
+      domainEventSchema.parse({ ...validEvent, eventType: 'sellerActivated' })
+    ).toThrow();
+    expect(() =>
+      domainEventSchema.parse({ ...validEvent, eventType: 'Seller.Activated' })
+    ).toThrow();
+    expect(() =>
+      domainEventSchema.parse({ ...validEvent, eventType: 'seller.activate' })
+    ).toThrow();
+    expect(() =>
+      domainEventSchema.parse({ ...validEvent, eventType: 'payment.authorize' })
+    ).toThrow();
   });
 
   it('rejects invalid UUID fields', () => {
-    expect(() =>
-      domainEventSchema.parse({ ...validEvent, eventId: 'not-a-uuid' }),
-    ).toThrow();
-    expect(() =>
-      domainEventSchema.parse({ ...validEvent, correlationId: 'bad-id' }),
-    ).toThrow();
+    expect(() => domainEventSchema.parse({ ...validEvent, eventId: 'not-a-uuid' })).toThrow();
+    expect(() => domainEventSchema.parse({ ...validEvent, correlationId: 'bad-id' })).toThrow();
   });
 
   it('rejects eventVersion below 1', () => {
@@ -66,7 +70,7 @@ describe('domainEventSchema', () => {
 
   it('accepts optional aggregateType', () => {
     expect(() =>
-      domainEventSchema.parse({ ...validEvent, aggregateType: 'SellerProfile' }),
+      domainEventSchema.parse({ ...validEvent, aggregateType: 'SellerProfile' })
     ).not.toThrow();
   });
 
@@ -78,9 +82,7 @@ describe('domainEventSchema', () => {
   });
 
   it('rejects invalid datetime', () => {
-    expect(() =>
-      domainEventSchema.parse({ ...validEvent, occurredAt: 'not-a-date' }),
-    ).toThrow();
+    expect(() => domainEventSchema.parse({ ...validEvent, occurredAt: 'not-a-date' })).toThrow();
   });
 
   it('rejects payload exceeding size limit', () => {

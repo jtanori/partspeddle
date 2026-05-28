@@ -44,7 +44,7 @@ export class OutboxRelayWorker {
     private readonly outbox: Outbox,
     private readonly publisher: EventPublisher,
     private readonly dlq: DlqHandler,
-    options?: Partial<RelayWorkerOptions>,
+    options?: Partial<RelayWorkerOptions>
   ) {
     this.options = { ...DEFAULT_OPTIONS, ...options };
   }

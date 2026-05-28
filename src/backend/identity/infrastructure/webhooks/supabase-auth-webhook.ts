@@ -23,8 +23,6 @@ import type { Queue } from 'bullmq';
 import type { WebhookIdempotencyStore } from './webhook-idempotency-store.js';
 import { logger } from '../../../shared/observability/logger.js';
 
-
-
 export interface SupabaseAuthWebhookPayload {
   readonly type: 'user.created' | 'user.updated' | 'user.deleted';
   readonly table: string;
@@ -137,7 +135,7 @@ export function createSupabaseAuthWebhookHandler(deps: AuthWebhookDeps) {
             enqueuedAt: new Date().toISOString(),
           },
         },
-        { jobId: eventId },
+        { jobId: eventId }
       );
 
       // 5. Mark processed (best-effort; job enqueue succeeded)

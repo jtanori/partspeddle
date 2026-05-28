@@ -58,7 +58,10 @@ describe('json-utils', () => {
     const path = join(tempDir, 'update.json');
     writeFileSync(path, '{"count": 1}', 'utf8');
 
-    const result = updateJson(path, (data: { count: number }) => ({ ...data, count: data.count + 1 }));
+    const result = updateJson(path, (data: { count: number }) => ({
+      ...data,
+      count: data.count + 1,
+    }));
 
     expect(result.count).toBe(2);
     expect(readJson(path).count).toBe(2);
@@ -131,7 +134,7 @@ describe('json-utils', () => {
     const after = { a: 1, b: { c: 99, e: 4 } };
 
     const changes = diffJson(before, after);
-    const paths = changes.map(c => c.path);
+    const paths = changes.map((c) => c.path);
 
     expect(paths).toContain('b.c');
     expect(paths).toContain('b.d');
@@ -145,7 +148,7 @@ describe('json-utils', () => {
 
     const results = batchUpdateJson(tempDir, (data: { x: number }) => ({ x: data.x * 10 }));
 
-    expect(results.filter(r => r.updated).length).toBe(2);
+    expect(results.filter((r) => r.updated).length).toBe(2);
     expect(readJson(join(tempDir, 'f1.json')).x).toBe(10);
     expect(readJson(join(tempDir, 'f2.json')).x).toBe(20);
   });

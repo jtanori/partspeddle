@@ -41,10 +41,7 @@ interface IndexUiState {
  * Ticket: T3.5
  */
 export function SearchPageClient({ appId, apiKey, indexName }: SearchPageClientProps) {
-  const searchClient = useMemo<LiteClient>(
-    () => algoliasearch(appId, apiKey),
-    [appId, apiKey]
-  );
+  const searchClient = useMemo<LiteClient>(() => algoliasearch(appId, apiKey), [appId, apiKey]);
 
   const routing = useMemo(
     () => ({
@@ -97,16 +94,18 @@ export function SearchPageClient({ appId, apiKey, indexName }: SearchPageClientP
 
           const queryParameters: string[] = [];
           if (routeState.q) queryParameters.push(`q=${encodeURIComponent(routeState.q)}`);
-          if (routeState.page && routeState.page !== '1') queryParameters.push(`page=${routeState.page}`);
-          if (routeState.category) queryParameters.push(`category=${encodeURIComponent(routeState.category)}`);
-          if (routeState.condition) queryParameters.push(`condition=${encodeURIComponent(routeState.condition)}`);
-          if (routeState.location) queryParameters.push(`location=${encodeURIComponent(routeState.location)}`);
+          if (routeState.page && routeState.page !== '1')
+            queryParameters.push(`page=${routeState.page}`);
+          if (routeState.category)
+            queryParameters.push(`category=${encodeURIComponent(routeState.category)}`);
+          if (routeState.condition)
+            queryParameters.push(`condition=${encodeURIComponent(routeState.condition)}`);
+          if (routeState.location)
+            queryParameters.push(`location=${encodeURIComponent(routeState.location)}`);
           if (routeState.minPrice) queryParameters.push(`minPrice=${routeState.minPrice}`);
           if (routeState.maxPrice) queryParameters.push(`maxPrice=${routeState.maxPrice}`);
 
-          return queryParameters.length
-            ? `${baseUrl}?${queryParameters.join('&')}`
-            : baseUrl;
+          return queryParameters.length ? `${baseUrl}?${queryParameters.join('&')}` : baseUrl;
         },
         parseURL({ location }: { location: Location }): RouteState {
           const params = new URLSearchParams(location.search);

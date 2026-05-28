@@ -14,7 +14,7 @@ describe('Listing', () => {
           currency: 'USD',
           sellerId: '550e8400-e29b-41d4-a716-446655440002',
         },
-        'corr-1',
+        'corr-1'
       );
 
       expect(listing.status).toBe('draft');
@@ -40,8 +40,8 @@ describe('Listing', () => {
             currency: 'USD',
             sellerId: crypto.randomUUID(),
           },
-          'corr-1',
-        ),
+          'corr-1'
+        )
       ).toThrow(DomainError);
     });
 
@@ -56,8 +56,8 @@ describe('Listing', () => {
             currency: 'USD',
             sellerId: crypto.randomUUID(),
           },
-          'corr-1',
-        ),
+          'corr-1'
+        )
       ).toThrow(DomainError);
     });
 
@@ -72,8 +72,8 @@ describe('Listing', () => {
             currency: 'USD',
             sellerId: crypto.randomUUID(),
           },
-          'corr-1',
-        ),
+          'corr-1'
+        )
       ).toThrow(DomainError);
     });
 
@@ -88,8 +88,8 @@ describe('Listing', () => {
             currency: 'US',
             sellerId: crypto.randomUUID(),
           },
-          'corr-1',
-        ),
+          'corr-1'
+        )
       ).toThrow(DomainError);
     });
   });
@@ -123,7 +123,7 @@ describe('Listing', () => {
           currency: 'USD',
           sellerId: crypto.randomUUID(),
         },
-        'corr-1',
+        'corr-1'
       );
       listing.publish('corr-2');
 
@@ -142,7 +142,7 @@ describe('Listing', () => {
           currency: 'USD',
           sellerId: crypto.randomUUID(),
         },
-        'corr-1',
+        'corr-1'
       );
       listing.publish('corr-2');
       listing.clearEvents();
@@ -163,7 +163,7 @@ describe('Listing', () => {
           currency: 'USD',
           sellerId: crypto.randomUUID(),
         },
-        'corr-1',
+        'corr-1'
       );
       listing.publish('corr-2');
       listing.clearEvents();
@@ -184,7 +184,7 @@ describe('Listing', () => {
           currency: 'USD',
           sellerId: crypto.randomUUID(),
         },
-        'corr-1',
+        'corr-1'
       );
 
       expect(() => {
@@ -207,7 +207,7 @@ describe('Listing', () => {
           currency: 'USD',
           sellerId: crypto.randomUUID(),
         },
-        'corr-1',
+        'corr-1'
       );
       listing.publish('corr-2');
       listing.markAsSold('buyer-123', 'corr-3');

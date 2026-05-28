@@ -53,7 +53,7 @@ async function loadMigrations(): Promise<Migration[]> {
     if (!validateFilename(filename)) {
       throw new Error(
         `Invalid migration filename: ${filename}. ` +
-          `Expected format: YYYYMMDDHHMMSS_description.sql (lowercase, underscores only)`,
+          `Expected format: YYYYMMDDHHMMSS_description.sql (lowercase, underscores only)`
       );
     }
 

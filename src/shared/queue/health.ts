@@ -48,11 +48,11 @@ export async function checkQueueHealth(queues: Queue[]): Promise<QueueHealthResu
         failed,
         delayed,
       };
-    }),
+    })
   );
 
   const healthy = statuses.every(
-    (s) => s.waiting < HEALTH_THRESHOLDS.maxWaiting && s.failed < HEALTH_THRESHOLDS.maxFailed,
+    (s) => s.waiting < HEALTH_THRESHOLDS.maxWaiting && s.failed < HEALTH_THRESHOLDS.maxFailed
   );
 
   return { healthy, queues: statuses };

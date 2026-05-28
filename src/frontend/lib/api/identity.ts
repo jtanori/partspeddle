@@ -36,7 +36,7 @@ export async function getProfile(userId: string): Promise<ProfileResponse> {
 
 export async function updateProfile(
   userId: string,
-  request: UpdateProfileRequest,
+  request: UpdateProfileRequest
 ): Promise<ProfileResponse> {
   return apiPut<ProfileResponse>(identityUrl(`/users/${userId}/profile`), request);
 }
@@ -47,17 +47,14 @@ export async function getSellerProfile(userId: string): Promise<SellerProfileRes
 
 export async function registerSeller(
   userId: string,
-  request: RegisterSellerRequest,
+  request: RegisterSellerRequest
 ): Promise<SellerProfileResponse> {
   return apiPost<SellerProfileResponse>(identityUrl(`/users/${userId}/seller`), request);
 }
 
 export async function completeOnboardingStep(
   userId: string,
-  request: CompleteOnboardingStepRequest,
+  request: CompleteOnboardingStepRequest
 ): Promise<SellerProfileResponse> {
-  return apiPost<SellerProfileResponse>(
-    identityUrl(`/users/${userId}/seller/onboarding`),
-    request,
-  );
+  return apiPost<SellerProfileResponse>(identityUrl(`/users/${userId}/seller/onboarding`), request);
 }

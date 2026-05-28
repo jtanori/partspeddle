@@ -16,7 +16,7 @@ describe('DomainEvent', () => {
     const event = new DomainEvent(baseProps);
 
     expect(event.eventId).toMatch(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
     );
     expect(event.eventType).toBe('seller.activated');
     expect(event.eventVersion).toBe(1);
@@ -85,16 +85,16 @@ describe('DomainEvent', () => {
 
   it('throws on invalid eventType format', () => {
     expect(() => new DomainEvent({ ...baseProps, eventType: 'sellerActivated' })).toThrow(
-      DomainError,
+      DomainError
     );
     expect(() => new DomainEvent({ ...baseProps, eventType: 'Seller.Activated' })).toThrow(
-      DomainError,
+      DomainError
     );
     expect(() => new DomainEvent({ ...baseProps, eventType: 'seller.activate' })).toThrow(
-      DomainError,
+      DomainError
     );
     expect(() => new DomainEvent({ ...baseProps, eventType: 'payment.authorize' })).toThrow(
-      DomainError,
+      DomainError
     );
   });
 

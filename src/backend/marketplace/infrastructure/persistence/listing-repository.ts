@@ -67,7 +67,7 @@ export class PostgresListingRepository implements IListingRepository {
         sellerId: row.seller_id as string,
         status: row.status as 'draft' | 'active' | 'sold' | 'withdrawn',
         createdAt: row.created_at as string,
-      }),
+      })
     );
   }
 

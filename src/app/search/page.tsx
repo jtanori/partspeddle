@@ -31,11 +31,7 @@ export default function SearchPage() {
 
   return (
     <div className="min-h-[calc(100vh-200px)]">
-      <SearchPageClient
-        appId={appId}
-        apiKey={apiKey}
-        indexName={indexName}
-      />
+      <SearchPageClient appId={appId} apiKey={apiKey} indexName={indexName} />
     </div>
   );
 }

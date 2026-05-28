@@ -109,7 +109,7 @@ describe('executeInTransaction', () => {
     await expect(
       executeInTransaction(async () => {
         throw error;
-      }),
+      })
     ).rejects.toThrow('tx failed');
   });
 });

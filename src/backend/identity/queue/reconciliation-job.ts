@@ -34,7 +34,7 @@ export interface ReconciliationResult {
  * 3. Log discrepancies
  */
 export async function runReconciliation(
-  deps: ReconciliationJobDeps,
+  deps: ReconciliationJobDeps
 ): Promise<ReconciliationResult> {
   const { sql, correlationId } = deps;
 

@@ -72,11 +72,7 @@ export type {
 export type SearchResult = ListingHit;
 
 // Config contracts
-export {
-  ALGOLIA_ENV_VARS,
-  AlgoliaConfigSchema,
-  SEARCH_KEY_PERMISSIONS,
-} from './algolia-config.js';
+export { ALGOLIA_ENV_VARS, AlgoliaConfigSchema, SEARCH_KEY_PERMISSIONS } from './algolia-config.js';
 
 export type {
   AlgoliaEnvVar,

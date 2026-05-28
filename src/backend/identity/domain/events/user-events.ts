@@ -55,7 +55,7 @@ identityEventCatalog.register('identity.user_reactivated', {
 export function createUserCreatedEvent(
   payload: UserCreatedPayload,
   correlationId: string,
-  actorId = 'system',
+  actorId = 'system'
 ): DomainEvent {
   return new DomainEvent({
     eventType: 'identity.user_created',
@@ -71,7 +71,7 @@ export function createUserCreatedEvent(
 export function createUserSuspendedEvent(
   payload: UserSuspendedPayload,
   correlationId: string,
-  actorId = 'system',
+  actorId = 'system'
 ): DomainEvent {
   return new DomainEvent({
     eventType: 'identity.user_suspended',
@@ -87,7 +87,7 @@ export function createUserSuspendedEvent(
 export function createUserReactivatedEvent(
   payload: UserReactivatedPayload,
   correlationId: string,
-  actorId = 'system',
+  actorId = 'system'
 ): DomainEvent {
   return new DomainEvent({
     eventType: 'identity.user_reactivated',

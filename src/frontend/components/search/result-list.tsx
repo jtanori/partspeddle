@@ -66,10 +66,7 @@ function HitCard({ hit }: { readonly hit: Hit }) {
           </div>
         )}
         {condition && (
-          <Badge
-            variant="secondary"
-            className="absolute top-2 right-2 capitalize"
-          >
+          <Badge variant="secondary" className="absolute top-2 right-2 capitalize">
             {condition}
           </Badge>
         )}
@@ -77,18 +74,14 @@ function HitCard({ hit }: { readonly hit: Hit }) {
       <CardContent className="p-4">
         <h3 className="font-semibold line-clamp-2 mb-1">{title}</h3>
         <div className="flex items-center justify-between">
-          {price && (
-            <span className="text-lg font-bold text-primary">{price}</span>
-          )}
+          {price && <span className="text-lg font-bold text-primary">{price}</span>}
           {category && (
             <Badge variant="outline" className="text-xs capitalize">
               {category}
             </Badge>
           )}
         </div>
-        {location && (
-          <p className="text-xs text-muted-foreground mt-2">{location}</p>
-        )}
+        {location && <p className="text-xs text-muted-foreground mt-2">{location}</p>}
       </CardContent>
     </Card>
   );

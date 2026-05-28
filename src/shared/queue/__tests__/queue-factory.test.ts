@@ -12,7 +12,7 @@ vi.mock('bullmq', () => ({
     },
     Object.getPrototypeOf(function () {
       // intentional noop — prototype target for mock constructor
-    }),
+    })
   ),
 }));
 

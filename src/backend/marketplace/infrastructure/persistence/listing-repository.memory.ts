@@ -24,7 +24,7 @@ export class InMemoryListingRepository implements IListingRepository {
             status: listing.status,
             createdAt: listing.createdAt,
           })
-        : null,
+        : null
     );
   }
 
@@ -42,12 +42,12 @@ export class InMemoryListingRepository implements IListingRepository {
             sellerId: l.sellerId,
             status: l.status,
             createdAt: l.createdAt,
-          }),
+          })
         )
         .sort((a, b) => {
           const dateCmp = b.createdAt.localeCompare(a.createdAt);
           return dateCmp !== 0 ? dateCmp : b.id.localeCompare(a.id);
-        }),
+        })
     );
   }
 
@@ -63,7 +63,7 @@ export class InMemoryListingRepository implements IListingRepository {
         sellerId: listing.sellerId,
         status: listing.status,
         createdAt: listing.createdAt,
-      }),
+      })
     );
     return Promise.resolve();
   }

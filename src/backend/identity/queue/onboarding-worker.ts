@@ -18,7 +18,7 @@ export interface OnboardingWorkerDeps {
 
 export async function onboardingProcessor(
   deps: OnboardingWorkerDeps,
-  job: Job<JobPayload>,
+  job: Job<JobPayload>
 ): Promise<void> {
   const { data, metadata } = job.data;
   const correlationId = metadata.correlationId;
@@ -40,7 +40,7 @@ export async function onboardingProcessor(
       'IDENTITY_SELLER_NOT_FOUND',
       `Seller profile not found for user ${userId}`,
       correlationId,
-      false,
+      false
     );
   }
 
