@@ -6,7 +6,7 @@
  */
 
 import { createClient as createSupabaseClient } from '../supabase/client';
-import { normalizeError, isRetryable } from './errors';
+import { normalizeError, isRetryable, ApiClientError } from './errors';
 
 const DEFAULT_TIMEOUT = 10000;
 const MAX_RETRIES = 3;
@@ -31,14 +31,13 @@ async function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function fetchWithTimeout(
-  url: string,
-  config: RequestConfig,
-): Promise<Response> {
+async function fetchWithTimeout(url: string, config: RequestConfig): Promise<Response> {
   const { timeout = DEFAULT_TIMEOUT, ...rest } = config;
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeout);
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+  }, timeout);
 
   try {
     const response = await fetch(url, {
@@ -51,10 +50,7 @@ async function fetchWithTimeout(
   }
 }
 
-async function executeRequest(
-  url: string,
-  config: RequestConfig,
-): Promise<Response> {
+async function executeRequest(url: string, config: RequestConfig): Promise<Response> {
   const correlationId = generateCorrelationId();
   const token = await getAuthToken();
 
@@ -71,13 +67,19 @@ async function executeRequest(
   });
 
   if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw Object.assign(new Error(body.message || response.statusText), {
-      code: body.code || `HTTP_${response.status}`,
+    const body = (await response.json().catch(() => ({}))) as {
+      message?: string;
+      code?: string;
+      details?: unknown;
+    };
+    const error = new Error(body.message ?? response.statusText);
+    Object.assign(error, {
+      code: body.code ?? `HTTP_${response.status}`,
       correlationId,
       retryable: response.status >= 500 || response.status === 429,
       details: body.details,
     });
+    throw error;
   }
 
   return response;
@@ -93,20 +95,16 @@ export async function apiGet<T>(url: string, config?: RequestConfig): Promise<T>
     } catch (error) {
       const normalized = normalizeError(error);
       if (attempt === retries || !isRetryable(normalized)) {
-        throw normalized;
+        throw new ApiClientError(normalized);
       }
       await sleep(RETRY_DELAY_MS * Math.pow(2, attempt));
     }
   }
 
-  throw normalizeError(new Error('Max retries exceeded'));
+  throw new ApiClientError(normalizeError(new Error('Max retries exceeded')));
 }
 
-export async function apiPost<T>(
-  url: string,
-  body: unknown,
-  config?: RequestConfig,
-): Promise<T> {
+export async function apiPost<T>(url: string, body: unknown, config?: RequestConfig): Promise<T> {
   const response = await executeRequest(url, {
     ...config,
     method: 'POST',
@@ -115,11 +113,7 @@ export async function apiPost<T>(
   return (await response.json()) as T;
 }
 
-export async function apiPut<T>(
-  url: string,
-  body: unknown,
-  config?: RequestConfig,
-): Promise<T> {
+export async function apiPut<T>(url: string, body: unknown, config?: RequestConfig): Promise<T> {
   const response = await executeRequest(url, {
     ...config,
     method: 'PUT',

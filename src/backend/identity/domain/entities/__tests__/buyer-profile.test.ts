@@ -18,7 +18,7 @@ describe('BuyerProfile', () => {
 
   it('rejects missing userId', () => {
     expect(() => new BuyerProfile({ id: 'id1', userId: '' })).toThrow(
-      'BuyerProfile.userId is required',
+      'BuyerProfile.userId is required'
     );
   });
 });

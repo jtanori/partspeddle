@@ -3,18 +3,13 @@ import { createDomainQueue, DEFAULT_RETRY_POLICY } from '../queue-factory.js';
 
 // Mock BullMQ to avoid Redis dependency in unit tests
 vi.mock('bullmq', () => ({
-  Queue: Object.setPrototypeOf(
-    function (this: unknown, name: string, opts?: unknown) {
-          // @ts-expect-error - mock constructor property assignment
-      this.name = name;
-      // @ts-expect-error - mock constructor property assignment
-      this.opts = opts ?? {};
-    },
-    Object.getPrototypeOf(vi.fn()),
-  ),
+  Queue: Object.setPrototypeOf(function (this: unknown, name: string, opts?: unknown) {
+    // @ts-expect-error - mock constructor property assignment
+    this.name = name;
+    // @ts-expect-error - mock constructor property assignment
+    this.opts = opts ?? {};
+  }, Object.getPrototypeOf(vi.fn())),
 }));
-
-
 
 describe('createDomainQueue', () => {
   const mockRedis = {} as unknown as import('ioredis').Redis;

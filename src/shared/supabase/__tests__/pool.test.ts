@@ -109,7 +109,7 @@ describe('executeInTransaction', () => {
     await expect(
       executeInTransaction(async () => {
         throw error;
-      }),
+      })
     ).rejects.toThrow('tx failed');
   });
 });
@@ -123,7 +123,9 @@ describe('withTimeout', () => {
 
   it('throws DomainError when query exceeds timeout', async () => {
     const slowQuery = new Promise<string>((resolve) => {
-      setTimeout(() => resolve('too late'), 100);
+      setTimeout(() => {
+        resolve('too late');
+      }, 100);
     });
 
     await expect(withTimeout(slowQuery, 10)).rejects.toMatchObject({

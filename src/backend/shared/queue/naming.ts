@@ -22,7 +22,7 @@ export function deriveQueueNames(domain: string, purpose: string): QueueNames {
 
   if (!NAME_PATTERN.test(queue)) {
     throw new Error(
-      `Invalid queue name "${queue}". Must match domain-purpose format (lowercase, hyphen-separated).`,
+      `Invalid queue name "${queue}". Must match domain-purpose format (lowercase, hyphen-separated).`
     );
   }
 

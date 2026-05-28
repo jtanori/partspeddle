@@ -1,12 +1,13 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { assertDefined } from '@/shared/utils/assert';
 
 export async function createClient() {
   const cookieStore = await cookies();
 
   return createServerClient(
-    process.env.SUPABASE_AUTH_URL!,
-    process.env.SUPABASE_ANON_KEY!,
+    assertDefined(process.env.SUPABASE_AUTH_URL, 'SUPABASE_AUTH_URL is required'),
+    assertDefined(process.env.SUPABASE_ANON_KEY, 'SUPABASE_ANON_KEY is required'),
     {
       cookies: {
         getAll() {
@@ -18,6 +19,6 @@ export async function createClient() {
           });
         },
       },
-    },
+    }
   );
 }

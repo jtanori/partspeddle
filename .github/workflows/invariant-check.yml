@@ -42,19 +42,22 @@ jobs:
       - name: Run invariant validation
         id: invariant_validate
         run: |
-          npm run invariant:validate:json > invariant-report.json
+          npm run --silent invariant:validate:json > invariant-report.json 2> invariant-errors.log
           echo "exit_code=$?" >> "$GITHUB_OUTPUT"
         continue-on-error: true
+
+      - name: Validate invariant report format
+        run: jq empty invariant-report.json
 
       - name: Parse invariant report
         id: parse_report
         run: |
           REPORT=$(cat invariant-report.json)
-          TOTAL=$(echo "$REPORT" | jq -r '.payload.total_invariants // 0')
-          FAILED=$(echo "$REPORT" | jq -r '.payload.failed // 0')
-          CRITICAL=$(echo "$REPORT" | jq -r '.payload.critical_findings // 0')
-          HIGH=$(echo "$REPORT" | jq -r '.payload.high_findings // 0')
-          STATUS=$(echo "$REPORT" | jq -r '.payload.overall_status // "UNKNOWN"')
+          TOTAL=$(echo "$REPORT" | jq -r '.total_invariants // 0')
+          FAILED=$(echo "$REPORT" | jq -r '.failed // 0')
+          CRITICAL=$(echo "$REPORT" | jq -r '.critical_findings // 0')
+          HIGH=$(echo "$REPORT" | jq -r '.high_findings // 0')
+          STATUS=$(echo "$REPORT" | jq -r '.overall_status // "UNKNOWN"')
 
           echo "total=$TOTAL" >> "$GITHUB_OUTPUT"
           echo "failed=$FAILED" >> "$GITHUB_OUTPUT"

@@ -92,7 +92,7 @@ export const SortOptionSchema = z.object({
 
 export type SortOption = z.infer<typeof SortOptionSchema>;
 
-export const DEFAULT_SORT_OPTIONS: ReadonlyArray<SortOption> = [
+export const DEFAULT_SORT_OPTIONS: readonly SortOption[] = [
   { label: 'Relevance', value: 'relevance', attribute: '_score', direction: 'desc' },
   { label: 'Price: Low to High', value: 'price_asc', attribute: 'price', direction: 'asc' },
   { label: 'Price: High to Low', value: 'price_desc', attribute: 'price', direction: 'desc' },

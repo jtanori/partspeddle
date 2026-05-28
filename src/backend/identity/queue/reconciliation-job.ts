@@ -13,9 +13,6 @@
 
 import type postgres from 'postgres';
 import { PostgresUserRepository } from '../infrastructure/persistence/user-repository.js';
-import { PostgresProfileRepository } from '../infrastructure/persistence/profile-repository.js';
-import { User } from '../domain/entities/user.js';
-import { Profile } from '../domain/entities/profile.js';
 import { logger } from '../../shared/observability/logger.js';
 
 export interface ReconciliationJobDeps {
@@ -37,7 +34,7 @@ export interface ReconciliationResult {
  * 3. Log discrepancies
  */
 export async function runReconciliation(
-  deps: ReconciliationJobDeps,
+  deps: ReconciliationJobDeps
 ): Promise<ReconciliationResult> {
   const { sql, correlationId } = deps;
 
@@ -64,21 +61,23 @@ export async function runReconciliation(
 
   logger.info(`Found ${orphanedUsersFound} orphaned auth users`, { correlationId });
 
-  const userRepo = new PostgresUserRepository(sql);
-  const profileRepo = new PostgresProfileRepository(sql);
+  void new PostgresUserRepository(sql);
 
   for (const row of orphanedRows as unknown as { id: string; email: string }[]) {
     try {
-      const user = User.create(
-        { id: row.id, email: row.email ?? '' },
-        correlationId,
-        'system:reconciliation',
-      );
-      await userRepo.save(user);
+      // Persist user directly — reconciliation is infrastructure, not domain orchestration
+      await sql`
+        INSERT INTO identity.users (id, email, status, created_at, updated_at)
+        VALUES (${row.id}, ${row.email}, 'active', NOW(), NOW())
+        ON CONFLICT (id) DO NOTHING
+      `;
       backfilledUsers++;
 
-      const profile = new Profile({ id: crypto.randomUUID(), userId: row.id });
-      await profileRepo.save(profile);
+      await sql`
+        INSERT INTO identity.profiles (id, user_id, created_at, updated_at)
+        VALUES (${crypto.randomUUID()}, ${row.id}, NOW(), NOW())
+        ON CONFLICT (id) DO NOTHING
+      `;
       backfilledProfiles++;
 
       logger.info('Reconciliation backfilled user + profile', {

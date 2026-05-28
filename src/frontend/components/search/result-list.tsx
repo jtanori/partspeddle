@@ -16,7 +16,7 @@ import type { Hit } from 'instantsearch.js';
  * Ticket: T3.5
  */
 export function ResultList() {
-  const { hits } = useHits();
+  const { items } = useHits();
   const { status } = useInstantSearch();
   const isLoading = status === 'loading' || status === 'stalled';
 
@@ -24,17 +24,17 @@ export function ResultList() {
     return <LoadingSkeleton />;
   }
 
-  if (hits.length === 0) {
+  if (items.length === 0) {
     return <EmptyState />;
   }
 
   return (
     <div className="space-y-4">
       <div className="text-sm text-muted-foreground">
-        {hits.length} result{hits.length !== 1 ? 's' : ''}
+        {items.length} result{items.length !== 1 ? 's' : ''}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-        {hits.map((hit) => (
+        {items.map((hit) => (
           <HitCard key={hit.objectID} hit={hit} />
         ))}
       </div>
@@ -66,10 +66,7 @@ function HitCard({ hit }: { readonly hit: Hit }) {
           </div>
         )}
         {condition && (
-          <Badge
-            variant="secondary"
-            className="absolute top-2 right-2 capitalize"
-          >
+          <Badge variant="secondary" className="absolute top-2 right-2 capitalize">
             {condition}
           </Badge>
         )}
@@ -77,18 +74,14 @@ function HitCard({ hit }: { readonly hit: Hit }) {
       <CardContent className="p-4">
         <h3 className="font-semibold line-clamp-2 mb-1">{title}</h3>
         <div className="flex items-center justify-between">
-          {price && (
-            <span className="text-lg font-bold text-primary">{price}</span>
-          )}
+          {price && <span className="text-lg font-bold text-primary">{price}</span>}
           {category && (
             <Badge variant="outline" className="text-xs capitalize">
               {category}
             </Badge>
           )}
         </div>
-        {location && (
-          <p className="text-xs text-muted-foreground mt-2">{location}</p>
-        )}
+        {location && <p className="text-xs text-muted-foreground mt-2">{location}</p>}
       </CardContent>
     </Card>
   );

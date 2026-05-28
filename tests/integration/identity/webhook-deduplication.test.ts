@@ -9,7 +9,7 @@ import { redis } from '../../setup-integration.js';
 import {
   RedisWebhookIdempotencyStore,
   InMemoryWebhookIdempotencyStore,
-} from '../../../src/identity/infrastructure/webhooks/webhook-idempotency-store.js';
+} from '../../../src/backend/identity/infrastructure/webhooks/webhook-idempotency-store.js';
 
 describe('Webhook Deduplication (integration)', () => {
   beforeEach(async () => {

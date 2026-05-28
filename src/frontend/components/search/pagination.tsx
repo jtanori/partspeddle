@@ -13,15 +13,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
  * Ticket: T3.5
  */
 export function PaginationControls() {
-  const {
-    pages,
-    currentRefinement,
-    nbPages,
-    isFirstPage,
-    isLastPage,
-    canRefine,
-    refine,
-  } = usePagination({ padding: 1 });
+  const { pages, currentRefinement, nbPages, isFirstPage, isLastPage, canRefine, refine } =
+    usePagination({ padding: 1 });
 
   if (nbPages <= 1) return null;
 
@@ -31,7 +24,9 @@ export function PaginationControls() {
         variant="outline"
         size="sm"
         disabled={isFirstPage}
-        onClick={() => refine(currentRefinement - 1)}
+        onClick={() => {
+          refine(currentRefinement - 1);
+        }}
         aria-label="Previous page"
       >
         <ChevronLeft className="h-4 w-4" />
@@ -47,7 +42,9 @@ export function PaginationControls() {
             size="sm"
             className="min-w-[2.5rem]"
             disabled={!canRefine}
-            onClick={() => refine(page)}
+            onClick={() => {
+              refine(page);
+            }}
             aria-label={`Page ${page + 1}`}
             aria-current={isCurrent ? 'page' : undefined}
           >
@@ -60,7 +57,9 @@ export function PaginationControls() {
         variant="outline"
         size="sm"
         disabled={isLastPage}
-        onClick={() => refine(currentRefinement + 1)}
+        onClick={() => {
+          refine(currentRefinement + 1);
+        }}
         aria-label="Next page"
       >
         <ChevronRight className="h-4 w-4" />

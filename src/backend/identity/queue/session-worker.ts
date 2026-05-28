@@ -16,7 +16,7 @@ export interface SessionWorkerDeps {
 
 export async function sessionProcessor(
   deps: SessionWorkerDeps,
-  job: Job<JobPayload>,
+  job: Job<JobPayload>
 ): Promise<void> {
   const { data, metadata } = job.data;
   const correlationId = metadata.correlationId;

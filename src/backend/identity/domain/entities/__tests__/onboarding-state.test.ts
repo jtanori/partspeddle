@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { OnboardingState } from '../onboarding-state.js';
-import { DomainError } from '../../../../shared/errors/domain-error.js';
+import { DomainError } from '../../../../../shared/errors/domain-error.js';
 
 describe('OnboardingState', () => {
   it('creates with no completed steps', () => {
@@ -29,7 +29,9 @@ describe('OnboardingState', () => {
   it('rejects duplicate step completion', () => {
     const state = OnboardingState.create();
     state.completeStep('identity');
-    expect(() => state.completeStep('identity')).toThrow(DomainError);
+    expect(() => {
+      state.completeStep('identity');
+    }).toThrow(DomainError);
   });
 
   it('rehydrates from completed steps', () => {

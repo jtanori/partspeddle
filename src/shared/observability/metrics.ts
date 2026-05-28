@@ -26,7 +26,7 @@ function validateLabels(labels: Record<string, string>): void {
     if (FORBIDDEN_LABELS.includes(key)) {
       throw new Error(
         `Forbidden metric label: "${key}". High-cardinality labels ` +
-          `cause Prometheus storage explosions. See runtime-governance.md.`,
+          `cause Prometheus storage explosions. See runtime-governance.md.`
       );
     }
   }
@@ -48,7 +48,10 @@ interface CounterState {
 export class Counter {
   private entries = new Map<string, CounterState>();
 
-  constructor(private readonly name: string, private readonly help: string) {}
+  constructor(
+    private readonly name: string,
+    private readonly help: string
+  ) {}
 
   inc(labels: Record<string, string> = {}, value = 1): void {
     validateLabels(labels);
@@ -87,7 +90,7 @@ export class Histogram {
   constructor(
     private readonly name: string,
     private readonly help: string,
-    private readonly buckets: number[] = DEFAULT_BUCKETS,
+    private readonly buckets: number[] = DEFAULT_BUCKETS
   ) {}
 
   observe(value: number, labels: Record<string, string> = {}): void {
@@ -140,7 +143,10 @@ interface GaugeState {
 export class Gauge {
   private entries = new Map<string, GaugeState>();
 
-  constructor(private readonly name: string, private readonly help: string) {}
+  constructor(
+    private readonly name: string,
+    private readonly help: string
+  ) {}
 
   set(value: number, labels: Record<string, string> = {}): void {
     validateLabels(labels);

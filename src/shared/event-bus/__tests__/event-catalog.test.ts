@@ -38,9 +38,9 @@ describe('EventCatalog', () => {
   it('throws on duplicate registration', () => {
     catalog.register('seller.activated', { version: 1, payloadSchema: sellerActivatedSchema });
 
-    expect(() =>
-      catalog.register('seller.activated', { version: 1, payloadSchema: sellerActivatedSchema }),
-    ).toThrow(DomainError);
+    expect(() => {
+      catalog.register('seller.activated', { version: 1, payloadSchema: sellerActivatedSchema });
+    }).toThrow(DomainError);
   });
 
   it('error includes correct code for duplicate registration', () => {
@@ -55,9 +55,9 @@ describe('EventCatalog', () => {
   });
 
   it('throws on invalid event type format', () => {
-    expect(() =>
-      catalog.register('invalid', { version: 1, payloadSchema: sellerActivatedSchema }),
-    ).toThrow(DomainError);
+    expect(() => {
+      catalog.register('invalid', { version: 1, payloadSchema: sellerActivatedSchema });
+    }).toThrow(DomainError);
   });
 
   it('error includes correct code for invalid event type', () => {
@@ -70,9 +70,9 @@ describe('EventCatalog', () => {
   });
 
   it('throws on version below 1', () => {
-    expect(() =>
-      catalog.register('seller.activated', { version: 0, payloadSchema: sellerActivatedSchema }),
-    ).toThrow(DomainError);
+    expect(() => {
+      catalog.register('seller.activated', { version: 0, payloadSchema: sellerActivatedSchema });
+    }).toThrow(DomainError);
   });
 
   it('error includes correct code for invalid version', () => {
@@ -92,7 +92,9 @@ describe('EventCatalog', () => {
       activatedAt: '2026-01-15T10:30:00.000Z',
     };
 
-    expect(() => catalog.validatePayload('seller.activated', validPayload)).not.toThrow();
+    expect(() => {
+      catalog.validatePayload('seller.activated', validPayload);
+    }).not.toThrow();
   });
 
   it('throws on invalid payload for registered event', () => {
@@ -100,7 +102,9 @@ describe('EventCatalog', () => {
 
     const invalidPayload = { sellerProfileId: 'not-a-uuid' };
 
-    expect(() => catalog.validatePayload('seller.activated', invalidPayload)).toThrow(DomainError);
+    expect(() => {
+      catalog.validatePayload('seller.activated', invalidPayload);
+    }).toThrow(DomainError);
   });
 
   it('error includes correct code for invalid payload', () => {
@@ -115,7 +119,9 @@ describe('EventCatalog', () => {
   });
 
   it('throws when validating payload for unregistered event', () => {
-    expect(() => catalog.validatePayload('unknown.event', {})).toThrow(DomainError);
+    expect(() => {
+      catalog.validatePayload('unknown.event', {});
+    }).toThrow(DomainError);
   });
 
   it('error includes correct code for unregistered event', () => {
@@ -129,7 +135,10 @@ describe('EventCatalog', () => {
 
   it('returns list of registered event types', () => {
     catalog.register('seller.activated', { version: 1, payloadSchema: sellerActivatedSchema });
-    catalog.register('listing.published', { version: 1, payloadSchema: z.object({ listingId: z.string().uuid() }) });
+    catalog.register('listing.published', {
+      version: 1,
+      payloadSchema: z.object({ listingId: z.string().uuid() }),
+    });
 
     const types = catalog.listEventTypes();
     expect(types).toContain('seller.activated');

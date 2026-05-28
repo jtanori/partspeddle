@@ -17,13 +17,20 @@ export function Header() {
         fontFamily: 'system-ui, sans-serif',
       }}
     >
-      <Link href="/" style={{ fontSize: '1.25rem', fontWeight: 700, textDecoration: 'none', color: '#111' }}>
+      <Link
+        href="/"
+        style={{ fontSize: '1.25rem', fontWeight: 700, textDecoration: 'none', color: '#111' }}
+      >
         VINTRACK
       </Link>
 
       <nav style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-        <Link href="/" style={{ textDecoration: 'none', color: '#374151' }}>Home</Link>
-        <Link href="/search" style={{ textDecoration: 'none', color: '#374151' }}>Search</Link>
+        <Link href="/" style={{ textDecoration: 'none', color: '#374151' }}>
+          Home
+        </Link>
+        <Link href="/search" style={{ textDecoration: 'none', color: '#374151' }}>
+          Search
+        </Link>
 
         {isLoading ? (
           <span style={{ color: '#6b7280' }}>Loading…</span>

@@ -23,8 +23,6 @@ import type { Queue } from 'bullmq';
 import type { WebhookIdempotencyStore } from './webhook-idempotency-store.js';
 import { logger } from '../../../shared/observability/logger.js';
 
-
-
 export interface SupabaseAuthWebhookPayload {
   readonly type: 'user.created' | 'user.updated' | 'user.deleted';
   readonly table: string;
@@ -93,6 +91,9 @@ export function createSupabaseAuthWebhookHandler(deps: AuthWebhookDeps) {
       }
 
       const webhookPayload = payload as SupabaseAuthWebhookPayload;
+      // Runtime validation after `as` cast — type system assumes correctness,
+      // but we must guard against malformed payloads at runtime.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!webhookPayload.type || !webhookPayload.record?.id) {
         res.status(400).json({
           error: 'IDENTITY_WEBHOOK_INVALID_PAYLOAD',
@@ -134,7 +135,7 @@ export function createSupabaseAuthWebhookHandler(deps: AuthWebhookDeps) {
             enqueuedAt: new Date().toISOString(),
           },
         },
-        { jobId: eventId },
+        { jobId: eventId }
       );
 
       // 5. Mark processed (best-effort; job enqueue succeeded)

@@ -571,7 +571,7 @@ function main(): void {
   }
 
   if (format === 'json') {
-    console.log(JSON.stringify(report, null, 2));
+    process.stdout.write(JSON.stringify(report, null, 2) + '\n');
   } else if (format === 'csv') {
     console.log('invariant_id,passed,severity,details,auto_recoverable,duration_ms');
     for (const r of report.results) {

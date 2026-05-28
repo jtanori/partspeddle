@@ -54,11 +54,11 @@ export class User {
   static create(
     props: { readonly id: string; readonly email: string },
     correlationId: string,
-    actorId = 'system',
+    actorId = 'system'
   ): User {
     const user = new User({ id: props.id, email: props.email, status: 'active' });
     user._uncommittedEvents.push(
-      createUserCreatedEvent({ userId: props.id, email: props.email }, correlationId, actorId),
+      createUserCreatedEvent({ userId: props.id, email: props.email }, correlationId, actorId)
     );
     return user;
   }
@@ -94,8 +94,8 @@ export class User {
       createUserSuspendedEvent(
         { userId: this.id, reason, previousStatus: 'active' },
         correlationId,
-        actorId,
-      ),
+        actorId
+      )
     );
   }
 
@@ -106,8 +106,8 @@ export class User {
       createUserReactivatedEvent(
         { userId: this.id, previousStatus: 'suspended' },
         correlationId,
-        actorId,
-      ),
+        actorId
+      )
     );
   }
 
@@ -124,7 +124,7 @@ export class User {
         `Cannot transition from ${this._status} to ${target}`,
         crypto.randomUUID(),
         false,
-        { from: this._status, to: target },
+        { from: this._status, to: target }
       );
     }
   }
@@ -135,7 +135,7 @@ export class User {
         'IDENTITY_USER_INVALID_ID',
         'User.id is required',
         crypto.randomUUID(),
-        false,
+        false
       );
     }
     if (!this.email.includes('@')) {
@@ -143,7 +143,7 @@ export class User {
         'IDENTITY_USER_INVALID_EMAIL',
         'User.email must be a valid email address',
         crypto.randomUUID(),
-        false,
+        false
       );
     }
   }

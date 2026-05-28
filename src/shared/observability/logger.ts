@@ -42,11 +42,7 @@ const MAX_SERIALIZED_BYTES = 32 * 1024;
  * Recursively clone an object, redacting sensitive values and
  * protecting against cycles, excessive depth, and oversized payloads.
  */
-function sanitizeContext(
-  value: unknown,
-  depth = 0,
-  seen = new WeakSet<object>(),
-): unknown {
+function sanitizeContext(value: unknown, depth = 0, seen = new WeakSet<object>()): unknown {
   if (depth > MAX_DEPTH) {
     return '[MAX_DEPTH_EXCEEDED]';
   }
@@ -97,7 +93,7 @@ function log(
   level: LogLevel,
   message: string,
   context?: Record<string, unknown>,
-  meta?: { correlationId?: string; traceparent?: string },
+  meta?: { correlationId?: string; traceparent?: string }
 ): void {
   const entry: LogEntry = {
     timestamp: new Date().toISOString(),
@@ -114,12 +110,32 @@ function log(
 }
 
 export const logger = {
-  debug: (message: string, context?: Record<string, unknown>, meta?: { correlationId?: string; traceparent?: string }) =>
-    log('debug', message, context, meta),
-  info: (message: string, context?: Record<string, unknown>, meta?: { correlationId?: string; traceparent?: string }) =>
-    log('info', message, context, meta),
-  warn: (message: string, context?: Record<string, unknown>, meta?: { correlationId?: string; traceparent?: string }) =>
-    log('warn', message, context, meta),
-  error: (message: string, context?: Record<string, unknown>, meta?: { correlationId?: string; traceparent?: string }) =>
-    log('error', message, context, meta),
+  debug: (
+    message: string,
+    context?: Record<string, unknown>,
+    meta?: { correlationId?: string; traceparent?: string }
+  ) => {
+    log('debug', message, context, meta);
+  },
+  info: (
+    message: string,
+    context?: Record<string, unknown>,
+    meta?: { correlationId?: string; traceparent?: string }
+  ) => {
+    log('info', message, context, meta);
+  },
+  warn: (
+    message: string,
+    context?: Record<string, unknown>,
+    meta?: { correlationId?: string; traceparent?: string }
+  ) => {
+    log('warn', message, context, meta);
+  },
+  error: (
+    message: string,
+    context?: Record<string, unknown>,
+    meta?: { correlationId?: string; traceparent?: string }
+  ) => {
+    log('error', message, context, meta);
+  },
 };

@@ -41,10 +41,7 @@ interface IndexUiState {
  * Ticket: T3.5
  */
 export function SearchPageClient({ appId, apiKey, indexName }: SearchPageClientProps) {
-  const searchClient = useMemo<LiteClient>(
-    () => algoliasearch(appId, apiKey),
-    [appId, apiKey]
-  );
+  const searchClient = useMemo<LiteClient>(() => algoliasearch(appId, apiKey), [appId, apiKey]);
 
   const routing = useMemo(
     () => ({
@@ -57,11 +54,11 @@ export function SearchPageClient({ appId, apiKey, indexName }: SearchPageClientP
           const priceRange = indexUiState.range?.price;
 
           return {
-            q: indexUiState.query || undefined,
+            q: indexUiState.query ?? undefined,
             page: indexUiState.page != null ? String(indexUiState.page + 1) : undefined,
-            category: refinementList.category?.join('~') || undefined,
-            condition: refinementList.condition?.join('~') || undefined,
-            location: refinementList.location?.join('~') || undefined,
+            category: refinementList.category.join('~') || undefined,
+            condition: refinementList.condition.join('~') || undefined,
+            location: refinementList.location.join('~') || undefined,
             minPrice: priceRange?.min != null ? String(priceRange.min) : undefined,
             maxPrice: priceRange?.max != null ? String(priceRange.max) : undefined,
           };
@@ -92,32 +89,34 @@ export function SearchPageClient({ appId, apiKey, indexName }: SearchPageClientP
       },
       router: {
         createURL({ routeState, location }: { routeState: RouteState; location: Location }) {
-          const urlParts = location.href.match(/^(.*?)\/?(?:\?.*)?$/) || ['', location.href];
+          const urlParts = /^(.*?)\/?(?:\?.*)?$/.exec(location.href) ?? ['', location.href];
           const baseUrl = `${urlParts[1]}/`;
 
           const queryParameters: string[] = [];
           if (routeState.q) queryParameters.push(`q=${encodeURIComponent(routeState.q)}`);
-          if (routeState.page && routeState.page !== '1') queryParameters.push(`page=${routeState.page}`);
-          if (routeState.category) queryParameters.push(`category=${encodeURIComponent(routeState.category)}`);
-          if (routeState.condition) queryParameters.push(`condition=${encodeURIComponent(routeState.condition)}`);
-          if (routeState.location) queryParameters.push(`location=${encodeURIComponent(routeState.location)}`);
+          if (routeState.page && routeState.page !== '1')
+            queryParameters.push(`page=${routeState.page}`);
+          if (routeState.category)
+            queryParameters.push(`category=${encodeURIComponent(routeState.category)}`);
+          if (routeState.condition)
+            queryParameters.push(`condition=${encodeURIComponent(routeState.condition)}`);
+          if (routeState.location)
+            queryParameters.push(`location=${encodeURIComponent(routeState.location)}`);
           if (routeState.minPrice) queryParameters.push(`minPrice=${routeState.minPrice}`);
           if (routeState.maxPrice) queryParameters.push(`maxPrice=${routeState.maxPrice}`);
 
-          return queryParameters.length
-            ? `${baseUrl}?${queryParameters.join('&')}`
-            : baseUrl;
+          return queryParameters.length ? `${baseUrl}?${queryParameters.join('&')}` : baseUrl;
         },
         parseURL({ location }: { location: Location }): RouteState {
           const params = new URLSearchParams(location.search);
           return {
-            q: params.get('q') || undefined,
-            page: params.get('page') || undefined,
-            category: params.get('category') || undefined,
-            condition: params.get('condition') || undefined,
-            location: params.get('location') || undefined,
-            minPrice: params.get('minPrice') || undefined,
-            maxPrice: params.get('maxPrice') || undefined,
+            q: params.get('q') ?? undefined,
+            page: params.get('page') ?? undefined,
+            category: params.get('category') ?? undefined,
+            condition: params.get('condition') ?? undefined,
+            location: params.get('location') ?? undefined,
+            minPrice: params.get('minPrice') ?? undefined,
+            maxPrice: params.get('maxPrice') ?? undefined,
           };
         },
       },

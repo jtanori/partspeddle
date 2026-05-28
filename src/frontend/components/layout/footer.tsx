@@ -10,7 +10,10 @@ export function Footer() {
         fontSize: '0.875rem',
       }}
     >
-      <p>© {new Date().getFullYear()} VINTRACK. Trust-centric collectible asset transaction platform.</p>
+      <p>
+        © {new Date().getFullYear()} VINTRACK. Trust-centric collectible asset transaction
+        platform.
+      </p>
     </footer>
   );
 }

@@ -37,7 +37,7 @@ export class EventCatalog {
         'SHARED_EVENT_CATALOG_INVALID_TYPE',
         `Event type must match domain.action format. Got: ${eventType}`,
         crypto.randomUUID(),
-        false,
+        false
       );
     }
 
@@ -46,7 +46,7 @@ export class EventCatalog {
         'SHARED_EVENT_CATALOG_INVALID_VERSION',
         `Event version must be a positive integer. Got: ${entry.version}`,
         crypto.randomUUID(),
-        false,
+        false
       );
     }
 
@@ -55,7 +55,7 @@ export class EventCatalog {
         'SHARED_EVENT_CATALOG_DUPLICATE',
         `Event type already registered: ${eventType}`,
         crypto.randomUUID(),
-        false,
+        false
       );
     }
 
@@ -89,7 +89,7 @@ export class EventCatalog {
         'SHARED_EVENT_CATALOG_NOT_FOUND',
         `Event type not registered in catalog: ${eventType}`,
         crypto.randomUUID(),
-        false,
+        false
       );
     }
 
@@ -99,7 +99,7 @@ export class EventCatalog {
         'SHARED_EVENT_CATALOG_INVALID_PAYLOAD',
         `Payload validation failed for ${eventType}: ${result.error.message}`,
         crypto.randomUUID(),
-        false,
+        false
       );
     }
   }

@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import { assertDefined } from '@/shared/utils/assert';
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -7,8 +8,8 @@ export async function middleware(request: NextRequest) {
   });
 
   const supabase = createServerClient(
-    process.env.SUPABASE_AUTH_URL!,
-    process.env.SUPABASE_ANON_KEY!,
+    assertDefined(process.env.SUPABASE_AUTH_URL, 'SUPABASE_AUTH_URL is required'),
+    assertDefined(process.env.SUPABASE_ANON_KEY, 'SUPABASE_ANON_KEY is required'),
     {
       cookies: {
         getAll() {
@@ -26,7 +27,7 @@ export async function middleware(request: NextRequest) {
           });
         },
       },
-    },
+    }
   );
 
   const {
@@ -47,7 +48,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-  ],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
 };

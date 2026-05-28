@@ -78,8 +78,12 @@ export interface AlgoliaClientOptionsContract {
  * Future implementations MUST conform to this interface.
  */
 export interface SearchClientContract {
-  search<T>(indexName: string, query: string, options?: unknown): Promise<{
-    hits: T[];
+  search(
+    indexName: string,
+    query: string,
+    options?: unknown
+  ): Promise<{
+    hits: unknown[];
     nbHits: number;
     page: number;
     nbPages: number;
@@ -97,6 +101,8 @@ export interface SearchClientContract {
  * implement this contract.
  */
 export interface SearchAdapterContract {
-  readonly search: (params: import('./search-result.js').SearchParams) => Promise<import('./search-result.js').SearchResponse>;
+  readonly search: (
+    params: import('./search-result.js').SearchParams
+  ) => Promise<import('./search-result.js').SearchResponse>;
   readonly getFacets: (attribute: string) => Promise<import('./search-result.js').Facet>;
 }

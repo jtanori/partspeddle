@@ -7,17 +7,15 @@
  * @see /project-knowledge/service-role-governance.md
  */
 
+import { assertDefined } from '../../../shared/utils/assert.js';
+
 export interface SupabaseEnv {
   readonly supabaseUrl: string;
   readonly serviceKey: string;
   readonly databaseUrl: string;
 }
 
-const REQUIRED_VARS = [
-  'SUPABASE_URL',
-  'SUPABASE_SERVICE_KEY',
-  'DATABASE_URL',
-] as const;
+const REQUIRED_VARS = ['SUPABASE_URL', 'SUPABASE_SERVICE_KEY', 'DATABASE_URL'] as const;
 
 /**
  * Validate that all required Supabase environment variables are present.
@@ -37,17 +35,16 @@ export function validateSupabaseEnv(): SupabaseEnv {
   if (missing.length > 0) {
     throw new Error(
       `Missing required environment variables: ${missing.join(', ')}. ` +
-        `Application cannot start without Supabase configuration.`,
+        `Application cannot start without Supabase configuration.`
     );
   }
 
-  // Types are narrowed by the validation loop above, but TS doesn't track this.
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const supabaseUrl = process.env.SUPABASE_URL!;
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const serviceKey = process.env.SUPABASE_SERVICE_KEY!;
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const databaseUrl = process.env.DATABASE_URL!;
+  const supabaseUrl = assertDefined(process.env.SUPABASE_URL, 'SUPABASE_URL is required');
+  const serviceKey = assertDefined(
+    process.env.SUPABASE_SERVICE_KEY,
+    'SUPABASE_SERVICE_KEY is required'
+  );
+  const databaseUrl = assertDefined(process.env.DATABASE_URL, 'DATABASE_URL is required');
 
   return {
     supabaseUrl,

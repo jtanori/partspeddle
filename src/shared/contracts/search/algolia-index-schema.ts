@@ -47,11 +47,11 @@ export type StringFilterOperator = '=' | '!=';
 
 export interface FilterOperatorContract {
   attribute: FilterableAttribute;
-  allowedOperators: ReadonlyArray<NumericFilterOperator | StringFilterOperator>;
+  allowedOperators: readonly (NumericFilterOperator | StringFilterOperator)[];
   valueType: 'string' | 'number' | 'boolean';
 }
 
-export const FILTER_OPERATORS: ReadonlyArray<FilterOperatorContract> = [
+export const FILTER_OPERATORS: readonly FilterOperatorContract[] = [
   { attribute: 'category', allowedOperators: ['='], valueType: 'string' },
   { attribute: 'condition', allowedOperators: ['='], valueType: 'string' },
   { attribute: 'price', allowedOperators: ['=', '<', '>', '<=', '>='], valueType: 'number' },
@@ -63,11 +63,7 @@ export const FILTER_OPERATORS: ReadonlyArray<FilterOperatorContract> = [
 /**
  * Attributes enabled for sorting.
  */
-export const SORTABLE_ATTRIBUTES = [
-  'price',
-  'created_at',
-  'relevance',
-] as const;
+export const SORTABLE_ATTRIBUTES = ['price', 'created_at', 'relevance'] as const;
 
 export type SortableAttribute = (typeof SORTABLE_ATTRIBUTES)[number];
 
@@ -93,10 +89,10 @@ export type RankingCriterion = (typeof RANKING_CRITERIA)[number];
  * that backend sync (T5.1) must apply to the Algolia index.
  */
 export interface AlgoliaIndexSettingsContract {
-  readonly searchableAttributes: ReadonlyArray<SearchableAttribute>;
-  readonly attributesForFaceting: ReadonlyArray<FilterableAttribute>;
-  readonly ranking: ReadonlyArray<RankingCriterion>;
-  readonly customRanking: ReadonlyArray<string>;
+  readonly searchableAttributes: readonly SearchableAttribute[];
+  readonly attributesForFaceting: readonly FilterableAttribute[];
+  readonly ranking: readonly RankingCriterion[];
+  readonly customRanking: readonly string[];
   readonly hitsPerPage: number;
   readonly maxValuesPerFacet: number;
   readonly paginationLimitedTo: number;

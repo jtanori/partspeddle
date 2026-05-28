@@ -9,14 +9,14 @@
  * Requires: running Postgres + Redis, migrations applied.
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { sql } from '../../setup-integration.js';
-import { User } from '../../../src/identity/domain/entities/user.js';
-import { Profile } from '../../../src/identity/domain/entities/profile.js';
-import { SellerProfile } from '../../../src/identity/domain/entities/seller-profile.js';
-import { PostgresUserRepository } from '../../../src/identity/infrastructure/persistence/user-repository.js';
-import { PostgresProfileRepository } from '../../../src/identity/infrastructure/persistence/profile-repository.js';
-import { PostgresSellerProfileRepository } from '../../../src/identity/infrastructure/persistence/seller-profile-repository.js';
+import { User } from '../../../src/backend/identity/domain/entities/user.js';
+import { Profile } from '../../../src/backend/identity/domain/entities/profile.js';
+import { SellerProfile } from '../../../src/backend/identity/domain/entities/seller-profile.js';
+import { PostgresUserRepository } from '../../../src/backend/identity/infrastructure/persistence/user-repository.js';
+import { PostgresProfileRepository } from '../../../src/backend/identity/infrastructure/persistence/profile-repository.js';
+import { PostgresSellerProfileRepository } from '../../../src/backend/identity/infrastructure/persistence/seller-profile-repository.js';
 
 describe('Identity Lifecycle (integration)', () => {
   it('creates user and profile via repository', async () => {
@@ -31,11 +31,13 @@ describe('Identity Lifecycle (integration)', () => {
 
     const foundUser = await userRepo.findById(user.id);
     expect(foundUser).not.toBeNull();
-    expect(foundUser!.email).toBe('test@example.com');
+    if (!foundUser) throw new Error('Expected user to exist');
+    expect(foundUser.email).toBe('test@example.com');
 
     const foundProfile = await profileRepo.findByUserId(user.id);
     expect(foundProfile).not.toBeNull();
-    expect(foundProfile!.userId).toBe(user.id);
+    if (!foundProfile) throw new Error('Expected profile to exist');
+    expect(foundProfile.userId).toBe(user.id);
   });
 
   it('persists outbox events on user save', async () => {
@@ -60,10 +62,7 @@ describe('Identity Lifecycle (integration)', () => {
     const user = User.create({ id: crypto.randomUUID(), email: 'seller@example.com' }, 'corr-1');
     await userRepo.save(user);
 
-    const profile = SellerProfile.create(
-      { id: crypto.randomUUID(), userId: user.id },
-      'corr-1',
-    );
+    const profile = SellerProfile.create({ id: crypto.randomUUID(), userId: user.id }, 'corr-1');
     profile.linkStripeAccount('acct_test');
     await sellerRepo.save(profile);
 
@@ -78,8 +77,9 @@ describe('Identity Lifecycle (integration)', () => {
 
     const found = await sellerRepo.findById(profile.id);
     expect(found).not.toBeNull();
-    expect(found!.status).toBe('active');
-    expect(found!.activatedAt).toBeInstanceOf(Date);
-    expect(found!.onboardingState.isComplete).toBe(true);
+    if (!found) throw new Error('Expected seller profile to exist');
+    expect(found.status).toBe('active');
+    expect(found.activatedAt).toBeInstanceOf(Date);
+    expect(found.onboardingState.isComplete).toBe(true);
   });
 });

@@ -46,7 +46,7 @@ export function validateTransition(ctx: TransitionContext): TransitionResult {
   if (ctx.from === 'draft' && ctx.to === 'pending_review') {
     if (!ctx.onboardingState.isComplete) {
       const missing = ['identity', 'banking', 'tax', 'terms'].filter(
-        (s) => !ctx.onboardingState.hasStep(s as 'identity' | 'banking' | 'tax' | 'terms'),
+        (s) => !ctx.onboardingState.hasStep(s as 'identity' | 'banking' | 'tax' | 'terms')
       );
       return {
         allowed: false,

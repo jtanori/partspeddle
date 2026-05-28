@@ -90,14 +90,14 @@ export const handlers = [
    */
   http.get('*/api/search', ({ request }) => {
     const url = new URL(request.url);
-    const query = url.searchParams.get('q')?.toLowerCase() || '';
+    const query = url.searchParams.get('q')?.toLowerCase() ?? '';
 
     const results = query
       ? mockListings.filter(
           (l) =>
             l.title.toLowerCase().includes(query) ||
-            l.description?.toLowerCase().includes(query) ||
-            l.tags?.some((t) => t.toLowerCase().includes(query))
+            (l.description?.toLowerCase().includes(query) ?? false) ||
+            (l.tags?.some((t) => t.toLowerCase().includes(query)) ?? false)
         )
       : mockListings;
 

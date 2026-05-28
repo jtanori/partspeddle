@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 describe('setup-test-db migration validation', () => {
   it('accepts valid migration filenames', async () => {

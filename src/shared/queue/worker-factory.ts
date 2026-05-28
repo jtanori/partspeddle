@@ -32,42 +32,54 @@ export interface WorkerFactoryOptions {
  */
 function wrapProcessor(processor: Processor): Processor {
   return async (job: Job<JobPayload>) => {
-    const payload = job.data;
+    // Cast to unknown to validate runtime structure without triggering
+    // no-unnecessary-condition on the typed JobPayload shape.
+    const raw = job.data as unknown;
 
-    if (!payload || typeof payload !== 'object') {
+    if (typeof raw !== 'object' || raw === null) {
       throw new DomainError(
         'SHARED_QUEUE_INVALID_PAYLOAD',
         'Job payload must be an object',
         job.id ?? 'unknown',
-        false,
+        false
       );
     }
 
-    if (!payload.metadata || typeof payload.metadata !== 'object') {
+    if (!('metadata' in raw)) {
       throw new DomainError(
         'SHARED_QUEUE_INVALID_PAYLOAD',
-        'Job payload must include metadata object',
+        'Job payload must include metadata',
         job.id ?? 'unknown',
-        false,
+        false
       );
     }
 
-    const meta = payload.metadata as Record<string, unknown>;
-    if (typeof meta.correlationId !== 'string' || !meta.correlationId) {
+    const meta = (raw as Record<string, unknown>).metadata;
+    if (typeof meta !== 'object' || meta === null) {
+      throw new DomainError(
+        'SHARED_QUEUE_INVALID_PAYLOAD',
+        'Job metadata must be an object',
+        job.id ?? 'unknown',
+        false
+      );
+    }
+
+    const metaRecord = meta as Record<string, unknown>;
+    if (typeof metaRecord.correlationId !== 'string' || !metaRecord.correlationId) {
       throw new DomainError(
         'SHARED_QUEUE_INVALID_PAYLOAD',
         'Job metadata must include correlationId',
         job.id ?? 'unknown',
-        false,
+        false
       );
     }
 
-    if (typeof meta.actorId !== 'string' || !meta.actorId) {
+    if (typeof metaRecord.actorId !== 'string' || !metaRecord.actorId) {
       throw new DomainError(
         'SHARED_QUEUE_INVALID_PAYLOAD',
         'Job metadata must include actorId',
         job.id ?? 'unknown',
-        false,
+        false
       );
     }
 
@@ -92,42 +104,39 @@ export function createDomainWorker(
   dlq: Queue,
   processor: Processor,
   redis: Redis,
-  options: WorkerFactoryOptions = {},
+  options: WorkerFactoryOptions = {}
 ): Worker {
   const wrapped = wrapProcessor(processor);
 
-  const worker = new Worker<JobPayload>(
-    queue.name,
-    wrapped,
-    {
-      connection: redis,
-      concurrency: options.concurrency ?? 5,
-      ...options.workerOptions,
-      ...(options.limiter ? { limiter: options.limiter } : {}),
-    },
-  );
+  const worker = new Worker<JobPayload>(queue.name, wrapped, {
+    connection: redis,
+    concurrency: options.concurrency ?? 5,
+    ...options.workerOptions,
+    ...(options.limiter ? { limiter: options.limiter } : {}),
+  });
 
-  worker.on('failed', async (job, _err) => {
-    if (!job) return;
+  worker.on('failed', (job, _err) => {
+    void (async () => {
+      if (!job) return;
 
-    const attemptsMade = job.attemptsMade ?? 0;
-    const totalAttempts = job.opts.attempts ?? 1;
+      const attemptsMade = job.attemptsMade;
+      const totalAttempts = job.opts.attempts ?? 1;
 
-    if (attemptsMade >= totalAttempts) {
-      // Move to DLQ
-      try {
-        await dlq.add(job.name, job.data, {
-          jobId: job.id ?? undefined,
-          removeOnComplete: { count: 100 },
-          removeOnFail: { count: 0 },
-        });
-        await job.remove();
-      } catch (dlqError) {
-        // If DLQ insertion fails, leave the failed job in place for manual inspection
-        // eslint-disable-next-line no-console
-        console.error('Failed to move job to DLQ:', dlqError);
+      if (attemptsMade >= totalAttempts) {
+        // Move to DLQ
+        try {
+          await dlq.add(job.name, job.data, {
+            jobId: job.id ?? undefined,
+            removeOnComplete: { count: 100 },
+            removeOnFail: { count: 0 },
+          });
+          await job.remove();
+        } catch (dlqError) {
+          // If DLQ insertion fails, leave the failed job in place for manual inspection
+          console.error('Failed to move job to DLQ:', dlqError);
+        }
       }
-    }
+    })();
   });
 
   return worker;

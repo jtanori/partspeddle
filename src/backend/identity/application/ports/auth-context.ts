@@ -41,7 +41,7 @@ export function createAuthContext(props: AuthContextProps): AuthContext {
       'IDENTITY_AUTH_INVALID_CONTEXT',
       'JWT missing sub (user ID) claim',
       correlationId,
-      false,
+      false
     );
   }
 
@@ -50,14 +50,13 @@ export function createAuthContext(props: AuthContextProps): AuthContext {
       'IDENTITY_AUTH_INVALID_CONTEXT',
       'JWT missing email claim',
       correlationId,
-      false,
+      false
     );
   }
 
   // Derive roles from JWT claims
   const roles: UserRole[] = ['user'];
-  const jwtRole = verifiedToken.role ??
-    (verifiedToken.app_metadata?.role as string | undefined);
+  const jwtRole = verifiedToken.role ?? (verifiedToken.app_metadata?.role as string | undefined);
 
   if (jwtRole === 'seller') roles.push('seller');
   if (jwtRole === 'admin') roles.push('admin');
@@ -91,7 +90,7 @@ export function requireRole(ctx: AuthContext, role: UserRole): void {
       'IDENTITY_AUTH_FORBIDDEN',
       `Required role '${role}' not present`,
       ctx.correlationId,
-      false,
+      false
     );
   }
 }

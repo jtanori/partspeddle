@@ -67,7 +67,7 @@ describe('createSupabaseClient', () => {
 
   it('throws on unknown role', () => {
     expect(() => createSupabaseClient('admin' as unknown as 'service')).toThrow(
-      'Unknown Supabase client role',
+      'Unknown Supabase client role'
     );
   });
 });

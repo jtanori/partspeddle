@@ -13,12 +13,12 @@
 import type { Job } from 'bullmq';
 import type postgres from 'postgres';
 import type { JobPayload } from '../../shared/queue/worker-factory.js';
-import { User } from '../domain/entities/user.js';
-import { Profile } from '../domain/entities/profile.js';
 import { PostgresUserRepository } from '../infrastructure/persistence/user-repository.js';
-import { PostgresProfileRepository } from '../infrastructure/persistence/profile-repository.js';
 import { logger } from '../../shared/observability/logger.js';
 import { DomainError } from '../../../shared/errors/domain-error.js';
+import { DomainEvent } from '../../../shared/event-bus/domain-event.js';
+import { Outbox } from '../../../shared/outbox/outbox.js';
+import { PostgresOutboxAdapter } from '../../shared/outbox/postgres-adapter.js';
 
 export interface AuthSyncWorkerDeps {
   readonly sql: ReturnType<typeof postgres>;
@@ -26,7 +26,7 @@ export interface AuthSyncWorkerDeps {
 
 export async function authSyncProcessor(
   deps: AuthSyncWorkerDeps,
-  job: Job<JobPayload>,
+  job: Job<JobPayload>
 ): Promise<void> {
   const { data, metadata } = job.data;
   const correlationId = metadata.correlationId;
@@ -41,11 +41,10 @@ export async function authSyncProcessor(
   });
 
   const userRepo = new PostgresUserRepository(deps.sql);
-  const profileRepo = new PostgresProfileRepository(deps.sql);
 
   switch (eventType) {
     case 'user.created': {
-      const email = (data.email as string) ?? '';
+      const email = data.email as string;
 
       // Idempotent: check if user already exists
       const existing = await userRepo.findById(userId);
@@ -54,19 +53,39 @@ export async function authSyncProcessor(
         return;
       }
 
-      const user = User.create({ id: userId, email }, correlationId, 'system:webhook');
-      await userRepo.save(user);
+      // Persist user + profile + outbox event atomically
+      await deps.sql.begin(async (tx) => {
+        await tx`
+          INSERT INTO identity.users (id, email, status, created_at, updated_at)
+          VALUES (${userId}, ${email}, 'active', NOW(), NOW())
+          ON CONFLICT (id) DO NOTHING
+        `;
 
-      // Create profile
-      const profile = new Profile({ id: crypto.randomUUID(), userId });
-      await profileRepo.save(profile);
+        await tx`
+          INSERT INTO identity.profiles (id, user_id, created_at, updated_at)
+          VALUES (${crypto.randomUUID()}, ${userId}, NOW(), NOW())
+          ON CONFLICT (id) DO NOTHING
+        `;
+
+        const event = new DomainEvent({
+          eventType: 'identity.user_created',
+          correlationId,
+          actorId: 'system',
+          domain: 'identity',
+          aggregateId: userId,
+          payload: { userId, email },
+        });
+
+        const outbox = new Outbox(new PostgresOutboxAdapter(tx));
+        await outbox.insert(event);
+      });
 
       logger.info('User and profile created from webhook', { userId, email, correlationId });
       break;
     }
 
     case 'user.updated': {
-      const email = (data.email as string) ?? '';
+      const email = data.email as string;
       const user = await userRepo.findById(userId);
 
       if (!user) {
@@ -76,7 +95,7 @@ export async function authSyncProcessor(
           'IDENTITY_AUTH_SYNC_USER_NOT_FOUND',
           `User ${userId} not found for update. Possible out-of-order webhook.`,
           correlationId,
-          true, // retryable
+          true // retryable
         );
       }
 

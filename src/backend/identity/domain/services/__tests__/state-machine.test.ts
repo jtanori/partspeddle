@@ -53,17 +53,21 @@ describe('SellerProfile State Machine', () => {
     });
 
     it('allows active ↔ suspended', () => {
-      expect(validateTransition({
-        from: 'active',
-        to: 'suspended',
-        onboardingState: OnboardingState.create(),
-      }).allowed).toBe(true);
+      expect(
+        validateTransition({
+          from: 'active',
+          to: 'suspended',
+          onboardingState: OnboardingState.create(),
+        }).allowed
+      ).toBe(true);
 
-      expect(validateTransition({
-        from: 'suspended',
-        to: 'active',
-        onboardingState: OnboardingState.create(),
-      }).allowed).toBe(true);
+      expect(
+        validateTransition({
+          from: 'suspended',
+          to: 'active',
+          onboardingState: OnboardingState.create(),
+        }).allowed
+      ).toBe(true);
     });
 
     it('blocks invalid transitions', () => {

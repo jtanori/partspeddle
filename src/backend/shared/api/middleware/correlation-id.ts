@@ -1,5 +1,9 @@
 import type { Request, Response, NextFunction } from 'express';
-import { setTraceContext, generateTraceparent, parseTraceparent } from '../../observability/tracing.js';
+import {
+  setTraceContext,
+  generateTraceparent,
+  parseTraceparent,
+} from '../../observability/tracing.js';
 
 /**
  * Express middleware that extracts or generates correlation IDs and traceparent.
@@ -17,7 +21,7 @@ export function correlationIdMiddleware(req: Request, res: Response, next: NextF
 
   const traceparentHeader = req.headers.traceparent as string | undefined;
   const traceContext = traceparentHeader
-    ? parseTraceparent(traceparentHeader) ?? generateTraceparent()
+    ? (parseTraceparent(traceparentHeader) ?? generateTraceparent())
     : generateTraceparent();
 
   // Store in AsyncLocalStorage for request-scoped access

@@ -39,7 +39,7 @@ function wrapProcessor(processor: Processor): Processor {
         'SHARED_QUEUE_INVALID_PAYLOAD',
         'Job payload must be an object',
         job.id ?? 'unknown',
-        false,
+        false
       );
     }
 
@@ -49,7 +49,7 @@ function wrapProcessor(processor: Processor): Processor {
         'SHARED_QUEUE_INVALID_PAYLOAD',
         'Job payload must include metadata object',
         job.id ?? 'unknown',
-        false,
+        false
       );
     }
 
@@ -59,7 +59,7 @@ function wrapProcessor(processor: Processor): Processor {
         'SHARED_QUEUE_INVALID_PAYLOAD',
         'Job metadata must include correlationId',
         job.id ?? 'unknown',
-        false,
+        false
       );
     }
 
@@ -68,7 +68,7 @@ function wrapProcessor(processor: Processor): Processor {
         'SHARED_QUEUE_INVALID_PAYLOAD',
         'Job metadata must include actorId',
         job.id ?? 'unknown',
-        false,
+        false
       );
     }
 
@@ -93,20 +93,16 @@ export function createDomainWorker(
   dlq: Queue,
   processor: Processor,
   redis: Redis,
-  options: WorkerFactoryOptions = {},
+  options: WorkerFactoryOptions = {}
 ): Worker {
   const wrapped = wrapProcessor(processor);
 
-  const worker = new Worker<JobPayload>(
-    queue.name,
-    wrapped,
-    {
-      connection: redis,
-      concurrency: options.concurrency ?? 5,
-      ...options.workerOptions,
-      ...(options.limiter ? { limiter: options.limiter } : {}),
-    },
-  );
+  const worker = new Worker<JobPayload>(queue.name, wrapped, {
+    connection: redis,
+    concurrency: options.concurrency ?? 5,
+    ...options.workerOptions,
+    ...(options.limiter ? { limiter: options.limiter } : {}),
+  });
 
   worker.on('failed', (job, _err) => {
     if (!job) return;

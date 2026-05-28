@@ -19,9 +19,7 @@ export class DomainError extends Error {
     this.name = 'DomainError';
 
     // Maintain proper stack trace for where our error was thrown
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, DomainError);
-    }
+    Error.captureStackTrace(this, DomainError);
   }
 
   /**

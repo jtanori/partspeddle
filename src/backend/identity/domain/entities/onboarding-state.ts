@@ -55,7 +55,7 @@ export class OnboardingState {
         `Onboarding step '${step}' is already completed`,
         crypto.randomUUID(),
         false,
-        { step },
+        { step }
       );
     }
     this._completedSteps.add(step);
@@ -71,7 +71,7 @@ export class OnboardingState {
           `Invalid onboarding step: ${step}`,
           crypto.randomUUID(),
           false,
-          { step, allowed: ALL_STEPS },
+          { step, allowed: ALL_STEPS }
         );
       }
     }

@@ -34,7 +34,11 @@ export interface OutboxEntry {
 export interface OutboxDbClient {
   insert(table: string, data: Record<string, unknown>): Promise<void>;
   query<T = unknown>(sql: string, params: unknown[]): Promise<T[]>;
-  update(table: string, data: Record<string, unknown>, conditions: Record<string, unknown>): Promise<number>;
+  update(
+    table: string,
+    data: Record<string, unknown>,
+    conditions: Record<string, unknown>
+  ): Promise<number>;
 }
 
 /**
@@ -59,7 +63,7 @@ export class Outbox {
       payload: event.payload,
       aggregate_id: event.aggregateId,
       correlation_id: event.correlationId,
-      traceparent: (event.metadata as Record<string, unknown>)?.traceparent as string | undefined,
+      traceparent: (event.metadata as Record<string, unknown>).traceparent as string | undefined,
       status: 'pending',
       retry_count: 0,
       created_at: now,
@@ -75,7 +79,7 @@ export class Outbox {
   async getPending(limit = 100): Promise<OutboxEntry[]> {
     return this.db.query<OutboxEntry>(
       `SELECT * FROM ${this.table} WHERE status = 'pending' ORDER BY created_at ASC LIMIT $1`,
-      [limit],
+      [limit]
     );
   }
 
@@ -86,7 +90,7 @@ export class Outbox {
     await this.db.update(
       this.table,
       { status: 'published', published_at: new Date().toISOString() },
-      { id },
+      { id }
     );
   }
 
@@ -101,7 +105,7 @@ export class Outbox {
     const affected = await this.db.update(
       this.table,
       { status: 'processing', updated_at: new Date().toISOString() },
-      { id, status: 'pending' },
+      { id, status: 'pending' }
     );
     return affected > 0;
   }
@@ -109,13 +113,13 @@ export class Outbox {
   async markFailed(id: string, error: string): Promise<void> {
     const entries = await this.db.query<OutboxEntry>(
       `SELECT retry_count FROM ${this.table} WHERE id = $1`,
-      [id],
+      [id]
     );
     const current = entries[0]?.retry_count ?? 0;
     await this.db.update(
       this.table,
       { status: 'pending', retry_count: current + 1, last_error: error },
-      { id },
+      { id }
     );
   }
 
@@ -126,7 +130,7 @@ export class Outbox {
   async getFailedForDlq(maxRetries: number): Promise<OutboxEntry[]> {
     return this.db.query<OutboxEntry>(
       `SELECT * FROM ${this.table} WHERE status != 'published' AND retry_count >= $1`,
-      [maxRetries],
+      [maxRetries]
     );
   }
 }

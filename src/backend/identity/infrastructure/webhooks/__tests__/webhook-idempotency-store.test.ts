@@ -24,7 +24,7 @@ async function isRedisAvailable(): Promise<boolean> {
     await probe.quit();
     return true;
   } catch {
-    await probe.disconnect();
+    probe.disconnect();
     return false;
   }
 }
@@ -123,37 +123,6 @@ describe('RedisWebhookIdempotencyStore', () => {
   });
 
   it.skipIf(!redisAvailable)('isolates events by provider', async () => {
-    await store.markProcessed('supabase', 'evt-123');
-    const supabaseResult = await store.isProcessed('supabase', 'evt-123');
-    const auth0Result = await store.isProcessed('auth0', 'evt-123');
-    expect(supabaseResult).toBe(true);
-    expect(auth0Result).toBe(false);
-  });
-});
-
-  it('returns false for unprocessed events', async () => {
-    const result = await store.isProcessed('supabase', 'evt-123');
-    expect(result).toBe(false);
-  });
-
-  it('returns true for processed events', async () => {
-    await store.markProcessed('supabase', 'evt-123');
-    const result = await store.isProcessed('supabase', 'evt-123');
-    expect(result).toBe(true);
-  });
-
-  it('expires keys after TTL', async () => {
-    await store.markProcessed('supabase', 'evt-123', 1);
-    const before = await store.isProcessed('supabase', 'evt-123');
-    expect(before).toBe(true);
-
-    await new Promise((r) => setTimeout(r, 1100));
-
-    const after = await store.isProcessed('supabase', 'evt-123');
-    expect(after).toBe(false);
-  });
-
-  it('isolates events by provider', async () => {
     await store.markProcessed('supabase', 'evt-123');
     const supabaseResult = await store.isProcessed('supabase', 'evt-123');
     const auth0Result = await store.isProcessed('auth0', 'evt-123');

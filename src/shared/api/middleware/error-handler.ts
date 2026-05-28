@@ -15,10 +15,10 @@ export function errorHandlerMiddleware(
   err: Error,
   req: Request,
   res: Response,
-  _next: NextFunction,
+  _next: NextFunction
 ): void {
   const correlationId =
-    ((req as unknown as Record<string, unknown>).correlationId as string) ?? 'unknown';
+    ((req as unknown as Record<string, unknown>).correlationId as string | undefined) ?? 'unknown';
 
   let domainError: DomainError;
 
@@ -29,7 +29,7 @@ export function errorHandlerMiddleware(
       'SHARED_INTERNAL_ERROR',
       'An unexpected error occurred',
       correlationId,
-      false,
+      false
     );
   }
 

@@ -5,7 +5,9 @@
   "domain": "Marketplace",
   "capability": "Persistence Infrastructure",
   "purpose": "Implement backend repository layer for marketplace domain entities. Establish domain-oriented repository interfaces, PostgreSQL persistence adapters, and domain entities that consume shared contracts as the canonical data boundary. Preserve frontend/backend compiler isolation and shared contract authority.",
-  "dependencies": ["T3.2"],
+  "dependencies": [
+    "T3.2"
+  ],
   "architectural_constraints": [
     "Repository interfaces remain in domain layer",
     "PostgreSQL implementations remain in infrastructure layer",
@@ -59,16 +61,43 @@
     "Unit tests pass for Listing aggregate and repository implementation",
     "In-memory adapter passes same test suite as PostgreSQL adapter"
   ],
-  "traceability": [],
+  "traceability": [
+    {
+      "commit_hash": "dd0b2fa",
+      "files_changed": [
+        "src/backend/marketplace/domain/entities/listing.ts",
+        "src/backend/marketplace/domain/events/listing-events.ts",
+        "src/backend/marketplace/domain/repositories/listing-repository.ts",
+        "src/backend/marketplace/infrastructure/persistence/listing-repository.ts",
+        "src/backend/marketplace/infrastructure/persistence/listing-repository.memory.ts",
+        "src/backend/marketplace/infrastructure/persistence/__tests__/listing-repository.test.ts",
+        "src/backend/marketplace/domain/entities/__tests__/listing.test.ts",
+        "src/shared/contracts/marketplace/listing-schema.ts"
+      ],
+      "description": "Fixed backend typecheck errors: added ListingStatus to shared contract, corrected DomainEvent factory patterns, fixed import paths, adjusted event names for regex compliance",
+      "timestamp": "2026-05-26T15:36:54Z"
+    },
+    {
+      "commit_hash": "17adeaa",
+      "files_changed": [
+        "src/backend/marketplace/domain/entities/__tests__/listing.test.ts",
+        "src/backend/marketplace/infrastructure/persistence/__tests__/listing-repository.test.ts",
+        "src/backend/marketplace/infrastructure/persistence/listing-repository.memory.ts"
+      ],
+      "description": "Resolved ESLint violations: no-confusing-void-expression, no-non-null-assertion, require-await",
+      "timestamp": "2026-05-26T16:06:00Z"
+    }
+  ],
   "estimated_hours": 6,
-  "status": "planned",
-  "assignee": null,
+  "status": "review",
+  "assignee": "agent",
   "metadata": {
     "created_at": "2026-05-26T05:00:00Z",
-    "updated_at": "2026-05-26T05:00:00Z",
+    "updated_at": "2026-05-27T00:54:59.160032Z",
     "version": 1,
     "surface": "backend",
     "governance_classification": "feature",
-    "adr_reference": "ADR-004"
+    "adr_reference": "ADR-004",
+    "pr_url": "https://github.com/jtanori/partspeddle/pull/1"
   }
 }

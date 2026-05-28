@@ -3,11 +3,10 @@ import { errorHandlerMiddleware } from '../error-handler.js';
 import { DomainError } from '../../../errors/domain-error.js';
 
 describe('errorHandlerMiddleware', () => {
-  let logs: string[] = [];
-
   beforeEach(() => {
-    logs = [];
-    vi.spyOn(console, 'log').mockImplementation(() => {});
+    vi.spyOn(console, 'log').mockImplementation(() => {
+      // intentional noop — suppress console output in tests
+    });
   });
 
   afterEach(() => {

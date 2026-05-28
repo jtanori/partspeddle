@@ -11,36 +11,42 @@ export class InMemorySellerProfileRepository implements ISellerProfileRepository
   private readonly profiles = new Map<string, SellerProfile>();
   private readonly userIdIndex = new Map<string, string>(); // userId -> id
 
-  async findById(id: string): Promise<SellerProfile | null> {
+  findById(id: string): Promise<SellerProfile | null> {
     const profile = this.profiles.get(id);
-    return profile
-      ? SellerProfile.rehydrate({
-          id: profile.id,
-          userId: profile.userId,
-          status: profile.status,
-          stripeConnectAccountId: profile.stripeConnectAccountId,
-          activatedAt: profile.activatedAt,
-          onboardingState: profile.onboardingState,
-        })
-      : null;
+    return Promise.resolve(
+      profile
+        ? SellerProfile.rehydrate({
+            id: profile.id,
+            userId: profile.userId,
+            status: profile.status,
+            stripeConnectAccountId: profile.stripeConnectAccountId,
+            activatedAt: profile.activatedAt,
+            onboardingState: profile.onboardingState,
+          })
+        : null
+    );
   }
 
-  async findByUserId(userId: string): Promise<SellerProfile | null> {
+  findByUserId(userId: string): Promise<SellerProfile | null> {
     const id = this.userIdIndex.get(userId);
-    if (!id) return null;
+    if (!id) return Promise.resolve(null);
     return this.findById(id);
   }
 
-  async save(profile: SellerProfile): Promise<void> {
-    this.profiles.set(profile.id, SellerProfile.rehydrate({
-      id: profile.id,
-      userId: profile.userId,
-      status: profile.status,
-      stripeConnectAccountId: profile.stripeConnectAccountId,
-      activatedAt: profile.activatedAt,
-      onboardingState: profile.onboardingState,
-    }));
+  save(profile: SellerProfile): Promise<void> {
+    this.profiles.set(
+      profile.id,
+      SellerProfile.rehydrate({
+        id: profile.id,
+        userId: profile.userId,
+        status: profile.status,
+        stripeConnectAccountId: profile.stripeConnectAccountId,
+        activatedAt: profile.activatedAt,
+        onboardingState: profile.onboardingState,
+      })
+    );
     this.userIdIndex.set(profile.userId, profile.id);
+    return Promise.resolve();
   }
 
   clear(): void {

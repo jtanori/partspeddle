@@ -20,6 +20,9 @@ export const ListingResponseSchema = z.object({
 
 export type ListingResponse = z.infer<typeof ListingResponseSchema>;
 
+export const ListingStatusSchema = z.enum(['draft', 'active', 'sold', 'withdrawn']);
+export type ListingStatus = z.infer<typeof ListingStatusSchema>;
+
 export const ListingResponseExample: ListingResponse = {
   id: '550e8400-e29b-41d4-a716-446655440003',
   title: 'Vintage Rolex Submariner 16610',

@@ -16,7 +16,7 @@ export interface WebhookWorkerDeps {
 
 export async function webhookProcessor(
   deps: WebhookWorkerDeps,
-  job: Job<JobPayload>,
+  job: Job<JobPayload>
 ): Promise<void> {
   await authSyncProcessor(deps, job);
 }

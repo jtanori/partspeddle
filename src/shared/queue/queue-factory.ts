@@ -38,7 +38,7 @@ export function createDomainQueue(
   domain: string,
   purpose: string,
   redis: Redis,
-  defaultJobOptions?: JobsOptions,
+  defaultJobOptions?: JobsOptions
 ): DomainQueuePair {
   const names = deriveQueueNames(domain, purpose);
 

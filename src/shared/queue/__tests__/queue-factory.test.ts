@@ -5,16 +5,16 @@ import { createDomainQueue, DEFAULT_RETRY_POLICY } from '../queue-factory.js';
 vi.mock('bullmq', () => ({
   Queue: Object.setPrototypeOf(
     function (this: unknown, name: string, opts?: unknown) {
-      // @ts-expect-error
+      // @ts-expect-error -- mock constructor property assignment
       this.name = name;
-      // @ts-expect-error
+      // @ts-expect-error -- mock constructor property assignment
       this.opts = opts ?? {};
     },
-    Object.getPrototypeOf(function () {}),
+    Object.getPrototypeOf(function () {
+      // intentional noop — prototype target for mock constructor
+    })
   ),
 }));
-
-import { Queue } from 'bullmq';
 
 describe('createDomainQueue', () => {
   const mockRedis = {} as unknown as import('ioredis').Redis;
@@ -48,16 +48,16 @@ describe('createDomainQueue', () => {
     const customOptions = { attempts: 5, backoff: { type: 'fixed', delay: 1000 } };
     const { queue } = createDomainQueue('identity', 'onboarding', mockRedis, customOptions);
 
-    // @ts-expect-error
+    // @ts-expect-error -- accessing internal mock opts for verification
     expect(queue.opts.defaultJobOptions.attempts).toBe(5);
-    // @ts-expect-error
+    // @ts-expect-error -- accessing internal mock opts for verification
     expect(queue.opts.defaultJobOptions.backoff).toEqual({ type: 'fixed', delay: 1000 });
   });
 
   it('DLQ does not inherit retry policy', () => {
     const { dlq } = createDomainQueue('identity', 'onboarding', mockRedis);
 
-    // @ts-expect-error
+    // @ts-expect-error -- accessing internal mock opts for verification
     expect(dlq.opts.defaultJobOptions.attempts).toBeUndefined();
   });
 });

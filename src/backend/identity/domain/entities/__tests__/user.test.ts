@@ -1,13 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import { User } from '../user.js';
-import { DomainError } from '../../../../shared/errors/domain-error.js';
+import { DomainError } from '../../../../../shared/errors/domain-error.js';
 
 describe('User', () => {
   describe('creation', () => {
     it('creates with active status and emits created event', () => {
       const user = User.create(
         { id: '550e8400-e29b-41d4-a716-446655440000', email: 'test@example.com' },
-        'corr-1',
+        'corr-1'
       );
 
       expect(user.status).toBe('active');
@@ -22,13 +22,13 @@ describe('User', () => {
 
     it('rejects invalid email', () => {
       expect(() =>
-        User.create({ id: crypto.randomUUID(), email: 'not-an-email' }, 'corr-1'),
+        User.create({ id: crypto.randomUUID(), email: 'not-an-email' }, 'corr-1')
       ).toThrow(DomainError);
     });
 
     it('rejects empty email', () => {
       expect(() => User.create({ id: crypto.randomUUID(), email: '' }, 'corr-1')).toThrow(
-        DomainError,
+        DomainError
       );
     });
   });
@@ -50,7 +50,7 @@ describe('User', () => {
     it('active → suspended emits suspended event', () => {
       const user = User.create(
         { id: '550e8400-e29b-41d4-a716-446655440000', email: 'test@example.com' },
-        'corr-1',
+        'corr-1'
       );
       user.clearEvents();
 
@@ -82,11 +82,13 @@ describe('User', () => {
     it('rejects active → active (no self-transition)', () => {
       const user = User.create(
         { id: '550e8400-e29b-41d4-a716-446655440000', email: 'test@example.com' },
-        'corr-1',
+        'corr-1'
       );
       user.clearEvents();
 
-      expect(() => { user.reactivate('corr-2'); }).toThrow(DomainError);
+      expect(() => {
+        user.reactivate('corr-2');
+      }).toThrow(DomainError);
     });
 
     it('rejects suspended → deactivated (no skip)', () => {
@@ -97,7 +99,9 @@ describe('User', () => {
       });
 
       // deactivated is not in VALID_TRANSITIONS['suspended']
-      expect(() => { user.suspend('reason', 'corr'); }).toThrow(DomainError);
+      expect(() => {
+        user.suspend('reason', 'corr');
+      }).toThrow(DomainError);
     });
 
     it('rejects deactivated → any (terminal state)', () => {
@@ -107,8 +111,12 @@ describe('User', () => {
         status: 'deactivated',
       });
 
-      expect(() => { user.suspend('reason', 'corr'); }).toThrow(DomainError);
-      expect(() => { user.reactivate('corr'); }).toThrow(DomainError);
+      expect(() => {
+        user.suspend('reason', 'corr');
+      }).toThrow(DomainError);
+      expect(() => {
+        user.reactivate('corr');
+      }).toThrow(DomainError);
     });
   });
 
@@ -116,7 +124,7 @@ describe('User', () => {
     it('clears uncommitted events', () => {
       const user = User.create(
         { id: '550e8400-e29b-41d4-a716-446655440000', email: 'test@example.com' },
-        'corr-1',
+        'corr-1'
       );
       expect(user.uncommittedEvents).toHaveLength(1);
 
